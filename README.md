@@ -1,5 +1,4 @@
-# imovie
-
+# iMovies
 ## Project setup
 ```
 npm install
