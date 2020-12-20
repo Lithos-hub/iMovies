@@ -11,12 +11,44 @@ const routes = [
     component: Home
   },
   {
+    path: '/movie/:id',
+    name: 'Movie',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Movie.vue')
+  },
+  {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },
+  {
+    path: '/account',
+    name: 'Account',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Account.vue')
+  },
+  {
+    path: '/trending',
+    name: 'Trending',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Trending.vue')
+  },
+  {
+    path: '/trailers',
+    name: 'Trailers',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Trailers.vue')
+  },
+  {
+    path: '/genres',
+    name: 'Genres',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Genres.vue')
+  },
+  {
+    path: '/ranking',
+    name: 'Ranking',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Ranking.vue')
+  },
+  {
+    path: '/changelog',
+    name: 'Change Log',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Changelog.vue')
   }
 ]
 

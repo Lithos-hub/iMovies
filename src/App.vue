@@ -1,32 +1,62 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <Navbar id="navbar" />
+
+    <v-main class="main-content">
+      <router-view class="routerview"></router-view>
+    </v-main>
+  </v-app>
 </template>
 
+<script>
+import Navbar from "./components/Navbar";
+
+export default {
+  name: "App",
+
+  components: {
+    Navbar,
+  },
+  data() {
+    return {};
+  },
+};
+</script>
+
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+@import "src/scss/variables";
+
+body {
+  background: $dark2;
 }
 
-#nav {
-  padding: 30px;
+.main-content {
+  background: $dark2 !important;
+  color: white;
+  font-family: $style1 !important;
+  height: auto;
+  width: auto;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+// Scroll Bar
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: $dark2;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $primary;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(255, 255, 255);
 }
 </style>
