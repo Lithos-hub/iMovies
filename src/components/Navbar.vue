@@ -65,7 +65,7 @@ export default {
     return {
       date: new Date().getFullYear(),
       version: 1,
-      subversion: 1,
+      subversion: 2,
       group: null,
       drawer: false,
       items: [

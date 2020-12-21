@@ -28,7 +28,7 @@
             <br /><br />
             In the future, I'll add new features like the posibility to create
             want-to-watch movie lists or a search system to filter movies with names of
-            actores, genres, or years of release.
+            actors, genres, or years of release.
           </v-card-text>
         </v-card>
       </v-col>
@@ -82,7 +82,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "src/scss/variables";
 
 .about-text {

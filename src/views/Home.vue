@@ -5,7 +5,7 @@
         Latest<br />
         releases<br />
         in <br />
-        2020
+        {{ current_year }}
       </h1>
     </div>
     <div class="horizontal-scroll-wrapper squares">
@@ -35,6 +35,7 @@ export default {
   data() {
     return {
       url: "https://image.tmdb.org/t/p/original",
+      current_year: new Date().getFullYear(),
     };
   },
   computed: {

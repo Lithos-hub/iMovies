@@ -1,5 +1,37 @@
 <template>
   <div>
+    <!-- ************** TRAILER DIALOG ************** -->
+    <div>
+      <v-dialog class="dialog" v-model="dialog" v-if="dialog" overlay-opacity="10">
+        <v-card height="100%" class="cardDialog">
+          <div class="row videoDialog">
+            <v-sheet
+              color="error"
+              width="100%"
+              height="100%"
+              dark
+              class="pa-5"
+              v-if="message_error.length != 0"
+            >
+              <h1 class="video-error">{{ message_error }}</h1>
+            </v-sheet>
+
+            <iframe
+              class="video"
+              :src="video_url"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+
+          <div class="closeDialog-btn">
+            <v-btn color="error" block @click="dialog = false"> Close </v-btn>
+          </div>
+        </v-card>
+      </v-dialog>
+    </div>
+    <!-- ************** MOVIE CARD CONTENT ************** -->
     <v-container class="pa-5">
       <v-card class="pa-5 d-flex" height="100%" width="100%" id="card">
         <v-img :src="url + movieDetails.poster_path" id="movie-img"></v-img>
@@ -27,16 +59,27 @@
           <p id="movie-language">
             {{ movieDetails.spoken_languages[0].english_name }}
           </p>
-          <router-link to="/" style="text-decoration: none">
+          <div class="d-flex justify-content-around">
+            <router-link to="/" style="text-decoration: none">
+              <v-btn
+                color="indigo"
+                class="font-weight-bold"
+                dark
+                elevation="10"
+                id="come-back-btn"
+                >Come back</v-btn
+              >
+            </router-link>
             <v-btn
-              color="secondary"
+              color="deep-orange darken-4"
               class="font-weight-bold"
-              outlined
-              block
-              id="come-back-btn"
-              >Come back</v-btn
+              elevation="10"
+              dark
+              id="trailer-btn"
+              @click="getMovieTrailer()"
+              >View trailer</v-btn
             >
-          </router-link>
+          </div>
         </v-container>
       </v-card>
     </v-container>
@@ -53,6 +96,9 @@ export default {
     return {
       movieDetails: {},
       url: "https://image.tmdb.org/t/p/original",
+      video_url: "",
+      message_error: "",
+      dialog: false,
     };
   },
   methods: {
@@ -72,6 +118,26 @@ export default {
           });
       });
     },
+    getMovieTrailer() {
+      const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
+      const video_url = `https://api.themoviedb.org/3/movie/${this.$route.params.id}/videos?api_key=${apikey}&language=en-US`;
+
+      axios
+        .get(video_url)
+        .then((resp) => {
+          this.dialog = true;
+
+          const key = resp.data.results[0].key;
+
+          const youtube_video = "https://www.youtube.com/embed/" + key;
+
+          this.video_url = youtube_video;
+        })
+        .catch((e) => {
+          console.log("Trailer movie 1 " + e);
+          this.message_error = "Sorry. This video is no available.";
+        });
+    },
   },
   mounted() {
     this.getMovieDetails();
@@ -79,7 +145,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "src/scss/variables";
 
 // ******* MOBILE RESPONSIVE ******* //
@@ -125,6 +191,44 @@ export default {
 
   #card {
     padding: 0px !important;
+  }
+
+  //****************************** DIALOG ******************************//
+  .videoDialog {
+    margin: 10px;
+    padding: 0px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .closeDialog-btn {
+    position: relative;
+    bottom: 0px;
+    width: 100%;
+    padding: 0px;
+  }
+
+  .video {
+    height: 450px;
+  }
+
+  .cardDialog {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    background: $dark2 !important;
+  }
+
+  .video-error {
+    font-size: 3em;
+    text-align: center;
+  }
+
+  .dialog {
+    bottom: 0px;
+    overflow: hidden;
   }
 }
 // ******* LAPTOP RESPONSIVE ******* //
@@ -175,6 +279,43 @@ export default {
   #card {
     padding: 50px !important;
   }
+  //****************************** DIALOG ******************************//
+  .videoDialog {
+    margin: 0px;
+    padding: 50px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .closeDialog-btn {
+    position: relative;
+    bottom: 0px;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .video {
+    height: 500px;
+  }
+
+  .cardDialog {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    background: $dark2 !important;
+  }
+
+  .video-error {
+    font-size: 3em;
+    text-align: center;
+  }
+
+  .dialog {
+    bottom: 0px;
+    overflow: hidden;
+  }
 }
 
 // ******* DESKTOP RESPONSIVE ******* //
@@ -224,6 +365,44 @@ export default {
 
   #card {
     padding: 50px !important;
+  }
+
+  //****************************** DIALOG ******************************//
+
+  .videoDialog {
+    margin: 0px;
+    padding: 50px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .closeDialog-btn {
+    position: relative;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .video {
+    height: 700px;
+  }
+
+  .cardDialog {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    background: $dark2 !important;
+  }
+
+  .video-error {
+    font-size: 3em;
+    text-align: center;
+  }
+
+  .dialog {
+    bottom: 0px;
+    overflow: hidden;
   }
 }
 </style>

@@ -3,13 +3,7 @@
     <SectionTitle :sectionName="name" />
 
     <div>
-      <v-dialog
-        class="dialog"
-        v-model="dialog1"
-        v-if="dialog1"
-        fullscreen
-        overlay-opacity="10"
-      >
+      <v-dialog class="dialog" v-model="dialog1" v-if="dialog1" overlay-opacity="10">
         <v-card height="100%" class="cardDialog">
           <div class="row videoDialog">
             <v-sheet
@@ -24,8 +18,6 @@
             </v-sheet>
 
             <iframe
-              width="350"
-              height="900"
               class="video"
               :src="trailer1"
               frameborder="0"
@@ -39,13 +31,7 @@
           </div>
         </v-card>
       </v-dialog>
-      <v-dialog
-        class="dialog"
-        v-model="dialog2"
-        v-if="dialog2"
-        fullscreen
-        overlay-opacity="10"
-      >
+      <v-dialog class="dialog" v-model="dialog2" v-if="dialog2" overlay-opacity="10">
         <v-card height="100%" class="cardDialog">
           <div class="row videoDialog">
             <v-sheet
@@ -60,8 +46,6 @@
             </v-sheet>
 
             <iframe
-              width="350"
-              height="900"
               class="video"
               :src="trailer2"
               frameborder="0"
@@ -75,13 +59,7 @@
           </div>
         </v-card>
       </v-dialog>
-      <v-dialog
-        class="dialog"
-        v-model="dialog3"
-        v-if="dialog3"
-        fullscreen
-        overlay-opacity="10"
-      >
+      <v-dialog class="dialog" v-model="dialog3" v-if="dialog3" overlay-opacity="10">
         <v-card height="100%" class="cardDialog">
           <div class="row videoDialog">
             <v-sheet
@@ -96,8 +74,6 @@
             </v-sheet>
 
             <iframe
-              width="350"
-              height="900"
               class="video"
               :src="trailer3"
               frameborder="0"
@@ -111,13 +87,7 @@
           </div>
         </v-card>
       </v-dialog>
-      <v-dialog
-        class="dialog"
-        v-model="dialog4"
-        v-if="dialog4"
-        fullscreen
-        overlay-opacity="10"
-      >
+      <v-dialog class="dialog" v-model="dialog4" v-if="dialog4" overlay-opacity="10">
         <v-card height="100%" class="cardDialog">
           <div class="row videoDialog">
             <v-sheet
@@ -132,8 +102,6 @@
             </v-sheet>
 
             <iframe
-              width="350"
-              height="900"
               class="video"
               :src="trailer4"
               frameborder="0"
@@ -147,13 +115,7 @@
           </div>
         </v-card>
       </v-dialog>
-      <v-dialog
-        class="dialog"
-        v-model="dialog5"
-        v-if="dialog5"
-        fullscreen
-        overlay-opacity="10"
-      >
+      <v-dialog class="dialog" v-model="dialog5" v-if="dialog5" overlay-opacity="10">
         <v-card height="100%" class="cardDialog">
           <div class="row videoDialog">
             <v-sheet
@@ -168,8 +130,6 @@
             </v-sheet>
 
             <iframe
-              width="350"
-              height="900"
               class="video"
               :src="trailer5"
               frameborder="0"
@@ -183,13 +143,7 @@
           </div>
         </v-card>
       </v-dialog>
-      <v-dialog
-        class="dialog"
-        v-model="dialog6"
-        v-if="dialog6"
-        fullscreen
-        overlay-opacity="10"
-      >
+      <v-dialog class="dialog" v-model="dialog6" v-if="dialog6" overlay-opacity="10">
         <v-card height="100%" class="cardDialog">
           <div class="row videoDialog">
             <v-sheet
@@ -204,8 +158,6 @@
             </v-sheet>
 
             <iframe
-              width="350"
-              height="900"
               class="video"
               :src="trailer6"
               frameborder="0"
@@ -382,7 +334,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "src/scss/variables";
 
 // ******* MOBILE RESPONSIVE ******* //
@@ -393,6 +345,7 @@ export default {
     width: 100%;
     margin-bottom: 50px;
     height: 100%;
+    text-align: center;
   }
 
   .card-title {
@@ -422,25 +375,27 @@ export default {
     overflow: hidden;
   }
 
+  //****************************** DIALOG ******************************//
+
   .videoDialog {
     margin: 0px;
-    padding: 5px;
-    overflow: hidden;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
   }
 
   .closeDialog-btn {
-    position: fixed;
-    bottom: 0px;
+    position: relative;
+
     width: 100%;
-    padding: 0px;
+    padding: 10px;
   }
 
   .video {
-    height: 600px;
+    height: 500px;
   }
 
   .cardDialog {
-    position: fixed;
     bottom: 0px;
     width: 100%;
     height: 100%;
@@ -451,6 +406,11 @@ export default {
   .video-error {
     font-size: 3em;
     text-align: center;
+  }
+
+  .dialog {
+    height: 100%;
+    overflow: hidden;
   }
 
   .section-subtitle {
@@ -466,10 +426,15 @@ export default {
     animation: move 2s ease-in-out;
   }
 
-  .dialog {
-    position: fixed;
-    bottom: 0px;
-    height: 100%;
+  @keyframes move {
+    from {
+      margin-left: -5000px;
+      opacity: 0;
+    }
+    to {
+      margin-left: 0px;
+      opacity: 1;
+    }
   }
 }
 // ******* LAPTOP RESPONSIVE ******* //
@@ -480,6 +445,7 @@ export default {
     width: 90%;
     margin-bottom: 50px;
     height: 100%;
+    text-align: center;
   }
 
   .card-title {
@@ -495,18 +461,21 @@ export default {
   }
 
   .card-img {
-    width: 100%;
-    height: 600px;
+    width: 70%;
+    height: 90%;
+    transition: 2s;
     &:hover {
+      width: 100%;
+      height: 100%;
       cursor: pointer;
       transform: scale(1.2);
-      transition: 1s;
+
       margin-bottom: 90px;
     }
   }
 
   .card-title {
-    margin-bottom: -80px;
+    margin-bottom: -150px;
   }
 
   .card {
@@ -514,39 +483,39 @@ export default {
     margin-bottom: 20px;
     width: 90%;
     overflow: hidden;
-
+    background: $dark2 !important;
+    border: 2px solid $secondary !important;
+    transition: 1s;
     &:hover {
       .card-title {
         display: block;
         opacity: 1;
-        margin-bottom: 20px;
+        margin-bottom: 50px;
       }
     }
   }
 
+  //****************************** DIALOG ******************************//
+
   .videoDialog {
     margin: 0px;
-    padding: 30px;
+    padding: 100px;
+    width: 100%;
+    height: 100%;
   }
 
   .closeDialog-btn {
     position: absolute;
-    bottom: 0px;
+
     width: 100%;
-    padding: 0px;
+    padding: 20px;
   }
 
   .video {
-    height: 600px;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    margin: 0 auto;
+    height: 500px;
   }
 
   .cardDialog {
-    position: fixed;
-    bottom: 0px;
     width: 100%;
     height: 100%;
     z-index: 999999;
@@ -556,6 +525,12 @@ export default {
   .video-error {
     font-size: 3em;
     text-align: center;
+  }
+
+  .dialog {
+    bottom: 0px;
+    height: 100%;
+    overflow: hidden;
   }
 
   .section-subtitle {
@@ -569,12 +544,6 @@ export default {
     color: $dark2 !important;
     text-shadow: 0px 0px 10px rgb(255, 255, 255);
     animation: move 2s ease-in-out;
-  }
-
-  .dialog {
-    position: fixed;
-    bottom: 0px;
-    height: 100%;
   }
 
   @keyframes move {
@@ -597,6 +566,7 @@ export default {
     width: 90%;
     margin-bottom: 50px;
     height: 100%;
+    text-align: center;
   }
 
   .card-title {
@@ -606,18 +576,21 @@ export default {
     padding: 0px;
     font-size: 2em;
     letter-spacing: 5px;
-    transition: 0.5s;
+    transition: 2s;
     display: hidden;
     opacity: 0;
   }
 
   .card-img {
-    width: 100%;
-    height: 750px;
+    width: 90%;
+    height: 90%;
+    transition: 2s;
     &:hover {
+      width: 100%;
+      height: 100%;
       cursor: pointer;
       transform: scale(1.2);
-      transition: 1s;
+
       margin-bottom: 90px;
     }
   }
@@ -631,36 +604,38 @@ export default {
     margin-bottom: 20px;
     width: 90%;
     overflow: hidden;
-
+    background: $dark2 !important;
+    border: 2px solid $secondary !important;
+    transition: 1s;
     &:hover {
       .card-title {
         display: block;
         opacity: 1;
-        margin-bottom: 20px;
+        margin-bottom: 50px;
       }
     }
   }
+  //****************************** DIALOG ******************************//
 
   .videoDialog {
     margin: 0px;
-    padding: 20px;
-    overflow: hidden;
+    padding: 100px;
+    width: 100%;
+    height: 100%;
   }
 
   .closeDialog-btn {
     position: absolute;
-    bottom: 0px;
+
     width: 100%;
-    padding: 0px;
+    padding: 20px;
   }
 
   .video {
-    height: 900px;
+    height: 700px;
   }
 
   .cardDialog {
-    position: absolute;
-    bottom: 0px;
     width: 100%;
     height: 100%;
     z-index: 999999;
@@ -670,6 +645,11 @@ export default {
   .video-error {
     font-size: 3em;
     text-align: center;
+  }
+
+  .dialog {
+    bottom: 0px;
+    height: 100%;
   }
 
   .section-subtitle {
@@ -683,12 +663,6 @@ export default {
     color: $dark2 !important;
     text-shadow: 0px 0px 10px rgb(255, 255, 255);
     animation: move 2s ease-in-out;
-  }
-
-  .dialog {
-    position: absolute;
-    bottom: 0px;
-    height: 100%;
   }
 
   @keyframes move {

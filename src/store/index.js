@@ -7,6 +7,7 @@ Vue.use(Vuex)
 
 const url = "https://api.themoviedb.org/3";
 const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
+const current_year = new Date().getFullYear();
 
 export default new Vuex.Store({
   state: {
@@ -240,8 +241,7 @@ export default new Vuex.Store({
         // **************************** CURRENT MOVIES **************************** //
     getCurrentlyMovies({commit}) {
 
-      // ********************* Filter: only 2020 movies ----------------------- //
-      const apiurl = `${url}/discover/movie?year=2020&api_key=${apikey}`;
+      const apiurl = `${url}/discover/movie?year=${current_year}&api_key=${apikey}`;
       
       return new Promise((resolve) => {
         
