@@ -27,6 +27,11 @@ Version 1.2
 * Added dynamic trailers dialogs on /movie/id page
 * Added some aesthetic changes on /trailers page
 
+Version 1.3
+
+* Optimized code in the section Genres using v-bind and v-on:click to use a single function to return movies of different genres.
+* Some aesthetic changes in general.
+
 ## Project setup
 ```
 npm install
