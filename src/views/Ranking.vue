@@ -15,7 +15,7 @@
         <v-expansion-panel-content class="content">
           <v-row no-gutters>
             <v-col lg="3" xs="6" v-for="(item, i) in movies2010" :key="i">
-              <img :src="url + item.poster_path" class="movie-img" />
+              <img :src="url + item.poster_path" class="movie-img"/>
               <h3 class="movie-title">{{ item.original_title }}</h3>
             </v-col>
           </v-row>
@@ -360,10 +360,12 @@ export default {
   }
 
   .movie-img {
-    width: 300px;
-    padding: 20px;
+    width: 200px;
+    margin: 20px;
+    padding: 0px;
     height: auto;
-    margin: 0 auto;
+    border-radius: 30px !important;
+    box-shadow: 0px 5px 10px black;
   }
 
   .movie-title {
@@ -427,10 +429,12 @@ export default {
   }
 
   .movie-img {
-    width: 300px;
-    padding: 20px;
+   width: 300px;
+    margin: 20px;
+    padding: 0px;
     height: auto;
-    margin: 0 auto;
+    border-radius: 30px !important;
+    box-shadow: 0px 5px 10px black;
   }
 
   .movie-title {

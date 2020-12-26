@@ -27,7 +27,9 @@
           <v-btn
             id="actionBtn"
             class="genre-btn img1"
-            @click="actionMovies()"
+            v-on:click="[genre = '28'],[genreTitle = 'action']"
+            
+            @click="getMovies()"
             dark
             block
             tile
@@ -39,7 +41,9 @@
           <v-btn
             color="green"
             class="genre-btn img2"
-            @click="adventureMovies()"
+            v-on:click="[genre = '12'],[genreTitle = 'adventure']"
+            
+            @click="getMovies()"
             dark
             block
             tile
@@ -50,7 +54,9 @@
           <v-btn
             color="orange"
             class="genre-btn img3"
-            @click="animationMovies()"
+            v-on:click="[genre = '16'],[genreTitle = 'animation']"
+            
+            @click="getMovies()"
             dark
             block
             tile
@@ -61,8 +67,10 @@
           <v-btn
             color="purple"
             class="genre-btn img4"
-            @click="comedyMovies()"
-            dark
+          v-on:click="[genre = '35'],[genreTitle = 'comedy']"
+          
+            @click="getMovies()"         
+             dark
             block
             tile
           >
@@ -72,8 +80,10 @@
           <v-btn
             color="secondary"
             class="genre-btn img5"
-            @click="crimeMovies()"
-            dark
+          v-on:click="[genre = '80'],[genreTitle = 'crime']"
+          
+            @click="getMovies()"        
+             dark
             block
             tile
           >
@@ -83,7 +93,9 @@
           <v-btn
             color="pink"
             class="genre-btn img6"
-            @click="documentaryMovies()"
+            v-on:click="[genre = '99'],[genreTitle = 'documentary']"
+            
+            @click="getMovies()"
             dark
             block
             tile
@@ -94,7 +106,9 @@
           <v-btn
             color="yellow darken-4"
             class="genre-btn img7"
-            @click="dramaticMovies()"
+            v-on:click="[genre = '18'],[genreTitle = 'dramatic']"
+            
+            @click="getMovies()"            
             dark
             block
             tile
@@ -105,8 +119,10 @@
           <v-btn
             color="blue"
             class="genre-btn img8"
-            @click="fantasyMovies()"
-            dark
+            v-on:click="[genre = '14'],[genreTitle = 'fantasy']"
+            
+            @click="getMovies()"          
+             dark
             block
             tile
           >
@@ -116,7 +132,9 @@
           <v-btn
             color="brown"
             class="genre-btn img9"
-            @click="historyMovies()"
+            v-on:click="[genre = '36'],[genreTitle = 'history']"
+            
+            @click="getMovies()"           
             dark
             block
             tile
@@ -127,8 +145,10 @@
           <v-btn
             color="gray"
             class="genre-btn img10"
-            @click="horrorMovies()"
-            dark
+          v-on:click="[genre = '27'],[genreTitle = 'horror']"
+          
+            @click="getMovies()"         
+             dark
             block
             tile
           >
@@ -138,8 +158,10 @@
           <v-btn
             color="cyan"
             class="genre-btn img11"
-            @click="musicalMovies()"
-            dark
+            v-on:click="[genre = '10402'],[genreTitle = 'musical']"
+            
+            @click="getMovies()"          
+             dark
             block
             tile
           >
@@ -149,8 +171,10 @@
           <v-btn
             color="error"
             class="genre-btn img12"
-            @click="romanticMovies()"
-            dark
+            v-on:click="[genre = '10749'],[genreTitle = 'romantic']"
+            
+            @click="getMovies()"           
+             dark
             block
             tile
           >
@@ -160,7 +184,9 @@
           <v-btn
             color="blue"
             class="genre-btn img13"
-            @click="scifiMovies()"
+          v-on:click="[genre = '878'],[genreTitle = 'sci-fi']"
+          
+            @click="getMovies()"         
             dark
             block
             tile
@@ -171,7 +197,9 @@
           <v-btn
             color="orange"
             class="genre-btn img14"
-            @click="thrillerMovies()"
+            v-on:click="[genre = '53'],[genreTitle = 'thriller']"
+            
+            @click="getMovies()"            
             dark
             block
             tile
@@ -179,15 +207,22 @@
             Thriller
           </v-btn>
           <!-- ********************* WAR BUTTON ********************* -->
-          <v-btn color="red" class="genre-btn img15" @click="warMovies()" dark block tile>
-            War
+          <v-btn color="red" 
+          class="genre-btn img15"   
+          v-on:click="[genre = '10752'],[genreTitle = 'war']"
+          
+            @click="getMovies()"  
+            dark block tile>
           </v-btn>
-          <!-- ********************* WESTERN BUTTON ********************* -->
+
+             <!-- ********************* WESTERN BUTTON ********************* -->
           <v-btn
             color="indigo"
             class="genre-btn img16"
-            @click="westernMovies()"
-            dark
+            v-on:click="[genre = '37'],[genreTitle = 'western']"
+            
+            @click="getMovies()"          
+             dark
             block
             tile
           >
@@ -200,25 +235,25 @@
         </a>
       </v-row>
 
-      <!--********************************** DIALOG ACTION MOVIES ********************************** -->
-      <div v-for="(item, i) in action" :key="i">
+      <!--********************************** DIALOG MOVIES ********************************** -->
+      <div v-for="(item, i) in movies_array" :key="i">
         <v-row>
           <v-dialog
-            v-model="actionDialog"
-            v-if="actionDialog"
+            v-model="genreDialog"
+            v-if="genreDialog"
             class="movie-genres-dialog"
           >
             <v-card>
-              <v-toolbar tile elevation="0" dark color="red">
-                <v-btn icon dark @click="actionDialog = false" class="close-dialog-btn">
+              <v-toolbar tile elevation="10" dark color="secondary">
+                <v-btn icon dark @click="genreDialog = false" class="close-dialog-btn">
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
+                <v-toolbar-title class="card-genre-title">{{ genreTitle }}</v-toolbar-title>
               </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in action" :key="i">
-                  <v-col>
+              <v-row no-gutters class="text-center">
+                <div v-for="(item, i) in movies_array" :key="i">
+                  <v-col lg="12" xs="12" class="d-flex">
                     <v-sheet width="80%" id="genre-sheet">
                       <v-card-title id="genre-title"
                         >{{ item.original_title }}
@@ -226,713 +261,10 @@
                       >
                     </v-sheet>
                   </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
+                  <v-col lg="12" xs="12">
+                    <img :src="url + item.poster_path" width="200" class="movie-img-dialog"/>
                     <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-                </div>
-              </v-row>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </div>
-      <!--********************************** DIALOG ADVENTURE MOVIES ********************************** -->
-      <div v-for="(item, i) in adventure" :key="'A' + i">
-        <v-row>
-          <v-dialog
-            v-model="adventureDialog"
-            transition="dialog-bottom-transition"
-            v-if="adventureDialog"
-            class="movie-genres-dialog"
-          >
-            <v-card tile>
-              <v-toolbar tile elevation="0" dark color="green">
-                <v-btn
-                  icon
-                  dark
-                  @click="adventureDialog = false"
-                  class="close-dialog-btn"
-                >
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
-              </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in adventure" :key="i">
-                  <v-col>
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.original_title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
-
-                    <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-                </div>
-              </v-row>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </div>
-      <!--********************************** DIALOG ANIMATION MOVIES ********************************** -->
-      <div v-for="(item, i) in animation" :key="'B' + i">
-        <v-row>
-          <v-dialog
-            v-model="animationDialog"
-            transition="dialog-bottom-transition"
-            v-if="animationDialog"
-            class="movie-genres-dialog"
-          >
-            <v-card>
-              <v-toolbar tile elevation="0" dark color="orange">
-                <v-btn
-                  icon
-                  dark
-                  @click="animationDialog = false"
-                  class="close-dialog-btn"
-                >
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
-              </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in animation" :key="i">
-                  <v-col>
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.original_title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
-                    <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-                </div>
-              </v-row>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </div>
-      <!--********************************** DIALOG COMEDY MOVIES ********************************** -->
-
-      <div v-for="(item, i) in comedy" :key="'C' + i">
-        <v-row>
-          <v-dialog
-            v-model="comedyDialog"
-            transition="dialog-bottom-transition"
-            v-if="comedyDialog"
-            class="movie-genres-dialog"
-          >
-            <v-card>
-              <v-toolbar tile elevation="0" dark color="purple">
-                <v-btn icon dark @click="comedyDialog = false" class="close-dialog-btn">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
-              </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in comedy" :key="i">
-                  <v-col>
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.original_title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
-                    <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-                </div>
-              </v-row>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </div>
-      <!--********************************** DIALOG CRIME MOVIES ********************************** -->
-      <div v-for="(item, i) in crime" :key="'D' + i">
-        <v-row>
-          <v-dialog
-            v-model="crimeDialog"
-            transition="dialog-bottom-transition"
-            v-if="crimeDialog"
-            class="movie-genres-dialog"
-          >
-            <v-card>
-              <v-toolbar tile elevation="0" dark color="secondary">
-                <v-btn icon dark @click="crimeDialog = false" class="close-dialog-btn">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
-              </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in crime" :key="i">
-                  <v-col>
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.original_title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
-                    <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-                </div>
-              </v-row>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </div>
-      <!--********************************** DIALOG DOCUMENTARY MOVIES ********************************** -->
-
-      <div v-for="(item, i) in documentary" :key="'F' + i">
-        <v-row>
-          <v-dialog
-            v-model="documentaryDialog"
-            transition="dialog-bottom-transition"
-            v-if="documentaryDialog"
-            class="movie-genres-dialog"
-          >
-            <v-card>
-              <v-toolbar tile elevation="0" dark color="pink">
-                <v-btn
-                  icon
-                  dark
-                  @click="documentaryDialog = false"
-                  class="close-dialog-btn"
-                >
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
-              </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in documentary" :key="i">
-                  <v-col>
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.original_title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
-                    <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-                </div>
-              </v-row>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </div>
-      <!--********************************** DIALOG DRAMATIC MOVIES ********************************** -->
-
-      <div v-for="(item, i) in dramatic" :key="'G' + i">
-        <v-row>
-          <v-dialog
-            v-model="dramaticDialog"
-            transition="dialog-bottom-transition"
-            v-if="dramaticDialog"
-            class="movie-genres-dialog"
-          >
-            <v-card>
-              <v-toolbar tile elevation="0" dark color="red">
-                <v-btn icon dark @click="dramaticDialog = false" class="close-dialog-btn">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
-              </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in dramatic" :key="i">
-                  <v-col>
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.original_title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
-                    <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-                </div>
-              </v-row>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </div>
-      <!--********************************** DIALOG FANTASY MOVIES ********************************** -->
-
-      <div v-for="(item, i) in fantasy" :key="'H' + i">
-        <v-row>
-          <v-dialog
-            v-model="fantasyDialog"
-            transition="dialog-bottom-transition"
-            v-if="fantasyDialog"
-            class="movie-genres-dialog"
-          >
-            <v-card>
-              <v-toolbar tile elevation="0" dark color="indigo">
-                <v-btn icon dark @click="fantasyDialog = false" class="close-dialog-btn">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
-              </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in fantasy" :key="i">
-                  <v-col>
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.original_title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
-                    <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-                </div>
-              </v-row>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </div>
-      <!--********************************** DIALOG HISTORY MOVIES ********************************** -->
-
-      <div v-for="(item, i) in history" :key="'I' + i">
-        <v-row>
-          <v-dialog
-            v-model="historyDialog"
-            transition="dialog-bottom-transition"
-            v-if="historyDialog"
-            class="movie-genres-dialog"
-          >
-            <v-card>
-              <v-toolbar tile elevation="0" dark color="orange">
-                <v-btn icon dark @click="historyDialog = false" class="close-dialog-btn">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
-              </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in history" :key="i">
-                  <v-col>
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.original_title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
-                    <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-                </div>
-              </v-row>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </div>
-      <!--********************************** DIALOG HORROR MOVIES ********************************** -->
-
-      <div v-for="(item, i) in horror" :key="'J' + i">
-        <v-row>
-          <v-dialog
-            v-model="horrorDialog"
-            transition="dialog-bottom-transition"
-            v-if="horrorDialog"
-            class="movie-genres-dialog"
-          >
-            <v-card>
-              <v-toolbar tile elevation="0" dark color="secondary">
-                <v-btn icon dark @click="horrorDialog = false" class="close-dialog-btn">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
-              </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in horror" :key="i">
-                  <v-col>
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.original_title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
-                    <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-                </div>
-              </v-row>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </div>
-      <!--********************************** DIALOG MUSICAL MOVIES ********************************** -->
-
-      <div v-for="(item, i) in musical" :key="'K' + i">
-        <v-row>
-          <v-dialog
-            v-model="musicalDialog"
-            transition="dialog-bottom-transition"
-            v-if="musicalDialog"
-            class="movie-genres-dialog"
-          >
-            <v-card>
-              <v-toolbar tile elevation="0" dark color="purple">
-                <v-btn icon dark @click="musicalDialog = false" class="close-dialog-btn">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
-              </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in musical" :key="i">
-                  <v-col>
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.original_title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
-                    <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-                </div>
-              </v-row>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </div>
-      <!--********************************** DIALOG ROMANTIC MOVIES ********************************** -->
-
-      <div v-for="(item, i) in romantic" :key="'L' + i">
-        <v-row>
-          <v-dialog
-            v-model="romanticDialog"
-            transition="dialog-bottom-transition"
-            v-if="romanticDialog"
-            class="movie-genres-dialog"
-          >
-            <v-card>
-              <v-toolbar tile elevation="0" dark color="pink lighten-3">
-                <v-btn icon dark @click="romanticDialog = false" class="close-dialog-btn">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
-              </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in romantic" :key="i">
-                  <v-col>
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.original_title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
-                    <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-                </div>
-              </v-row>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </div>
-      <!--********************************** DIALOG SCIFI MOVIES ********************************** -->
-
-      <div v-for="(item, i) in scifi" :key="'M' + i">
-        <v-row>
-          <v-dialog
-            v-model="scifiDialog"
-            transition="dialog-bottom-transition"
-            v-if="scifiDialog"
-            class="movie-genres-dialog"
-          >
-            <v-card>
-              <v-toolbar tile elevation="0" dark color="blue darken-4">
-                <v-btn icon dark @click="scifiDialog = false" class="close-dialog-btn">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
-              </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in scifi" :key="i">
-                  <v-col>
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.original_title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
-                    <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-                </div>
-              </v-row>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </div>
-      <!--********************************** DIALOG THRILLER MOVIES ********************************** -->
-
-      <div v-for="(item, i) in thriller" :key="'N' + i">
-        <v-row>
-          <v-dialog
-            v-model="thrillerDialog"
-            transition="dialog-bottom-transition"
-            v-if="thrillerDialog"
-            class="movie-genres-dialog"
-          >
-            <v-card>
-              <v-toolbar tile elevation="0" dark color="gray">
-                <v-btn icon dark @click="thrillerDialog = false" class="close-dialog-btn">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
-              </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in thriller" :key="i">
-                  <v-col>
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.original_title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
-                    <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-                </div>
-              </v-row>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </div>
-      <!--********************************** DIALOG WAR MOVIES ********************************** -->
-
-      <div v-for="(item, i) in war" :key="'O' + i">
-        <v-row>
-          <v-dialog
-            v-model="warDialog"
-            transition="dialog-bottom-transition"
-            v-if="warDialog"
-            class="movie-genres-dialog"
-          >
-            <v-card>
-              <v-toolbar tile elevation="0" dark color="error">
-                <v-btn icon dark @click="warDialog = false" class="close-dialog-btn">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
-              </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in war" :key="i">
-                  <v-col>
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.original_title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
-                    <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-                </div>
-              </v-row>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </div>
-      <!--********************************** DIALOG WESTERN MOVIES ********************************** -->
-
-      <div v-for="(item, i) in western" :key="'P' + i">
-        <v-row>
-          <v-dialog
-            v-model="westernDialog"
-            transition="dialog-bottom-transition"
-            v-if="westernDialog"
-            class="movie-genres-dialog"
-          >
-            <v-card>
-              <v-toolbar tile elevation="0" dark color="green darken-4">
-                <v-btn icon dark @click="westernDialog = false" class="close-dialog-btn">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genre }}</v-toolbar-title>
-              </v-toolbar>
-              <v-row no-gutters>
-                <div v-for="(item, i) in western" :key="i">
-                  <v-col>
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.original_title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col class="d-flex">
-                    <img :src="url + item.poster_path" width="200" />
-                    <p class="lead" id="genre-overview">
-                      <span class="small d-block mb-10">Overview:</span>
+                  
                       {{ item.overview }}
                       <br />
                       <span id="no-overview" v-if="item.overview.length <= 0">{{
@@ -953,7 +285,7 @@
 
 <script>
 import SectionTitle from "../components/SectionTitle";
-import { mapActions, mapState } from "vuex";
+import axios from 'axios'
 
 export default {
   name: "Genres",
@@ -963,137 +295,42 @@ export default {
   data() {
     return {
       name: "Genres",
-      actionDialog: false,
-      adventureDialog: false,
-      animationDialog: false,
-      comedyDialog: false,
-      crimeDialog: false,
-      documentaryDialog: false,
-      dramaticDialog: false,
-      fantasyDialog: false,
-      historyDialog: false,
-      horrorDialog: false,
-      musicalDialog: false,
-      romanticDialog: false,
-      scifiDialog: false,
-      thrillerDialog: false,
-      warDialog: false,
-      westernDialog: false,
       genreDialog: false,
       url: "https://image.tmdb.org/t/p/original",
       no_overview: "We sorry. This movie has not overview available.",
+      loadingGenre: false,
+      loadingError: "",
+      movies_array: [],
+      movieTitle: "",
+      genre: "",
     };
   },
-  computed: {
-    ...mapState([
-      "loadingError",
-      "action",
-      "adventure",
-      "animation",
-      "comedy",
-      "crime",
-      "documentary",
-      "dramatic",
-      "family",
-      "fantasy",
-      "history",
-      "horror",
-      "musical",
-      "mistery",
-      "romantic",
-      "scifi",
-      "tvmovie",
-      "thriller",
-      "war",
-      "western",
-      "genre",
-      "loadingGenre",
-    ]),
-  },
-
   methods: {
-    ...mapActions([
-      "getAction",
-      "getAdventure",
-      "getAnimation",
-      "getComedy",
-      "getCrime",
-      "getDocumentary",
-      "getDramatic",
-      "getFantasy",
-      "getHistory",
-      "getHorror",
-      "getMusical",
-      "getRomantic",
-      "getScifi",
-      "getThriller",
-      "getWar",
-      "getWestern",
-    ]),
-    // ********* //
-    actionMovies(item) {
-      this.getAction();
-      this.actionDialog = true;
-    },
-    adventureMovies() {
-      this.getAdventure();
-      this.adventureDialog = true;
-    },
-    animationMovies(item) {
-      this.getAnimation();
-      this.animationDialog = true;
-    },
-    comedyMovies(item) {
-      this.getComedy();
-      this.comedyDialog = true;
-    },
-    crimeMovies(item) {
-      this.getCrime();
-      this.crimeDialog = true;
-    },
-    documentaryMovies(item) {
-      this.getDocumentary();
-      this.documentaryDialog = true;
-    },
-    dramaticMovies(item) {
-      this.getDramatic();
-      this.dramaticDialog = true;
-    },
-    fantasyMovies(item) {
-      this.getFantasy();
-      this.fantasyDialog = true;
-    },
-    historyMovies(item) {
-      this.getHistory();
-      this.historyDialog = true;
-    },
-    horrorMovies(item) {
-      this.getHorror();
-      this.horrorDialog = true;
-    },
-    musicalMovies(item) {
-      this.getMusical();
-      this.musicalDialog = true;
-    },
-    romanticMovies(item) {
-      this.getRomantic();
-      this.romanticDialog = true;
-    },
-    scifiMovies(item) {
-      this.getScifi();
-      this.scifiDialog = true;
-    },
-    thrillerMovies(item) {
-      this.getThriller();
-      this.thrillerDialog = true;
-    },
-    warMovies(item) {
-      this.getWar();
-      this.warDialog = true;
-    },
-    westernMovies(item) {
-      this.getWestern();
-      this.westernDialog = true;
+    getMovies() {
+      const url = "https://api.themoviedb.org/3";
+      const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
+      const genre = this.genre;
+
+      const movieurl = `${url}/discover/movie?&api_key=${apikey}&sort_by=popularity.desc&page=1&with_genres=${genre}`;
+
+      return new Promise((resolve) => {
+        this.loadingGenre = true;
+        this.genreDialog = false;
+        axios
+        .get(movieurl)
+        .then((resp) => {
+          this.loadingGenre = false;
+          this.genreDialog = true;
+          this.movies_array = resp.data.results;
+           
+            console.log(resp.data.results)
+         
+          })
+          .catch((e) => {
+            console.info(e);
+            this.loadingError = "Something wrong happened :( There may have been an error with the database. Please reload the website."
+        })
+      })
     },
     go_up() {
       window.scrollTo(0, 0);
@@ -1134,22 +371,23 @@ export default {
   }
 
   .card-genre-title {
-    font-size: 3em;
+    font-size: 2em;
     text-transform: uppercase;
-    letter-spacing: 10px;
+    letter-spacing: 20px;
     text-align: right;
+    font-family: $style3;
   }
 
   .snackbar {
+    background-image: url("../assets/img/gradient1.jpg");
+    background-position: center;
+    background-size: auto;
     text-align: center;
     position: fixed;
     bottom: 0px;
     width: 100%;
     z-index: 99999999;
     box-shadow: 0px -20px 20px black;
-    background-image: url("../assets/img/gradient1.jpg");
-    background-position: center;
-    background-size: auto;
     animation: 2s motion ease-in-out infinite alternate-reverse;
 
     &:hover {
@@ -1157,7 +395,7 @@ export default {
     }
 
     .loadingData-text {
-      font-size: 2em;
+      font-size: 1em;
     }
 
     .spinner {
@@ -1299,18 +537,28 @@ export default {
   }
 
   #genre-title {
-    font-size: 2em;
+    font-size: 14px;
   }
   #genre-date {
     position: absolute;
-    right: 15px;
+    right: 5px;
     color: $primary;
   }
 
   #genre-overview {
-    padding: 50px;
-    font-size: 25px;
+    padding: 20px;
+    font-size: 16px;
     text-align: justify;
+    display: block;
+    width: 100%;
+  }
+
+  .movie-img-dialog {
+    height: auto;
+    width: 100%;
+    display: block;
+    border-radius: 15px;
+    margin-top: 50px;
   }
 
   .section-subtitle {
@@ -1401,10 +649,11 @@ export default {
   }
 
   .card-genre-title {
-    font-size: 3em;
+    font-size: 4em;
     text-transform: uppercase;
-    letter-spacing: 10px;
+    letter-spacing: 20px;
     text-align: right;
+    font-family: $style3;
   }
 
   .snackbar {
@@ -1575,9 +824,21 @@ export default {
   }
 
   #genre-overview {
-    padding: 50px;
-    font-size: 25px;
+    padding: 30px;
+    font-size: 20px;
     text-align: justify;
+  }
+
+    .movie-img-dialog {
+    height: auto;
+    width: 250px;
+    border-radius: 15px;
+    display: inline;
+    margin-top: 50px;
+         mask-image: linear-gradient(to top right, transparent 49.5%, white 50.5%), linear-gradient(to top left, transparent 49.5%, white 50.5%), linear-gradient(white, white),linear-gradient(white, white);;
+    mask-size: 70% 25%, 25% 25%, 70% 70%, 25% 40%;
+  mask-position: bottom left, bottom right, top right, top left;
+  mask-repeat: no-repeat;
   }
 
   .section-subtitle {
@@ -1669,10 +930,10 @@ export default {
   }
 
   .card-genre-title {
-    font-size: 3em;
+    font-size: 4em;
     text-transform: uppercase;
-    letter-spacing: 10px;
-    text-align: right;
+    letter-spacing: 20px;
+    font-family: $style3;
   }
 
   .snackbar {
@@ -1834,18 +1095,21 @@ export default {
   }
 
   #genre-title {
-    font-size: 2em;
+    font-size: 5em;
+    width: 100%;
+    font-family: $style3;
   }
   #genre-date {
     position: absolute;
     right: 15px;
-    color: $primary;
+    color: $secondary;
   }
 
   #genre-overview {
     padding: 50px;
-    font-size: 25px;
+    font-size: 3em;
     text-align: justify;
+    
   }
 
   .section-subtitle {
@@ -1860,6 +1124,20 @@ export default {
     text-shadow: 0px 0px 6px rgb(43, 123, 209);
     animation: move 2s ease-in-out;
   }
+
+    .movie-img-dialog {
+    height: auto;
+    width:400px;
+    display: inline;
+    text-align: center;
+    border-radius: 15px;
+    margin-top: 50px;
+     mask-image: linear-gradient(to top right, transparent 49.5%, white 50.5%), linear-gradient(to top left, transparent 49.5%, white 50.5%), linear-gradient(white, white),linear-gradient(white, white);;
+    mask-size: 70% 25%, 25% 25%, 70% 70%, 25% 40%;
+  mask-position: bottom left, bottom right, top right, top left;
+  mask-repeat: no-repeat;
+  }
+
 
   @keyframes move {
     from {

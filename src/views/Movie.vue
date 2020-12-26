@@ -63,7 +63,7 @@
             <router-link to="/" style="text-decoration: none">
               <v-btn
                 color="indigo"
-                class="font-weight-bold"
+                class="font-weight-bold mt-5"
                 dark
                 elevation="10"
                 id="come-back-btn"
@@ -72,7 +72,7 @@
             </router-link>
             <v-btn
               color="deep-orange darken-4"
-              class="font-weight-bold"
+              class="font-weight-bold mt-5"
               elevation="10"
               dark
               id="trailer-btn"
@@ -186,7 +186,7 @@ export default {
   #movie-note,
   #movie-count,
   #movie-language {
-    margin: 10px;
+    margin: 5px;
   }
 
   #card {
@@ -234,37 +234,37 @@ export default {
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
   #movie-title {
-    font-size: 3em;
+    font-size: 2.5em;
     position: absolute;
     top: 15px;
     background: $dark2;
-    padding: 40px;
+    padding: 20px;
     color: $secondary;
     width: 100%;
   }
 
   #movie-img {
     top: 50px;
-    width: 300px;
-    height: 550px;
+    width: 250px;
+    height: 450px;
     margin-bottom: 50px;
     position: relative;
   }
 
   #movie-text {
-    font-size: 1em;
-    top: 100px;
+    top: 60px;
+    padding-bottom: 100px;
     color: $dark2;
     position: relative;
     text-align: justify;
-    margin-left: 50px;
-    margin-right: 50px;
+    margin-left: 20px;
+    margin-right: 20px;
   }
 
   #movie-date {
     position: absolute;
     right: 55px;
-    font-size: 30px;
+    font-size: 20px;
     color: white;
     bottom: 10px;
   }
@@ -273,23 +273,23 @@ export default {
   #movie-note,
   #movie-count,
   #movie-language {
-    margin: 20px;
+    margin:20px;
   }
 
   #card {
-    padding: 50px !important;
+    padding: 30px !important;
   }
   //****************************** DIALOG ******************************//
   .videoDialog {
-    margin: 0px;
-    padding: 50px;
-    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    width: 90%;
     overflow: hidden;
   }
 
   .closeDialog-btn {
     position: relative;
-    bottom: 0px;
+    bottom: 20px;
     width: 100%;
     padding: 10px;
   }
@@ -321,11 +321,11 @@ export default {
 // ******* DESKTOP RESPONSIVE ******* //
 @media only screen and (min-width: 1370px) {
   #movie-title {
-    font-size: 5em;
+    font-size: 4em;
     position: absolute;
     top: 15px;
     background: $dark2;
-    padding: 40px;
+    padding: 30px;
     color: $secondary;
     width: 100%;
   }
@@ -340,7 +340,7 @@ export default {
 
   #movie-text {
     font-size: 1.5em;
-    top: 120px;
+    top: 70px;
     color: $dark2;
     position: relative;
     text-align: justify;

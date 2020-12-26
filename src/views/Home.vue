@@ -94,7 +94,7 @@ export default {
   }
 
   .sheet {
-    padding: 20px;
+    padding:50px;
     background: $dark2 !important;
     z-index: 999;
   }
@@ -125,17 +125,18 @@ export default {
   }
 
   #title {
+    position: absolute;
+    top: 25%;
     margin: 0 auto;
     color: white;
     font-size: 6em;
     text-align: left;
-    display: block;
     background-image: url("../assets/img/background1.jpg");
     filter: brightness(2);
     background-repeat: repeat;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    z-index: 9;
+    z-index: 0;
   }
 
   .container {
@@ -225,7 +226,7 @@ export default {
     background-repeat: repeat;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    z-index: 9;
+    
   }
 
   .container {

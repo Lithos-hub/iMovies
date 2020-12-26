@@ -41,7 +41,7 @@
               height="30"
               class="text-center d-block ma-auto mb-2"
             ></v-img>
-            Esta aplicación utiliza la API the The Movie Database (TMDB). <br /><br />
+            Esta aplicación utiliza la API de The Movie Database (TMDB). <br /><br />
 
             La app se divide en varias secciones accesibles desde el menú lateral
             desplegable:
