@@ -35,7 +35,7 @@ Version 1.3
 Version 1.4
 
 * New features in Trending section.
-* Code optimized in Ranking section.
+* Optimized code in Ranking section.
 * New responsive features in Ranking section and some aesthetic changes.
 
 ## Project setup

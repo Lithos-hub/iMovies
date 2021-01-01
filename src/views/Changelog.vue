@@ -37,7 +37,7 @@
           ><span class="font-weight-bold">Version 1.4</span>
           <ul>
             <li>New features in <i>Trending</i> section.</li>
-            <li>Code optimized in <i>Ranking</i> section.</li>
+            <li>Optimized code in <i>Ranking</i> section.</li>
             <li>New responsive features in <i>Ranking</i> section and some aesthetic changes.</li>
           </ul>
         </div>
