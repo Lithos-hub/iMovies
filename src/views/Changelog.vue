@@ -18,8 +18,8 @@
         <div class="list"
           ><span class="font-weight-bold">Version 1.2</span>
           <ul>
-            <li>Added dynamic trailers dialogs on <i>/movie/id</i> page</li>
-            <li>Added some aesthetic changes on <i>/trailers</i> page</li>
+            <li>Added dynamic trailers dialogs in <i>/movie/id</i> page</li>
+            <li>Added some aesthetic changes in <i>/trailers</i> page</li>
           </ul>
         </div>
      
@@ -27,10 +27,24 @@
         <div class="list"
           ><span class="font-weight-bold">Version 1.3</span>
           <ul>
-            <li>Optimized code in the section <i>Genres</i> using v-bind and v-on:click to use a single function to return movies of different genres.</li>
+            <li>Optimized code in the <i>Genres</i> section using v-bind and v-on:click to use a single function to return movies of different genres.</li>
             <li>+ Some aesthetic changes in general.</li>
           </ul>
         </div>
+     
+     
+        <div class="list"
+          ><span class="font-weight-bold">Version 1.4</span>
+          <ul>
+            <li>New features in <i>Trending</i> section.</li>
+            <li>Code optimized in <i>Ranking</i> section.</li>
+            <li>New responsive features in <i>Ranking</i> section and some aesthetic changes.</li>
+          </ul>
+        </div>
+
+
+
+
      </div>
 
   </v-container>

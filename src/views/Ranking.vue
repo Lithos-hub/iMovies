@@ -5,179 +5,81 @@
     <v-sheet class="section-subtitle" elevation="10"
       >The most popular films of the last decade</v-sheet
     >
+    <div class="text-center" id="years-menu-btn">
+    <v-btn icon @click="expand = !expand">
+    <v-icon color="cyan">mdi-menu</v-icon>
+    </v-btn>
+    </div>
+<v-expand-transition>
+    <v-row id="years-menu" v-show="expand">
+      <v-col class="year-col" v-on:click="year = '2010'" @click="getMoviesByYear()">
+        2010
+      </v-col>  
+      <v-col class="year-col" v-on:click="year = '2011'" @click="getMoviesByYear()">
+        2011
+      </v-col>  
+      <v-col class="year-col" v-on:click="year = '2012'" @click="getMoviesByYear()">
+        2012
+      </v-col>  
+      <v-col class="year-col" v-on:click="year = '2013'" @click="getMoviesByYear()">
+        2013
+      </v-col>  
+      <v-col class="year-col" v-on:click="year = '2014'" @click="getMoviesByYear()">
+        2014
+      </v-col>  
+      <v-col class="year-col" v-on:click="year = '2015'" @click="getMoviesByYear()">
+        2015
+      </v-col>  
+      <v-col class="year-col" v-on:click="year = '2016'" @click="getMoviesByYear()">
+        2016
+      </v-col>  
+      <v-col class="year-col" v-on:click="year = '2017'" @click="getMoviesByYear()">
+        2017
+      </v-col>  
+      <v-col class="year-col" v-on:click="year = '2018'" @click="getMoviesByYear()">
+        2018
+      </v-col>  
+      <v-col class="year-col" v-on:click="year = '2019'" @click="getMoviesByYear()">
+        2019
+      </v-col>  
+      <v-col class="year-col" v-on:click="year = '2020'" @click="getMoviesByYear()">
+        2020
+      </v-col>  
+    </v-row>
+</v-expand-transition>
 
-    <v-expansion-panels class="expansion-panels" tile focusable>
-      <!-- *********************** 2010 *********************** -->
-      <v-expansion-panel>
-        <v-expansion-panel-header class="header" expand-icon="">
-          <span class="year">2010</span>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content class="content">
+    <v-tabs class="bar-tabs" centered background-color="transparent">
+      <v-tabs-slider color="cyan"></v-tabs-slider>
+    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2010'" @click="getMoviesByYear()">2010</v-tab>
+    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2011'" @click="getMoviesByYear()">2011</v-tab>
+    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2012'" @click="getMoviesByYear()">2013</v-tab>
+    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2013'" @click="getMoviesByYear()">2012</v-tab>
+    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2014'" @click="getMoviesByYear()">2014</v-tab>
+    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2015'" @click="getMoviesByYear()">2015</v-tab>
+    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2016'" @click="getMoviesByYear()">2016</v-tab>
+    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2017'" @click="getMoviesByYear()">2017</v-tab>
+    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2018'" @click="getMoviesByYear()">2018</v-tab>
+    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2019'" @click="getMoviesByYear()">2019</v-tab>
+    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2020'" @click="getMoviesByYear()">2020</v-tab>
+  </v-tabs>
+
+        <div class="moviesColumns" v-if="panelExpanded">
           <v-row no-gutters>
-            <v-col lg="3" xs="6" v-for="(item, i) in movies2010" :key="i">
+            <v-col lg="3" xs="6" v-for="(item, i) in moviesByYear" :key="'B' + i">
+              <div class="fadeIn">
               <img :src="url + item.poster_path" class="movie-img"/>
               <h3 class="movie-title">{{ item.original_title }}</h3>
+              </div>
             </v-col>
           </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-
-      <!-- *********************** 2011 *********************** -->
-      <v-expansion-panel>
-        <v-expansion-panel-header class="header" expand-icon="">
-          <span class="year">2011</span>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content class="content">
-          <v-row no-gutters>
-            <v-col lg="3" xs="6" v-for="(item, i) in movies2011" :key="i">
-              <img :src="url + item.poster_path" class="movie-img" />
-              <h3 class="movie-title">{{ item.original_title }}</h3>
-            </v-col>
-          </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-
-      <!-- *********************** 2012 *********************** -->
-      <v-expansion-panel>
-        <v-expansion-panel-header class="header" expand-icon="">
-          <span class="year">2012</span>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content class="content">
-          <v-row no-gutters>
-            <v-col lg="3" xs="6" v-for="(item, i) in movies2012" :key="i">
-              <img :src="url + item.poster_path" class="movie-img" />
-              <h3 class="movie-title">{{ item.original_title }}</h3>
-            </v-col>
-          </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-
-      <!-- *********************** 2013 *********************** -->
-      <v-expansion-panel>
-        <v-expansion-panel-header class="header" expand-icon="">
-          <span class="year">2013</span>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content class="content">
-          <v-row no-gutters>
-            <v-col lg="3" xs="6" v-for="(item, i) in movies2013" :key="i">
-              <img :src="url + item.poster_path" class="movie-img" />
-              <h3 class="movie-title">{{ item.original_title }}</h3>
-            </v-col>
-          </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-
-      <!-- *********************** 2014 *********************** -->
-      <v-expansion-panel>
-        <v-expansion-panel-header class="header" expand-icon="">
-          <span class="year">2014</span>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content class="content">
-          <v-row no-gutters>
-            <v-col lg="3" xs="6" v-for="(item, i) in movies2014" :key="i">
-              <img :src="url + item.poster_path" class="movie-img" />
-              <h3 class="movie-title">{{ item.original_title }}</h3>
-            </v-col>
-          </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-
-      <!-- *********************** 2015 *********************** -->
-      <v-expansion-panel>
-        <v-expansion-panel-header class="header" expand-icon="">
-          <span class="year">2015</span>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content class="content">
-          <v-row no-gutters>
-            <v-col lg="3" xs="6" v-for="(item, i) in movies2015" :key="i">
-              <img :src="url + item.poster_path" class="movie-img" />
-              <h3 class="movie-title">{{ item.original_title }}</h3>
-            </v-col>
-          </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-
-      <!-- *********************** 2016 *********************** -->
-      <v-expansion-panel>
-        <v-expansion-panel-header class="header" expand-icon="">
-          <span class="year">2016</span>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content class="content">
-          <v-row no-gutters>
-            <v-col lg="3" xs="6" v-for="(item, i) in movies2016" :key="i">
-              <img :src="url + item.poster_path" class="movie-img" />
-              <h3 class="movie-title">{{ item.original_title }}</h3>
-            </v-col>
-          </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-
-      <!-- *********************** 2017 *********************** -->
-      <v-expansion-panel>
-        <v-expansion-panel-header class="header" expand-icon="">
-          <span class="year">2017</span>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content class="content">
-          <v-row no-gutters>
-            <v-col lg="3" xs="6" v-for="(item, i) in movies2017" :key="i">
-              <img :src="url + item.poster_path" class="movie-img" />
-              <h3 class="movie-title">{{ item.original_title }}</h3>
-            </v-col>
-          </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-
-      <!-- *********************** 2018 *********************** -->
-      <v-expansion-panel>
-        <v-expansion-panel-header class="header" expand-icon="">
-          <span class="year">2018</span>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content class="content">
-          <v-row no-gutters>
-            <v-col lg="3" xs="6" v-for="(item, i) in movies2018" :key="i">
-              <img :src="url + item.poster_path" class="movie-img" />
-              <h3 class="movie-title">{{ item.original_title }}</h3>
-            </v-col>
-          </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-
-      <!-- *********************** 2019 *********************** -->
-      <v-expansion-panel>
-        <v-expansion-panel-header class="header" expand-icon="">
-          <span class="year">2019</span>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content class="content">
-          <v-row no-gutters>
-            <v-col lg="3" xs="6" v-for="(item, i) in movies2019" :key="i">
-              <img :src="url + item.poster_path" class="movie-img" />
-              <h3 class="movie-title">{{ item.original_title }}</h3>
-            </v-col>
-          </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-
-      <!-- *********************** 2020 *********************** -->
-      <v-expansion-panel>
-        <v-expansion-panel-header class="header" expand-icon="">
-          <span class="year">2020</span>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content class="content">
-          <v-row no-gutters>
-            <v-col lg="3" xs="6" v-for="(item, i) in movies2020" :key="i">
-              <img :src="url + item.poster_path" class="movie-img" />
-              <h3 class="movie-title">{{ item.original_title }}</h3>
-            </v-col>
-          </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+        </div>
   </div>
 </template>
 
 <script>
 import SectionTitle from "../components/SectionTitle";
 import { mapState, mapActions } from "vuex";
+import axios from "axios";
 
 export default {
   name: "Ranking",
@@ -188,62 +90,57 @@ export default {
     return {
       name: "Ranking",
       url: "https://image.tmdb.org/t/p/original",
+      year: '',
+      expand: false,
+      errorMessage: "",
+      moviesByYear: [],
+      panelExpanded: false,
     };
   },
-  computed: {
-    ...mapState([
-      "movies2010",
-      "movies2011",
-      "movies2012",
-      "movies2013",
-      "movies2014",
-      "movies2015",
-      "movies2016",
-      "movies2017",
-      "movies2018",
-      "movies2019",
-      "movies2020",
-    ]),
-  },
   methods: {
-    ...mapActions([
-      "getMovies2010",
-      "getMovies2011",
-      "getMovies2012",
-      "getMovies2013",
-      "getMovies2014",
-      "getMovies2015",
-      "getMovies2016",
-      "getMovies2017",
-      "getMovies2018",
-      "getMovies2019",
-      "getMovies2020",
-    ]),
+    getMoviesByYear() {
+      const url = "https://api.themoviedb.org/3";
+      const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
+      let year = this.year;
+      const moviesUrl = `${url}/discover/movie?year=${year}&api_key=${apikey}&sort_by=popularity.desc&page=1`;
+
+
+        return new Promise((resolve) => {
+          axios
+      .get(moviesUrl)
+      .then((resp) => {
+        this.panelExpanded = true;
+        this.moviesByYear = resp.data.results;
+      })
+      .catch((e) => {
+        console.info(e);
+        this.errorMessage = "The answer is taking too long. There may have been an error with the database. Please reload the website.";
+      });
+    })
+    }
   },
-  created() {
-    this.getMovies2010();
-    this.getMovies2011();
-    this.getMovies2012();
-    this.getMovies2013();
-    this.getMovies2014();
-    this.getMovies2015();
-    this.getMovies2016();
-    this.getMovies2017();
-    this.getMovies2018();
-    this.getMovies2019();
-    this.getMovies2020();
-  },
+  mounted() {
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 @import "src/scss/variables";
 
+.fadeIn {
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from{opacity: 0};
+  to{opacity: 1}
+}
+
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
   .section-subtitle {
     font-family: $style3;
-    font-size: 1.5em;
+    font-size: 1em;
     text-align: center;
     margin-bottom: 20px;
     letter-spacing: 4px;
@@ -269,6 +166,7 @@ export default {
     text-align: center;
   }
 
+
   .header {
     align-self: center !important;
     font-family: $style3;
@@ -287,10 +185,12 @@ export default {
     }
   }
 
-  .content {
+  .moviesColumns {
     text-align: center;
     background: $dark2;
-    color: $secondary;
+    color: white;
+    text-shadow: 0px 0px 3px $secondary, 0px 0px 5px red;
+    margin-bottom: 100px;
   }
 
   .movie-img {
@@ -303,6 +203,33 @@ export default {
   .movie-title {
     font-weight: lighter;
     font-size: 14px;
+  }
+
+  .bar-tabs {
+    display: none;
+  }
+
+  #years-menu-btn {
+    display: block;
+  }
+
+  #years-menu {
+    margin: 10px;
+    text-align: center;
+  }
+
+  .year-col {
+    margin: 5px;  
+    border-radius: 20px;
+    color: $dark2;
+    font-weight: bold;
+    background: $primary;
+    font-family: $style3;
+  
+  &:hover {
+  cursor: pointer;
+
+    }
   }
 }
 // ******* LAPTOP RESPONSIVE ******* //
@@ -331,6 +258,7 @@ export default {
     }
   }
 
+
   .year {
     text-align: center;
   }
@@ -353,10 +281,13 @@ export default {
     }
   }
 
-  .content {
+  .moviesColumns {
     text-align: center;
     background: $dark2;
-    color: $secondary;
+    letter-spacing: 5px;
+    color: white;
+    text-shadow: 0px 0px 3px $secondary, 0px 0px 5px red;
+    margin-bottom: 100px;
   }
 
   .movie-img {
@@ -372,6 +303,15 @@ export default {
     font-weight: lighter;
     font-size: 1em;
   }
+
+  .bar-tabs {
+    display: block;
+  }
+
+  #years-menu-btn {
+    display: none;
+  }
+
 }
 
 // ******* DESKTOP RESPONSIVE ******* //
@@ -422,10 +362,12 @@ export default {
     }
   }
 
-  .content {
+  .moviesColumns {
     text-align: center;
     background: $dark2;
-    color: $secondary;
+    color: white;
+    text-shadow: 0px 0px 3px $secondary, 0px 0px 5px red;
+    margin-bottom: 100px;
   }
 
   .movie-img {
@@ -440,6 +382,14 @@ export default {
   .movie-title {
     font-weight: lighter;
     font-size: 1.5em;
+  }
+
+  .bar-tabs {
+    display: block;
+  }
+
+  #years-menu-btn {
+    display: none;
   }
 }
 </style>

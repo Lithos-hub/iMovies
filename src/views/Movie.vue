@@ -7,8 +7,8 @@
           <div class="row videoDialog">
             <v-sheet
               color="error"
-              width="100%"
-              height="100%"
+              width="80%"
+              height="80%"
               dark
               class="pa-5"
               v-if="message_error.length != 0"
@@ -122,6 +122,7 @@ export default {
       const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
       const video_url = `https://api.themoviedb.org/3/movie/${this.$route.params.id}/videos?api_key=${apikey}&language=en-US`;
 
+      return new Promise((resolve) => {
       axios
         .get(video_url)
         .then((resp) => {
@@ -134,10 +135,11 @@ export default {
           this.video_url = youtube_video;
         })
         .catch((e) => {
-          console.log("Trailer movie 1 " + e);
+          console.log(e);
           this.message_error = "Sorry. This video is no available.";
-        });
-    },
+          });
+      });
+    }
   },
   mounted() {
     this.getMovieDetails();
@@ -195,14 +197,15 @@ export default {
 
   //****************************** DIALOG ******************************//
   .videoDialog {
-    margin: 10px;
-    padding: 0px;
+    margin: 0px;
+    padding: 10px;
     width: 100%;
     overflow: hidden;
   }
 
   .closeDialog-btn {
-    position: relative;
+    position: absolute;
+    left: 0px;
     bottom: 0px;
     width: 100%;
     padding: 0px;
@@ -215,6 +218,7 @@ export default {
   .cardDialog {
     position: absolute;
     bottom: 0px;
+    left: 0px;
     width: 100%;
     height: 100%;
     z-index: 999999;
@@ -288,8 +292,9 @@ export default {
   }
 
   .closeDialog-btn {
-    position: relative;
-    bottom: 20px;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
     width: 100%;
     padding: 10px;
   }
@@ -299,8 +304,9 @@ export default {
   }
 
   .cardDialog {
-    position: absolute;
+    position: fixed;
     bottom: 0px;
+    left: 0px;
     width: 100%;
     height: 100%;
     z-index: 999999;
@@ -370,14 +376,15 @@ export default {
   //****************************** DIALOG ******************************//
 
   .videoDialog {
-    margin: 0px;
-    padding: 50px;
+    padding: 20px;
     width: 100%;
     overflow: hidden;
   }
 
-  .closeDialog-btn {
-    position: relative;
+ .closeDialog-btn {
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
     width: 100%;
     padding: 10px;
   }
@@ -387,8 +394,9 @@ export default {
   }
 
   .cardDialog {
-    position: absolute;
+    position: fixed;
     bottom: 0px;
+    left: 0px;
     width: 100%;
     height: 100%;
     z-index: 999999;

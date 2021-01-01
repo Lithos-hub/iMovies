@@ -4,8 +4,6 @@
       <h1 id="title">
         Latest<br />
         releases<br />
-        in <br />
-        {{ current_year }}
       </h1>
     </div>
     <div class="horizontal-scroll-wrapper squares">
@@ -34,9 +32,7 @@ export default {
   components: {},
   data() {
     return {
-      url: "https://image.tmdb.org/t/p/original",
-      current_year: new Date().getFullYear(),
-    };
+      url: "https://image.tmdb.org/t/p/original",    };
   },
   computed: {
     ...mapState(["currently"]),
@@ -129,7 +125,7 @@ export default {
     top: 25%;
     margin: 0 auto;
     color: white;
-    font-size: 6em;
+    font-size: 8em;
     text-align: left;
     background-image: url("../assets/img/background1.jpg");
     filter: brightness(2);
@@ -218,7 +214,7 @@ export default {
   #title {
     margin: 0 auto;
     color: white;
-    font-size: 10em;
+    font-size: 13em;
     text-align: left;
     display: block;
     background-image: url("../assets/img/background1.jpg");

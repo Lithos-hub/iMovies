@@ -24,13 +24,19 @@ Version 1.1
 
 
 Version 1.2
-* Added dynamic trailers dialogs on /movie/id page
-* Added some aesthetic changes on /trailers page
+* Added dynamic trailers dialogs on /movie/id page.
+* Added some aesthetic changes on /trailers page.
 
 Version 1.3
 
-* Optimized code in the section Genres using v-bind and v-on:click to use a single function to return movies of different genres.
+* Optimized code in the Genres section using v-bind and v-on:click to use a single function to return movies of different genres.
 * Some aesthetic changes in general.
+
+Version 1.4
+
+* New features in Trending section.
+* Code optimized in Ranking section.
+* New responsive features in Ranking section and some aesthetic changes.
 
 ## Project setup
 ```
