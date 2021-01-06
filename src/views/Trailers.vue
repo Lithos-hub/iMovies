@@ -173,6 +173,8 @@
       </v-dialog>
     </div>
 
+    <!-- END OF DIALOGS -->
+
     <v-sheet class="section-subtitle" elevation="10"
       >Check out the latest trailers</v-sheet
     >
@@ -260,8 +262,7 @@
 
 <script>
 import SectionTitle from "../components/SectionTitle";
-import { mapActions, mapState, getters } from "vuex";
-import axios from "axios";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Trailers",
@@ -306,7 +307,7 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions(["getTrailers", "getMovies2020"]),
+    ...mapActions(["getTrailers"]),
 
     showDialog1() {
       this.dialog1 = true;
@@ -329,7 +330,6 @@ export default {
   },
   mounted() {
     this.getTrailers();
-    this.getMovies2020();
   },
 };
 </script>
@@ -453,7 +453,7 @@ export default {
     font-weight: bold;
     color: $secondary;
     padding: 0px;
-    font-size: 2em;
+    font-size: 1em;
     letter-spacing: 5px;
     transition: 0.5s;
     display: hidden;
@@ -461,16 +461,16 @@ export default {
   }
 
   .card-img {
-    width: 70%;
-    height: 90%;
+    width: 80%;
+    min-height: 150px;
     transition: 2s;
     &:hover {
-      width: 100%;
-      height: 100%;
+      width: 50%;
+      height: 50%;
       cursor: pointer;
-      transform: scale(1.2);
+      transform: scale(1.1);
 
-      margin-bottom: 90px;
+      margin-bottom: 20px;
     }
   }
 
@@ -481,7 +481,7 @@ export default {
   .card {
     margin: 5px;
     margin-bottom: 20px;
-    width: 90%;
+    width: 100%;
     overflow: hidden;
     background: $dark2 !important;
     border: 2px solid $secondary !important;
@@ -490,7 +490,7 @@ export default {
       .card-title {
         display: block;
         opacity: 1;
-        margin-bottom: 50px;
+        margin-bottom: 0px;
       }
     }
   }
@@ -582,16 +582,16 @@ export default {
   }
 
   .card-img {
-    width: 90%;
-    height: 90%;
+    width: 80%;
+    min-height: 150px;
     transition: 2s;
     &:hover {
-      width: 100%;
-      height: 100%;
+      width: 50%;
+      height: 50%;
       cursor: pointer;
-      transform: scale(1.2);
+      transform: scale(1.1);
 
-      margin-bottom: 90px;
+      margin-bottom: 20px;
     }
   }
 
@@ -602,7 +602,7 @@ export default {
   .card {
     margin: 5px;
     margin-bottom: 20px;
-    width: 90%;
+    width: 100%;
     overflow: hidden;
     background: $dark2 !important;
     border: 2px solid $secondary !important;
@@ -611,7 +611,7 @@ export default {
       .card-title {
         display: block;
         opacity: 1;
-        margin-bottom: 50px;
+        margin-bottom: 0px;
       }
     }
   }

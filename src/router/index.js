@@ -49,6 +49,11 @@ const routes = [
     path: '/changelog',
     name: 'Change Log',
     component: () => import(/* webpackChunkName: "about" */ '../views/Changelog.vue')
+  },
+  {
+    path: '/mymovies',
+    name: 'My Movies',
+    component: () => import(/* webpackChunkName: "about" */ '../views/MyMovies.vue')
   }
 ]
 

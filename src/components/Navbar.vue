@@ -1,11 +1,12 @@
 <template>
   <div id="navbar">
     <v-app-bar
-      color="gray darken-4"
+      color="secondary darken-3"
       dark
       class="overflow-hidden justify-content-between"
       width="100%"
       tile
+      app
     >
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
@@ -27,7 +28,7 @@
       </div>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" absolute temporary dark>
+    <v-navigation-drawer v-model="drawer" fixed temporary  color="secondary darken-3" dark app>
       <v-list nav class="mt-10 nav-list">
         <v-list-item-group v-model="group" active-class="black">
           <router-link to="/" class="router-link-nav">
@@ -53,7 +54,7 @@
       </v-list>
 
       <v-divider class="name-divider"></v-divider>
-      <p class="lead" id="csg-name">{{ date }} - Carlos Segura García</p>
+      <p id="csg-name">{{ date }} - Carlos Segura García</p>
     </v-navigation-drawer>
   </div>
 </template>
@@ -65,10 +66,11 @@ export default {
     return {
       date: new Date().getFullYear(),
       version: 1,
-      subversion: 4,
+      subversion: 5,
       group: null,
       drawer: false,
       items: [
+        { title: "My Movies", icon: "mdi-star", link: "/mymovies" },
         { title: "Trending", icon: "mdi-table", link: "/trending" },
         { title: "Trailers", icon: "mdi-video-vintage", link: "/trailers" },
         { title: "Genres", icon: "mdi-shape", link: "/genres" },
@@ -119,13 +121,12 @@ export default {
   }
 
   #csg-name {
-    position: absolute;
-    bottom: 10px;
-    left: 15px;
-    color: white;
+    position: relative;
+    text-align: center;
+    margin-top: 40px;
+    letter-spacing: 2px;
     font-size: 12px;
-    font-family: $style1;
-    font-weight: 100;
+    font-family: $style2;
   }
 
   #version-info {
@@ -165,13 +166,12 @@ export default {
   }
 
   #csg-name {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    color: white;
+    position: relative;
+    text-align: center;
+    margin-top: 40px;
+    letter-spacing: 2px;
     font-size: 13px;
-    font-family: $style1;
-    font-weight: 100;
+    font-family: $style2;
   }
 
   #version-info {
@@ -214,13 +214,12 @@ export default {
   }
 
   #csg-name {
-    position: absolute;
-    bottom: 0px;
-    left: 10px;
-    color: white;
-    font-size: 16px;
-    font-family: $style1;
-    font-weight: 100;
+    position: relative;
+    text-align: center;
+    margin-top: 40px;
+    letter-spacing: 2px;
+    font-size: 13px;
+    font-family: $style2;
   }
 
   #version-info {

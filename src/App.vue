@@ -20,7 +20,20 @@ export default {
   data() {
     return {};
   },
-};
+  methods: {
+    getData() {
+
+    localStorage.getItem("storageToWatchMovies");
+    localStorage.getItem("storageWatchedMovies");
+    localStorage.getItem("storageFavoriteMovies");
+    localStorage.getItem("storageRatedMovies");
+    localStorage.getItem("storageRating");
+    }
+  },
+  mounted() {
+    this.getData();
+  }
+}
 </script>
 
 <style lang="scss">

@@ -43,6 +43,15 @@
         </div>
 
 
+        <div class="list"
+          ><span class="font-weight-bold">Version 1.5</span>
+          <ul>
+            <li>Added <i>My Movies</i> section</li>
+            <li>Added new features (Watched, Favourite, Rate and To-Watch) in <i>Ranking</i> section</li>
+          </ul>
+        </div>
+
+
 
 
      </div>
@@ -63,19 +72,18 @@ export default {};
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
   .sup-bar {
-  background: url("../assets/img/background2.jpg");
+  background-image: url("../assets/img/background4.jpg");
+  background-position: center;
+  filter: brightness(2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   color: white;
-  font-size: 1em;
-  font-weight: bold;
+  font-size: 2em;
+  text-align: center;
   background-size: cover;
 }
   .list {
-  font-size:16px;
-  width: 100%;
-  height: 100%;
-  text-align: justify;
-  margin: 0 auto;
-  padding: 2px;
+  font-size: 1em;
 }
   .list-group {
     background: white;
@@ -86,10 +94,14 @@ export default {};
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
   .sup-bar {
-  background: url("../assets/img/background2.jpg");
+  background-image: url("../assets/img/background4.jpg");
+  background-position: center;
+  filter: brightness(2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   color: white;
   font-size: 2em;
-  font-weight: bold;
+  text-align: center;
   background-size: cover;
 }
   .list {
@@ -97,7 +109,7 @@ export default {};
 }
   .list-group {
     background: white;
-    padding: 50px;
+    padding: 20px;
     color: black;
   }
 }
@@ -105,19 +117,23 @@ export default {};
 // ******* DESKTOP RESPONSIVE ******* //
 @media only screen and (min-width: 1370px) {
   .sup-bar {
-  background: url("../assets/img/background2.jpg");
+  background-image: url("../assets/img/background4.jpg");
+  background-position: center;
+  filter: brightness(2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   color: white;
   font-size: 3em;
-  font-weight: bold;
+  text-align: center;
   background-size: cover;
 }
   .list {
-  font-size: 1.5em;
+  font-size: 1em;
+}
   .list-group {
     background: white;
-    padding: 50px;
+    padding: 20px;
     color: black;
   }
-}
 }
 </style>

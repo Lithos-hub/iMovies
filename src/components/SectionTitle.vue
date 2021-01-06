@@ -20,23 +20,24 @@ export default {
 
 .section--Title {
   text-align: center;
-  font-family: $style3;
-  font-weight: 100;
+  font-family: $style2;
   font-size: 5em;
+  letter-spacing: 10px;
+  overflow: hidden;
   background: url("../assets/img/background2.jpg");
   background-position: center;
+  background-attachment: fixed;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .section--Title--Background {
   background: linear-gradient(to left, black 0%, rgb(26, 26, 26) 70%);
-  padding: 2px;
+  padding: 10px;
 }
 
 .sectionTitle {
   position: relative;
-  top: 0;
   width: 100%;
   z-index: 1;
 }

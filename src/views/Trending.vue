@@ -364,6 +364,7 @@ export default {
     padding: 20px;
     font-family: $style2;
     text-transform: uppercase;
+    text-align: justify;
   }
 
   #trending-date {
@@ -516,6 +517,7 @@ export default {
     padding: 20px;
     font-family: $style2;
     text-transform: uppercase;
+    text-align: justify;
   }
 
   #trending-date {

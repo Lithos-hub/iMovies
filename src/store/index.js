@@ -36,7 +36,11 @@ export default new Vuex.Store({
     trailer6: [],
     moviesByYear: [],
     movieDetails: [],
-
+    watchedMovies: [],
+    toWatchMovies: [],
+    favoriteMovies: [],
+    moviesWithRates: [],
+    rates: [],
 
   },
   mutations: {
@@ -113,9 +117,20 @@ export default new Vuex.Store({
       state.movieError6 = payload;
     },
     setMovieDetails(state, payload) {
-      state.MovieDetails = payload
-    }
-
+      state.MovieDetails = payload;
+    },
+    setToWatchMovies(state, payload) {
+      state.toWatchMovies = payload;
+    },
+    setWatchedMovies(state, payload) {
+      state.watchedMovies = payload;
+    },
+    setFavoriteMovies(state, payload) {
+      state.favoriteMovies = payload;
+    },
+    setRatedMovies(state, payload) {
+      state.moviesWithRates = payload;
+    },
   },
   actions: {
         // **************************** CURRENT MOVIES **************************** //
@@ -139,15 +154,15 @@ export default new Vuex.Store({
     // **************************** TRENDING **************************** //
     getTrending({commit}) {
 
-      const fromDate = new Date();
-      const toDate = new Date();
+      const date = new Date();
+      
   
       //  *********** CHANGE THIS *********** //
-      const dateGreaterThan = `2020-${ ('0' + (fromDate.getMonth() + 1 )).slice(-2) }-${ ('0' + ( fromDate.getDate() - 13)).slice(-2) }`;
-      const dateLessThan = `${ toDate.getFullYear() }-${ ('0' + (toDate.getMonth() + 1 )).slice(-2) }-${ ('0' + ( toDate.getDate())).slice(-2) }`;
+      const dateGreaterThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate() - 5)).slice(-2) }`;
+      const dateLessThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate())).slice(-2) }`;
       
       // ********************* Filter: note average of 7 or greater; English language; popularity desc; release time = 2 weeks ago ----------------------- //
-      const apiurl = `${url}/discover/movie?primary_release_date.gte=${ dateGreaterThan }&primary_release_date.lte=${ dateLessThan }&api_key=${apikey}&vote_average.gte=7&language=en-EN&sort_by=popularity.desc&include_video=true`;
+      const apiurl = `${url}/discover/movie?primary_release_date.gte=2020&primary_release_date.lte=${ dateLessThan }&api_key=${apikey}&vote_average.gte=7&language=en-EN&sort_by=popularity.desc&include_video=true`;
 
       return new Promise((resolve) => {
  
@@ -164,19 +179,21 @@ export default new Vuex.Store({
       })
     },
     getTrailers({commit}) {
-      const fromDate = new Date();
-      const toDate = new Date();
-  
-      const dateGreaterThan = `2020-${ ('0' + (fromDate.getMonth() + 1 )).slice(-2) }-${ ('0' + ( fromDate.getDate() - 13)).slice(-2) }`;
-      const dateLessThan = `${ toDate.getFullYear() }-${ ('0' + (toDate.getMonth() + 1 )).slice(-2) }-${ ('0' + ( toDate.getDate())).slice(-2) }`;
+      let date = new Date();
+
+      // MUST UPDATE UNTIL 2 WEEKS LATER OF NEW YEAR
+      const dateGreaterThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate() - 4)).slice(-2) }`;
+      const dateLessThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate())).slice(-2) }`;
       
       // ********************* Filter: note average of 7 or greater; English language; popularity desc; release time = 2 weeks ago ----------------------- //
-      const latestMovies = `${url}/discover/movie?primary_release_date.gte=${ dateGreaterThan }&primary_release_date.lte=${ dateLessThan }&api_key=${apikey}&vote_average.gte=6&language=en-EN&sort_by=popularity.desc&include_video=true`;
+      const latestMovies = `${url}/discover/movie?primary_release_date.gte=2020&primary_release_date.lte=${ dateLessThan }&api_key=${apikey}&language=en-EN&include_video=true`;
 
       return new Promise((resolve) => {
         axios
           .get(latestMovies)
           .then((resp) => {
+
+            console.log(resp.data.results)
             
             commit("setMovie1", resp.data.results[0])
             commit("setMovie2", resp.data.results[1])
@@ -277,11 +294,11 @@ export default new Vuex.Store({
     },
   getMoviesByYear({commit}) {
     const year = "";
-    const movies2020 = `${url}/discover/movie?year=${year}&api_key=${apikey}&sort_by=popularity.desc&page=1`;
+    const movieURL = `${url}/discover/movie?year=${year}&api_key=${apikey}&sort_by=popularity.desc&page=1`;
     
     return new Promise((resolve) => {
       axios
-      .get(movies2020)
+      .get(movieURL)
       .then((resp) => {
         commit("setMoviesByYear", resp.data.results)
       })
@@ -291,6 +308,27 @@ export default new Vuex.Store({
       });
     })
   },
+  getToWatchMovies({commit}) {
+    if (localStorage.getItem("storageToWatchMovies")) {
+    commit("setToWatchMovies", JSON.parse(localStorage.getItem("storageToWatchMovies")))
+    }
+  },
+  getWatchedMovies({commit}) {
+    console.log("Watched movies")
+  if (localStorage.getItem("storageWatchedMovies")) {
+  commit("setWatchedMovies", JSON.parse(localStorage.getItem("storageWatchedMovies")))
+      }
+  },
+  getFavoriteMovies({commit}) {
+  if (localStorage.getItem("storageFavoriteMovies")) {
+  commit("setFavoriteMovies", JSON.parse(localStorage.getItem("storageFavoriteMovies")))
+      }
+  },
+  getRatedMovies({commit}) {
+  if (localStorage.getItem("storageRatedMovies")) {
+  commit("setRatedMovies", JSON.parse(localStorage.getItem("storageRatedMovies")))
+      }
+    },
   },
   modules: {
   }
