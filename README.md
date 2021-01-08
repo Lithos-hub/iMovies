@@ -46,7 +46,10 @@ Version 1.5
 
 Version 1.6
 
-* Optimized code in Trailers section
+* Optimized code in Trailers section.
+* General aesthetic improvements.
+* Info button available in My Movies section.
+* Now is possible to save the user rates for each movie in My Movies.
 
 ## Project setup
 ```
