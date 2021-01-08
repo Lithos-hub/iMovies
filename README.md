@@ -13,7 +13,7 @@ The app is divided into some sections that can be accesible by the expandible si
 
 In some of those sections you may get or access certain info with buttons that trigger a modal window.
 
-In the future, I'll add new features like the posibility to create want-to-watch movie lists or a search system to filter movies with names of actores, genres, or years of release.
+Also, you can create your own movie lists in some categories like Watched Movies or Favorite Movies. That information can be watched in My Movies section.
 
 //////////////
 
