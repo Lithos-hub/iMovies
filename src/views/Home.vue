@@ -32,7 +32,8 @@ export default {
   components: {},
   data() {
     return {
-      url: "https://image.tmdb.org/t/p/original",    };
+      url: "https://image.tmdb.org/t/p/original",
+    };
   },
   computed: {
     ...mapState(["currently"]),
@@ -90,7 +91,8 @@ export default {
   }
 
   .sheet {
-    padding:50px;
+    margin: 0 auto;
+    text-align: center;
     background: $dark2 !important;
     z-index: 999;
   }
@@ -98,7 +100,7 @@ export default {
   #movie-img {
     width: 300px !important;
     height: 500px;
-    margin: 0px;
+    margin-top: 20px;
   }
 }
 // ******* LAPTOP RESPONSIVE ******* //
@@ -147,7 +149,7 @@ export default {
     display: block;
     top: 0px;
     left: 40%;
-    width: 800px;
+    width: 700px;
     max-height: 0%;
     margin: 0;
     padding-top: $scrollBarHeight;
@@ -165,7 +167,7 @@ export default {
     padding: $finalHeight 0 0 0;
     & > div {
       width: 100%;
-      height: 400px;
+      height: 100%;
       margin: 0 auto;
     }
   }
@@ -222,7 +224,6 @@ export default {
     background-repeat: repeat;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    
   }
 
   .container {

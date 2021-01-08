@@ -123,23 +123,23 @@ export default {
       const video_url = `https://api.themoviedb.org/3/movie/${this.$route.params.id}/videos?api_key=${apikey}&language=en-US`;
 
       return new Promise((resolve) => {
-      axios
-        .get(video_url)
-        .then((resp) => {
-          this.dialog = true;
+        axios
+          .get(video_url)
+          .then((resp) => {
+            this.dialog = true;
 
-          const key = resp.data.results[0].key;
+            const key = resp.data.results[0].key;
 
-          const youtube_video = "https://www.youtube.com/embed/" + key;
+            const youtube_video = "https://www.youtube.com/embed/" + key;
 
-          this.video_url = youtube_video;
-        })
-        .catch((e) => {
-          console.log(e);
-          this.message_error = "Sorry. This video is no available.";
+            this.video_url = youtube_video;
+          })
+          .catch((e) => {
+            console.log(e);
+            this.message_error = "Sorry. This video is no available.";
           });
       });
-    }
+    },
   },
   mounted() {
     this.getMovieDetails();
@@ -155,6 +155,7 @@ export default {
   #movie-title {
     font-size: 2em;
     position: absolute;
+    text-align: justify;
     width: 100%;
     background: $dark2;
     color: $secondary;
@@ -179,9 +180,11 @@ export default {
   }
 
   #movie-date {
-    position: relative;
-    font-size: 15px;
+    position: absolute;
+    right: 0px;
+    font-size: 16px;
     color: white;
+    bottom: 0px;
   }
 
   #movie-overview,
@@ -277,7 +280,7 @@ export default {
   #movie-note,
   #movie-count,
   #movie-language {
-    margin:20px;
+    margin: 20px;
   }
 
   #card {
@@ -381,7 +384,7 @@ export default {
     overflow: hidden;
   }
 
- .closeDialog-btn {
+  .closeDialog-btn {
     position: fixed;
     left: 0px;
     bottom: 0px;

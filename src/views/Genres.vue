@@ -27,8 +27,7 @@
           <v-btn
             id="actionBtn"
             class="genre-btn img1"
-            v-on:click="[genre = '28'],[genreTitle = 'action']"
-            
+            v-on:click="[(genre = '28')], [(genreTitle = 'action')]"
             @click="getMovies()"
             dark
             block
@@ -41,8 +40,7 @@
           <v-btn
             color="green"
             class="genre-btn img2"
-            v-on:click="[genre = '12'],[genreTitle = 'adventure']"
-            
+            v-on:click="[(genre = '12')], [(genreTitle = 'adventure')]"
             @click="getMovies()"
             dark
             block
@@ -54,8 +52,7 @@
           <v-btn
             color="orange"
             class="genre-btn img3"
-            v-on:click="[genre = '16'],[genreTitle = 'animation']"
-            
+            v-on:click="[(genre = '16')], [(genreTitle = 'animation')]"
             @click="getMovies()"
             dark
             block
@@ -67,10 +64,9 @@
           <v-btn
             color="purple"
             class="genre-btn img4"
-          v-on:click="[genre = '35'],[genreTitle = 'comedy']"
-          
-            @click="getMovies()"         
-             dark
+            v-on:click="[(genre = '35')], [(genreTitle = 'comedy')]"
+            @click="getMovies()"
+            dark
             block
             tile
           >
@@ -80,10 +76,9 @@
           <v-btn
             color="secondary"
             class="genre-btn img5"
-          v-on:click="[genre = '80'],[genreTitle = 'crime']"
-          
-            @click="getMovies()"        
-             dark
+            v-on:click="[(genre = '80')], [(genreTitle = 'crime')]"
+            @click="getMovies()"
+            dark
             block
             tile
           >
@@ -93,8 +88,7 @@
           <v-btn
             color="pink"
             class="genre-btn img6"
-            v-on:click="[genre = '99'],[genreTitle = 'documentary']"
-            
+            v-on:click="[(genre = '99')], [(genreTitle = 'documentary')]"
             @click="getMovies()"
             dark
             block
@@ -106,9 +100,8 @@
           <v-btn
             color="yellow darken-4"
             class="genre-btn img7"
-            v-on:click="[genre = '18'],[genreTitle = 'dramatic']"
-            
-            @click="getMovies()"            
+            v-on:click="[(genre = '18')], [(genreTitle = 'dramatic')]"
+            @click="getMovies()"
             dark
             block
             tile
@@ -119,10 +112,9 @@
           <v-btn
             color="blue"
             class="genre-btn img8"
-            v-on:click="[genre = '14'],[genreTitle = 'fantasy']"
-            
-            @click="getMovies()"          
-             dark
+            v-on:click="[(genre = '14')], [(genreTitle = 'fantasy')]"
+            @click="getMovies()"
+            dark
             block
             tile
           >
@@ -132,9 +124,8 @@
           <v-btn
             color="brown"
             class="genre-btn img9"
-            v-on:click="[genre = '36'],[genreTitle = 'history']"
-            
-            @click="getMovies()"           
+            v-on:click="[(genre = '36')], [(genreTitle = 'history')]"
+            @click="getMovies()"
             dark
             block
             tile
@@ -145,10 +136,9 @@
           <v-btn
             color="gray"
             class="genre-btn img10"
-          v-on:click="[genre = '27'],[genreTitle = 'horror']"
-          
-            @click="getMovies()"         
-             dark
+            v-on:click="[(genre = '27')], [(genreTitle = 'horror')]"
+            @click="getMovies()"
+            dark
             block
             tile
           >
@@ -158,10 +148,9 @@
           <v-btn
             color="cyan"
             class="genre-btn img11"
-            v-on:click="[genre = '10402'],[genreTitle = 'musical']"
-            
-            @click="getMovies()"          
-             dark
+            v-on:click="[(genre = '10402')], [(genreTitle = 'musical')]"
+            @click="getMovies()"
+            dark
             block
             tile
           >
@@ -171,10 +160,9 @@
           <v-btn
             color="error"
             class="genre-btn img12"
-            v-on:click="[genre = '10749'],[genreTitle = 'romantic']"
-            
-            @click="getMovies()"           
-             dark
+            v-on:click="[(genre = '10749')], [(genreTitle = 'romantic')]"
+            @click="getMovies()"
+            dark
             block
             tile
           >
@@ -184,9 +172,8 @@
           <v-btn
             color="blue"
             class="genre-btn img13"
-          v-on:click="[genre = '878'],[genreTitle = 'sci-fi']"
-          
-            @click="getMovies()"         
+            v-on:click="[(genre = '878')], [(genreTitle = 'sci-fi')]"
+            @click="getMovies()"
             dark
             block
             tile
@@ -197,9 +184,8 @@
           <v-btn
             color="orange"
             class="genre-btn img14"
-            v-on:click="[genre = '53'],[genreTitle = 'thriller']"
-            
-            @click="getMovies()"            
+            v-on:click="[(genre = '53')], [(genreTitle = 'thriller')]"
+            @click="getMovies()"
             dark
             block
             tile
@@ -207,22 +193,24 @@
             Thriller
           </v-btn>
           <!-- ********************* WAR BUTTON ********************* -->
-          <v-btn color="red" 
-          class="genre-btn img15"   
-          v-on:click="[genre = '10752'],[genreTitle = 'war']"
-          
-            @click="getMovies()"  
-            dark block tile>
+          <v-btn
+            color="red"
+            class="genre-btn img15"
+            v-on:click="[(genre = '10752')], [(genreTitle = 'war')]"
+            @click="getMovies()"
+            dark
+            block
+            tile
+          >
           </v-btn>
 
-             <!-- ********************* WESTERN BUTTON ********************* -->
+          <!-- ********************* WESTERN BUTTON ********************* -->
           <v-btn
             color="indigo"
             class="genre-btn img16"
-            v-on:click="[genre = '37'],[genreTitle = 'western']"
-            
-            @click="getMovies()"          
-             dark
+            v-on:click="[(genre = '37')], [(genreTitle = 'western')]"
+            @click="getMovies()"
+            dark
             block
             tile
           >
@@ -238,33 +226,34 @@
       <!--********************************** DIALOG MOVIES ********************************** -->
       <div v-for="(item, i) in movies_array" :key="i">
         <v-row>
-          <v-dialog
-            v-model="genreDialog"
-            v-if="genreDialog"
-            class="movie-genres-dialog"
-          >
+          <v-dialog v-model="genreDialog" v-if="genreDialog" class="movie-genres-dialog">
             <v-card>
               <v-toolbar tile elevation="10" dark color="secondary">
                 <v-btn icon dark @click="genreDialog = false" class="close-dialog-btn">
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{ genreTitle }}</v-toolbar-title>
+                <v-toolbar-title class="card-genre-title">{{
+                  genreTitle
+                }}</v-toolbar-title>
               </v-toolbar>
               <v-row no-gutters class="text-center">
                 <div v-for="(item, i) in movies_array" :key="i">
                   <v-col lg="12" xs="12" class="d-flex">
                     <v-sheet width="80%" id="genre-sheet">
                       <v-card-title id="genre-title"
-                        >{{ item.original_title }}
+                        >{{ item.title }}
                         <span id="genre-date">{{ item.release_date }}</span></v-card-title
                       >
                     </v-sheet>
                   </v-col>
                   <v-col lg="12" xs="12">
-                    <img :src="url + item.poster_path" width="200" class="movie-img-dialog"/>
+                    <img
+                      :src="url + item.poster_path"
+                      width="200"
+                      class="movie-img-dialog"
+                    />
                     <p class="lead" id="genre-overview">
-                  
                       {{ item.overview }}
                       <br />
                       <span id="no-overview" v-if="item.overview.length <= 0">{{
@@ -285,7 +274,7 @@
 
 <script>
 import SectionTitle from "../components/SectionTitle";
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   name: "Genres",
@@ -317,20 +306,20 @@ export default {
         this.loadingGenre = true;
         this.genreDialog = false;
         axios
-        .get(movieurl)
-        .then((resp) => {
-          this.loadingGenre = false;
-          this.genreDialog = true;
-          this.movies_array = resp.data.results;
-           
-            console.log(resp.data.results)
-         
+          .get(movieurl)
+          .then((resp) => {
+            this.loadingGenre = false;
+            this.genreDialog = true;
+            this.movies_array = resp.data.results;
+
+            console.log(resp.data.results);
           })
           .catch((e) => {
             console.info(e);
-            this.loadingError = "Something wrong happened :( There may have been an error with the database. Please reload the website."
-        })
-      })
+            this.loadingError =
+              "Something wrong happened :( There may have been an error with the database. Please reload the website.";
+          });
+      });
     },
     go_up() {
       window.scrollTo(0, 0);
@@ -537,28 +526,36 @@ export default {
   }
 
   #genre-title {
-    font-size: 14px;
+    font-size: 18px;
+    font-family: $style3;
   }
   #genre-date {
     position: absolute;
-    right: 5px;
+    right: 20px;
     color: $primary;
   }
 
   #genre-overview {
-    padding: 20px;
-    font-size: 16px;
+    padding: 0px;
+    font-size: 20px;
     text-align: justify;
     display: block;
     width: 100%;
+    margin-top: 20px;
   }
 
   .movie-img-dialog {
     height: auto;
-    width: 100%;
-    display: block;
+    width: 250px;
     border-radius: 15px;
+    display: inline;
     margin-top: 50px;
+    mask-image: linear-gradient(to top right, transparent 49.5%, white 50.5%),
+      linear-gradient(to top left, transparent 49.5%, white 50.5%),
+      linear-gradient(white, white), linear-gradient(white, white);
+    mask-size: 70% 25%, 25% 25%, 70% 70%, 25% 40%;
+    mask-position: bottom left, bottom right, top right, top left;
+    mask-repeat: no-repeat;
   }
 
   .section-subtitle {
@@ -816,10 +813,11 @@ export default {
 
   #genre-title {
     font-size: 2em;
+    font-family: $style3;
   }
   #genre-date {
     position: absolute;
-    right: 15px;
+    right: 25px;
     color: $primary;
   }
 
@@ -829,16 +827,18 @@ export default {
     text-align: justify;
   }
 
-    .movie-img-dialog {
+  .movie-img-dialog {
     height: auto;
     width: 250px;
     border-radius: 15px;
     display: inline;
     margin-top: 50px;
-         mask-image: linear-gradient(to top right, transparent 49.5%, white 50.5%), linear-gradient(to top left, transparent 49.5%, white 50.5%), linear-gradient(white, white),linear-gradient(white, white);;
+    mask-image: linear-gradient(to top right, transparent 49.5%, white 50.5%),
+      linear-gradient(to top left, transparent 49.5%, white 50.5%),
+      linear-gradient(white, white), linear-gradient(white, white);
     mask-size: 70% 25%, 25% 25%, 70% 70%, 25% 40%;
-  mask-position: bottom left, bottom right, top right, top left;
-  mask-repeat: no-repeat;
+    mask-position: bottom left, bottom right, top right, top left;
+    mask-repeat: no-repeat;
   }
 
   .section-subtitle {
@@ -1095,21 +1095,20 @@ export default {
   }
 
   #genre-title {
-    font-size: 5em;
+    font-size: 3em;
     width: 100%;
     font-family: $style3;
   }
   #genre-date {
     position: absolute;
-    right: 15px;
+    right: 35px;
     color: $secondary;
   }
 
   #genre-overview {
     padding: 50px;
-    font-size: 3em;
+    font-size: 2em;
     text-align: justify;
-    
   }
 
   .section-subtitle {
@@ -1125,19 +1124,20 @@ export default {
     animation: move 2s ease-in-out;
   }
 
-    .movie-img-dialog {
+  .movie-img-dialog {
     height: auto;
-    width:400px;
+    width: 400px;
     display: inline;
     text-align: center;
     border-radius: 15px;
     margin-top: 50px;
-     mask-image: linear-gradient(to top right, transparent 49.5%, white 50.5%), linear-gradient(to top left, transparent 49.5%, white 50.5%), linear-gradient(white, white),linear-gradient(white, white);;
+    mask-image: linear-gradient(to top right, transparent 49.5%, white 50.5%),
+      linear-gradient(to top left, transparent 49.5%, white 50.5%),
+      linear-gradient(white, white), linear-gradient(white, white);
     mask-size: 70% 25%, 25% 25%, 70% 70%, 25% 40%;
-  mask-position: bottom left, bottom right, top right, top left;
-  mask-repeat: no-repeat;
+    mask-position: bottom left, bottom right, top right, top left;
+    mask-repeat: no-repeat;
   }
-
 
   @keyframes move {
     from {

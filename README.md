@@ -44,6 +44,10 @@ Version 1.5
 * Added new features (Watched, Favourite, Rate and To-Watch) in Ranking section
 * Now you can create your custom movie lists with those categories and find them in My Movies section. 
 
+Version 1.6
+
+* Optimized code in Trailers section
+
 ## Project setup
 ```
 npm install

@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="app">
     <Navbar id="navbar" />
 
     <v-main class="main-content">
@@ -22,18 +22,17 @@ export default {
   },
   methods: {
     getData() {
-
-    localStorage.getItem("storageToWatchMovies");
-    localStorage.getItem("storageWatchedMovies");
-    localStorage.getItem("storageFavoriteMovies");
-    localStorage.getItem("storageRatedMovies");
-    localStorage.getItem("storageRating");
-    }
+      localStorage.getItem("storageToWatchMovies");
+      localStorage.getItem("storageWatchedMovies");
+      localStorage.getItem("storageFavoriteMovies");
+      localStorage.getItem("storageRatedMovies");
+      localStorage.getItem("storageRating");
+    },
   },
   mounted() {
     this.getData();
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss">
@@ -71,5 +70,18 @@ body {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(255, 255, 255);
+}
+
+.app {
+  animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 </style>

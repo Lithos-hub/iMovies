@@ -12,19 +12,22 @@
               height="50"
               class="d-block ma-auto mb-5"
             ></v-img>
-            This application uses The Movie Database (TMDB) API.<br /><br />
+            This application uses
+            <span class="blue--text">The Movie Database (TMDB) API.</span><br /><br />
 
             The app is divided into some sections that can be accesible by the expandible
-            side menu, like: 
+            side menu, like:
             <div class="list">
               <br />
               Famous current movies (Trending).<br />
               The latest available movie trailers (Trailers);<br />
               Movies classified by genres and popularity (Genres);<br />
-              Or a popular movies classification by year, from 2010 to 2020.<br /><br />
+              Or a popular movies classification by year, from 2010 to 2020 (Ranking).<br /><br />
             </div>
             In some of those sections you may get or access certain info with buttons that
-            trigger a modal window.
+            trigger a modal window.<br /><br />
+            Since <span class="green--text">Version 1.5</span> it is possible to save
+            movies in different categories using LocalStorage.
           </v-card-text>
         </v-card>
       </v-col>
@@ -37,7 +40,8 @@
               height="50"
               class="d-block ma-auto mb-5"
             ></v-img>
-            Esta aplicación utiliza la API de The Movie Database (TMDB). <br /><br />
+            Esta aplicación utiliza la API de
+            <span class="blue--text">The Movie Database (TMDB).</span> <br /><br />
 
             La app se divide en varias secciones accesibles desde el menú lateral
             desplegable, como:
@@ -50,7 +54,9 @@
               (Ranking). <br /><br />
             </div>
             En algunas de estas secciones se puede ampliar o acceder a cierta información
-            mediante botones que lanzan una ventana modal. <br />
+            mediante botones que lanzan una ventana modal. <br /><br />
+            Desde la <span class="green--text">Version 1.5</span> es posible el registro
+            de películas en diferentes categorías mediante LocalStorage.
           </v-card-text>
         </v-card>
       </v-col>
@@ -77,57 +83,56 @@ export default {
 <style lang="scss" scoped>
 @import "src/scss/variables";
 
-
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
   .about-text {
-  padding: 10px;
-  margin-top: 20px;
-  text-align: justify;
-  color: white !important;
-  font-size: 20px;
-  font-family: $style3;
-  line-height: 30px;
-}
+    padding: 10px;
+    margin-top: 20px;
+    text-align: justify;
+    color: white !important;
+    font-size: 20px;
+    font-family: $style3;
+    line-height: 30px;
+  }
 
-.list {
-  margin-left: 20px;
-  color: $primary;
-}
+  .list {
+    margin-left: 20px;
+    color: $secondary;
+  }
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
   .about-text {
-  padding: 20px;
-  margin-top: 20px;
+    padding: 20px;
+    margin-top: 20px;
     text-align: justify;
-  color: white !important;
-  font-size: 1.5em;
-  font-family: $style3;
-  line-height: 40px;
-}
+    color: white !important;
+    font-size: 1.5em;
+    font-family: $style3;
+    line-height: 40px;
+  }
 
-.list {
-  margin-left: 20px;
-  color: $primary;
-}
+  .list {
+    margin-left: 20px;
+    color: $secondary;
+  }
 }
 
 // ******* DESKTOP RESPONSIVE ******* //
 @media only screen and (min-width: 1370px) {
   .about-text {
-  padding: 50px;
-  margin-top: 0px;
+    padding: 50px;
+    margin-top: 0px;
     text-align: justify;
-  color: white !important;
-  font-size: 2em;
-  font-family: $style3;
-  line-height: 40px;
-}
+    color: white !important;
+    font-size: 2em;
+    font-family: $style3;
+    line-height: 40px;
+  }
 
-.list {
-  margin-left: 20px;
-  color: $primary;
-}
+  .list {
+    margin-left: 20px;
+    color: $secondary;
+  }
 }
 </style>

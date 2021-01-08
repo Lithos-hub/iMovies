@@ -3,171 +3,32 @@
     <SectionTitle :sectionName="name" />
 
     <div>
-      <v-dialog class="dialog" v-model="dialog1" v-if="dialog1" overlay-opacity="10">
+      <v-dialog class="dialog" v-model="dialog" v-if="dialog" overlay-opacity="10">
         <v-card height="100%" class="cardDialog">
           <div class="row videoDialog">
             <v-sheet
-              color="error"
+              color="error darken-2"
               width="100%"
               height="100%"
               dark
               class="pa-5"
-              v-if="movieError1.length != 0"
+              v-show="videoError.length != 0"
             >
-              <h1 class="video-error">{{ movieError1 }}</h1>
+              <h1 class="video-error">{{ videoError }}</h1>
             </v-sheet>
 
             <iframe
               class="video"
-              :src="trailer1"
+              :src="trailerVideo"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
+              v-show="videoError.length != 0 ? false : true"
             ></iframe>
           </div>
 
           <div class="closeDialog-btn">
-            <v-btn color="error" block @click="dialog1 = false"> Close </v-btn>
-          </div>
-        </v-card>
-      </v-dialog>
-      <v-dialog class="dialog" v-model="dialog2" v-if="dialog2" overlay-opacity="10">
-        <v-card height="100%" class="cardDialog">
-          <div class="row videoDialog">
-            <v-sheet
-              color="error"
-              width="100%"
-              height="100%"
-              dark
-              class="pa-5"
-              v-if="movieError2.length != 0"
-            >
-              <h1 class="video-error">{{ movieError2 }}</h1>
-            </v-sheet>
-
-            <iframe
-              class="video"
-              :src="trailer2"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
-
-          <div class="closeDialog-btn">
-            <v-btn color="error" block @click="dialog2 = false"> Close </v-btn>
-          </div>
-        </v-card>
-      </v-dialog>
-      <v-dialog class="dialog" v-model="dialog3" v-if="dialog3" overlay-opacity="10">
-        <v-card height="100%" class="cardDialog">
-          <div class="row videoDialog">
-            <v-sheet
-              color="error"
-              width="100%"
-              height="100%"
-              dark
-              class="pa-5"
-              v-if="movieError3.length != 0"
-            >
-              <h1 class="video-error">{{ movieError3 }}</h1>
-            </v-sheet>
-
-            <iframe
-              class="video"
-              :src="trailer3"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
-
-          <div class="closeDialog-btn">
-            <v-btn color="error" block @click="dialog3 = false"> Close </v-btn>
-          </div>
-        </v-card>
-      </v-dialog>
-      <v-dialog class="dialog" v-model="dialog4" v-if="dialog4" overlay-opacity="10">
-        <v-card height="100%" class="cardDialog">
-          <div class="row videoDialog">
-            <v-sheet
-              color="error"
-              width="100%"
-              height="100%"
-              dark
-              class="pa-5"
-              v-if="movieError4.length != 0"
-            >
-              <h1 class="video-error">{{ movieError4 }}</h1>
-            </v-sheet>
-
-            <iframe
-              class="video"
-              :src="trailer4"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
-
-          <div class="closeDialog-btn">
-            <v-btn color="error" block @click="dialog4 = false"> Close </v-btn>
-          </div>
-        </v-card>
-      </v-dialog>
-      <v-dialog class="dialog" v-model="dialog5" v-if="dialog5" overlay-opacity="10">
-        <v-card height="100%" class="cardDialog">
-          <div class="row videoDialog">
-            <v-sheet
-              color="error"
-              width="100%"
-              height="100%"
-              dark
-              class="pa-5"
-              v-if="movieError5.length != 0"
-            >
-              <h1 class="video-error">{{ movieError5 }}</h1>
-            </v-sheet>
-
-            <iframe
-              class="video"
-              :src="trailer5"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
-
-          <div class="closeDialog-btn">
-            <v-btn color="error" block @click="dialog5 = false"> Close </v-btn>
-          </div>
-        </v-card>
-      </v-dialog>
-      <v-dialog class="dialog" v-model="dialog6" v-if="dialog6" overlay-opacity="10">
-        <v-card height="100%" class="cardDialog">
-          <div class="row videoDialog">
-            <v-sheet
-              color="error"
-              width="100%"
-              height="100%"
-              dark
-              class="pa-5"
-              v-if="movieError6.length != 0"
-            >
-              <h1 class="video-error">{{ movieError6 }}</h1>
-            </v-sheet>
-
-            <iframe
-              class="video"
-              :src="trailer6"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
-
-          <div class="closeDialog-btn">
-            <v-btn color="error" block @click="dialog6 = false"> Close </v-btn>
+            <v-btn color="error" block @click="dialog = false"> Close </v-btn>
           </div>
         </v-card>
       </v-dialog>
@@ -181,78 +42,17 @@
 
     <div id="trailers-container">
       <div class="row no-gutters">
-        <div class="col-lg-4">
+        <div class="col-lg-3" v-for="(item, i) in moviesArray" :key="i">
           <v-card class="card">
             <img
-              :src="url + movie1.poster_path"
+              :src="url + item.poster_path"
               class="card-img"
               id="movie-img"
-              @click="showDialog1()"
+              v-on:click="getTrailerVideo(item)"
+              @click="showDialog()"
             />
 
-            <h4 class="card-title" id="movie-title">{{ movie1.original_title }}</h4>
-          </v-card>
-        </div>
-        <div class="col-lg-4">
-          <v-card class="card">
-            <img
-              :src="url + movie2.poster_path"
-              class="card-img"
-              id="movie-img"
-              @click="showDialog2()"
-            />
-
-            <h4 class="card-title" id="movie-title">{{ movie2.original_title }}</h4>
-          </v-card>
-        </div>
-
-        <div class="col-lg-4">
-          <v-card class="card">
-            <img
-              :src="url + movie3.poster_path"
-              class="card-img"
-              id="movie-img"
-              @click="showDialog3()"
-            />
-
-            <h4 class="card-title" id="movie-title">{{ movie3.original_title }}</h4>
-          </v-card>
-        </div>
-        <div class="col-lg-4">
-          <v-card class="card">
-            <img
-              :src="url + movie4.poster_path"
-              class="card-img"
-              id="movie-img"
-              @click="showDialog4()"
-            />
-
-            <h4 class="card-title" id="movie-title">{{ movie4.original_title }}</h4>
-          </v-card>
-        </div>
-
-        <div class="col-lg-4">
-          <v-card class="card">
-            <img
-              :src="url + movie5.poster_path"
-              class="card-img"
-              id="movie-img"
-              @click="showDialog5()"
-            />
-
-            <h4 class="card-title" id="movie-title">{{ movie5.original_title }}</h4>
-          </v-card>
-        </div>
-        <div class="col-lg-4">
-          <v-card class="card">
-            <img
-              :src="url + movie6.poster_path"
-              class="card-img"
-              id="movie-img"
-              @click="showDialog6()"
-            />
-
-            <h4 class="card-title" id="movie-title">{{ movie6.original_title }}</h4>
+            <h4 class="card-title" id="movie-title">{{ item.original_title }}</h4>
           </v-card>
         </div>
       </div>
@@ -263,6 +63,7 @@
 <script>
 import SectionTitle from "../components/SectionTitle";
 import { mapActions, mapState } from "vuex";
+import axios from "axios";
 
 export default {
   name: "Trailers",
@@ -276,60 +77,75 @@ export default {
       video: "",
       movieTitle: "",
       videoDialog: "",
-      dialog1: false,
-      dialog2: false,
-      dialog3: false,
-      dialog4: false,
-      dialog5: false,
-      dialog6: false,
+      dialog: false,
+      moviesArray: [],
+      moviesIDs: [],
+      moviesVideos: [],
+      trailerVideo: '',
+      videoError: '',
     };
   },
-  computed: {
-    ...mapState([
-      "trailer1",
-      "trailer2",
-      "trailer3",
-      "trailer4",
-      "trailer5",
-      "trailer6",
-      "movie1",
-      "movie2",
-      "movie3",
-      "movie4",
-      "movie5",
-      "movie6",
-      "movieError1",
-      "movieError2",
-      "movieError3",
-      "movieError4",
-      "movieError5",
-      "movieError6",
-    ]),
-  },
   methods: {
-    ...mapActions(["getTrailers"]),
+    getLatestMovies() {
+      const url = "https://api.themoviedb.org/3";
 
-    showDialog1() {
-      this.dialog1 = true;
+      const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
+
+      let date = new Date();
+
+      const dateGreaterThan = `${date.getFullYear()}-${("0" + (date.getMonth() + 1) ).slice(-2)}-${("0" + (date.getDate() - 4)).slice(-2)}`;
+
+      const dateLessThan = `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice( -2 )}-${("0" + date.getDate()).slice(-2)}`;
+
+      const latestMovies = `${url}/discover/movie?primary_release_date.gte=2020&primary_release_date.lte=${dateLessThan}&api_key=${apikey}&language=en-EN&include_video=true`;
+
+      return new Promise((resolve) => {
+        axios
+          .get(latestMovies)
+          .then((resp) => {
+            const movies_array = [];
+            const movies_IDs = [];
+
+            for (let i = 0; i < 20; i++) {
+              movies_array.push(resp.data.results[i]);
+              movies_IDs.push(resp.data.results[i].id);
+            }
+
+            console.log(movies_array);
+            console.log(movies_IDs);
+
+            this.moviesArray = movies_array;
+            this.moviesIDs = movies_IDs; 
+          })
+          .catch((e) => {
+            console.info("Global trailer errors: " + e);
+          });
+      });
     },
-    showDialog2() {
-      this.dialog2 = true;
+    showDialog() {
+      this.dialog = true;
     },
-    showDialog3() {
-      this.dialog3 = true;
-    },
-    showDialog4() {
-      this.dialog4 = true;
-    },
-    showDialog5() {
-      this.dialog5 = true;
-    },
-    showDialog6() {
-      this.dialog6 = true;
-    },
+    getTrailerVideo(item) {
+  
+    const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
+    const movieURL = `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${apikey}&language=en-US`;
+
+        axios
+          .get(movieURL)
+          .then((resp) => {
+            this.videoError = '';
+            let videoKey = resp.data.results[0].key;
+            let video = "https://www.youtube.com/embed/" + videoKey;
+            this.trailerVideo = video;
+          })
+          .catch((e) => {
+            console.log("Trailer movie 1 " + e);
+            this.videoError = "Sorry. This video is no available.";
+          });
+        }
   },
   mounted() {
-    this.getTrailers();
+    this.getLatestMovies();
   },
 };
 </script>
@@ -385,14 +201,15 @@ export default {
   }
 
   .closeDialog-btn {
-    position: relative;
-
+    position: fixed;
+    bottom: 20px;
+    left: 0px;
     width: 100%;
-    padding: 10px;
+    padding: 0px;
   }
 
   .video {
-    height: 500px;
+    height: 550px;
   }
 
   .cardDialog {
@@ -404,7 +221,7 @@ export default {
   }
 
   .video-error {
-    font-size: 3em;
+    font-size: 1em;
     text-align: center;
   }
 
@@ -506,8 +323,8 @@ export default {
 
   .closeDialog-btn {
     position: absolute;
-
     width: 100%;
+    bottom: 20px;
     padding: 20px;
   }
 
@@ -523,7 +340,7 @@ export default {
   }
 
   .video-error {
-    font-size: 3em;
+    font-size: 1.5em;
     text-align: center;
   }
 
@@ -626,7 +443,7 @@ export default {
 
   .closeDialog-btn {
     position: absolute;
-
+    bottom: 20px;
     width: 100%;
     padding: 20px;
   }
@@ -643,7 +460,7 @@ export default {
   }
 
   .video-error {
-    font-size: 3em;
+    font-size: 2em;
     text-align: center;
   }
 

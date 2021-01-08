@@ -1,11 +1,11 @@
 <template>
   <div>
     <SectionTitle :sectionName="name" />
-      <!-- SNACKBAR - WATCHED MOVIES -->
-      <v-snackbar
+    <!-- SNACKBAR - WATCHED MOVIES -->
+    <v-snackbar
       id="added-snackbar"
       v-model="snackbar1"
-      timeout="2000"
+      timeout="3000"
       right
       centered
       top
@@ -13,12 +13,12 @@
       elevation="10"
     >
       Added to <span class="secondary darken-1 pa-2 rounded ml-2">Watched Movies</span>
-    <!-- SNACKBAR - FAVORITE MOVIES -->
+      <!-- SNACKBAR - FAVORITE MOVIES -->
     </v-snackbar>
-      <v-snackbar
+    <v-snackbar
       id="added-snackbar"
       v-model="snackbar2"
-      timeout="2000"
+      timeout="3000"
       right
       centered
       top
@@ -28,193 +28,311 @@
       Added to <span class="secondary darken-1 pa-2 rounded ml-2">Favorite Movies</span>
     </v-snackbar>
     <!-- SNACKBAR - RATE -->
-      <v-snackbar
+    <v-snackbar
       id="added-snackbar"
       v-model="snackbar3"
-      timeout="2000"
+      timeout="3000"
       right
       centered
       top
       color="red darken-4"
       elevation="10"
     >
-       Rate registered
+      Rate registered
     </v-snackbar>
-        <!-- SNACKBAR - TO-WATCH MOVIES -->
-      <v-snackbar
+    <!-- SNACKBAR - TO-WATCH MOVIES -->
+    <v-snackbar
       id="added-snackbar"
       v-model="snackbar4"
-      timeout="2000"
+      timeout="3000"
       right
       centered
       top
       color="red darken-4"
       elevation="10"
     >
-       Added to <span class="secondary darken-1 pa-2 rounded ml-2">To-Watch Movies</span>
+      Added to <span class="secondary darken-1 pa-2 rounded ml-2">To-Watch Movies</span>
     </v-snackbar>
 
     <v-sheet class="section-subtitle" elevation="10"
       >The most popular films of the last decade</v-sheet
     >
+
+    <!-- BUTTON FOR MENU EXPAND IN MOBILE DEVICES -->
     <div class="text-center" id="years-menu-btn">
-    <v-btn icon @click="expand = !expand">
-    <v-icon color="cyan">mdi-menu</v-icon>
-    </v-btn>
+      <v-btn icon @click="expand = !expand">
+        <v-icon color="cyan">mdi-menu</v-icon>
+      </v-btn>
     </div>
-<v-expand-transition>
-    <v-row id="years-menu" v-show="expand">
-      <v-col class="year-col" v-on:click="year = '2010'" @click="getMoviesByYear()">
-        2010
-      </v-col>  
-      <v-col class="year-col" v-on:click="year = '2011'" @click="getMoviesByYear()">
-        2011
-      </v-col>  
-      <v-col class="year-col" v-on:click="year = '2012'" @click="getMoviesByYear()">
-        2012
-      </v-col>  
-      <v-col class="year-col" v-on:click="year = '2013'" @click="getMoviesByYear()">
-        2013
-      </v-col>  
-      <v-col class="year-col" v-on:click="year = '2014'" @click="getMoviesByYear()">
-        2014
-      </v-col>  
-      <v-col class="year-col" v-on:click="year = '2015'" @click="getMoviesByYear()">
-        2015
-      </v-col>  
-      <v-col class="year-col" v-on:click="year = '2016'" @click="getMoviesByYear()">
-        2016
-      </v-col>  
-      <v-col class="year-col" v-on:click="year = '2017'" @click="getMoviesByYear()">
-        2017
-      </v-col>  
-      <v-col class="year-col" v-on:click="year = '2018'" @click="getMoviesByYear()">
-        2018
-      </v-col>  
-      <v-col class="year-col" v-on:click="year = '2019'" @click="getMoviesByYear()">
-        2019
-      </v-col>  
-      <v-col class="year-col" v-on:click="year = '2020'" @click="getMoviesByYear()">
-        2020
-      </v-col>  
-    </v-row>
-</v-expand-transition>
+
+    <!-- MENU EXPAND IN MOBILE DEVICES  -->
+    <v-expand-transition>
+      <v-row id="years-menu" v-show="expand">
+        <v-col class="year-col" v-on:click="year = '2010'" @click="getMoviesByYear()">
+          2010
+        </v-col>
+        <v-col class="year-col" v-on:click="year = '2011'" @click="getMoviesByYear()">
+          2011
+        </v-col>
+        <v-col class="year-col" v-on:click="year = '2012'" @click="getMoviesByYear()">
+          2012
+        </v-col>
+        <v-col class="year-col" v-on:click="year = '2013'" @click="getMoviesByYear()">
+          2013
+        </v-col>
+        <v-col class="year-col" v-on:click="year = '2014'" @click="getMoviesByYear()">
+          2014
+        </v-col>
+        <v-col class="year-col" v-on:click="year = '2015'" @click="getMoviesByYear()">
+          2015
+        </v-col>
+        <v-col class="year-col" v-on:click="year = '2016'" @click="getMoviesByYear()">
+          2016
+        </v-col>
+        <v-col class="year-col" v-on:click="year = '2017'" @click="getMoviesByYear()">
+          2017
+        </v-col>
+        <v-col class="year-col" v-on:click="year = '2018'" @click="getMoviesByYear()">
+          2018
+        </v-col>
+        <v-col class="year-col" v-on:click="year = '2019'" @click="getMoviesByYear()">
+          2019
+        </v-col>
+        <v-col class="year-col" v-on:click="year = '2020'" @click="getMoviesByYear()">
+          2020
+        </v-col>
+      </v-row>
+    </v-expand-transition>
 
     <v-tabs class="bar-tabs" centered background-color="transparent">
       <v-tabs-slider color="cyan"></v-tabs-slider>
-    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2010'" @click="getMoviesByYear()">2010</v-tab>
-    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2011'" @click="getMoviesByYear()">2011</v-tab>
-    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2012'" @click="getMoviesByYear()">2013</v-tab>
-    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2013'" @click="getMoviesByYear()">2012</v-tab>
-    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2014'" @click="getMoviesByYear()">2014</v-tab>
-    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2015'" @click="getMoviesByYear()">2015</v-tab>
-    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2016'" @click="getMoviesByYear()">2016</v-tab>
-    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2017'" @click="getMoviesByYear()">2017</v-tab>
-    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2018'" @click="getMoviesByYear()">2018</v-tab>
-    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2019'" @click="getMoviesByYear()">2019</v-tab>
-    <v-tab active-class="cyan--text" class="white--text tab" v-on:click="year = '2020'" @click="getMoviesByYear()">2020</v-tab>
-  </v-tabs>
+      <v-tab
+        active-class="cyan--text"
+        class="white--text tab"
+        v-on:click="year = '2010'"
+        @click="getMoviesByYear()"
+        >2010</v-tab
+      >
+      <v-tab
+        active-class="cyan--text"
+        class="white--text tab"
+        v-on:click="year = '2011'"
+        @click="getMoviesByYear()"
+        >2011</v-tab
+      >
+      <v-tab
+        active-class="cyan--text"
+        class="white--text tab"
+        v-on:click="year = '2012'"
+        @click="getMoviesByYear()"
+        >2013</v-tab
+      >
+      <v-tab
+        active-class="cyan--text"
+        class="white--text tab"
+        v-on:click="year = '2013'"
+        @click="getMoviesByYear()"
+        >2012</v-tab
+      >
+      <v-tab
+        active-class="cyan--text"
+        class="white--text tab"
+        v-on:click="year = '2014'"
+        @click="getMoviesByYear()"
+        >2014</v-tab
+      >
+      <v-tab
+        active-class="cyan--text"
+        class="white--text tab"
+        v-on:click="year = '2015'"
+        @click="getMoviesByYear()"
+        >2015</v-tab
+      >
+      <v-tab
+        active-class="cyan--text"
+        class="white--text tab"
+        v-on:click="year = '2016'"
+        @click="getMoviesByYear()"
+        >2016</v-tab
+      >
+      <v-tab
+        active-class="cyan--text"
+        class="white--text tab"
+        v-on:click="year = '2017'"
+        @click="getMoviesByYear()"
+        >2017</v-tab
+      >
+      <v-tab
+        active-class="cyan--text"
+        class="white--text tab"
+        v-on:click="year = '2018'"
+        @click="getMoviesByYear()"
+        >2018</v-tab
+      >
+      <v-tab
+        active-class="cyan--text"
+        class="white--text tab"
+        v-on:click="year = '2019'"
+        @click="getMoviesByYear()"
+        >2019</v-tab
+      >
+      <v-tab
+        active-class="cyan--text"
+        class="white--text tab"
+        v-on:click="year = '2020'"
+        @click="getMoviesByYear()"
+        >2020</v-tab
+      >
+    </v-tabs>
 
-        <div class="moviesColumns" v-if="panelExpanded">
-          <v-row>
-            <v-col lg="3" xs="6" v-for="(item, i) in moviesByYear" :key="'B' + i">
-              <div class="fadeIn">
-                <v-card class="transparent mb-15" outlined>
-                  <v-row no-gutters>
-                    <v-col>
-                      <!-- MOVIE IMAGE AND DYNAMIC ICONS -->
-              <v-img :src="url + item.poster_path" class="movie-img">
-                
-                <v-icon class="eye-icon-img"  v-show="watchedMovies.includes(item) ? watched : !watched" v-model="watched">mdi-eye</v-icon>
-                <v-icon class="heart-icon-img" v-show="favoriteMovies.includes(item) ? favorite : !favorite">mdi-heart</v-icon>
-                <v-icon class="plus-icon-img" v-show="toWatchMovies.includes(item) ? towatch : !towatch">mdi-plus</v-icon>
-                <div v-for="(data, i) in ratedMovies" :key="'C' + i">
-                  <div class="rate-img" v-show="ratedMovies.includes(item) ? data.rate : null">{{data.rate}}</div>
-                </div>
-              </v-img>
-              <!-- **************************************** -->
-              <h3 class="movie-title ma-auto">{{ item.original_title }}</h3>
-                    </v-col>
-                    <v-col>
-                        <div class="d-block mt-10">
-                          <!-- BUTTON - WATCHED MOVIE  -->
-                                <v-tooltip bottom>
-                                  <template v-slot:activator="{ on, attrs }">
-                                    <v-btn small color="blue" class="white--text d-block mt-5" v-bind="attrs" v-on="on" @click="addWatched(item)" :disabled="watchedMovies.includes(item) ? watched : !watched"><v-icon>mdi-eye</v-icon></v-btn>
-                                  </template>
-                                    <span>Add to watched movies</span>
-                                </v-tooltip>
-                          <!-- BUTTON - FAVORITE MOVIE  -->
-                              <v-btn small color="red" class="white--text d-block mt-5" @click="addFavorite(item)" :disabled="favoriteMovies.includes(item) ? favorite : !favorite"><v-icon>mdi-heart</v-icon></v-btn>
+    <div class="moviesColumns" v-show="panelExpanded">
+      <v-row no-gutters>
+        <v-col lg="3" sm="12" v-for="(item, i) in moviesByYear" :key="'B' + i">
+          <div class="fadeIn">
+            <v-card class="transparent mb-15" outlined>
+              <v-row no-gutters>
+                <v-col>
+                  <!-- MOVIE IMAGE AND DYNAMIC ICONS -->
+                  <v-img :src="url + item.poster_path" class="movie-img">
+                    <v-icon
+                      class="eye-icon-img"
+                      v-show="watchedMovies.includes(item) ? watched : !watched"
+                      v-model="watched"
+                      >mdi-eye</v-icon
+                    >
+                    <v-icon
+                      class="heart-icon-img"
+                      v-show="favoriteMovies.includes(item) ? favorite : !favorite"
+                      >mdi-heart</v-icon
+                    >
+                    <v-icon
+                      class="plus-icon-img"
+                      v-show="toWatchMovies.includes(item) ? towatch : !towatch"
+                      >mdi-plus</v-icon
+                    >
 
-                              <v-dialog
-                                transition="dialog-bottom-transition"
-                                max-width="600"
-                                
-                              >
-                                <template v-slot:activator="{ on, attrs }">
-                                  <div
-                                    color="primary"
-                                    v-bind="attrs"
-                                    v-on="on"
-                                  >
-                           <!-- BUTTON - TO RATE MOVIE  -->
-                              <v-tooltip bottom>
-                                  <template v-slot:activator="{ on2, attrs2 }">
-                              <v-btn small color="purple" class="white--text d-block mt-5" v-bind="attrs2" v-on="on2"><v-icon>mdi-numeric</v-icon></v-btn>
-                                  </template>
-                              <span>Rate movie</span>
-                                </v-tooltip>
-                                        </div>
-                                          </template>
-                                          <template v-slot:default="rateDialog">
-                                            <v-card>
-                                              <v-toolbar
-                                                color="primary"
-                                                dark
-                                              >{{item.original_title}}
-
-                                              <v-btn icon depressed class="ml-auto" @click="rateDialog.value = false"><v-icon>mdi-close</v-icon></v-btn>
-                                              
-                                              </v-toolbar>
-                                            
-                                              <v-card-text>
-                                                <div class="text-h2 pa-12">
-                                                  <h4 class="text-center">Rate the movie</h4>
-                                                  <div class="text-center primary--text m-5">{{value / 10}}</div>
-                                              <!-- RATE THE MOVIE -->
-                                          <form>
-                                             <v-slider
-                                              v-model="value"
-                                              step="5"
-                                              class="mt-10"
-                                            ></v-slider>
-                                            <v-btn block color="secondary" 
-                                            @click="addRate(item)"
-                                            v-on:click="rateDialog.value = false" >Done</v-btn>
-                                          </form>
-                                                </div>
-                                              </v-card-text>
-            
-                                            </v-card>
-                                          </template>
-                                        </v-dialog>
-
-                                 <!-- BUTTON - TO WATCH MOVIE  -->
-                                <v-tooltip bottom>
-                                  <template v-slot:activator="{ on, attrs }">
-                              <v-btn small color="indigo darken-2" class="white--text d-block mt-5" v-bind="attrs" v-on="on" @click="addToWatch(item)"><v-icon>mdi-plus</v-icon></v-btn>
-                                  </template>
-                              <span>Add to to-watch list</span>
-                                </v-tooltip>
+                    <div v-for="(item, i) in ratesArray" :key="'C' + i">
+                      <div v-show="item.id === item.movieID ? rated : !rated">
+                        <div class="rate-img">
+                          {{ item.rate }}
                         </div>
-                    </v-col>
-                  </v-row>
-                </v-card>
-              </div>
-            </v-col>
-          </v-row>
-        </div>
+                      </div>
+                    </div>
+                  </v-img>
+                  <!-- **************************************** -->
+                  <h3 class="movie-title ma-auto">{{ item.title }}</h3>
+                </v-col>
+                <v-col>
+                  <div class="mt-10 d-inline" id="btn-column">
+                    <!-- BUTTON - WATCHED MOVIE  -->
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          small
+                          color="blue"
+                          class="white--text d-block mt-5 mx-2"
+                          v-bind="attrs"
+                          v-on="on"
+                          @click="addWatched(item)"
+                          :disabled="watchedMovies.includes(item) ? watched : !watched"
+                          ><v-icon>mdi-eye</v-icon></v-btn
+                        >
+                      </template>
+                      <span>Add to watched movies</span>
+                    </v-tooltip>
+                    <!-- BUTTON - FAVORITE MOVIE  -->
+                    <v-btn
+                      small
+                      color="red"
+                      class="white--text d-block mt-5 mx-2"
+                      @click="addFavorite(item)"
+                      :disabled="favoriteMovies.includes(item) ? favorite : !favorite"
+                      ><v-icon>mdi-heart</v-icon></v-btn
+                    >
+
+                    <v-dialog transition="dialog-bottom-transition" max-width="600">
+                      <template v-slot:activator="{ on, attrs }">
+                        <div color="primary" v-bind="attrs" v-on="on">
+                          <!-- BUTTON - TO RATE MOVIE  -->
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ on2, attrs2 }">
+                              <v-btn
+                                small
+                                color="purple"
+                                class="white--text d-block mt-5 mx-2"
+                                v-bind="attrs2"
+                                v-on="on2"
+                                ><v-icon>mdi-numeric</v-icon></v-btn
+                              >
+                            </template>
+                            <span>Rate movie</span>
+                          </v-tooltip>
+                        </div>
+                      </template>
+                      <template v-slot:default="rateDialog">
+                        <v-card>
+                          <v-toolbar color="primary" dark
+                            >{{ item.title }}
+
+                            <v-btn
+                              icon
+                              depressed
+                              class="ml-auto"
+                              @click="rateDialog.value = false"
+                              ><v-icon>mdi-close</v-icon></v-btn
+                            >
+                          </v-toolbar>
+
+                          <v-card-text>
+                            <div class="text-h2 pa-12">
+                              <h4 class="text-center">Rate the movie</h4>
+                              <div class="text-center primary--text m-5">
+                                {{ value / 10 }}
+                              </div>
+                              <!-- RATE THE MOVIE -->
+                              <form>
+                                <v-slider
+                                  v-model="value"
+                                  step="5"
+                                  class="mt-10"
+                                ></v-slider>
+                                <v-btn
+                                  block
+                                  color="secondary"
+                                  @click="addRate(item)"
+                                  v-on:click="rateDialog.value = false"
+                                  >Done</v-btn
+                                >
+                              </form>
+                            </div>
+                          </v-card-text>
+                        </v-card>
+                      </template>
+                    </v-dialog>
+
+                    <!-- BUTTON - TO WATCH MOVIE  -->
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          small
+                          color="indigo darken-2"
+                          class="white--text d-block mt-5 mx-2"
+                          v-bind="attrs"
+                          v-on="on"
+                          @click="addToWatch(item)"
+                          ><v-icon>mdi-plus</v-icon></v-btn
+                        >
+                      </template>
+                      <span>Add to to-watch list</span>
+                    </v-tooltip>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card>
+          </div>
+        </v-col>
+      </v-row>
+    </div>
   </div>
 </template>
 
@@ -232,38 +350,45 @@ export default {
     return {
       name: "Ranking",
       url: "https://image.tmdb.org/t/p/original",
-      year: '2010',
+      year: "2010",
       rateDialog: false,
       expand: false,
       errorMessage: "",
       moviesByYear: [],
-      moviesWithRates: [],
+      // moviesWithRates: [],
       ratedMovies: [],
-      toWatchMovies: [],
+      ratesArray: [],
+      // toWatchMovies: [],
       panelExpanded: false,
       snackbar1: false,
       snackbar2: false,
       snackbar3: false,
       snackbar4: false,
-      rate: null,
+      rated: true,
       favorite: true,
       watched: true,
       towatch: true,
+      rated: true,
       value: 0,
     };
   },
   computed: {
-    ...mapState(["toWatchMovies", "watchedMovies", "favoriteMovies", "moviesWithRates"])
+    ...mapState(["toWatchMovies", "watchedMovies", "favoriteMovies", "moviesWithRates"]),
   },
   methods: {
-    ...mapActions(["getToWatchMovies", "getWatchedMovies", "getFavoriteMovies", "getRatedMovies"]),
+    ...mapActions([
+      "getToWatchMovies",
+      "getWatchedMovies",
+      "getFavoriteMovies",
+      "getRatedMovies",
+    ]),
     get2010Movies() {
       const url = "https://api.themoviedb.org/3";
       const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
       const moviesUrl = `${url}/discover/movie?year=2010&api_key=${apikey}&sort_by=popularity.desc&page=1`;
 
-            return new Promise((resolve) => {
-              axios
+      return new Promise((resolve) => {
+        axios
           .get(moviesUrl)
           .then((resp) => {
             this.panelExpanded = true;
@@ -271,9 +396,10 @@ export default {
           })
           .catch((e) => {
             console.info(e);
-            this.errorMessage = "The answer is taking too long. There may have been an error with the database. Please reload the website.";
+            this.errorMessage =
+              "The answer is taking too long. There may have been an error with the database. Please reload the website.";
           });
-        })
+      });
     },
     getMoviesByYear() {
       const url = "https://api.themoviedb.org/3";
@@ -281,8 +407,8 @@ export default {
       let year = this.year;
       const moviesUrl = `${url}/discover/movie?year=${year}&api_key=${apikey}&sort_by=popularity.desc&page=1`;
 
-            return new Promise((resolve) => {
-              axios
+      return new Promise((resolve) => {
+        axios
           .get(moviesUrl)
           .then((resp) => {
             this.panelExpanded = true;
@@ -290,51 +416,62 @@ export default {
           })
           .catch((e) => {
             console.info(e);
-            this.errorMessage = "The answer is taking too long. There may have been an error with the database. Please reload the website.";
+            this.errorMessage =
+              "The answer is taking too long. There may have been an error with the database. Please reload the website.";
           });
-        })
-        },
+      });
+    },
     addWatched(item) {
       this.snackbar1 = true;
       this.watchedMovies.push(item);
+
+      const json = { rate: this.value / 10, movie: item };
+
       const storage = JSON.parse(localStorage.getItem("storageWatchedMovies")) || [];
-      storage.push(item);
+      storage.push(json);
       localStorage.setItem("storageWatchedMovies", JSON.stringify(storage));
-      },
+    },
     addFavorite(item) {
       this.snackbar2 = true;
       this.favoriteMovies.push(item);
+
+      const json = { rate: this.value / 10, movie: item };
+
       const storage = JSON.parse(localStorage.getItem("storageFavoriteMovies")) || [];
-      storage.push(item);
+      storage.push(json);
       localStorage.setItem("storageFavoriteMovies", JSON.stringify(storage));
     },
     addRate(item) {
       // PUSH RATED MOVIES WITH THEIR RATES INTO AN ARRAY AND REGISTER IT IN LOCALSTORAGE
       this.snackbar3 = true;
+      this.ratedMovies.push(item);
 
-      const json = {rate: this.value / 10, movie: item};
+      const rates_json = { rate: this.value / 10, movieID: item.id };
+
+      this.ratesArray.push(rates_json);
+
+      console.log(this.ratesArray);
+
+      // ************************ //
+
+      const json = { rate: this.value / 10, movie: item };
 
       const storage = JSON.parse(localStorage.getItem("storageRatedMovies")) || [];
-      storage.push(item);
-      localStorage.setItem("storageRatedMovies", JSON.stringify(storage));
-
-      this.ratedMovies.push(json);
-
       storage.push(json);
-      
-      console.log(this.ratedMovies);
-
-
+      localStorage.setItem("storageRatedMovies", JSON.stringify(storage));
     },
     addToWatch(item) {
       this.snackbar4 = true;
       this.toWatchMovies.push(item);
+
+      const json = { rate: this.value / 10, movie: item };
+
       const storage = JSON.parse(localStorage.getItem("storageToWatchMovies")) || [];
-      storage.push(item);
+      storage.push(json);
       localStorage.setItem("storageToWatchMovies", JSON.stringify(storage));
     },
   },
-  mounted() {
+  created() {
     this.get2010Movies();
   },
 };
@@ -348,14 +485,18 @@ export default {
 }
 
 @keyframes fadeIn {
-  from{opacity: 0};
-  to{opacity: 1}
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .eye-icon-img {
   color: white !important;
   text-shadow: none !important;
-  background: #2196F3;
+  background: #2196f3;
   padding: 10px;
   border-radius: 0px 10px 0px 0px;
   position: absolute;
@@ -379,14 +520,14 @@ export default {
   left: 0px;
   padding: 10px;
   border-radius: 0px 0px 10px 0px;
-  background: #404EA7;
+  background: #404ea7;
   color: white;
   text-shadow: none;
 }
 .rate-img {
   color: white !important;
   text-shadow: none !important;
-  background: #A438B6;
+  background: #a438b6;
   font-size: 20px;
   font-family: $style2;
   letter-spacing: 0px;
@@ -410,7 +551,6 @@ export default {
     outline: none;
   }
 }
-
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
@@ -442,7 +582,6 @@ export default {
     text-align: center;
   }
 
-
   .header {
     align-self: center !important;
     font-family: $style3;
@@ -461,6 +600,13 @@ export default {
     }
   }
 
+  #btn-column {
+    display: flex !important;
+    padding-left: 30px;
+    padding-right: 30px;
+    justify-content: center;
+  }
+
   .moviesColumns {
     text-align: center;
     background: $dark2;
@@ -470,7 +616,8 @@ export default {
   }
 
   .movie-img {
-    width: 150px;
+    width: 300px;
+    border-radius: 10px 10px 10px 10px !important;
     padding: 15px;
     height: auto;
     margin: 0 auto;
@@ -478,7 +625,8 @@ export default {
 
   .movie-title {
     font-weight: lighter;
-    font-size: 14px;
+    font-size: 24px;
+    padding-top: 20px;
     color: white;
   }
 
@@ -496,16 +644,15 @@ export default {
   }
 
   .year-col {
-    margin: 5px;  
+    margin: 5px;
     border-radius: 20px;
     color: $dark2;
     font-weight: bold;
     background: $primary;
     font-family: $style3;
-  
-  &:hover {
-  cursor: pointer;
 
+    &:hover {
+      cursor: pointer;
     }
   }
 }
@@ -535,7 +682,6 @@ export default {
     }
   }
 
-
   .year {
     text-align: center;
   }
@@ -556,6 +702,13 @@ export default {
     &:focus {
       outline: none;
     }
+  }
+
+  #btn-column {
+    display: block !important;
+    padding-left: 0px;
+    padding-right: 0px;
+    justify-content: center;
   }
 
   .moviesColumns {
@@ -579,8 +732,8 @@ export default {
   .movie-title {
     font-weight: lighter;
     font-size: 1em;
-color: white;  
-}
+    color: white;
+  }
 
   .bar-tabs {
     display: block;
@@ -589,7 +742,6 @@ color: white;
   #years-menu-btn {
     display: none;
   }
-
 }
 
 // ******* DESKTOP RESPONSIVE ******* //
@@ -640,6 +792,14 @@ color: white;
     }
   }
 
+  #btn-column {
+    display: block !important;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin: 0;
+    justify-content: left;
+  }
+
   .moviesColumns {
     text-align: center;
     background: $dark2;
@@ -649,7 +809,7 @@ color: white;
   }
 
   .movie-img {
-   width: 300px;
+    width: 300px;
     margin: 20px;
     padding: 0px;
     height: auto;

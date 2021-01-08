@@ -4,13 +4,18 @@
 
     <!-- ************** TRAILER DIALOG ************** -->
     <div>
-      <v-dialog class="dialog" v-model="trailerDialog" v-if="trailerDialog" overlay-opacity="10">
+      <v-dialog
+        class="dialog"
+        v-model="trailerDialog"
+        v-if="trailerDialog"
+        overlay-opacity="10"
+      >
         <v-card height="100%" class="trailerCardDialog">
           <div class="row videoDialog">
             <v-sheet
-              color="error"
-              width="80%"
-              height="80%"
+              color="error darken-2"
+              width="100%"
+              height="100%"
               dark
               class="pa-5"
               v-if="message_error.length != 0"
@@ -24,6 +29,7 @@
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
+              v-show="message_error.length != 0 ? false : true"
             ></iframe>
           </div>
 
@@ -37,14 +43,13 @@
     <v-sheet class="section-subtitle" elevation="10">Current popular movies</v-sheet>
 
     <v-container fluid id="trending-container">
-      
       <!-- LIST OF MOVIES -->
       <v-row no-gutters>
         <div v-for="(item, i) in trending" :key="i">
           <v-col>
             <v-sheet width="80%" id="trending-sheet">
               <v-card-title id="trending-title"
-                >{{ item.original_title }}
+                >{{ item.title }}
                 <span id="trending-date">{{ item.release_date }}</span></v-card-title
               >
             </v-sheet>
@@ -62,9 +67,7 @@
               <!-- SHOW INFO DIALOG BUTTON -->
 
               <v-btn
-                
                 class="large mt-5"
-                v-on:click="movieID = item.id"
                 @click="getMovieTrailer(item)"
                 dark
                 id="trailer-btn"
@@ -96,11 +99,10 @@
         overlay-opacity="2"
       >
         <v-card>
-          <v-card-title class="red white--text" id="dialog-title">
+          <v-card-title class="white--text" id="dialog-title">
             {{ title }}
           </v-card-title>
 
-       
           <v-card-text id="dialog-text" class="mt-5">
             <p id="dialog-date">Release date: {{ releaseDate }}</p>
             <p id="dialog-overview">Overview: {{ overview }}</p>
@@ -109,7 +111,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="pink" dark block @click="dialog = false"> Close </v-btn>
+            <v-btn block @click="dialog = false" class="close-info-btn"> Close </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -121,7 +123,6 @@
 import SectionTitle from "../components/SectionTitle";
 import { mapActions, mapState } from "vuex";
 import axios from "axios";
-
 
 export default {
   components: {
@@ -138,7 +139,6 @@ export default {
       trailerDialog: false,
       video_url: "",
       message_error: "",
-      movieID: "",
       url: "https://image.tmdb.org/t/p/original",
       no_overview: "We are sorry. This movie has not available overview.",
     };
@@ -148,37 +148,38 @@ export default {
   },
   methods: {
     ...mapActions(["getTrending"]),
-    getMovieTrailer() {
+    getMovieTrailer(item) {
       const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
-      const id = this.movieID;
-      const video_url = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apikey}&language=en-US`;
+      const video_url = `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${apikey}&language=en-US`;
 
       return new Promise((resolve) => {
-      axios
-        .get(video_url)
-        .then((resp) => {
-          this.trailerDialog = true;
+        axios
+          .get(video_url)
+          .then((resp) => {
+            this.message_error = "";
 
-          const key = resp.data.results[0].key;
+            this.trailerDialog = true;
 
-          const youtube_video = "https://www.youtube.com/embed/" + key;
+            const key = resp.data.results[0].key;
 
-          this.video_url = youtube_video;
-        })
-        .catch((e) => {
-          console.log("Trailer movie 1 " + e);
-          this.message_error = "Sorry. This video is no available.";
+            const youtube_video = "https://www.youtube.com/embed/" + key;
+
+            this.video_url = youtube_video;
+          })
+          .catch((e) => {
+            console.log("Trailer movie 1 " + e);
+            this.message_error = "Sorry. This video is no available.";
           });
-        })
-      },
+      });
+    },
     // ********* //
     showInfo(item) {
       this.dialog = true;
-      this.title = item.original_title;
+      this.title = item.title;
       this.overview = item.overview;
       this.releaseDate = item.release_date;
       this.average = item.vote_average;
-    }
+    },
   },
   created() {
     this.getTrending();
@@ -199,8 +200,8 @@ export default {
     background: linear-gradient(to right, $secondary, $dark2);
   }
   #trending-container {
-    position: absolute;
-    top: 200px;
+    position: relative;
+    top: 20px;
     animation: fadeIn ease 2s;
   }
   #trending-overview {
@@ -245,34 +246,40 @@ export default {
   }
 
   #dialog-title {
-    font-size: 2em;
+    background: linear-gradient(to right, rgb(33, 33, 33), rgb(0, 20, 56));
+    font-size: 1.2em;
   }
 
   #dialog-date {
-    font-size: 1.5em;
+    font-size: 1em;
     text-align: right;
   }
 
   #dialog-overview {
     margin: 10px;
     text-align: justify;
-    font-size: 20px;
+    font-size: 16px;
     color: $dark;
-    line-height: 35px;
+    line-height: 30px;
   }
 
   #dialog-average {
     color: $primary;
     background: $dark2;
-    padding: 25px;
-    font-size: 2em;
+    padding: 10px;
+    font-size: 1em;
     font-weight: bold;
     text-align: center;
   }
 
+  .close-info-btn {
+    background: linear-gradient(to left, rgb(33, 33, 33), rgb(121, 0, 81));
+    color: white;
+  }
+
   .section-subtitle {
     font-family: $style3;
-    font-size: 2em;
+    font-size: 1.2em;
     text-align: center;
     margin-bottom: 20px;
     letter-spacing: 4px;
@@ -297,25 +304,23 @@ export default {
     margin: 0px;
     padding: 10px;
     width: 100%;
-    overflow: hidden;
+    height: 100%;
   }
 
   .closeDialog-btn {
-    position: absolute;
+    position: fixed;
+    bottom: 20px;
     left: 0px;
-    bottom: 0px;
     width: 100%;
     padding: 0px;
   }
 
   .video {
-    height: 450px;
+    height: 550px;
   }
 
   .trailerCardDialog {
-    position: absolute;
     bottom: 0px;
-    left: 0px;
     width: 100%;
     height: 100%;
     z-index: 999999;
@@ -323,12 +328,12 @@ export default {
   }
 
   .video-error {
-    font-size: 3em;
+    font-size: 1em;
     text-align: center;
   }
 
   .dialog {
-    bottom: 0px;
+    height: 100%;
     overflow: hidden;
   }
 }
@@ -342,8 +347,8 @@ export default {
     background: linear-gradient(to right, $secondary, $dark2);
   }
   #trending-container {
-    position: absolute;
-    top: 200px;
+    position: relative;
+    top: 20px;
     animation: fadeIn ease 2s;
   }
   #trending-overview {
@@ -388,8 +393,8 @@ export default {
   }
 
   #dialog-title {
-    font-size: 1.5em;
-    background: linear-gradient(to right, $dark2, $primary);
+    font-size: 2em;
+    background: linear-gradient(to right, rgb(33, 33, 33), rgb(0, 20, 56));
   }
 
   #dialog-date {
@@ -408,7 +413,7 @@ export default {
   #dialog-overview {
     margin: 55px;
     text-align: justify;
-    font-size: 15px;
+    font-size: 25px;
     color: $dark;
     line-height: 35px;
   }
@@ -424,7 +429,7 @@ export default {
 
   .section-subtitle {
     font-family: $style3;
-    font-size: 2em;
+    font-size: 1.8em;
     text-align: center;
     margin-bottom: 20px;
     letter-spacing: 4px;
@@ -434,6 +439,11 @@ export default {
     background-repeat: repeat;
     color: $secondary !important;
     animation: move 2s ease-in-out;
+  }
+
+  .close-info-btn {
+    background: linear-gradient(to left, rgb(33, 33, 33), rgb(121, 0, 81));
+    color: white;
   }
 
   @keyframes fadeIn {
@@ -446,18 +456,17 @@ export default {
   }
   //****************************** TRAILER DIALOG ******************************//
   .videoDialog {
-    margin: 0 auto;
-    padding: 20px;
-    width: 90%;
-    overflow: hidden;
+    margin: 0px;
+    padding: 100px;
+    width: 100%;
+    height: 100%;
   }
 
   .closeDialog-btn {
     position: absolute;
-    left: 0px;
-    bottom: 0px;
     width: 100%;
-    padding: 10px;
+    bottom: 20px;
+    padding: 20px;
   }
 
   .video {
@@ -465,9 +474,6 @@ export default {
   }
 
   .trailerCardDialog {
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
     width: 100%;
     height: 100%;
     z-index: 999999;
@@ -475,12 +481,13 @@ export default {
   }
 
   .video-error {
-    font-size: 3em;
+    font-size: 1.5em;
     text-align: center;
   }
 
   .dialog {
     bottom: 0px;
+    height: 100%;
     overflow: hidden;
   }
 }
@@ -495,13 +502,13 @@ export default {
     background: linear-gradient(to right, $secondary, $dark2);
   }
   #trending-container {
-    position: absolute;
-    top: 200px;
+    position: relative;
+    top: 20px;
     animation: fadeIn ease 2s;
   }
   #trending-overview {
     padding: 50px;
-    font-size: 40px;
+    font-size: 30px;
     text-align: justify;
   }
   #no-overview {
@@ -512,7 +519,7 @@ export default {
   }
 
   #trending-title {
-    font-size: 4em;
+    font-size: 3em;
     line-height: 60px;
     padding: 20px;
     font-family: $style2;
@@ -541,7 +548,8 @@ export default {
   }
 
   #dialog-title {
-    font-size: 3em;
+    font-size: 2em;
+    background: linear-gradient(to right, rgb(33, 33, 33), rgb(0, 20, 56));
   }
 
   #dialog-date {
@@ -580,6 +588,11 @@ export default {
     animation: move 2s ease-in-out;
   }
 
+  .close-info-btn {
+    background: linear-gradient(to left, rgb(33, 33, 33), rgb(121, 0, 81));
+    color: white;
+  }
+
   @keyframes fadeIn {
     0% {
       opacity: 0;
@@ -589,20 +602,20 @@ export default {
     }
   }
 
-   //****************************** TRAILER DIALOG ******************************//
+  //****************************** TRAILER DIALOG ******************************//
 
   .videoDialog {
-    padding: 20px;
+    margin: 0px;
+    padding: 100px;
     width: 100%;
-    overflow: hidden;
+    height: 100%;
   }
 
- .closeDialog-btn {
-    position: fixed;
-    left: 0px;
-    bottom: 0px;
+  .closeDialog-btn {
+    position: absolute;
+    bottom: 20px;
     width: 100%;
-    padding: 10px;
+    padding: 20px;
   }
 
   .video {
@@ -610,9 +623,6 @@ export default {
   }
 
   .trailerCardDialog {
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
     width: 100%;
     height: 100%;
     z-index: 999999;
@@ -620,13 +630,13 @@ export default {
   }
 
   .video-error {
-    font-size: 3em;
+    font-size: 2em;
     text-align: center;
   }
 
   .dialog {
     bottom: 0px;
-    overflow: hidden;
+    height: 100%;
   }
 }
 </style>
