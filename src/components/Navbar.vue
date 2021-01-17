@@ -24,11 +24,18 @@
         </v-btn>
       </a>
       <div id="version-info">
-        <p>Version: {{ version }}.{{ subversion }}</p>
+        <p>Version: {{ major }}.{{ minor }}.{{ patch }}</p>
       </div>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" fixed temporary  color="secondary darken-3" dark app>
+    <v-navigation-drawer
+      v-model="drawer"
+      fixed
+      temporary
+      color="secondary darken-3"
+      dark
+      app
+    >
       <v-list nav class="mt-10 nav-list">
         <v-list-item-group v-model="group" active-class="black">
           <router-link to="/" class="router-link-nav">
@@ -65,8 +72,9 @@ export default {
   data() {
     return {
       date: new Date().getFullYear(),
-      version: 1,
-      subversion: 6,
+      major: 1,
+      minor: 6,
+      patch: 1,
       group: null,
       drawer: false,
       items: [

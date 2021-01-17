@@ -83,9 +83,7 @@
               expand = !expand;
             "
             @click="getWatchedMovies()"
-          >
-            <v-btn block class="category-btn"> Summary </v-btn>
-          </div>
+          ></div>
           <div
             class="category-col ma-auto"
             v-on:click="
@@ -162,10 +160,10 @@
       :arrayMovies="favoriteMovies"
       :category="favorite"
     />
-    <MyMoviesCategory
+    <ByRateMovies
       v-if="category === 'byrate'"
-      :arrayMovies="ratedMovies"
       :category="byrate"
+      :ratedMovies="ratedMovies"
     />
   </div>
 </template>
@@ -173,6 +171,8 @@
 <script>
 import SectionTitle from "../components/SectionTitle";
 import MyMoviesCategory from "../components/MyMoviesCategory";
+import ByRateMovies from "../components/ByRateMovies";
+
 import _ from "lodash";
 
 export default {
@@ -180,6 +180,7 @@ export default {
   components: {
     SectionTitle,
     MyMoviesCategory,
+    ByRateMovies,
   },
   data() {
     return {
@@ -258,7 +259,7 @@ export default {
       if (localStorage.getItem("storageRatedMovies")) {
         this.ratedMovies = JSON.parse(localStorage.getItem("storageRatedMovies"));
 
-        const removeDuplicated = _.uniqBy(this.ratedMovies, "movie.id");
+        const removeDuplicated = _.uniqBy(this.ratedMovies, "movie_data.id");
 
         this.ratedMovies = removeDuplicated;
       }

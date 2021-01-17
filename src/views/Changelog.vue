@@ -3,65 +3,11 @@
     <h3 class="my-10 sup-bar pa-2 rounded">Changelog</h3>
 
     <div class="list-group">
-      <div class="list">
-        <span class="font-weight-bold">Version 1.1</span>
+      <div class="list" v-for="(item, i) in changes" :key="i">
+        <span class="font-weight-bold">{{ item.version }}</span>
         <ul>
-          <li>
-            Added dynamic routes on main page when you click over a movie image to get
-            details about that movie.
-          </li>
-        </ul>
-      </div>
-
-      <div class="list">
-        <span class="font-weight-bold">Version 1.2</span>
-        <ul>
-          <li>Added dynamic trailers dialogs in <i>/movie/id</i> page.</li>
-          <li>Added some aesthetic changes in <i>/trailers</i> page.</li>
-        </ul>
-      </div>
-
-      <div class="list">
-        <span class="font-weight-bold">Version 1.3</span>
-        <ul>
-          <li>
-            Optimized code in the <i>Genres</i> section using v-bind and v-on:click to use
-            a single function to return movies of different genres.
-          </li>
-          <li>+ Some aesthetic changes in general.</li>
-        </ul>
-      </div>
-
-      <div class="list">
-        <span class="font-weight-bold">Version 1.4</span>
-        <ul>
-          <li>New features in <i>Trending</i> section.</li>
-          <li>Optimized code in <i>Ranking</i> section.</li>
-          <li>
-            New responsive features in <i>Ranking</i> section and some aesthetic changes.
-          </li>
-        </ul>
-      </div>
-
-      <div class="list">
-        <span class="font-weight-bold">Version 1.5</span>
-        <ul>
-          <li>Added <i>My Movies</i> section.</li>
-          <li>
-            Added new features (Watched, Favourite, Rate and To-Watch) in
-            <i>Ranking</i> section using LocalStorage.
-          </li>
-        </ul>
-      </div>
-
-      <div class="list">
-        <span class="font-weight-bold">Version 1.6</span>
-        <ul>
-          <li>Optimized code in <i>Trailers</i> section.</li>
-          <li>General aesthetic improvements.</li>
-          <li>Info button available in <i>My Movies</i> section.</li>
-          <li>
-            Now is possible to save the user rates for each movie in <i>My Movies.</i>
+          <li v-for="(change, i) in item.changes" :key="i">
+            {{ change }}
           </li>
         </ul>
       </div>
@@ -70,7 +16,62 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      changes: [
+        {
+          version: "Version 1.1.0",
+          changes: [
+            "Added dynamic routes on main page when you click over a movie image to get details about that movie.",
+          ],
+        },
+        {
+          version: "Version 1.2.0",
+          changes: [
+            "Added dynamic trailers dialogs in /movie/id page.",
+            "Added some aesthetic changes in /trailers page.",
+          ],
+        },
+        {
+          version: "Version 1.3.0",
+          changes: [
+            "Optimized code in the Genres section using v-bind and v-on:click to use a single function to return movies of different genres.",
+            "Some aesthetic changes in general.",
+          ],
+        },
+        {
+          version: "Version 1.4.0",
+          changes: [
+            "New features in Trending section.",
+            "Optimized code in Ranking section.",
+            "New responsive features in Ranking section and some aesthetic changes.",
+          ],
+        },
+        {
+          version: "Version 1.5.0",
+          changes: [
+            "Added My Movies section.",
+            "Added new features (Watched, Favourite, Rate and To-Watch) in Ranking section using LocalStorage.",
+          ],
+        },
+        {
+          version: "Version 1.6.0",
+          changes: [
+            "Optimized code in Trailers section.",
+            "General aesthetic improvements.",
+            "Info button available in My Movies section.",
+            "Now is possible to save the user rates for each movie in My Movies.",
+          ],
+        },
+        {
+          version: "Version 1.6.1",
+          changes: ["Dynamic changelog.", "New logo.", "Fixed some api issues."],
+        },
+      ],
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

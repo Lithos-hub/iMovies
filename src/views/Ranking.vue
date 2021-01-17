@@ -68,37 +68,114 @@
     <!-- MENU EXPAND IN MOBILE DEVICES  -->
     <v-expand-transition>
       <v-row id="years-menu" v-show="expand">
-        <v-col class="year-col" v-on:click="year = '2010'" @click="getMoviesByYear()">
+        <v-col
+          class="year-col"
+          v-on:click="
+            year = '2010';
+            expand = !expand;
+          "
+          @click="getMoviesByYear()"
+        >
           2010
         </v-col>
-        <v-col class="year-col" v-on:click="year = '2011'" @click="getMoviesByYear()">
+        <v-col
+          class="year-col"
+          v-on:click="
+            year = '2011';
+            expand = !expand;
+          "
+          @click="getMoviesByYear()"
+        >
           2011
         </v-col>
-        <v-col class="year-col" v-on:click="year = '2012'" @click="getMoviesByYear()">
+        <v-col
+          class="year-col"
+          v-on:click="
+            year = '2012';
+            expand = !expand;
+          "
+          @click="getMoviesByYear()"
+        >
           2012
         </v-col>
-        <v-col class="year-col" v-on:click="year = '2013'" @click="getMoviesByYear()">
+        <v-col
+          class="year-col"
+          v-on:click="
+            year = '2013';
+            expand = !expand;
+          "
+          @click="getMoviesByYear()"
+        >
           2013
         </v-col>
-        <v-col class="year-col" v-on:click="year = '2014'" @click="getMoviesByYear()">
+        <v-col
+          class="year-col"
+          v-on:click="
+            year = '2014';
+            expand = !expand;
+          "
+          @click="getMoviesByYear()"
+        >
           2014
         </v-col>
-        <v-col class="year-col" v-on:click="year = '2015'" @click="getMoviesByYear()">
+        <v-col
+          class="year-col"
+          v-on:click="
+            year = '2015';
+            expand = !expand;
+          "
+          @click="getMoviesByYear()"
+        >
           2015
         </v-col>
-        <v-col class="year-col" v-on:click="year = '2016'" @click="getMoviesByYear()">
+        <v-col
+          class="year-col"
+          v-on:click="
+            year = '2016';
+            expand = !expand;
+          "
+          @click="getMoviesByYear()"
+        >
           2016
         </v-col>
-        <v-col class="year-col" v-on:click="year = '2017'" @click="getMoviesByYear()">
+        <v-col
+          class="year-col"
+          v-on:click="
+            year = '2017';
+            expand = !expand;
+          "
+          @click="getMoviesByYear()"
+        >
           2017
         </v-col>
-        <v-col class="year-col" v-on:click="year = '2018'" @click="getMoviesByYear()">
+        <v-col
+          class="year-col"
+          v-on:click="
+            year = '2018';
+            expand = !expand;
+          "
+          @click="getMoviesByYear()"
+        >
           2018
         </v-col>
-        <v-col class="year-col" v-on:click="year = '2019'" @click="getMoviesByYear()">
+        <v-col
+          class="year-col"
+          v-on:click="
+            year = '2019';
+            expand = !expand;
+          "
+          @click="getMoviesByYear()"
+        >
           2019
         </v-col>
-        <v-col class="year-col" v-on:click="year = '2020'" @click="getMoviesByYear()">
+        <v-col
+          class="year-col"
+          v-on:click="
+            year = '2020';
+            expand = !expand;
+          "
+          @click="getMoviesByYear()"
+        >
           2020
         </v-col>
       </v-row>
@@ -185,6 +262,8 @@
       >
     </v-tabs>
 
+    <div id="year-selected-mobile">{{ year }}</div>
+
     <div class="moviesColumns" v-show="panelExpanded">
       <v-row no-gutters>
         <v-col lg="3" sm="12" v-for="(item, i) in moviesByYear" :key="'B' + i">
@@ -211,11 +290,9 @@
                       >mdi-plus</v-icon
                     >
 
-                    <div v-for="(item, i) in ratesArray" :key="'C' + i">
-                      <div v-show="item.id === item.movieID ? rated : !rated">
-                        <div class="rate-img">
-                          {{ item.rate }}
-                        </div>
+                    <div>
+                      <div class="rate-img">
+                        {{ item.rate }}
                       </div>
                     </div>
                   </v-img>
@@ -284,9 +361,9 @@
                           </v-toolbar>
 
                           <v-card-text>
-                            <div class="text-h2 pa-12">
+                            <div class="pa-12">
                               <h4 class="text-center">Rate the movie</h4>
-                              <div class="text-center primary--text m-5">
+                              <div class="text-center primary--text m-5" id="rate-number">
                                 {{ value / 10 }}
                               </div>
                               <!-- RATE THE MOVIE -->
@@ -357,7 +434,6 @@ export default {
       moviesByYear: [],
       // moviesWithRates: [],
       ratedMovies: [],
-      ratesArray: [],
       // toWatchMovies: [],
       panelExpanded: false,
       snackbar1: false,
@@ -444,21 +520,22 @@ export default {
     addRate(item) {
       // PUSH RATED MOVIES WITH THEIR RATES INTO AN ARRAY AND REGISTER IT IN LOCALSTORAGE
       this.snackbar3 = true;
-      this.ratedMovies.push(item);
 
-      const rates_json = { rate: this.value / 10, movieID: item.id };
+      const value = this.value / 10;
+      const json = {};
 
-      this.ratesArray.push(rates_json);
+      this.ratedMovies = item;
+      this.ratedMovies.rate = value;
 
-      console.log(this.ratesArray);
-
-      // ************************ //
-
-      const json = { rate: this.value / 10, movie: item };
+      json.movie_data = this.ratedMovies;
+      json.rate = this.ratedMovies.rate;
 
       const storage = JSON.parse(localStorage.getItem("storageRatedMovies")) || [];
       storage.push(json);
       localStorage.setItem("storageRatedMovies", JSON.stringify(storage));
+
+      // ************************ //
+      this.moviesByYear.rate = value;
     },
     addToWatch(item) {
       this.snackbar4 = true;
@@ -540,7 +617,7 @@ export default {
 }
 
 .rate-input {
-  font-size: 2em;
+  font-size: 1em;
   height: 100%;
   width: 100%;
   padding: 100px;
@@ -567,6 +644,10 @@ export default {
     animation: move 2s ease-in-out;
   }
 
+  #rate-number {
+    font-size: 3em;
+  }
+
   @keyframes move {
     from {
       margin-left: -3000px;
@@ -576,6 +657,15 @@ export default {
       margin-left: 0px;
       opacity: 1;
     }
+  }
+
+  #year-selected-mobile {
+    display: block;
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    color: cyan;
   }
 
   .year {
@@ -686,6 +776,10 @@ export default {
     text-align: center;
   }
 
+  #rate-number {
+    font-size: 5em;
+  }
+
   .header {
     align-self: center !important;
     font-family: $style3;
@@ -702,6 +796,10 @@ export default {
     &:focus {
       outline: none;
     }
+  }
+
+  #year-selected-mobile {
+    display: none;
   }
 
   #btn-column {
@@ -792,12 +890,20 @@ export default {
     }
   }
 
+  #year-selected-mobile {
+    display: none;
+  }
+
   #btn-column {
     display: block !important;
     padding-left: 0px;
     padding-right: 0px;
     margin: 0;
     justify-content: left;
+  }
+
+  #rate-number {
+    font-size: 6em;
   }
 
   .moviesColumns {

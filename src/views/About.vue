@@ -1,6 +1,8 @@
 <template>
   <div>
-    <SectionTitle :sectionName="name" />
+    <v-row id="faviconbar-row">
+      <div id="faviconbar"></div>
+    </v-row>
 
     <v-row class="text-center">
       <v-col lg="6" xs="12">
@@ -26,7 +28,7 @@
             </div>
             In some of those sections you may get or access certain info with buttons that
             trigger a modal window.<br /><br />
-            Since <span class="green--text">Version 1.5</span> it is possible to save
+            Since <span class="green--text">Version 1.5.0</span> it is possible to save
             movies in different categories using LocalStorage.
           </v-card-text>
         </v-card>
@@ -55,7 +57,7 @@
             </div>
             En algunas de estas secciones se puede ampliar o acceder a cierta información
             mediante botones que lanzan una ventana modal. <br /><br />
-            Desde la <span class="green--text">Version 1.5</span> es posible el registro
+            Desde la <span class="green--text">Version 1.5.0</span> es posible el registro
             de películas en diferentes categorías mediante LocalStorage.
           </v-card-text>
         </v-card>
@@ -82,6 +84,18 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/scss/variables";
+
+#faviconbar {
+  background: url("../assets/img/favicon.jpg");
+  margin: 0 auto;
+  width: 150px;
+  height: 150px;
+  background-size: cover;
+}
+
+#faviconbar-row {
+  background: #171717;
+}
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {

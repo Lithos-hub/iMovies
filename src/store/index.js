@@ -86,11 +86,11 @@ export default new Vuex.Store({
       
   
       //  *********** CHANGE THIS *********** //
-      const dateGreaterThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate() - 5)).slice(-2) }`;
+      const dateGreaterThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate() - 10)).slice(-2) }`;
       const dateLessThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate())).slice(-2) }`;
       
       // ********************* Filter: note average of 7 or greater; English language; popularity desc; release time = 2 weeks ago ----------------------- //
-      const apiurl = `${url}/discover/movie?primary_release_date.gte=2020&primary_release_date.lte=${ dateLessThan }&api_key=${apikey}&vote_average.gte=7&language=en-EN&sort_by=popularity.desc&include_video=true`;
+      const apiurl = `${url}/discover/movie?primary_release_date.gte=${dateGreaterThan}&primary_release_date.lte=${ dateLessThan }&api_key=${apikey}&vote_average.gte=7&language=en-EN&sort_by=popularity.desc&include_video=true`;
 
       return new Promise((resolve) => {
  

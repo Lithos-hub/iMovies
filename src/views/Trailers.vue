@@ -81,8 +81,8 @@ export default {
       moviesArray: [],
       moviesIDs: [],
       moviesVideos: [],
-      trailerVideo: '',
-      videoError: '',
+      trailerVideo: "",
+      videoError: "",
     };
   },
   methods: {
@@ -93,11 +93,16 @@ export default {
 
       let date = new Date();
 
-      const dateGreaterThan = `${date.getFullYear()}-${("0" + (date.getMonth() + 1) ).slice(-2)}-${("0" + (date.getDate() - 4)).slice(-2)}`;
+      const dateGreaterThan = `${date.getFullYear()}-${(
+        "0" +
+        (date.getMonth() + 1)
+      ).slice(-2)}-${("0" + (date.getDate() - 10)).slice(-2)}`;
 
-      const dateLessThan = `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice( -2 )}-${("0" + date.getDate()).slice(-2)}`;
+      const dateLessThan = `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(
+        -2
+      )}-${("0" + date.getDate()).slice(-2)}`;
 
-      const latestMovies = `${url}/discover/movie?primary_release_date.gte=2020&primary_release_date.lte=${dateLessThan}&api_key=${apikey}&language=en-EN&include_video=true`;
+      const latestMovies = `${url}/discover/movie?primary_release_date.gte=${dateGreaterThan}&primary_release_date.lte=${dateLessThan}&api_key=${apikey}&language=en-EN&include_video=true`;
 
       return new Promise((resolve) => {
         axios
@@ -115,7 +120,7 @@ export default {
             console.log(movies_IDs);
 
             this.moviesArray = movies_array;
-            this.moviesIDs = movies_IDs; 
+            this.moviesIDs = movies_IDs;
           })
           .catch((e) => {
             console.info("Global trailer errors: " + e);
@@ -126,23 +131,22 @@ export default {
       this.dialog = true;
     },
     getTrailerVideo(item) {
-  
-    const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
-    const movieURL = `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${apikey}&language=en-US`;
+      const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
+      const movieURL = `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${apikey}&language=en-US`;
 
-        axios
-          .get(movieURL)
-          .then((resp) => {
-            this.videoError = '';
-            let videoKey = resp.data.results[0].key;
-            let video = "https://www.youtube.com/embed/" + videoKey;
-            this.trailerVideo = video;
-          })
-          .catch((e) => {
-            console.log("Trailer movie 1 " + e);
-            this.videoError = "Sorry. This video is no available.";
-          });
-        }
+      axios
+        .get(movieURL)
+        .then((resp) => {
+          this.videoError = "";
+          let videoKey = resp.data.results[0].key;
+          let video = "https://www.youtube.com/embed/" + videoKey;
+          this.trailerVideo = video;
+        })
+        .catch((e) => {
+          console.log("Trailer movie 1 " + e);
+          this.videoError = "Sorry. This video is no available.";
+        });
+    },
   },
   mounted() {
     this.getLatestMovies();

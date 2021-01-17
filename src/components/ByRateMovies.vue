@@ -33,7 +33,7 @@
         <v-card
           color="error"
           class="white--text pa-2 m-5 empty-error-message"
-          v-if="arrayMovies.length === 0"
+          v-if="ratedMovies.length === 0"
           >There are no movies in this category yet.</v-card
         >
       </v-col>
@@ -41,7 +41,7 @@
       <v-row no-gutters>
         <v-col
           lg="4"
-          v-for="(item, i) in arrayMovies"
+          v-for="(item, i) in ratedMovies"
           :key="'A' + i"
           class="text-center mx-auto"
         >
@@ -52,12 +52,12 @@
                   <v-list-item three-line>
                     <v-list-item-content>
                       <p class="headline white--text text-center movie-title">
-                        {{ item.movie.title }}
+                        {{ item.movie_data.title }}
                       </p>
                       <p
                         class="overline white--text text-center rounded movie-date mb-10"
                       >
-                        {{ item.movie.release_date.slice(0, 4) }}
+                        {{ item.movie_data.release_date.slice(0, 4) }}
                       </p>
                       <v-divider class="white"></v-divider>
                       <div v-show="category === 'byrate'">
@@ -94,7 +94,10 @@
                   </div>
                 </v-col>
                 <v-col cols="6">
-                  <v-img :src="url + item.movie.poster_path" class="movie-img"></v-img>
+                  <v-img
+                    :src="url + item.movie_data.poster_path"
+                    class="movie-img"
+                  ></v-img>
                 </v-col>
               </v-row>
             </div>
@@ -109,7 +112,7 @@
 import axios from "axios";
 
 export default {
-  props: ["arrayMovies", "category", "rate"],
+  props: ["category", "ratedMovies"],
   data() {
     return {
       url: "https://image.tmdb.org/t/p/original",
@@ -118,40 +121,26 @@ export default {
       release_date: "",
       overview: "",
       img: "",
+      array_IDs: [],
     };
   },
   methods: {
     removeMovie(item) {
-      if (this.category === "watched") {
-        const index = this.arrayMovies.indexOf(item);
-        if (index > -1) {
-          this.arrayMovies.splice(index, 1);
-        }
-        localStorage.setItem("storageWatchedMovies", JSON.stringify(this.arrayMovies));
+      const index = this.ratedMovies.indexOf(item);
+      if (index > -1) {
+        this.ratedMovies.splice(index, 1);
       }
-      if (this.category === "towatch") {
-        const index = this.arrayMovies.indexOf(item);
-        if (index > -1) {
-          this.arrayMovies.splice(index, 1);
-        }
-        localStorage.setItem("storageToWatchMovies", JSON.stringify(this.arrayMovies));
-      }
-      if (this.category === "favorite") {
-        const index = this.arrayMovies.indexOf(item);
-        if (index > -1) {
-          this.arrayMovies.splice(index, 1);
-        }
-        localStorage.setItem("storageFavoriteMovies", JSON.stringify(this.arrayMovies));
-      }
+      localStorage.setItem("storageRatedMovies", JSON.stringify(this.ratedMovies));
     },
     showInfo(item) {
       this.dialog = true;
-      this.title = item.movie.title;
-      this.overview = item.movie.overview;
-      this.release_date = item.movie.release_date;
-      this.img = item.movie.backdrop_path;
+      this.title = item.movie_data.title;
+      this.overview = item.movie_data.overview;
+      this.release_date = item.movie_data.release_date;
+      this.img = item.movie_data.backdrop_path;
     },
   },
+  mounted() {},
 };
 </script>
 
