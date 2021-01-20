@@ -1,22 +1,40 @@
 <template>
-  <div class="sectionTitle">
-    <v-card width="100%" elevation="10" tile class="section--Title--Background">
-      <h1 class="section--Title">
-        {{ sectionName }}
-      </h1>
-    </v-card>
+  <div>
+    <v-sheet class="section-subtitle" color="transparent">{{ sectionSubtitle }}</v-sheet>
   </div>
 </template>
 
 <script>
 export default {
   name: "SectionTitle",
-  props: ["sectionName"],
+  props: ["sectionName", "sectionSubtitle"],
 };
 </script>
 
 <style lang="scss" scoped>
 @import "src/scss/variables";
+
+.section-subtitle {
+  position: relative;
+  font-family: $style3;
+  font-size: 2em;
+  text-align: center;
+  letter-spacing: 10px;
+  color: cyan !important;
+  padding: 10px;
+  animation: animate 2s ease-in-out;
+}
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    right: 2000px;
+  }
+  100% {
+    opacity: 1;
+    right: 0px;
+  }
+}
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
@@ -24,18 +42,16 @@ export default {
     text-align: center;
     font-family: $style2;
     font-size: 2em;
-    letter-spacing: 10px;
     overflow: hidden;
-    background: url("../assets/img/background2.jpg");
-    background-position: center;
-    background-attachment: fixed;
+    background: url("../assets/img/background4.jpg");
+    background-position: right;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .section--Title--Background {
     background: linear-gradient(to left, black 0%, rgb(26, 26, 26) 70%);
-    padding: 10px;
+    padding-left: 10px;
   }
 
   .sectionTitle {
@@ -49,19 +65,17 @@ export default {
   .section--Title {
     text-align: center;
     font-family: $style2;
-    font-size: 4em;
-    letter-spacing: 10px;
+    font-size: 3em;
     overflow: hidden;
-    background: url("../assets/img/background2.jpg");
-    background-position: center;
-    background-attachment: fixed;
+    background: url("../assets/img/background4.jpg");
+    background-position: right;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .section--Title--Background {
     background: linear-gradient(to left, black 0%, rgb(26, 26, 26) 70%);
-    padding: 10px;
+    padding-left: 20px;
   }
 
   .sectionTitle {
@@ -75,20 +89,18 @@ export default {
 @media only screen and (min-width: 1370px) {
   .section--Title {
     text-align: center;
-    font-family: $style2;
-    font-size: 5em;
-    letter-spacing: 10px;
+    font-family: $style3;
+    font-size: 4em;
     overflow: hidden;
-    background: url("../assets/img/background2.jpg");
-    background-position: center;
-    background-attachment: fixed;
+    background: url("../assets/img/background4.jpg");
+    background-position: right;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .section--Title--Background {
     background: linear-gradient(to left, black 0%, rgb(26, 26, 26) 70%);
-    padding: 10px;
+    padding-left: 20px;
   }
 
   .sectionTitle {

@@ -13,7 +13,7 @@ export default new Vuex.Store({
   state: {
     loadingError: "",
     loadingGenre: false,
-    currently: [],
+    current: [],
     trending: [],
     genre: "",
     moviesByYear: [],
@@ -35,17 +35,14 @@ export default new Vuex.Store({
     loadingGenre(state, payload) {
       state.loadingGenre = payload
     },
-    setCurrently(state, payload) {
-      state.currently = payload;
+    setCurrent(state, payload) {
+      state.current = payload;
     },
     setTrending(state, payload) {
       state.trending = payload;
     },
     setMoviesByYear(state, payload) {
       state.moviesByYear = payload;
-    },
-    setMovieDetails(state, payload) {
-      state.MovieDetails = payload;
     },
     setToWatchMovies(state, payload) {
       state.toWatchMovies = payload;
@@ -59,10 +56,12 @@ export default new Vuex.Store({
     setRatedMovies(state, payload) {
       state.moviesWithRates = payload;
     },
+    setSearchedMovies(state, payload) {
+      state.searchedMovies = payload;
+    }
   },
   actions: {
-        // **************************** CURRENT MOVIES **************************** //
-    getCurrentlyMovies({commit}) {
+    getCurrentMovies({commit}) {
 
       const apiurl = `${url}/discover/movie?year=${current_year}&api_key=${apikey}`;
       
@@ -71,7 +70,7 @@ export default new Vuex.Store({
         axios
         .get(apiurl)
         .then((resp) => {
-          commit("setCurrently", resp.data.results)
+          commit("setCurrent", resp.data.results)
         })
         .catch((e) => {
           console.info(e);
@@ -79,13 +78,11 @@ export default new Vuex.Store({
         });
       })
     },
-    // **************************** TRENDING **************************** //
     getTrending({commit}) {
 
       const date = new Date();
       
   
-      //  *********** CHANGE THIS *********** //
       const dateGreaterThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate() - 10)).slice(-2) }`;
       const dateLessThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate())).slice(-2) }`;
       

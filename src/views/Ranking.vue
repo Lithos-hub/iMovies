@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SectionTitle :sectionName="name" />
+    <SectionTitle :sectionSubtitle="subtitle" />
     <!-- SNACKBAR - WATCHED MOVIES -->
     <v-snackbar
       id="added-snackbar"
@@ -53,10 +53,6 @@
     >
       Added to <span class="secondary darken-1 pa-2 rounded ml-2">To-Watch Movies</span>
     </v-snackbar>
-
-    <v-sheet class="section-subtitle" elevation="10"
-      >The most popular films of the last decade</v-sheet
-    >
 
     <!-- BUTTON FOR MENU EXPAND IN MOBILE DEVICES -->
     <div class="text-center" id="years-menu-btn">
@@ -425,16 +421,14 @@ export default {
   },
   data() {
     return {
-      name: "Ranking",
+      subtitle: "Popular films of the last decade",
       url: "https://image.tmdb.org/t/p/original",
       year: "2010",
       rateDialog: false,
       expand: false,
       errorMessage: "",
       moviesByYear: [],
-      // moviesWithRates: [],
       ratedMovies: [],
-      // toWatchMovies: [],
       panelExpanded: false,
       snackbar1: false,
       snackbar2: false,

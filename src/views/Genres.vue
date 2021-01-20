@@ -1,8 +1,6 @@
 <template>
   <div>
-    <SectionTitle :sectionName="name" />
-
-    <v-sheet class="section-subtitle" elevation="10">Movies per genre</v-sheet>
+    <SectionTitle :sectionSubtitle="subtitle" />
 
     <div class="error-sheet-container" v-if="loadingError">
       <v-sheet dark class="error-sheet" height="100%" width="100%" elevation="10">
@@ -20,7 +18,7 @@
       ></v-progress-circular>
     </div>
 
-    <div id="genres-container">
+    <div id="genres-container" class="mt-5">
       <v-row no-gutters>
         <v-col cols="12">
           <!-- ********************* ACTION BUTTON ********************* -->
@@ -283,7 +281,7 @@ export default {
   },
   data() {
     return {
-      name: "Genres",
+      subtitle: "Movies per genre",
       genreDialog: false,
       url: "https://image.tmdb.org/t/p/original",
       no_overview: "We sorry. This movie has not overview available.",

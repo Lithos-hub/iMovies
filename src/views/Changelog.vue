@@ -1,24 +1,33 @@
 <template>
   <v-container fluid>
-    <h3 class="my-10 sup-bar pa-2 rounded">Changelog</h3>
+    <SectionTitle :sectionSubtitle="subtitle" />
 
     <div class="list-group">
       <div class="list" v-for="(item, i) in changes" :key="i">
         <span class="font-weight-bold">{{ item.version }}</span>
-        <ul>
+        <ul style="list-style: none;">
+
+        
           <li v-for="(change, i) in item.changes" :key="i">
-            {{ change }}
+            <v-icon color="green">mdi-check</v-icon> {{ change }}
           </li>
         </ul>
+        
       </div>
     </div>
   </v-container>
 </template>
 
 <script>
+import SectionTitle from "../components/SectionTitle";
+
 export default {
+  components: {
+    SectionTitle,
+  },
   data() {
     return {
+      subtitle: "Changelog",
       changes: [
         {
           version: "Version 1.1.0",
@@ -67,6 +76,10 @@ export default {
         {
           version: "Version 1.6.1",
           changes: ["Dynamic changelog.", "New logo.", "Fixed some api issues."],
+        },
+        {
+          version: "Version 1.7.0",
+          changes: ["New section 'Search' added.", "Now you can search for movies and see information such as the platforms where those movies are available for streaming, buying or renting."],
         },
       ],
     };

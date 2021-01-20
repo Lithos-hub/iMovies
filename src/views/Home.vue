@@ -7,7 +7,7 @@
       </h1>
     </div>
     <div class="horizontal-scroll-wrapper squares">
-      <div v-for="(item, i) in currently" :key="i">
+      <div v-for="(item, i) in current" :key="i">
         <v-sheet height="200%" width="100%" class="sheet">
           <router-link :to="`/movie/${item.id}`">
             <img
@@ -36,13 +36,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(["currently"]),
+    ...mapState(["current"]),
   },
   methods: {
-    ...mapActions(["getCurrentlyMovies"]),
+    ...mapActions(["getCurrentMovies"]),
   },
   created() {
-    this.getCurrentlyMovies();
+    this.getCurrentMovies();
   },
 };
 </script>
@@ -55,14 +55,6 @@ export default {
   $finalHeight: 100%;
   $finalWidth: $finalHeight;
   $scrollBarHeight: 0px;
-
-  ::-webkit-scrollbar {
-    display: none !important;
-  }
-
-  ::-webkit-scrollbar-button {
-    display: none !important;
-  }
 
   html,
   body {
@@ -105,10 +97,6 @@ export default {
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
-  $finalHeight: 100%;
-  $finalWidth: $finalHeight;
-  $scrollBarHeight: 0px;
-
   ::-webkit-scrollbar {
     display: none !important;
   }
@@ -116,6 +104,10 @@ export default {
   ::-webkit-scrollbar-button {
     display: none !important;
   }
+
+  $finalHeight: 100%;
+  $finalWidth: $finalHeight;
+  $scrollBarHeight: 0px;
 
   html,
   body {
@@ -140,16 +132,15 @@ export default {
   .container {
     position: absolute;
     left: 0px;
-    top: 0px;
-    width: 100%;
+    top: -20px;
   }
 
   .horizontal-scroll-wrapper {
     position: absolute;
     display: block;
-    top: 0px;
+    top: 20px;
     left: 40%;
-    width: 700px;
+    width: 680px;
     max-height: 0%;
     margin: 0;
     padding-top: $scrollBarHeight;
@@ -173,14 +164,14 @@ export default {
   }
 
   .sheet {
-    padding: 50px;
+    padding: 0px;
     background: $dark2 !important;
     z-index: 999;
   }
 
   #movie-img {
-    width: 300px !important;
-    height: 500px;
+    width: 50% !important;
+    height: 50%;
     margin: 0px;
   }
 
@@ -238,8 +229,8 @@ export default {
     display: block;
     top: 0px;
     left: 50%;
-    width: 900px;
-    max-height: 0%;
+    width: 850px;
+    max-height: 100%;
     margin: 0;
     padding-top: $scrollBarHeight;
     overflow-y: scroll;
@@ -255,8 +246,8 @@ export default {
   .squares {
     padding: $finalHeight 0 0 0;
     & > div {
-      width: 100%;
-      height: 680px;
+      width: 900px;
+      height: 800px;
       margin: 0 auto;
     }
   }

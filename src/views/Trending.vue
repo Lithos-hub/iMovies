@@ -1,7 +1,6 @@
 <template>
   <div>
-    <SectionTitle :sectionName="name" />
-
+    <SectionTitle :sectionSubtitle="subtitle" />
     <!-- ************** TRAILER DIALOG ************** -->
     <div>
       <v-dialog
@@ -39,8 +38,6 @@
         </v-card>
       </v-dialog>
     </div>
-
-    <v-sheet class="section-subtitle" elevation="10">Current popular movies</v-sheet>
 
     <v-container fluid id="trending-container">
       <!-- LIST OF MOVIES -->
@@ -130,7 +127,7 @@ export default {
   },
   data() {
     return {
-      name: "Trending",
+      subtitle: "Current popular movies",
       title: "",
       overview: "",
       releaseDate: "",
@@ -277,28 +274,6 @@ export default {
     color: white;
   }
 
-  .section-subtitle {
-    font-family: $style3;
-    font-size: 1.2em;
-    text-align: center;
-    margin-bottom: 20px;
-    letter-spacing: 4px;
-    background: url("../assets/img/background7.jpg");
-    text-shadow: 0px 0px 10px black;
-    filter: contrast(0.9);
-    background-repeat: repeat;
-    color: $secondary !important;
-    animation: move 2s ease-in-out;
-  }
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
   //****************************** TRAILER DIALOG ******************************//
   .videoDialog {
     margin: 0px;
@@ -427,33 +402,6 @@ export default {
     text-align: center;
   }
 
-  .section-subtitle {
-    font-family: $style3;
-    font-size: 1.8em;
-    text-align: center;
-    margin-bottom: 20px;
-    letter-spacing: 4px;
-    background: url("../assets/img/background7.jpg");
-    text-shadow: 0px 0px 10px black;
-    filter: contrast(0.9);
-    background-repeat: repeat;
-    color: $secondary !important;
-    animation: move 2s ease-in-out;
-  }
-
-  .close-info-btn {
-    background: linear-gradient(to left, rgb(33, 33, 33), rgb(121, 0, 81));
-    color: white;
-  }
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
   //****************************** TRAILER DIALOG ******************************//
   .videoDialog {
     margin: 0px;
@@ -572,34 +520,6 @@ export default {
     font-size: 2em;
     font-weight: bold;
     text-align: center;
-  }
-
-  .section-subtitle {
-    font-family: $style3;
-    font-size: 2em;
-    text-align: center;
-    margin-bottom: 20px;
-    letter-spacing: 4px;
-    background: url("../assets/img/background7.jpg");
-    text-shadow: 0px 0px 10px black;
-    filter: contrast(0.9);
-    background-repeat: repeat;
-    color: $secondary !important;
-    animation: move 2s ease-in-out;
-  }
-
-  .close-info-btn {
-    background: linear-gradient(to left, rgb(33, 33, 33), rgb(121, 0, 81));
-    color: white;
-  }
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
   }
 
   //****************************** TRAILER DIALOG ******************************//

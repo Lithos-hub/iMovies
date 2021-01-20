@@ -29,7 +29,9 @@
             In some of those sections you may get or access certain info with buttons that
             trigger a modal window.<br /><br />
             Since <span class="green--text">Version 1.5.0</span> it is possible to save
-            movies in different categories using LocalStorage.
+            movies in different categories using LocalStorage. Those movies can be saved
+            for now from the 'Ranking' section and can be shown in the 'My Movies'
+            section.
           </v-card-text>
         </v-card>
       </v-col>
@@ -58,7 +60,9 @@
             En algunas de estas secciones se puede ampliar o acceder a cierta información
             mediante botones que lanzan una ventana modal. <br /><br />
             Desde la <span class="green--text">Version 1.5.0</span> es posible el registro
-            de películas en diferentes categorías mediante LocalStorage.
+            de películas en diferentes categorías mediante LocalStorage. Las películas
+            pueden guardarse de momento desde la sección 'Ranking' y pueden consultarse
+            esas listas en la sección 'My Movies'.
           </v-card-text>
         </v-card>
       </v-col>

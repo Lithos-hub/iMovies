@@ -61,6 +61,11 @@ Version 1.6.1
 * New logo.
 * Fixed some api issues.
 
+Version 1.7.0
+
+* New section 'Search' added.
+* Now you can search for movies and see information such as the platforms where those movies are available for streaming, buying or renting.
+
 ## Project setup
 ```
 npm install

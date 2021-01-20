@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SectionTitle :sectionName="name" />
+    <SectionTitle :sectionSubtitle="subtitle" />
 
     <div>
       <v-dialog class="dialog" v-model="dialog" v-if="dialog" overlay-opacity="10">
@@ -36,16 +36,12 @@
 
     <!-- END OF DIALOGS -->
 
-    <v-sheet class="section-subtitle" elevation="10"
-      >Check out the latest trailers</v-sheet
-    >
-
     <div id="trailers-container">
       <div class="row no-gutters">
         <div class="col-lg-3" v-for="(item, i) in moviesArray" :key="i">
           <v-card class="card">
             <img
-              :src="url + item.poster_path"
+              :src="item.poster_path != null ? url + item.poster_path : no_image"
               class="card-img"
               id="movie-img"
               v-on:click="getTrailerVideo(item)"
@@ -72,8 +68,9 @@ export default {
   },
   data() {
     return {
-      name: "Trailers",
+      subtitle: "Latest released trailers",
       url: "https://image.tmdb.org/t/p/original",
+      no_image: require("../assets/img/no-image.jpg"),
       video: "",
       movieTitle: "",
       videoDialog: "",
@@ -93,14 +90,9 @@ export default {
 
       let date = new Date();
 
-      const dateGreaterThan = `${date.getFullYear()}-${(
-        "0" +
-        (date.getMonth() + 1)
-      ).slice(-2)}-${("0" + (date.getDate() - 10)).slice(-2)}`;
+      const dateGreaterThan = `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${("0" + (date.getDate() - 10)).slice(-2)}`;
 
-      const dateLessThan = `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(
-        -2
-      )}-${("0" + date.getDate()).slice(-2)}`;
+      const dateLessThan = `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
 
       const latestMovies = `${url}/discover/movie?primary_release_date.gte=${dateGreaterThan}&primary_release_date.lte=${dateLessThan}&api_key=${apikey}&language=en-EN&include_video=true`;
 

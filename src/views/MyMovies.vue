@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SectionTitle :sectionName="name" />
+    <SectionTitle :sectionSubtitle="subtitle" />
 
     <!-- SUPERIOR TABS MENU -->
 
@@ -184,7 +184,7 @@ export default {
   },
   data() {
     return {
-      name: "My movies",
+      subtitle: "Saved movies",
       category: "summary",
       toWatchMovies: [],
       favoriteMovies: [],

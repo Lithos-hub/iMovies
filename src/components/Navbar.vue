@@ -61,7 +61,10 @@
       </v-list>
 
       <v-divider class="name-divider"></v-divider>
-      <p id="csg-name">{{ date }} - Carlos Segura García</p>
+      <p id="csg-name">
+        {{ date }} - Developed by<br />
+        <span class="cyan--text">Carlos Segura García</span>
+      </p>
     </v-navigation-drawer>
   </div>
 </template>
@@ -73,11 +76,12 @@ export default {
     return {
       date: new Date().getFullYear(),
       major: 1,
-      minor: 6,
-      patch: 1,
+      minor: 7,
+      patch: 0,
       group: null,
       drawer: false,
       items: [
+        { title: "Search", icon: "mdi-magnify", link: "/search" },
         { title: "My Movies", icon: "mdi-star", link: "/mymovies" },
         { title: "Trending", icon: "mdi-table", link: "/trending" },
         { title: "Trailers", icon: "mdi-video-vintage", link: "/trailers" },
