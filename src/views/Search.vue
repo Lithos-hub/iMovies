@@ -35,26 +35,97 @@
       <v-row v-for="(item, i) in searchedMovies" :key="i" class="pb-10 mt-10">
        
           <v-col lg="3" md="4">
+            <!-- MOVIE IMG -->
             <v-img
               :src="item.poster_path != null ? url + item.poster_path : no_image"
               id="movie-img"
               class="rounded"
             ></v-img>
           </v-col>
-          <v-col lg="4" md="8">
+            <!-- PRIMARY INFO -->
+          <v-col lg="4">
             <h1 class="movie-title">{{ item.title }}</h1>
-            <small :class="item.release_date !== undefined ? 'blue--text' : 'red--text'">
-              {{
+            <small :class="item.release_date !== undefined ? 'cyan--text' : 'red--text'">
+              <span class="white--text">Release date:</span> {{
                 item.release_date !== undefined
                   ? item.release_date
                   : "Release date no availble"
-              }}</small
-            >
-            
+              }}</small>
+              <small class="d-block mt-5">
+                <span v-for="(genre, z) in item.genre_ids" :key="'A' + z" id="movie-genres">
+                 {{
+                    genre === 28 ? 'Action' : ''
+                 }}
+                 {{
+                    genre === 12 ? 'Adventure' : ''
+                 }}
+                 {{
+                    genre === 16 ? 'Animation' : ''
+                 }}
+                 {{
+                    genre === 35 ? 'Comedy' : ''
+                 }}
+                 {{
+                    genre === 80 ? 'Crime' : ''
+                 }}
+                 {{
+                    genre === 99 ? '99' : ''
+                 }}
+                 {{
+                    genre === 18 ? 'Drama' : ''
+                 }}
+                 {{
+                    genre === 10751 ? 'Family' : ''
+                 }}
+                 {{
+                    genre === 14 ? 'Fantasy' : ''
+                 }}
+                  {{
+                  genre === 36 ? 'History' : ''
+                  }}
+                {{
+                  genre === 27 ? 'Horror' : ''
+                  }}
+                {{
+                  genre === 10402 ? 'Music' : ''
+                  }}
+                {{
+                  genre === 9648 ? 'Mystery' : ''
+                  }}
+                {{
+                  genre === 10749 ? 'Romance' : ''
+                  }}
+                {{
+                  genre === 878 ? 'Science Fiction' : ''
+                  }}
+                {{
+                  genre === 10770 ? 'TV Movie' : ''
+                  }}
+                {{
+                  genre === 53 ? 'Thriller' : ''
+                  }}
+                {{
+                  genre === 10752 ? 'War' : ''
+                  }}
+                {{
+                  genre === 37 ? 'Western' : ''
+                  }}              
+                </span>
+                </small>
+            <p id="movie-overview">
+              {{item.overview}}
+            </p>
+
+
+          </v-col>
+
+             <!-- WHERE TO WATCH INFO -->
+          <v-col lg="4" md="8">
             <v-expand-transition>
             <v-row no-gutters class="mt-2" v-if="wheretowatch">
               <v-col lg="4">
-              <h3 class="text-center red--text">Buy</h3>
+              <h3 class="text-center blue--text">Buy</h3>
+              <h2 class="error--text text-center" v-if="item.providers_buy === undefined">No available</h2>
               <li style="list-style: none;" v-for="(buy_provider, z) in item.providers_buy" :key="z" class="text-center">
                 <v-divider></v-divider>
                 <p>{{buy_provider === undefined || buy_provider === null ? "No data" : buy_provider.provider_name}}</p>
@@ -64,6 +135,7 @@
               </v-col>
               <v-col lg="4">
                 <h3 class="text-center orange--text">Flatrate</h3>
+                <h2 class="error--text text-center" v-if="item.providers_flatrate === undefined">No available</h2>
               <li style="list-style: none;" v-for="(flatrate_provider, z) in item.providers_flatrate" :key="z" class="text-center">
                 <v-divider></v-divider>
                 <p>{{flatrate_provider === undefined || flatrate_provider === null ? "No data" : flatrate_provider.provider_name}}</p>
@@ -72,6 +144,7 @@
               </v-col>
               <v-col lg="4">
                 <h3 class="text-center green--text">Rent</h3>
+                <h2 class="error--text text-center" v-if="item.providers_rent === undefined">No available</h2>
               <li style="list-style: none;" v-for="(rent_provider, z) in item.providers_rent" :key="z" class="text-center">
                 <v-divider></v-divider>
                 <p>{{rent_provider === undefined || rent_provider === null ? "No data" : rent_provider.provider_name}}</p>
@@ -82,6 +155,7 @@
             </v-row>
                </v-expand-transition>
           </v-col>
+          
       </v-row>
 
 
@@ -138,6 +212,7 @@ export default {
 
             const providers = `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${apikey}`;
 
+
       axios
       .get(providers)
       .then((res) => {
@@ -187,7 +262,7 @@ export default {
 
             })
             .catch((e) => {
-              console.log(e)
+              console.log("=> Some movies has not providers")
             })
 
           }
@@ -200,7 +275,7 @@ export default {
 
         })
         .catch((e) => {
-          console.log(e);
+          
         });
     },
   },
@@ -209,6 +284,27 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/scss/variables";
+
+#movie-overview {
+  font-size: 20px;
+  line-height: 40px;
+  margin-top: 50px;
+  text-align: justify;
+}
+
+#movie-genres {
+border-radius: 25px;
+padding-left: 10px;
+padding-right: 10px;
+padding-top: 5px;
+padding-bottom: 5px;
+text-align: center;
+background: $primary;
+margin-right: 10px;
+font-family: $style1;
+text-transform: uppercase;
+font-size: 12px;
+}
 
 
 

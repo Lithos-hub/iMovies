@@ -66,6 +66,11 @@ Version 1.7.0
 * New section 'Search' added.
 * Now you can search for movies and see information such as the platforms where those movies are available for streaming, buying or renting.
 
+Version 1.7.2
+
+* More info is shown in Search section: dynamic movie genres (the API returns an ID for each movie genre and you have to 'translate' it in the specific genre) and each movie overview.
+* Some aesthetic improvements in that section have been added.
+
 ## Project setup
 ```
 npm install

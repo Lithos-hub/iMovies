@@ -24,7 +24,7 @@
         </v-btn>
       </a>
       <div id="version-info">
-        <p>Version: {{ major }}.{{ minor }}.{{ patch }}</p>
+        <p>v.{{ major }}.{{ minor }}.{{ patch }}</p>
       </div>
     </v-app-bar>
 
@@ -61,9 +61,12 @@
       </v-list>
 
       <v-divider class="name-divider"></v-divider>
-      <p id="csg-name">
+      <p id="developedBy">
         {{ date }} - Developed by<br />
-        <span class="cyan--text">Carlos Segura García</span>
+        <a href="https://carlosseguragarciaweb.com" style="text-decoration: none">
+        <span id="developerName">Carlos Segura García</span>
+        <p id="visit-my-website">Go to my website</p>
+        </a>
       </p>
     </v-navigation-drawer>
   </div>
@@ -77,7 +80,7 @@ export default {
       date: new Date().getFullYear(),
       major: 1,
       minor: 7,
-      patch: 0,
+      patch: 2,
       group: null,
       drawer: false,
       items: [
@@ -101,6 +104,38 @@ export default {
   color: $primary;
   font-family: $style2;
 }
+
+#visit-my-website {
+opacity: 0;
+transition: 0.5s;
+ margin-top: 0px;
+ text-transform: uppercase;
+
+}
+
+#developerName {
+color: cyan;
+transition: 0.5s;
+opacity: 1;
+text-transform: uppercase;
+}
+
+#developedBy:hover {
+
+  #developerName {
+    color: white;
+  }
+
+#visit-my-website {
+    opacity: 1;
+    color: white;
+    margin-top: 10px;
+    letter-spacing: 2px;
+  }
+}
+
+
+
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
@@ -132,13 +167,14 @@ export default {
     width: 100%;
   }
 
-  #csg-name {
+  #developedBy {
     position: relative;
     text-align: center;
     margin-top: 40px;
     letter-spacing: 2px;
     font-size: 12px;
     font-family: $style2;
+
   }
 
   #version-info {
@@ -177,13 +213,14 @@ export default {
     width: 100%;
   }
 
-  #csg-name {
+  #developedBy {
     position: relative;
     text-align: center;
     margin-top: 40px;
     letter-spacing: 2px;
     font-size: 13px;
     font-family: $style2;
+
   }
 
   #version-info {
@@ -191,6 +228,17 @@ export default {
     padding-top: 15px;
     right: 5px;
   }
+
+  #csg-link {
+  transition: 0.5s;
+  
+  &:hover{ 
+    color: white;
+    transform: scale(1.1)
+  }
+}
+
+
 }
 
 // ******* DESKTOP RESPONSIVE ******* //
@@ -225,7 +273,7 @@ export default {
     width: 100%;
   }
 
-  #csg-name {
+  #developedBy {
     position: relative;
     text-align: center;
     margin-top: 40px;
@@ -234,10 +282,20 @@ export default {
     font-family: $style2;
   }
 
+
   #version-info {
     position: relative;
     padding-top: 15px;
     right: 5px;
   }
+
+  #csg-link {
+  transition: 0.5s;
+  
+  &:hover{ 
+    color: white;
+    transform: scale(1.1)
+  }
+}
 }
 </style>

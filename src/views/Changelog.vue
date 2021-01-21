@@ -81,9 +81,22 @@ export default {
           version: "Version 1.7.0",
           changes: ["New section 'Search' added.", "Now you can search for movies and see information such as the platforms where those movies are available for streaming, buying or renting."],
         },
+        {
+          version: "Version 1.7.2",
+          changes: ["More info is shown in Search section: dynamic movie genres (the API returns an ID for each movie genre and you have to 'translate' it in the specific genre); movie overview.",
+          "Some aesthetic improvements in that section have been added."],
+        },
       ],
     };
   },
+  methods: {
+    showReverse() {
+      this.changes.reverse();
+    }
+  },
+  mounted() {
+    this.showReverse();
+  }
 };
 </script>
 
