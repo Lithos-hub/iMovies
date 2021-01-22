@@ -76,6 +76,10 @@ Version 1.7.5
 * New info displayed in Search section: vote average and vote ratings.
 * The 'View Trailer' button is now a component anywhere in the app.
 
+Version 1.7.6
+
+* Fixed some issues with regard to the display of the trailer component.
+
 ## Project setup
 ```
 npm install

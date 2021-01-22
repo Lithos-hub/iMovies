@@ -2,9 +2,8 @@
   <div>
     <SectionTitle :sectionSubtitle="subtitle" />
 
-<!-- TRAILER DIALOG -->
-
-    <TrailerDialog :dialog="dialog" :trailerVideo="trailerVideo" :videoError="videoError"/>
+        <!-- TRAILER DIALOG -->
+        <TrailerDialog :openDialog="dialog" :videoURL="trailerVideo" :messageError="videoError" @clicked="onClickChild"/>
 
     <!-- END OF DIALOGS -->
 
@@ -58,6 +57,9 @@ export default {
     };
   },
   methods: {
+    onClickChild (value) {
+      this.dialog = value;
+    },
     getLatestMovies() {
       const url = "https://api.themoviedb.org/3";
 
@@ -82,10 +84,6 @@ export default {
               movies_array.push(resp.data.results[i]);
               movies_IDs.push(resp.data.results[i].id);
             }
-
-            console.log(movies_array);
-            console.log(movies_IDs);
-
             this.moviesArray = movies_array;
             this.moviesIDs = movies_IDs;
           })

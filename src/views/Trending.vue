@@ -3,7 +3,7 @@
     <SectionTitle :sectionSubtitle="subtitle" />
 
     <!-- TRAILER DIALOG -->
-    <TrailerDialog :dialog="trailerDialog" :trailerVideo="trailerVideo" :videoError="videoError"/>
+    <TrailerDialog :openDialog="dialog" :videoURL="trailerVideo" :messageError="videoError" @clicked="onClickChild"/>
 
 
     <v-container fluid id="trending-container">
@@ -102,7 +102,7 @@ export default {
       releaseDate: "",
       average: "",
       infoDialog: false,
-      trailerDialog: false,
+      dialog: false,
       trailerVideo: "",
       videoError: "",
       url: "https://image.tmdb.org/t/p/original",
@@ -114,17 +114,19 @@ export default {
   },
   methods: {
     ...mapActions(["getTrending"]),
+    onClickChild (value) {
+      this.dialog = value;
+    },
     getMovieTrailer(item) {
       const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
       const video_url = `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${apikey}&language=en-US`;
+      this.dialog = true;
 
       return new Promise((resolve) => {
         axios
           .get(video_url)
           .then((resp) => {
             this.videoError = "";
-
-            this.trailerDialog = true;
 
             const key = resp.data.results[0].key;
 

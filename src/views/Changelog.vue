@@ -91,6 +91,10 @@ export default {
           changes: ["New info displayed in Search section: vote average and vote ratings.",
           "The 'View Trailer' button is now a component anywhere in the app."],
         },
+        {
+          version: "Version 1.7.6",
+          changes: ["Fixed some issues with regard to the display of the trailer component.",],
+        },
       ],
     };
   },

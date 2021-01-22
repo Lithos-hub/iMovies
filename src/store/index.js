@@ -95,7 +95,7 @@ export default new Vuex.Store({
         .get(apiurl)
         .then((resp) => {
             commit("setTrending", resp.data.results)
-            console.log(resp.data.results)
+          
           })
           .catch((e) => {
             console.info(e);
