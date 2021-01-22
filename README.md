@@ -80,6 +80,10 @@ Version 1.7.6
 
 * Fixed some issues with regard to the display of the trailer component.
 
+Version 1.7.7
+
+* Added Error 404 page.
+
 ## Project setup
 ```
 npm install

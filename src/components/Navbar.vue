@@ -80,7 +80,7 @@ export default {
       date: new Date().getFullYear(),
       major: 1,
       minor: 7,
-      patch: 6,
+      patch: 7,
       group: null,
       drawer: false,
       items: [

@@ -1,6 +1,6 @@
 <template>
   <v-app class="app">
-    <Navbar id="navbar" />
+    <Navbar id="navbar" v-if="this.$route.path != '/404'" />
 
     <v-main class="main-content">
       <router-view class="routerview"></router-view>

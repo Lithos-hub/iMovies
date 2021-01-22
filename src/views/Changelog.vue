@@ -95,6 +95,10 @@ export default {
           version: "Version 1.7.6",
           changes: ["Fixed some issues with regard to the display of the trailer component.",],
         },
+        {
+          version: "Version 1.7.7",
+          changes: ["Error 404 page added.",],
+        },
       ],
     };
   },

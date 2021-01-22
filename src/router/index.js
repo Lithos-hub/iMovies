@@ -5,6 +5,9 @@ import Home from '../views/Home.vue'
 Vue.use(VueRouter)
 
 const routes = [
+  { path: '/404',  
+  component: () => import('../views/404.vue') },  
+  { path: '*', redirect: '/404' },  
   {
     path: '/',
     name: 'Home',
@@ -13,37 +16,37 @@ const routes = [
   {
     path: '/movie/:id',
     name: 'Movie',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Movie.vue')
+    component: () => import('../views/Movie.vue')
   },
   {
     path: '/about',
     name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import('../views/About.vue')
   },
   {
     path: '/account',
     name: 'Account',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Account.vue')
+    component: () => import('../views/Account.vue')
   },
   {
     path: '/trending',
     name: 'Trending',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Trending.vue')
+    component: () => import('../views/Trending.vue')
   },
   {
     path: '/trailers',
     name: 'Trailers',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Trailers.vue')
+    component: () => import('../views/Trailers.vue')
   },
   {
     path: '/genres',
     name: 'Genres',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Genres.vue')
+    component: () => import('../views/Genres.vue')
   },
   {
     path: '/ranking',
     name: 'Ranking',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Ranking.vue')
+    component: () => import('../views/Ranking.vue')
   },
   {
     path: '/changelog',
