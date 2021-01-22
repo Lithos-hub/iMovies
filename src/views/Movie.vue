@@ -1,36 +1,8 @@
 <template>
   <div>
-    <!-- ************** TRAILER DIALOG ************** -->
-    <div>
-      <v-dialog class="dialog" v-model="dialog" v-if="dialog" overlay-opacity="10">
-        <v-card height="100%" class="cardDialog">
-          <div class="row videoDialog">
-            <v-sheet
-              color="error"
-              width="80%"
-              height="80%"
-              dark
-              class="pa-5"
-              v-if="message_error.length != 0"
-            >
-              <h1 class="video-error">{{ message_error }}</h1>
-            </v-sheet>
+    <!-- TRAILER DIALOG -->
+    <TrailerDialog :dialog="dialog" :trailerVideo="trailerVideo" :videoError="videoError"/>
 
-            <iframe
-              class="video"
-              :src="video_url"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
-
-          <div class="closeDialog-btn">
-            <v-btn color="error" block @click="dialog = false"> Close </v-btn>
-          </div>
-        </v-card>
-      </v-dialog>
-    </div>
     <!-- ************** MOVIE CARD CONTENT ************** -->
     <v-container class="pa-5">
       <v-card class="pa-5 d-flex" height="100%" width="100%" id="card">
@@ -88,16 +60,19 @@
 
 <script>
 import axios from "axios";
+import TrailerDialog from "../components/TrailerDialog";
 
 export default {
   name: "Movie",
-  components: {},
+  components: {
+    TrailerDialog
+  },
   data() {
     return {
       movieDetails: {},
       url: "https://image.tmdb.org/t/p/original",
-      video_url: "",
-      message_error: "",
+      trailerVideo: "",
+      videoError: "",
       dialog: false,
     };
   },
@@ -132,11 +107,11 @@ export default {
 
             const youtube_video = "https://www.youtube.com/embed/" + key;
 
-            this.video_url = youtube_video;
+            this.trailerVideo = youtube_video;
           })
           .catch((e) => {
             console.log(e);
-            this.message_error = "Sorry. This video is no available.";
+            this.videoError = "Sorry. This video is no available.";
           });
       });
     },
@@ -198,45 +173,7 @@ export default {
     padding: 0px !important;
   }
 
-  //****************************** DIALOG ******************************//
-  .videoDialog {
-    margin: 0px;
-    padding: 10px;
-    width: 100%;
-    overflow: hidden;
-  }
 
-  .closeDialog-btn {
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
-    width: 100%;
-    padding: 0px;
-  }
-
-  .video {
-    height: 450px;
-  }
-
-  .cardDialog {
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    z-index: 999999;
-    background: $dark2 !important;
-  }
-
-  .video-error {
-    font-size: 3em;
-    text-align: center;
-  }
-
-  .dialog {
-    bottom: 0px;
-    overflow: hidden;
-  }
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
@@ -286,45 +223,7 @@ export default {
   #card {
     padding: 30px !important;
   }
-  //****************************** DIALOG ******************************//
-  .videoDialog {
-    margin: 0 auto;
-    padding: 20px;
-    width: 90%;
-    overflow: hidden;
-  }
-
-  .closeDialog-btn {
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
-    width: 100%;
-    padding: 10px;
-  }
-
-  .video {
-    height: 500px;
-  }
-
-  .cardDialog {
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    z-index: 999999;
-    background: $dark2 !important;
-  }
-
-  .video-error {
-    font-size: 3em;
-    text-align: center;
-  }
-
-  .dialog {
-    bottom: 0px;
-    overflow: hidden;
-  }
+  
 }
 
 // ******* DESKTOP RESPONSIVE ******* //
@@ -374,46 +273,6 @@ export default {
 
   #card {
     padding: 50px !important;
-  }
-
-  //****************************** DIALOG ******************************//
-
-  .videoDialog {
-    padding: 20px;
-    width: 100%;
-    overflow: hidden;
-  }
-
-  .closeDialog-btn {
-    position: fixed;
-    left: 0px;
-    bottom: 0px;
-    width: 100%;
-    padding: 10px;
-  }
-
-  .video {
-    height: 700px;
-  }
-
-  .cardDialog {
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    z-index: 999999;
-    background: $dark2 !important;
-  }
-
-  .video-error {
-    font-size: 3em;
-    text-align: center;
-  }
-
-  .dialog {
-    bottom: 0px;
-    overflow: hidden;
   }
 }
 </style>

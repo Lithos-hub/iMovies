@@ -58,7 +58,7 @@ export default new Vuex.Store({
     },
     setSearchedMovies(state, payload) {
       state.searchedMovies = payload;
-    }
+    },
   },
   actions: {
     getCurrentMovies({commit}) {

@@ -2,37 +2,9 @@
   <div>
     <SectionTitle :sectionSubtitle="subtitle" />
 
-    <div>
-      <v-dialog class="dialog" v-model="dialog" v-if="dialog" overlay-opacity="10">
-        <v-card height="100%" class="cardDialog">
-          <div class="row videoDialog">
-            <v-sheet
-              color="error darken-2"
-              width="100%"
-              height="100%"
-              dark
-              class="pa-5"
-              v-show="videoError.length != 0"
-            >
-              <h1 class="video-error">{{ videoError }}</h1>
-            </v-sheet>
+<!-- TRAILER DIALOG -->
 
-            <iframe
-              class="video"
-              :src="trailerVideo"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              v-show="videoError.length != 0 ? false : true"
-            ></iframe>
-          </div>
-
-          <div class="closeDialog-btn">
-            <v-btn color="error" block @click="dialog = false"> Close </v-btn>
-          </div>
-        </v-card>
-      </v-dialog>
-    </div>
+    <TrailerDialog :dialog="dialog" :trailerVideo="trailerVideo" :videoError="videoError"/>
 
     <!-- END OF DIALOGS -->
 
@@ -58,6 +30,8 @@
 
 <script>
 import SectionTitle from "../components/SectionTitle";
+import TrailerDialog from "../components/TrailerDialog";
+
 import { mapActions, mapState } from "vuex";
 import axios from "axios";
 
@@ -65,6 +39,7 @@ export default {
   name: "Trailers",
   components: {
     SectionTitle,
+    TrailerDialog
   },
   data() {
     return {
@@ -187,68 +162,8 @@ export default {
     overflow: hidden;
   }
 
-  //****************************** DIALOG ******************************//
 
-  .videoDialog {
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-    height: 100%;
-  }
 
-  .closeDialog-btn {
-    position: fixed;
-    bottom: 20px;
-    left: 0px;
-    width: 100%;
-    padding: 0px;
-  }
-
-  .video {
-    height: 550px;
-  }
-
-  .cardDialog {
-    bottom: 0px;
-    width: 100%;
-    height: 100%;
-    z-index: 999999;
-    background: $dark2 !important;
-  }
-
-  .video-error {
-    font-size: 1em;
-    text-align: center;
-  }
-
-  .dialog {
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .section-subtitle {
-    font-family: $style3;
-    font-size: 2em;
-    text-align: center;
-    margin-bottom: 20px;
-    letter-spacing: 4px;
-    background: url("../assets/img/background4.jpg");
-    background-repeat: repeat;
-    color: $dark2 !important;
-    text-shadow: 0px 0px 10px rgb(255, 255, 255);
-    animation: move 2s ease-in-out;
-  }
-
-  @keyframes move {
-    from {
-      margin-left: -5000px;
-      opacity: 0;
-    }
-    to {
-      margin-left: 0px;
-      opacity: 1;
-    }
-  }
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
@@ -307,69 +222,10 @@ export default {
       }
     }
   }
-
-  //****************************** DIALOG ******************************//
-
-  .videoDialog {
-    margin: 0px;
-    padding: 100px;
-    width: 100%;
-    height: 100%;
-  }
-
-  .closeDialog-btn {
-    position: absolute;
-    width: 100%;
-    bottom: 20px;
-    padding: 20px;
-  }
-
-  .video {
-    height: 500px;
-  }
-
-  .cardDialog {
-    width: 100%;
-    height: 100%;
-    z-index: 999999;
-    background: $dark2 !important;
-  }
-
-  .video-error {
-    font-size: 1.5em;
-    text-align: center;
-  }
-
-  .dialog {
-    bottom: 0px;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .section-subtitle {
-    font-family: $style3;
-    font-size: 2em;
-    text-align: center;
-    margin-bottom: 20px;
-    letter-spacing: 4px;
-    background: url("../assets/img/background4.jpg");
-    background-repeat: repeat;
-    color: $dark2 !important;
-    text-shadow: 0px 0px 10px rgb(255, 255, 255);
-    animation: move 2s ease-in-out;
-  }
-
-  @keyframes move {
-    from {
-      margin-left: -5000px;
-      opacity: 0;
-    }
-    to {
-      margin-left: 0px;
-      opacity: 1;
-    }
-  }
 }
+  
+
+
 
 // ******* DESKTOP RESPONSIVE ******* //
 @media only screen and (min-width: 1370px) {
@@ -428,65 +284,6 @@ export default {
       }
     }
   }
-  //****************************** DIALOG ******************************//
 
-  .videoDialog {
-    margin: 0px;
-    padding: 100px;
-    width: 100%;
-    height: 100%;
-  }
-
-  .closeDialog-btn {
-    position: absolute;
-    bottom: 20px;
-    width: 100%;
-    padding: 20px;
-  }
-
-  .video {
-    height: 700px;
-  }
-
-  .cardDialog {
-    width: 100%;
-    height: 100%;
-    z-index: 999999;
-    background: $dark2 !important;
-  }
-
-  .video-error {
-    font-size: 2em;
-    text-align: center;
-  }
-
-  .dialog {
-    bottom: 0px;
-    height: 100%;
-  }
-
-  .section-subtitle {
-    font-family: $style3;
-    font-size: 2em;
-    text-align: center;
-    margin-bottom: 20px;
-    letter-spacing: 4px;
-    background: url("../assets/img/background4.jpg");
-    background-repeat: repeat;
-    color: $dark2 !important;
-    text-shadow: 0px 0px 10px rgb(255, 255, 255);
-    animation: move 2s ease-in-out;
-  }
-
-  @keyframes move {
-    from {
-      margin-left: -5000px;
-      opacity: 0;
-    }
-    to {
-      margin-left: 0px;
-      opacity: 1;
-    }
-  }
 }
 </style>

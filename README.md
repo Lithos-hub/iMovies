@@ -71,6 +71,11 @@ Version 1.7.2
 * More info is shown in Search section: dynamic movie genres (the API returns an ID for each movie genre and you have to 'translate' it in the specific genre) and each movie overview.
 * Some aesthetic improvements in that section have been added.
 
+Version 1.7.5
+
+* New info displayed in Search section: vote average and vote ratings.
+* The 'View Trailer' button is now a component anywhere in the app.
+
 ## Project setup
 ```
 npm install

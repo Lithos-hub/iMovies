@@ -2,6 +2,10 @@
   <div>
     <SectionTitle :sectionSubtitle="subtitle" />
 
+    <!-- TRAILER DIALOG -->
+
+    <TrailerDialog :openDialog="dialog" :videoURL="trailerVideo" :messageError="videoError" @clicked="onClickChild"/>
+
     <!-- SEARCH BAR -->
     <v-container>
       <v-row no-gutters>
@@ -43,7 +47,7 @@
             ></v-img>
           </v-col>
             <!-- PRIMARY INFO -->
-          <v-col lg="4">
+          <v-col lg="4" cols="12">
             <h1 class="movie-title">{{ item.title }}</h1>
             <small :class="item.release_date !== undefined ? 'cyan--text' : 'red--text'">
               <span class="white--text">Release date:</span> {{
@@ -51,6 +55,7 @@
                   ? item.release_date
                   : "Release date no availble"
               }}</small>
+            <!-- MOVIE GENRES -->
               <small class="d-block mt-5">
                 <span v-for="(genre, z) in item.genre_ids" :key="'A' + z" id="movie-genres">
                  {{
@@ -69,7 +74,7 @@
                     genre === 80 ? 'Crime' : ''
                  }}
                  {{
-                    genre === 99 ? '99' : ''
+                    genre === 99 ? 'Documentary' : ''
                  }}
                  {{
                     genre === 18 ? 'Drama' : ''
@@ -112,11 +117,19 @@
                   }}              
                 </span>
                 </small>
+
+            <!-- VOTE AVERAGE -->
+            <div class="mt-5">
+            <h4 id="movie-vote-average" class="indigo d-inline px-5">{{item.vote_average}}</h4>
+            <h5 id="movie-vote-ratings" class="font-weight-bold d-inline primary--text ml-2">{{item.vote_count}}</h5> <span class="font-weight-light d-inline">ratings</span>
+            </div>
+            <!-- MOVIE OVERVIEW -->
             <p id="movie-overview">
               {{item.overview}}
             </p>
 
-
+            <!-- MOVIE ACTIONS -->
+            <v-btn class="red" dark id="trailer-btn" @click="getTrailerVideo(item)">View trailer</v-btn>
           </v-col>
 
              <!-- WHERE TO WATCH INFO -->
@@ -167,13 +180,16 @@
 <script>
 import SectionTitle from "../components/SectionTitle";
 import axios from "axios";
+import TrailerDialog from "../components/TrailerDialog";
 
 export default {
   components: {
     SectionTitle,
+    TrailerDialog
   },
   data() {
     return {
+      dialog: false,
       subtitle: "Search movies",
       input: "",
       url: "https://image.tmdb.org/t/p/original",
@@ -181,9 +197,32 @@ export default {
       no_overview: "We are sorry. This movie has not available overview.",
       searchedMovies: [],
       wheretowatch: false,
+      trailerVideo: "",
+      videoError: "",
     };
   },
   methods: {
+    onClickChild (value) {
+      this.dialog = value;
+    },
+    getTrailerVideo(item) {
+      const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
+      const movieURL = `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${apikey}&language=en-US`;
+          this.dialog = true;
+
+      axios
+        .get(movieURL)
+        .then((resp) => {
+          this.videoError = "";
+          let videoKey = resp.data.results[0].key;
+          let video = "https://www.youtube.com/embed/" + videoKey;
+          this.trailerVideo = video;
+        })
+        .catch((e) => {
+          console.log("Trailer movie 1 " + e);
+          this.videoError = "Sorry. This video is no available.";
+        });
+    },
     searchMovie(input) {
       const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
       const url = "https://api.themoviedb.org/3";
@@ -285,29 +324,11 @@ export default {
 <style lang="scss" scoped>
 @import "src/scss/variables";
 
-#movie-overview {
-  font-size: 20px;
-  line-height: 40px;
-  margin-top: 50px;
-  text-align: justify;
+#movie-vote-average {
+  border-radius: 5px;
+  text-align: center;
+  font-size: 30px;
 }
-
-#movie-genres {
-border-radius: 25px;
-padding-left: 10px;
-padding-right: 10px;
-padding-top: 5px;
-padding-bottom: 5px;
-text-align: center;
-background: $primary;
-margin-right: 10px;
-font-family: $style1;
-text-transform: uppercase;
-font-size: 12px;
-}
-
-
-
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
@@ -342,6 +363,33 @@ p {
 #movie-img {
   width: 90%;
   margin: 0 auto;
+}
+
+#movie-overview {
+  font-size: 18px;
+  line-height: auto;
+  margin-top: 20px;
+  text-align: justify;
+}
+
+#movie-genres {
+border-radius: 25px;
+padding-left: 10px;
+padding-right: 10px;
+padding-top: 5px;
+padding-bottom: 5px;
+text-align: center;
+background: $primary;
+margin-right: 10px;
+font-family: $style1;
+text-transform: uppercase;
+font-size: 12px;
+display: inline-block;
+margin-bottom: 10px;
+}
+
+#trailer-btn {
+  width: 100%;
 }
 
 }
@@ -381,6 +429,33 @@ p {
   margin: 0 auto;
 }
 
+#movie-overview {
+  font-size: 20px;
+  line-height: 40px;
+  margin-top: 50px;
+  text-align: justify;
+}
+
+#movie-genres {
+border-radius: 25px;
+padding-left: 10px;
+padding-right: 10px;
+padding-top: 5px;
+padding-bottom: 5px;
+text-align: center;
+background: $primary;
+margin-right: 10px;
+font-family: $style1;
+text-transform: uppercase;
+font-size: 12px;
+display: inline-block;
+margin-bottom: 10px;
+}
+
+#trailer-btn {
+  width: auto;
+}
+
 }
 
 // ******* DESKTOP RESPONSIVE ******* //
@@ -414,7 +489,36 @@ p {
   text-align: left;
 }
 
+#movie-overview {
+  font-size: 20px;
+  line-height: 40px;
+  margin-top: 50px;
+  text-align: justify;
 }
+
+#movie-genres {
+border-radius: 25px;
+padding-left: 10px;
+padding-right: 10px;
+padding-top: 5px;
+padding-bottom: 5px;
+text-align: center;
+background: $primary;
+margin-right: 10px;
+font-family: $style1;
+text-transform: uppercase;
+font-size: 12px;
+display: inline-block;
+margin-bottom: 10px;
+
+}
+
+#trailer-btn {
+  width: auto;
+}
+
+}
+
 
 
 </style>

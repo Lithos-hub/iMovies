@@ -1,43 +1,10 @@
 <template>
   <div>
     <SectionTitle :sectionSubtitle="subtitle" />
-    <!-- ************** TRAILER DIALOG ************** -->
-    <div>
-      <v-dialog
-        class="dialog"
-        v-model="trailerDialog"
-        v-if="trailerDialog"
-        overlay-opacity="10"
-      >
-        <v-card height="100%" class="trailerCardDialog">
-          <div class="row videoDialog">
-            <v-sheet
-              color="error darken-2"
-              width="100%"
-              height="100%"
-              dark
-              class="pa-5"
-              v-if="message_error.length != 0"
-            >
-              <h1 class="video-error">{{ message_error }}</h1>
-            </v-sheet>
 
-            <iframe
-              class="video"
-              :src="video_url"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              v-show="message_error.length != 0 ? false : true"
-            ></iframe>
-          </div>
+    <!-- TRAILER DIALOG -->
+    <TrailerDialog :dialog="trailerDialog" :trailerVideo="trailerVideo" :videoError="videoError"/>
 
-          <div class="closeDialog-btn">
-            <v-btn color="error" block @click="trailerDialog = false"> Close </v-btn>
-          </div>
-        </v-card>
-      </v-dialog>
-    </div>
 
     <v-container fluid id="trending-container">
       <!-- LIST OF MOVIES -->
@@ -55,12 +22,11 @@
             <img :src="url + item.poster_path" width="200" class="movie-img" />
 
             <p class="lead" id="trending-overview">
-              <span class="small d-block mb-10">Overview:</span>
-              {{ item.overview }}
+              <span class="small d-block mb-10">Overview:
+              <p :class="item.overview.length > 0 ? 'white--text mt-5' : 'error--text mt-10'">{{ item.overview.length > 0 ? item.overview : no_overview }}</p>
+              </span>
               <br />
-              <span id="no-overview" v-if="item.overview.length == 0">{{
-                no_overview
-              }}</span>
+
               <!-- SHOW INFO DIALOG BUTTON -->
 
               <v-btn
@@ -89,10 +55,10 @@
 
     <div v-for="(item, i) in trending" :key="i">
       <v-dialog
-        v-model="dialog"
+        v-model="infoDialog"
         width="800"
         height="100%"
-        v-if="dialog"
+        v-if="infoDialog"
         overlay-opacity="2"
       >
         <v-card>
@@ -108,7 +74,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn block @click="dialog = false" class="close-info-btn"> Close </v-btn>
+            <v-btn block @click="infoDialog = false" class="close-info-btn"> Close </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -118,12 +84,15 @@
 
 <script>
 import SectionTitle from "../components/SectionTitle";
+import TrailerDialog from "../components/TrailerDialog";
+
 import { mapActions, mapState } from "vuex";
 import axios from "axios";
 
 export default {
   components: {
     SectionTitle,
+    TrailerDialog
   },
   data() {
     return {
@@ -132,10 +101,10 @@ export default {
       overview: "",
       releaseDate: "",
       average: "",
-      dialog: false,
+      infoDialog: false,
       trailerDialog: false,
-      video_url: "",
-      message_error: "",
+      trailerVideo: "",
+      videoError: "",
       url: "https://image.tmdb.org/t/p/original",
       no_overview: "We are sorry. This movie has not available overview.",
     };
@@ -153,7 +122,7 @@ export default {
         axios
           .get(video_url)
           .then((resp) => {
-            this.message_error = "";
+            this.videoError = "";
 
             this.trailerDialog = true;
 
@@ -161,17 +130,17 @@ export default {
 
             const youtube_video = "https://www.youtube.com/embed/" + key;
 
-            this.video_url = youtube_video;
+            this.trailerVideo = youtube_video;
           })
           .catch((e) => {
             console.log("Trailer movie 1 " + e);
-            this.message_error = "Sorry. This video is no available.";
+            this.videoError = "Sorry. This video is no available.";
           });
       });
     },
     // ********* //
     showInfo(item) {
-      this.dialog = true;
+      this.infoDialog = !this.infoDialog;
       this.title = item.title;
       this.overview = item.overview;
       this.releaseDate = item.release_date;
