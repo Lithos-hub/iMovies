@@ -23,7 +23,7 @@ export default new Vuex.Store({
     favoriteMovies: [],
     moviesWithRates: [],
     rates: [],
-
+    user: null
   },
   mutations: {
     loadingError(state, payload) {
@@ -59,6 +59,9 @@ export default new Vuex.Store({
     setSearchedMovies(state, payload) {
       state.searchedMovies = payload;
     },
+    setUser(state, payload) {
+      state.user = payload;
+    }
   },
   actions: {
     getCurrentMovies({commit}) {
@@ -140,7 +143,10 @@ export default new Vuex.Store({
   commit("setRatedMovies", JSON.parse(localStorage.getItem("storageRatedMovies")))
       }
     },
-  modules: {
-  }
+    getters: {
+      signedUser(state) {
+        return !!state.user
+      }
+    },
 })
 

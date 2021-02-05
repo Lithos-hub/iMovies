@@ -1,6 +1,6 @@
 <template>
   <v-app class="app">
-    <Navbar id="navbar" v-if="this.$route.path != '/404'" />
+    <Navbar id="navbar" v-if="this.$route.path != '/404' && this.$route.path != '/' && this.$route.path != '/register'" />
 
     <v-main class="main-content">
       <router-view class="routerview"></router-view>
@@ -27,6 +27,8 @@ export default {
       localStorage.getItem("storageFavoriteMovies");
       localStorage.getItem("storageRatedMovies");
       localStorage.getItem("storageRating");
+      localStorage.getItem("storageUserDATA");
+      localStorage.getItem("storageUserAVATAR");
     },
   },
   mounted() {

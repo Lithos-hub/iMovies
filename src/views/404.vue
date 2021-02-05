@@ -3,6 +3,10 @@
       <v-row>
       <v-col lg="4"></v-col>
       <v-col lg="4" cols="12" class="text-center mx-auto">
+          <v-btn color="transparent" v-on:click="sound = !sound;" id="sound-btn" elevation="10">
+              <small class="d-block white--text px-5">{{!sound ? "Sound is disabled" : "Sound is activated"}}</small>
+    <v-icon color="white">{{sound === true ? soundon : soundoff}}</v-icon>
+          </v-btn>
           <div id="tittle-wrapper">
           <h1 id="error404-title">Error 4<v-img src="../assets/img/deathstar.png" class="ma-auto" id="deathstar"></v-img>4</h1>
           </div>
@@ -17,7 +21,7 @@
               <v-btn id="go-back-btn" @mouseover="playAudio" @mouseleave="stopAudio" @click="goBack()">Go back</v-btn>
               
 
-              <audio src="../assets/audio/saberfx.mp3" id="audiofx" preload="preload"></audio>
+              <audio src="../assets/audio/saberfx.mp3" id="audiofx" preload="preload" v-if="sound"></audio>
         </div>
           
       </v-col>
@@ -31,7 +35,9 @@
 export default {
     data() {
         return {
-
+            sound: false,
+            soundon: "mdi-volume-high",
+            soundoff: "mdi-volume-low"
         }
     },
     methods: {
@@ -56,6 +62,10 @@ export default {
 @import 'src/scss/variables';
 
 // COMMON
+
+#sound-btn:focus {
+    outline: none;
+}
 
 #tittle-wrapper{
     display: flexbox;

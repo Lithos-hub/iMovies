@@ -1,23 +1,28 @@
 <template>
   <div id="navbar">
     <v-app-bar
-      color="secondary darken-3"
+      color="secondary darken-2"
       dark
       class="overflow-hidden justify-content-between"
       width="100%"
-      tile
+      elevation="10"
       app
     >
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
+      <div id="username-toolbar">User: <span class="cyan--text">@{{user.userName}}</span></div>
+      
+
       <v-toolbar-title class="mx-auto">
-        <router-link to="/" class="router-link-default" active-class="brand-title"
+        <router-link to="/home" class="router-link-default" active-class="brand-title"
           ><p class="brand-title ma-auto">iMovies</p></router-link
         >
       </v-toolbar-title>
-      <router-link to="/about" class="router-link-default">
-        <v-btn block small color="primary">About</v-btn>
-      </router-link>
+
+      <v-btn small color="red darken-1" class="mr-2" @click="logout">Logout <v-icon>mdi-account-cancel</v-icon></v-btn>
+
+      <v-btn small color="primary" to="/about">About</v-btn>
+
       <a href="https://github.com/Lithos-hub/VUEJS-iMovies" style="text-decoration: none">
         <v-btn icon>
           <v-icon> mdi-github </v-icon>
@@ -32,30 +37,32 @@
       v-model="drawer"
       fixed
       temporary
-      color="secondary darken-3"
+      color="secondary darken-2"
       dark
       app
+      width="220px"
     >
-      <v-list nav class="mt-10 nav-list">
+      <v-list nav class="nav-list">
         <v-list-item-group v-model="group" active-class="black">
-          <router-link to="/" class="router-link-nav">
-            <v-list-item>
+          <h5 id="username-drawer" class="text-center my-2 white--text">@{{user.userName}}</h5>
+   
+            <v-list-item dense to="/home">
               <v-list-item-icon>
                 <v-icon class="nav-icons">mdi-home</v-icon>
                 <v-list-item-title class="nav-links">Home</v-list-item-title>
               </v-list-item-icon>
             </v-list-item>
-          </router-link>
+   
 
           <v-divider></v-divider>
 
-          <v-list-item v-for="(items, i) in items" :key="i">
-            <router-link :to="items.link" class="router-link-nav">
+          <v-list-item v-for="(items, i) in items" :key="i" :to="items.link">
+   
               <v-list-item-icon>
                 <v-icon class="nav-icons">{{ items.icon }}</v-icon>
                 <v-list-item-title class="nav-links">{{ items.title }}</v-list-item-title>
               </v-list-item-icon>
-            </router-link>
+  
           </v-list-item>
         </v-list-item-group>
       </v-list>
@@ -73,6 +80,8 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
   name: "Navbar",
   data() {
@@ -94,6 +103,21 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapState(["user"])
+  },
+  methods: {
+    logout() {
+    const userData = null;
+
+    this.$store.commit("setUser", userData);
+
+    localStorage.removeItem('storageUserDATA')
+
+    this.$router.push("/")
+  
+    }
+  }
 };
 </script>
 
@@ -103,6 +127,13 @@ export default {
 * {
   color: $primary;
   font-family: $style2;
+}
+
+#username-toolbar {
+  position: absolute;
+  left: 5%;
+  color: $primary;
+  font-weight: lighter;
 }
 
 #visit-my-website {
@@ -139,6 +170,16 @@ text-transform: uppercase;
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
+
+    #username-toolbar {
+  display: none;
+  }
+
+  #username-drawer {
+    font-size: 12px;
+  }
+
+
   .brand-title {
     padding-left: 0px;
     letter-spacing: 0px;
@@ -185,6 +226,16 @@ text-transform: uppercase;
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
+
+  #username-toolbar {
+    display: block;
+  }
+
+  #username-drawer {
+    font-size: 15px;
+  }
+
+
   .brand-title {
     padding-left: 120px;
     letter-spacing: 10px;
@@ -192,13 +243,13 @@ text-transform: uppercase;
   }
 
   .nav-icons {
-    font-size: 1em !important;
+    font-size: 12px !important;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-right: 50px;
   }
   .nav-links {
-    font-size: 15px !important;
+    font-size: 12px !important;
     text-align: right !important;
     position: absolute;
     right: 10px;
@@ -243,6 +294,15 @@ text-transform: uppercase;
 
 // ******* DESKTOP RESPONSIVE ******* //
 @media only screen and (min-width: 1370px) {
+    #username-toolbar {
+    display: block;
+    }
+
+    #username-drawer {
+      font-size: 18px;
+    }
+
+
   .brand-title {
     padding-left: 120px;
     letter-spacing: 10px;
@@ -250,15 +310,13 @@ text-transform: uppercase;
   }
 
   .nav-icons {
-    font-size: 1.5em !important;
+    font-size: 16px !important;
     padding-top: 15px;
     padding-bottom: 15px;
     padding-right: 50px;
   }
   .nav-links {
-    font-size: 20px !important;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    font-size: 16px !important;
     text-align: right !important;
     position: absolute;
     right: 10px;
