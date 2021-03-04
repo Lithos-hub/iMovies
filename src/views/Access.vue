@@ -17,19 +17,19 @@
 
                             <form v-on:submit.prevent="login">
                          
-                        <v-text-field required id="email-input" :rules="emailRules" v-model="email" autocomplete="email" label="Email" filled type="email" color="cyan darken-1"></v-text-field>
+                        <v-text-field disabled required id="email-input" :rules="emailRules" v-model="email" autocomplete="email" label="Email" filled type="email" color="cyan darken-1"></v-text-field>
 
-                        <v-text-field required id="pass-input" v-model.trim="password" autocomplete="password" label="Password" filled type="password" color="cyan darken-1"></v-text-field>
+                        <v-text-field disabled required id="pass-input" v-model.trim="password" autocomplete="password" label="Password" filled type="password" color="cyan darken-1"></v-text-field>
                         
                         <v-alert dense v-if="formAlert" :color="validUser ? 'success darken-1' : 'red darken-1'">{{validUser ? 'Correct data! Loading app...' : 'Email or password are wrong. Please, try again'}}</v-alert>
                        
-                        <v-btn type="submit" block class="gradient-btn1 mt-5">Enter</v-btn>
+                        <v-btn disabled type="submit" block class="gradient-btn1 mt-5">Enter</v-btn>
 
                             </form>
 
                         <v-divider></v-divider>
                         <p class="mt-2 green--text">Don't you have an account?</p>
-                        <v-btn block class="mb-2 gradient-btn2" to="/register">Register</v-btn>
+                        <v-btn disabled block class="mb-2 gradient-btn2" to="/register">Register</v-btn>
                         </v-sheet>
                     </v-col>
                     <v-col  class="text-center">

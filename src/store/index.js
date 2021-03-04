@@ -86,17 +86,22 @@ export default new Vuex.Store({
       const date = new Date();
       
   
-      const dateGreaterThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate() - 10)).slice(-2) }`;
+      // const dateGreaterThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate() - 8)).slice(-2) }`;
+      // const dateLessThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate()) - 8).slice(-2) }`;
+
+      const dateGreaterThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth())).slice(-2) }-${ ('0' + ( date.getDate())).slice(-2) }`;
       const dateLessThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate())).slice(-2) }`;
+
       
       // ********************* Filter: note average of 7 or greater; English language; popularity desc; release time = 2 weeks ago ----------------------- //
-      const apiurl = `${url}/discover/movie?primary_release_date.gte=${dateGreaterThan}&primary_release_date.lte=${ dateLessThan }&api_key=${apikey}&vote_average.gte=7&language=en-EN&sort_by=popularity.desc&include_video=true`;
+      const apiurl = `${url}/discover/movie?primary_release_date.gte=${dateGreaterThan}&primary_release_date.lte=${dateLessThan}&api_key=${apikey}&vote_average.gte=7&language=en-EN&sort_by=popularity.desc&include_video=true`;
 
       return new Promise((resolve) => {
  
         axios
         .get(apiurl)
         .then((resp) => {
+
             commit("setTrending", resp.data.results)
           
           })

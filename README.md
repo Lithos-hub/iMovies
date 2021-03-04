@@ -84,6 +84,11 @@ Version 1.7.7
 
 * Added Error 404 page.
 
+Version 1.7.9
+
+* Fixed an issue with the API call in the trending section.
+* Added an initial (non functional at this moment) page for user login and register.
+
 ## Project setup
 ```
 npm install
