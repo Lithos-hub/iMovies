@@ -100,8 +100,12 @@ export default {
           changes: ["Error 404 page added.",],
         },
         {
+          version: "Version 1.7.9",
+          changes: ["Fixed an issue with the API call in the trending section.", "Added an initial (non functional at this moment) page for user login and register."],
+        },
+        {
           version: "Version 1.8.0",
-          changes: ["Auth system added.", "The user can now login with an account or register using LocalStorage.", "In adition, the user can access using a default account."],
+          changes: ["Fixed an issue with the API call in the trailers section.", "Aesthetic changes and improvements in the trailers section.", "Responsive improvements in the navbar component."],
         },
       ],
     };

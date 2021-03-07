@@ -19,9 +19,9 @@
         >
       </v-toolbar-title>
 
-      <v-btn small color="red darken-1" class="mr-2" @click="logout">Logout <v-icon>mdi-account-cancel</v-icon></v-btn>
+      <v-btn small color="red darken-1" class="mr-2" @click="logout()">{{displayText ? 'logout' : ''}} <v-icon>mdi-account-cancel</v-icon></v-btn>
 
-      <v-btn small color="primary" to="/about">About</v-btn>
+      <v-btn small color="primary" to="/about">{{displayText ? 'about' : ''}}<v-icon v-if="!displayText">mdi-information-variant</v-icon></v-btn>
 
       <a href="https://github.com/Lithos-hub/VUEJS-iMovies" style="text-decoration: none">
         <v-btn icon>
@@ -88,8 +88,8 @@ export default {
     return {
       date: new Date().getFullYear(),
       major: 1,
-      minor: 7,
-      patch: 9,
+      minor: 8,
+      patch: 0,
       group: null,
       drawer: false,
       items: [
@@ -101,24 +101,32 @@ export default {
         { title: "Ranking", icon: "mdi-format-list-numbered", link: "/ranking" },
         { title: "Changelog", icon: "mdi-lead-pencil", link: "/changelog" },
       ],
-    };
+    }
   },
   computed: {
-    ...mapState(["user"])
+    ...mapState(["user"]),
+    displayText() {
+      switch (this.$vuetify.breakpoint.name) {
+          case 'xs': return false
+          case 'sm': return false
+          case 'md': return true
+          case 'lg': return true
+          case 'xl': return true
+      }
+    },
   },
   methods: {
     logout() {
-    const userData = null;
+      const userData = null;
 
-    this.$store.commit("setUser", userData);
+      this.$store.commit("setUser", userData);
 
-    localStorage.removeItem('storageUserDATA')
+      localStorage.removeItem('storageUserDATA')
 
-    this.$router.push("/")
-  
+      this.$router.push("/")
+      }
     }
   }
-};
 </script>
 
 <style lang="scss" scoped>

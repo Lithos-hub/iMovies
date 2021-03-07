@@ -1,17 +1,17 @@
 <template>
 <div>
     <!-- <v-img src="../assets/img/favicon.jpg" id="background"></v-img> -->
-    <v-row class="access">
-        <v-col></v-col>
-        <v-col>
-            <v-card color="white" elevation="10" class="transparent" width="100%" height="110%" dark>
+    <v-row :class="displayCols ? 'access' : ''">
+        <v-col v-if="displayCols"></v-col>
+        <v-col lg="6">
+            <v-card color="white" elevation="10" class="transparent" width="100%" height="100%" dark>
                 <v-card-title id="card-title">
                Welcome to iMovies
                 </v-card-title>
                 <v-card-text class="pa-5">
-                <v-row class="mt-5">
-                    <v-col class="text-center">
-                        <h4>Access with email and password</h4>
+                <v-row>
+                    <v-col lg="6" cols="12" class="text-center">
+                        <h4>Access with email and password <br> (Soon available)</h4>
                         <v-divider class="my-5" dark></v-divider>
                         <v-sheet color="secondary darken-1" class="py-5 px-2" elevation="10" rounded="2">
 
@@ -32,8 +32,8 @@
                         <v-btn disabled block class="mb-2 gradient-btn2" to="/register">Register</v-btn>
                         </v-sheet>
                     </v-col>
-                    <v-col  class="text-center">
-                        <h4>Access with a default account</h4>
+                    <v-col lg="6" cols="12" class="text-center">
+                        <h4>Access with a <br>default account</h4>
                         <v-divider class="my-5" dark></v-divider>
                         <v-card rounded="2" width="140" class="mx-auto justify-content-center" elevation="5" id="card-default" @click="setDefault">
                             <v-icon id="card-default-icon">mdi-account-circle</v-icon>
@@ -44,7 +44,7 @@
                 </v-card-text>
             </v-card>
         </v-col>
-        <v-col></v-col>
+        <v-col v-if="displayCols"></v-col>
     </v-row>
 </div>
 </template>
@@ -67,7 +67,16 @@ export default {
         }
     },
     computed: {
-        ...mapState(["user"])
+        ...mapState(["user"]),
+        displayCols() {
+            switch (this.$vuetify.breakpoint.name) {
+          case 'xs': return false
+          case 'sm': return false
+          case 'md': return true
+          case 'lg': return true
+          case 'xl': return true
+            }
+        }
     },
     methods: {
         login(){
@@ -184,4 +193,6 @@ transition: 0.3s;
 .gradient-btn2 {
     background: $gradient_btn4;
 }
+
+
 </style>

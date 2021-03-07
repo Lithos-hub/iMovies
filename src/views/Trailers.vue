@@ -31,7 +31,6 @@
 import SectionTitle from "../components/SectionTitle";
 import TrailerDialog from "../components/TrailerDialog";
 
-import { mapActions, mapState } from "vuex";
 import axios from "axios";
 
 export default {
@@ -67,7 +66,7 @@ export default {
 
       let date = new Date();
 
-      const dateGreaterThan = `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${("0" + (date.getDate() - 10)).slice(-2)}`;
+      const dateGreaterThan = `${date.getFullYear()}-${("0" + (date.getMonth())).slice(-2)}-${("0" + (date.getDate())).slice(-2)}`;
 
       const dateLessThan = `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
 
@@ -137,27 +136,26 @@ export default {
     text-align: center;
     font-weight: bold;
     color: $secondary;
-    padding: 0px;
+    padding: 1rem;
     font-size: 2em;
     letter-spacing: 5px;
     transition: 0.5s;
     display: hidden;
-    opacity: 0;
+    opacity: 1;
+    color: $secondary;
+    margin-bottom: auto;
   }
 
   .card-img {
-    height: 100%;
+    height: auto;
   }
-
-  .card-title {
-    margin-bottom: -150px;
-  }
-
   .card {
-    margin: 0px;
+    margin: 1rem;
     margin-bottom: 100px;
-    width: 100%;
+    width: 90%;
     overflow: hidden;
+    background: $dark;
+    color: $secondary;
   }
 
 
@@ -178,18 +176,19 @@ export default {
     text-align: center;
     font-weight: bold;
     color: $secondary;
-    padding: 0px;
+    padding: 1rem;
     font-size: 1em;
     letter-spacing: 5px;
     transition: 0.5s;
     display: hidden;
     opacity: 0;
+    margin-bottom: -150px;
   }
 
   .card-img {
-    width: 80%;
-    min-height: 150px;
-    transition: 2s;
+    width: 100%;
+    height: auto;
+    transition: 1s;
     &:hover {
       width: 50%;
       height: 50%;
@@ -200,14 +199,11 @@ export default {
     }
   }
 
-  .card-title {
-    margin-bottom: -150px;
-  }
-
   .card {
-    margin: 5px;
+    margin: 0 auto;
     margin-bottom: 20px;
-    width: 100%;
+    width: 18rem;
+    max-height: 85%;
     overflow: hidden;
     background: $dark2 !important;
     border: 2px solid $secondary !important;
@@ -240,18 +236,19 @@ export default {
     text-align: center;
     font-weight: bold;
     color: $secondary;
-    padding: 0px;
+    padding: 1rem;
     font-size: 2em;
     letter-spacing: 5px;
-    transition: 2s;
+    transition: 1s;
     display: hidden;
     opacity: 0;
+    margin-bottom: -150px;
   }
 
   .card-img {
-    width: 80%;
-    min-height: 150px;
-    transition: 2s;
+    width: 100%;
+    height: auto;
+    transition: 1s;
     &:hover {
       width: 50%;
       height: 50%;
@@ -262,14 +259,11 @@ export default {
     }
   }
 
-  .card-title {
-    margin-bottom: -150px;
-  }
-
   .card {
-    margin: 5px;
+    margin: 0 auto;
     margin-bottom: 20px;
-    width: 100%;
+    width: 25rem;
+    max-height: 80%;
     overflow: hidden;
     background: $dark2 !important;
     border: 2px solid $secondary !important;
