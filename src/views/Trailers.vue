@@ -217,8 +217,6 @@ export default {
     }
   }
 }
-  
-
 
 
 // ******* DESKTOP RESPONSIVE ******* //

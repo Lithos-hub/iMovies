@@ -82,13 +82,8 @@ export default new Vuex.Store({
       })
     },
     getTrending({commit}) {
-
       const date = new Date();
       
-  
-      // const dateGreaterThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate() - 8)).slice(-2) }`;
-      // const dateLessThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate()) - 8).slice(-2) }`;
-
       const dateGreaterThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth())).slice(-2) }-${ ('0' + ( date.getDate())).slice(-2) }`;
       const dateLessThan = `${ date.getFullYear() }-${ ('0' + (date.getMonth() + 1 )).slice(-2) }-${ ('0' + ( date.getDate())).slice(-2) }`;
 
