@@ -84,7 +84,7 @@ Version 1.2.0
 
 Version 1.1.0
 
- * Added dynamic routes on main page when you click over a movie image to get details about that movie
+ * Added dynamic routes on main page when you click over a movie image to get details about that movie.
 
 ## Project setup
 ```
