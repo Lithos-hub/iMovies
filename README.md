@@ -1,6 +1,6 @@
 # iMovies
 
-![logo](https://user-images.githubusercontent.com/57297760/105691900-16134d80-5efe-11eb-9cbc-85a05ce46968.jpg)
+![logo](https://user-images.githubusercontent.com/57297760/104850259-56674000-58ee-11eb-9add-8f684be8bbbd.jpg)
 
 iMovies is a web app I'm developing using Vue.js.
 
