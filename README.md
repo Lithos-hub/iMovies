@@ -14,6 +14,12 @@ With version 1.7.9 a temporary dummy login system was added. The idea is to add 
 
 Changelog:
 
+Version 1.9.0
+
+* Added a login/register system without backend using LocalStorage. 
+* Added avatar option. 
+* The user is now be able to save movies in some categories with each account. On the other hand, the default account has now some hidden features.
+
 Version 1.8.0
 
  * Fixed an issue with the API call in the trailers section.
