@@ -11,29 +11,41 @@
                 <v-card-text class="pa-5">
                 <v-row>
                     <v-col lg="6" cols="12" class="text-center">
-                        <h4>Access with email and password <br> (Soon available)</h4>
+                        <h4>Access with <br> email and password</h4> 
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon class="info-icon" v-bind="attrs" v-on="on">mdi-information</v-icon>
+                            </template>
+                            <span>You will be able to save movies in different categories such as: favourites, watched, rated, etc.</span>
+                        </v-tooltip>
                         <v-divider class="my-5" dark></v-divider>
                         <v-sheet color="secondary darken-1" class="py-5 px-2" elevation="10" rounded="2">
 
-                            <form v-on:submit.prevent="login">
+                            <form v-on:submit.prevent="login(email, password)">
                          
-                        <v-text-field disabled required id="email-input" :rules="emailRules" v-model="email" autocomplete="email" label="Email" filled type="email" color="cyan darken-1"></v-text-field>
+                        <v-text-field required id="email-input" :rules="emailRules" v-model="email" label="E-mail" filled type="email" color="cyan darken-1"></v-text-field>
 
-                        <v-text-field disabled required id="pass-input" v-model.trim="password" autocomplete="password" label="Password" filled type="password" color="cyan darken-1"></v-text-field>
+                        <v-text-field required id="pass-input" v-model.trim="password" label="Password" filled type="password" color="cyan darken-1"></v-text-field>
                         
                         <v-alert dense v-if="formAlert" :color="validUser ? 'success darken-1' : 'red darken-1'">{{validUser ? 'Correct data! Loading app...' : 'Email or password are wrong. Please, try again'}}</v-alert>
                        
-                        <v-btn disabled type="submit" block class="gradient-btn1 mt-5">Enter</v-btn>
+                        <v-btn :loading="loading" :disabled="email === '' || password === ''" type="submit" block class="gradient-btn1 mt-5">Enter</v-btn>
 
                             </form>
 
                         <v-divider></v-divider>
                         <p class="mt-2 green--text">Don't you have an account?</p>
-                        <v-btn disabled block class="mb-2 gradient-btn2" to="/register">Register</v-btn>
+                        <v-btn block class="mb-2 gradient-btn2" to="/register">Register</v-btn>
                         </v-sheet>
                     </v-col>
                     <v-col lg="6" cols="12" class="text-center">
-                        <h4>Access with a <br>default account</h4>
+                        <h4>Access with a <br> default account</h4> 
+                         <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon class="info-icon" v-bind="attrs" v-on="on">mdi-information</v-icon>
+                            </template>
+                            <span>You will be able to access the application, but some features will be hidden.</span>
+                        </v-tooltip>
                         <v-divider class="my-5" dark></v-divider>
                         <v-card rounded="2" width="140" class="mx-auto justify-content-center" elevation="5" id="card-default" @click="setDefault">
                             <v-icon id="card-default-icon">mdi-account-circle</v-icon>
@@ -50,16 +62,18 @@
 </template>
 
 <script>
-import axios from "axios";
-import {mapState} from "vuex";
+// import axios from "axios";
+import { mapState } from "vuex";
 
 export default {
     data() {
         return {
+            loader: null,
+            loading: false,
             validUser: false,
             formAlert: false,
-            email: "",
-            password: "",
+            email: '',
+            password: '',
             emailRules: [
                 v => !!v || 'E-mail is required',
                 v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -78,17 +92,45 @@ export default {
             }
         }
     },
+    mounted() {
+        this.$store.commit("setDefault", false);
+    },
+    watch: {
+      loader () {
+        const l = this.loader
+        this[l] = !this[l]
+
+        setTimeout(() => (this[l] = false), 3000)
+
+        this.loader = null
+      },
+    },
     methods: {
-        login(){
+        login(email, password){
             this.formAlert = true;
 
                 if(localStorage.getItem("storageUserDATA")) {
-
                     const user = JSON.parse(localStorage.getItem("storageUserDATA"));
 
-                    setTimeout(() => {
-                        this.$router.push("/home")
-                    }, 2500);  
+                    for (let item of user) {
+                        if (item.userEmail === email && item.userPassword === password) {
+                            this.validUser = true
+
+                            this.$store.commit("setUser", item);
+                            this.$store.commit("setID", item.id);
+
+                            const storage = JSON.parse(localStorage.getItem("USERID")) || {};
+                            storage.id = item.id
+
+                            localStorage.setItem("USERID", JSON.stringify(storage));
+
+                            this.loader = 'loading'
+                            
+                             setTimeout(() => {
+                            this.$router.push("/home")
+                            }, 2000)
+                        }
+                    }
 
                 }else{
                     this.validUser = false;
@@ -100,21 +142,20 @@ export default {
         userData.userName = "defaultUser";
         userData.userEmail = "";
         userData.userPassword = "";
+        userData.toWatchMovies = [];
+        userData.watchedMovies = [];
+        userData.favoriteMovies = [];
+        userData.ratedMovies = [];
         
         this.$store.commit("setUser", userData);
+        this.$store.commit("setDefault", true);
 
         setTimeout(() => {
             this.$router.push("/home")
             }, 500);  
         
         },
-        getUsers() {
-
-        }
     },
-    created() {
-        this.getUsers();
-    }
 
 }
 </script>
@@ -134,6 +175,25 @@ export default {
 .access {
     position: relative;
     margin-top: 5%;
+}
+
+.info-icon {
+    background: linear-gradient(25deg, rgb(255, 199, 126), rgb(206, 130, 30), rgb(214, 52, 52), rgb(196, 17, 213));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    cursor: pointer;
+    font-size: 30px;
+}
+
+.menuable__content__active {
+    background: linear-gradient(25deg, rgb(255, 199, 126), rgb(206, 130, 30), rgb(214, 52, 52), rgb(196, 17, 213));
+    color: white;
+    padding: 10px;
+    max-width: 150px;
+    opacity: 1 !important;
+    box-shadow: 0px 0px 20px $dark;
+    text-align: center;
+    
 }
 
 #card-title{

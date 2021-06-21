@@ -106,42 +106,55 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapState } from "vuex";
 
 export default {
   props: ["arrayMovies", "category", "rate"],
   data() {
     return {
       url: "https://image.tmdb.org/t/p/original",
+      userID: null,
       dialog: false,
       title: "",
       release_date: "",
       overview: "",
       img: "",
+      userID: null,
     };
+  },
+  mounted () {
+    this.getUserID()
+  },
+  computed: {
+    ...mapState(["user"]),
   },
   methods: {
     removeMovie(item) {
+      const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+
       if (this.category === "watched") {
-        const index = this.arrayMovies.indexOf(item);
+      const index = this.arrayMovies.indexOf(item);
         if (index > -1) {
           this.arrayMovies.splice(index, 1);
         }
-        localStorage.setItem("storageWatchedMovies", JSON.stringify(this.arrayMovies));
+        storage[this.userID].watchedMovies = this.arrayMovies
+        localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
       if (this.category === "towatch") {
-        const index = this.arrayMovies.indexOf(item);
+      const index = this.arrayMovies.indexOf(item);
         if (index > -1) {
           this.arrayMovies.splice(index, 1);
         }
-        localStorage.setItem("storageToWatchMovies", JSON.stringify(this.arrayMovies));
+        storage[this.userID].toWatchMovies = this.arrayMovies
+        localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
       if (this.category === "favorite") {
-        const index = this.arrayMovies.indexOf(item);
+      const index = this.arrayMovies.indexOf(item);
         if (index > -1) {
           this.arrayMovies.splice(index, 1);
         }
-        localStorage.setItem("storageFavoriteMovies", JSON.stringify(this.arrayMovies));
+        storage[this.userID].favoriteMovies = this.arrayMovies
+        localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
     },
     showInfo(item) {
@@ -150,6 +163,10 @@ export default {
       this.overview = item.movie.overview;
       this.release_date = item.movie.release_date;
       this.img = item.movie.backdrop_path;
+    },
+    getUserID () {
+      const userID= JSON.parse(localStorage.getItem("USERID")) || {};
+      this.userID  = userID.id
     },
   },
 };

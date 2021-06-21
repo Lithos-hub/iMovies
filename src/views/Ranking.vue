@@ -1,57 +1,14 @@
 <template>
   <div>
     <SectionTitle :sectionSubtitle="subtitle" />
-    <!-- SNACKBAR - WATCHED MOVIES -->
+    <!-- SNACKBAR -->
     <v-snackbar
-      id="added-snackbar"
-      v-model="snackbar1"
-      timeout="3000"
-      right
-      centered
-      top
-      color="red darken-4"
-      elevation="10"
+      v-model="snackbar"
+      height="50px"
+      color="info"
+      tile
     >
-      Added to <span class="secondary darken-1 pa-2 rounded ml-2">Watched Movies</span>
-      <!-- SNACKBAR - FAVORITE MOVIES -->
-    </v-snackbar>
-    <v-snackbar
-      id="added-snackbar"
-      v-model="snackbar2"
-      timeout="3000"
-      right
-      centered
-      top
-      color="red darken-4"
-      elevation="10"
-    >
-      Added to <span class="secondary darken-1 pa-2 rounded ml-2">Favorite Movies</span>
-    </v-snackbar>
-    <!-- SNACKBAR - RATE -->
-    <v-snackbar
-      id="added-snackbar"
-      v-model="snackbar3"
-      timeout="3000"
-      right
-      centered
-      top
-      color="red darken-4"
-      elevation="10"
-    >
-      Rate registered
-    </v-snackbar>
-    <!-- SNACKBAR - TO-WATCH MOVIES -->
-    <v-snackbar
-      id="added-snackbar"
-      v-model="snackbar4"
-      timeout="3000"
-      right
-      centered
-      top
-      color="red darken-4"
-      elevation="10"
-    >
-      Added to <span class="secondary darken-1 pa-2 rounded ml-2">To-Watch Movies</span>
+      Added to <span class="secondary darken-1 pa-2 rounded ml-2"> {{ category }} </span>
     </v-snackbar>
 
     <!-- BUTTON FOR MENU EXPAND IN MOBILE DEVICES -->
@@ -67,110 +24,99 @@
         <v-col
           class="year-col"
           v-on:click="
-            year = '2010';
             expand = !expand;
           "
-          @click="getMoviesByYear()"
+          @click="getMoviesByYear('2010')"
         >
           2010
         </v-col>
         <v-col
           class="year-col"
           v-on:click="
-            year = '2011';
             expand = !expand;
           "
-          @click="getMoviesByYear()"
+          @click="getMoviesByYear('2011')"
         >
           2011
         </v-col>
         <v-col
           class="year-col"
           v-on:click="
-            year = '2012';
             expand = !expand;
           "
-          @click="getMoviesByYear()"
+          @click="getMoviesByYear('2012')"
         >
           2012
         </v-col>
         <v-col
           class="year-col"
           v-on:click="
-            year = '2013';
             expand = !expand;
           "
-          @click="getMoviesByYear()"
+          @click="getMoviesByYear('2013')"
         >
           2013
         </v-col>
         <v-col
           class="year-col"
           v-on:click="
-            year = '2014';
             expand = !expand;
           "
-          @click="getMoviesByYear()"
+          @click="getMoviesByYear('2014')"
         >
           2014
         </v-col>
         <v-col
           class="year-col"
           v-on:click="
-            year = '2015';
             expand = !expand;
           "
-          @click="getMoviesByYear()"
+          @click="getMoviesByYear('2015')"
         >
           2015
         </v-col>
         <v-col
           class="year-col"
           v-on:click="
-            year = '2016';
             expand = !expand;
           "
-          @click="getMoviesByYear()"
+          @click="getMoviesByYear('2016')"
         >
           2016
         </v-col>
         <v-col
           class="year-col"
           v-on:click="
-            year = '2017';
             expand = !expand;
           "
-          @click="getMoviesByYear()"
+          @click="getMoviesByYear('2017')"
         >
           2017
         </v-col>
         <v-col
           class="year-col"
           v-on:click="
-            year = '2018';
             expand = !expand;
           "
-          @click="getMoviesByYear()"
+          @click="getMoviesByYear('2018')"
         >
           2018
         </v-col>
         <v-col
           class="year-col"
           v-on:click="
-            year = '2019';
             expand = !expand;
           "
-          @click="getMoviesByYear()"
+          @click="getMoviesByYear('2019')"
         >
           2019
         </v-col>
         <v-col
           class="year-col"
           v-on:click="
-            year = '2020';
             expand = !expand;
           "
-          @click="getMoviesByYear()"
+          @click="getMoviesByYear('2020')"
         >
           2020
         </v-col>
@@ -182,78 +128,67 @@
       <v-tab
         active-class="cyan--text"
         class="white--text tab"
-        v-on:click="year = '2010'"
-        @click="getMoviesByYear()"
+        @click="getMoviesByYear('2010')"
         >2010</v-tab
       >
       <v-tab
         active-class="cyan--text"
         class="white--text tab"
-        v-on:click="year = '2011'"
-        @click="getMoviesByYear()"
+        @click="getMoviesByYear('211')"
         >2011</v-tab
       >
       <v-tab
         active-class="cyan--text"
         class="white--text tab"
-        v-on:click="year = '2012'"
-        @click="getMoviesByYear()"
+        @click="getMoviesByYear('2012')"
         >2013</v-tab
       >
       <v-tab
         active-class="cyan--text"
         class="white--text tab"
-        v-on:click="year = '2013'"
-        @click="getMoviesByYear()"
+        @click="getMoviesByYear('2013')"
         >2012</v-tab
       >
       <v-tab
         active-class="cyan--text"
         class="white--text tab"
-        v-on:click="year = '2014'"
-        @click="getMoviesByYear()"
+        @click="getMoviesByYear('2014')"
         >2014</v-tab
       >
       <v-tab
         active-class="cyan--text"
         class="white--text tab"
-        v-on:click="year = '2015'"
-        @click="getMoviesByYear()"
+        @click="getMoviesByYear('2015')"
         >2015</v-tab
       >
       <v-tab
         active-class="cyan--text"
         class="white--text tab"
-        v-on:click="year = '2016'"
-        @click="getMoviesByYear()"
+        @click="getMoviesByYear('2016')"
         >2016</v-tab
       >
       <v-tab
         active-class="cyan--text"
         class="white--text tab"
-        v-on:click="year = '2017'"
-        @click="getMoviesByYear()"
+        @click="getMoviesByYear('2017')"
         >2017</v-tab
       >
       <v-tab
         active-class="cyan--text"
         class="white--text tab"
-        v-on:click="year = '2018'"
-        @click="getMoviesByYear()"
+        @click="getMoviesByYear('2018')"
         >2018</v-tab
       >
       <v-tab
         active-class="cyan--text"
         class="white--text tab"
-        v-on:click="year = '2019'"
-        @click="getMoviesByYear()"
+        @click="getMoviesByYear('2019')"
         >2019</v-tab
       >
       <v-tab
         active-class="cyan--text"
         class="white--text tab"
-        v-on:click="year = '2020'"
-        @click="getMoviesByYear()"
+        @click="getMoviesByYear('2020')"
         >2020</v-tab
       >
     </v-tabs>
@@ -262,11 +197,11 @@
 
     <div class="moviesColumns" v-show="panelExpanded">
       <v-row no-gutters>
-        <v-col lg="3" sm="12" v-for="(item, i) in moviesByYear" :key="'B' + i">
+        <v-col md="3" xs="12" v-for="(item, i) in moviesByYear" :key="'B' + i">
           <div class="fadeIn">
             <v-card class="transparent mb-15" outlined>
-              <v-row no-gutters>
-                <v-col>
+              <v-row no-gutters class="d-flex justify-start">
+                <v-col md="8" xs="12">
                   <!-- MOVIE IMAGE AND DYNAMIC ICONS -->
                   <v-img :src="url + item.poster_path" class="movie-img">
                     <v-icon
@@ -295,8 +230,8 @@
                   <!-- **************************************** -->
                   <h3 class="movie-title ma-auto">{{ item.title }}</h3>
                 </v-col>
-                <v-col>
-                  <div class="mt-10 d-inline" id="btn-column">
+                <v-col md="4" xs="12">
+                  <div class="mt-10" id="btn-column">
                     <!-- BUTTON - WATCHED MOVIE  -->
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on, attrs }">
@@ -423,61 +358,47 @@ export default {
     return {
       subtitle: "Popular films of the last decade",
       url: "https://image.tmdb.org/t/p/original",
-      year: "2010",
+      userID: null,
+      year: '',
+      snackbar: false,
+      category: '',
       rateDialog: false,
       expand: false,
       errorMessage: "",
-      moviesByYear: [],
-      ratedMovies: [],
       panelExpanded: false,
-      snackbar1: false,
-      snackbar2: false,
-      snackbar3: false,
-      snackbar4: false,
+      arrWatched: [],
+      arrToWatch: [],
+      arrRated: [],
+      arrFavorite: [],
       rated: true,
       favorite: true,
       watched: true,
       towatch: true,
       rated: true,
       value: 0,
+      moviesByYear: [],
+      userData: []
     };
   },
   computed: {
     ...mapState(["toWatchMovies", "watchedMovies", "favoriteMovies", "moviesWithRates"]),
   },
+  created() {
+    this.getMoviesByYear('2010')
+    this.getUserID()
+  },
   methods: {
-    ...mapActions([
-      "getToWatchMovies",
-      "getWatchedMovies",
-      "getFavoriteMovies",
-      "getRatedMovies",
-    ]),
-    get2010Movies() {
-      const url = "https://api.themoviedb.org/3";
-      const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
-      const moviesUrl = `${url}/discover/movie?year=2010&api_key=${apikey}&sort_by=popularity.desc&page=1`;
-
-      return new Promise((resolve) => {
-        axios
-          .get(moviesUrl)
-          .then((resp) => {
-            this.panelExpanded = true;
-            this.moviesByYear = resp.data.results;
-          })
-          .catch((e) => {
-            console.info(e);
-            this.errorMessage =
-              "The answer is taking too long. There may have been an error with the database. Please reload the website.";
-          });
-      });
+    showSnackbar (category) {
+    this.snackbar = true
+    this.category = category
     },
-    getMoviesByYear() {
+    getMoviesByYear(year) {
+      this.year = year
       const url = "https://api.themoviedb.org/3";
       const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
-      let year = this.year;
       const moviesUrl = `${url}/discover/movie?year=${year}&api_key=${apikey}&sort_by=popularity.desc&page=1`;
 
-      return new Promise((resolve) => {
+      return new Promise(() => {
         axios
           .get(moviesUrl)
           .then((resp) => {
@@ -491,29 +412,34 @@ export default {
           });
       });
     },
+    getUserID () {
+      const userID= JSON.parse(localStorage.getItem("USERID")) || {};
+      this.userID = userID.id
+    },
+    // **** LOCALSTORAGE FUNCTIONS **** //
     addWatched(item) {
-      this.snackbar1 = true;
+      this.showSnackbar('Watched Movies')
       this.watchedMovies.push(item);
 
       const json = { rate: this.value / 10, movie: item };
+
+      this.writeMovieData(json, 'isWatched')
 
       const storage = JSON.parse(localStorage.getItem("storageWatchedMovies")) || [];
       storage.push(json);
       localStorage.setItem("storageWatchedMovies", JSON.stringify(storage));
     },
     addFavorite(item) {
-      this.snackbar2 = true;
+      this.showSnackbar('Favorite Movies')
       this.favoriteMovies.push(item);
 
       const json = { rate: this.value / 10, movie: item };
 
-      const storage = JSON.parse(localStorage.getItem("storageFavoriteMovies")) || [];
-      storage.push(json);
-      localStorage.setItem("storageFavoriteMovies", JSON.stringify(storage));
+      this.writeMovieData(json, 'isFavorite')
+a
     },
     addRate(item) {
-      // PUSH RATED MOVIES WITH THEIR RATES INTO AN ARRAY AND REGISTER IT IN LOCALSTORAGE
-      this.snackbar3 = true;
+      this.showSnackbar('Rated Movies')
 
       const value = this.value / 10;
       const json = {};
@@ -524,6 +450,8 @@ export default {
       json.movie_data = this.ratedMovies;
       json.rate = this.ratedMovies.rate;
 
+      this.writeMovieData(json, 'isRated')
+
       const storage = JSON.parse(localStorage.getItem("storageRatedMovies")) || [];
       storage.push(json);
       localStorage.setItem("storageRatedMovies", JSON.stringify(storage));
@@ -532,19 +460,34 @@ export default {
       this.moviesByYear.rate = value;
     },
     addToWatch(item) {
-      this.snackbar4 = true;
+      this.showSnackbar('To Watch Movies')
       this.toWatchMovies.push(item);
 
       const json = { rate: this.value / 10, movie: item };
+
+      this.writeMovieData(json, 'isToWatch')
 
       const storage = JSON.parse(localStorage.getItem("storageToWatchMovies")) || [];
       storage.push(json);
       localStorage.setItem("storageToWatchMovies", JSON.stringify(storage));
     },
-  },
-  created() {
-    this.get2010Movies();
-  },
+    writeMovieData(json, type) {
+      const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+      if(type === 'isWatched') {
+        storage[this.userID].watchedMovies.push(json)
+      }
+      if(type === 'isFavorite') {
+        storage[this.userID].favoriteMovies.push(json)
+      }
+      if(type === 'isRated') {
+        storage[this.userID].ratedMovies.push(json)
+      }
+      if(type === 'isToWatch') {
+        storage[this.userID].toWatchMovies.push(json)
+      }
+      localStorage.setItem("storageUserDATA", JSON.stringify(storage));
+    }
+  }
 };
 </script>
 
@@ -889,10 +832,7 @@ export default {
   }
 
   #btn-column {
-    display: block !important;
-    padding-left: 0px;
-    padding-right: 0px;
-    margin: 0;
+    margin-right: 0 auto;
     justify-content: left;
   }
 

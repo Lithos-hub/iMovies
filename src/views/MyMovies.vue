@@ -163,7 +163,7 @@
     <ByRateMovies
       v-if="category === 'byrate'"
       :category="byrate"
-      :ratedMovies="ratedMovies"
+      :arrayMovies="ratedMovies"
     />
   </div>
 </template>
@@ -173,7 +173,7 @@ import SectionTitle from "../components/SectionTitle";
 import MyMoviesCategory from "../components/MyMoviesCategory";
 import ByRateMovies from "../components/ByRateMovies";
 
-import _ from "lodash";
+import { uniqBy } from "lodash";
 
 export default {
   name: "MyMovies",
@@ -186,11 +186,13 @@ export default {
     return {
       subtitle: "Saved movies",
       category: "summary",
-      toWatchMovies: [],
-      favoriteMovies: [],
-      watchedMovies: [],
-      ratedMovies: [],
+      userData: {},
+      userID: null,
       watched: "watched",
+      toWatchMovies: [],
+      watchedMovies: [],
+      favoriteMovies: [],
+      ratedMovies: [],
       towatch: "towatch",
       favorite: "favorite",
       byrate: "byrate",
@@ -199,28 +201,28 @@ export default {
   },
   computed: {
     color1() {
-      if (this.toWatchMovies.length === 0) {
+      if (!this.toWatchMovies.length) {
         return "#F44336";
       } else {
         return "#207ef2";
       }
     },
     color2() {
-      if (this.favoriteMovies.length === 0) {
+      if (!this.favoriteMovies.length) {
         return "#F44336";
       } else {
         return "#207ef2";
       }
     },
     color3() {
-      if (this.watchedMovies.length === 0) {
+      if (!this.watchedMovies.length) {
         return "#F44336";
       } else {
         return "#207ef2";
       }
     },
     color4() {
-      if (this.ratedMovies.length === 0) {
+      if (!this.ratedMovies.length) {
         return "#F44336";
       } else {
         return "#207ef2";
@@ -228,44 +230,65 @@ export default {
     },
   },
   methods: {
+     getUserID () {
+      const userID= JSON.parse(localStorage.getItem("USERID")) || {};
+      const id = userID.id
+      this.userID = id
+    },
     getToWatchMovies() {
-      if (localStorage.getItem("storageToWatchMovies")) {
-        this.toWatchMovies = JSON.parse(localStorage.getItem("storageToWatchMovies"));
+      if (localStorage.getItem("storageUserDATA")) {
+        const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
+        const toWatchArr =  userData[this.userID].toWatchMovies
+        for (let movie of toWatchArr) {
+          this.toWatchMovies.push(movie)
+        }
 
-        const removeDuplicated = _.uniqBy(this.toWatchMovies, "movie.id");
+        const removeDuplicated = uniqBy(this.toWatchMovies, "movie.id");
 
         this.toWatchMovies = removeDuplicated;
       }
     },
     getWatchedMovies() {
-      if (localStorage.getItem("storageWatchedMovies")) {
-        this.watchedMovies = JSON.parse(localStorage.getItem("storageWatchedMovies"));
+      if (localStorage.getItem("storageUserDATA")) {
+        const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
+        const watchedArr = userData[this.userID].watchedMovies
+        for (let movie of watchedArr) {
+          this.watchedMovies.push(movie)
+        }
 
-        const removeDuplicated = _.uniqBy(this.watchedMovies, "movie.id");
+        const removeDuplicated = uniqBy(this.watchedMovies, "movie.id");
 
         this.watchedMovies = removeDuplicated;
       }
     },
     getFavoriteMovies() {
-      if (localStorage.getItem("storageFavoriteMovies")) {
-        this.favoriteMovies = JSON.parse(localStorage.getItem("storageFavoriteMovies"));
-
-        const removeDuplicated = _.uniqBy(this.favoriteMovies, "movie.id");
+      if (localStorage.getItem("storageUserDATA")) {
+        const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
+        
+        const favoriteArr = userData[this.userID].favoriteMovies
+        for (let movie of favoriteArr) {
+          this.favoriteMovies.push(movie)
+        }
+        const removeDuplicated = uniqBy(this.favoriteMovies, "movie.id");
 
         this.favoriteMovies = removeDuplicated;
       }
     },
     getRatedMovies() {
-      if (localStorage.getItem("storageRatedMovies")) {
-        this.ratedMovies = JSON.parse(localStorage.getItem("storageRatedMovies"));
-
-        const removeDuplicated = _.uniqBy(this.ratedMovies, "movie_data.id");
+      if (localStorage.getItem("storageUserDATA")) {
+        const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
+        const ratedArr = userData[this.userID].ratedMovies
+        for (let movie of ratedArr) {
+          this.ratedMovies.push(movie)
+        }
+        const removeDuplicated = uniqBy(this.ratedMovies, "movie_data.id");
 
         this.ratedMovies = removeDuplicated;
       }
     },
   },
-  created() {
+  mounted() {
+    this.getUserID();
     this.getWatchedMovies();
     this.getFavoriteMovies();
     this.getToWatchMovies();

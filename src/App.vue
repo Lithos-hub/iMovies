@@ -20,19 +20,30 @@ export default {
   data() {
     return {};
   },
+  mounted() {
+      this.getData();
+  },
   methods: {
     getData() {
+      localStorage.getItem("storageUserDATA");
       localStorage.getItem("storageToWatchMovies");
       localStorage.getItem("storageWatchedMovies");
       localStorage.getItem("storageFavoriteMovies");
       localStorage.getItem("storageRatedMovies");
-      localStorage.getItem("storageRating");
-      localStorage.getItem("storageUserDATA");
-      localStorage.getItem("storageUserAVATAR");
+
+      const userData = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+
+      const userID = JSON.parse(localStorage.getItem("USERID"));
+
+      if(userData) {
+        for (let user of userData) {
+          if(user.id === userID.id) {
+            this.$store.commit("setUser", user);
+          }
+        }
+      }
+
     },
-  },
-  mounted() {
-    this.getData();
   },
 };
 </script>
@@ -51,6 +62,15 @@ body {
   height: auto;
   width: auto;
 }
+
+.v-snack__wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    margin: 0 auto;
+    min-width: 100% !important;
+    border-radius: 0 !important;
+} 
 
 // Scroll Bar
 

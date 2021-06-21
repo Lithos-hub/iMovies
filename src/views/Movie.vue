@@ -85,11 +85,10 @@ export default {
         axios
           .get(movie)
           .then((resp) => {
-            console.log(resp.data);
             this.movieDetails = resp.data;
           })
           .catch((e) => {
-            console.info(e);
+            console.log(e)
           });
       });
     },

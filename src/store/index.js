@@ -23,7 +23,9 @@ export default new Vuex.Store({
     favoriteMovies: [],
     moviesWithRates: [],
     rates: [],
-    user: null
+    user: [],
+    isDefault: false,
+    userID: null,
   },
   mutations: {
     loadingError(state, payload) {
@@ -60,7 +62,13 @@ export default new Vuex.Store({
       state.searchedMovies = payload;
     },
     setUser(state, payload) {
-      state.user = payload;
+      state.user.push(payload);
+    },
+    setDefault(state, payload) {
+      state.isDefault = payload
+    },
+    setID(state, payload) {
+      state.userID = payload;
     }
   },
   actions: {
@@ -146,7 +154,16 @@ export default new Vuex.Store({
     getters: {
       signedUser(state) {
         return !!state.user
-      }
+      },
+      defaultUser(state) {
+        return state.isDefault
+      },
+      userID(state) {
+        return state.user.id
+      },
+      getUserData(state) {
+        return state.user
+      },
     },
 })
 

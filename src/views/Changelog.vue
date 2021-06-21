@@ -107,6 +107,10 @@ export default {
           version: "Version 1.8.0",
           changes: ["Fixed an issue with the API call in the trailers section.", "Aesthetic changes and improvements in the trailers section.", "Responsive improvements in the navbar component."],
         },
+        {
+          version: "Version 1.9.0",
+          changes: ["Added a login/register system without backend using LocalStorage. Added avatar option. The user is now be able to save movies in some categories with each account. On the other hand, the default account has now some hidden features."],
+        },
       ],
     };
   },

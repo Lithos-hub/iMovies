@@ -33,7 +33,7 @@
         <v-card
           color="error"
           class="white--text pa-2 m-5 empty-error-message"
-          v-if="ratedMovies.length === 0"
+          v-if="arrayMovies.length === 0"
           >There are no movies in this category yet.</v-card
         >
       </v-col>
@@ -41,7 +41,7 @@
       <v-row no-gutters>
         <v-col
           lg="4"
-          v-for="(item, i) in ratedMovies"
+          v-for="(item, i) in arrayMovies"
           :key="'A' + i"
           class="text-center mx-auto"
         >
@@ -109,10 +109,9 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default {
-  props: ["category", "ratedMovies"],
+  props: ["category", "arrayMovies"],
   data() {
     return {
       url: "https://image.tmdb.org/t/p/original",
@@ -122,15 +121,25 @@ export default {
       overview: "",
       img: "",
       array_IDs: [],
+      userID: null,
     };
+  },
+  mounted() {
+    this.getUserID()
   },
   methods: {
     removeMovie(item) {
-      const index = this.ratedMovies.indexOf(item);
-      if (index > -1) {
-        this.ratedMovies.splice(index, 1);
+      const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+      console.log(storage)
+      if (this.category === "byrate") {
+      const index = this.arrayMovies.indexOf(item);
+        if (index > -1) {
+          this.arrayMovies.splice(index, 1);
+        }
+        storage[this.userID].ratedMovies = this.arrayMovies
+        
+        localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
-      localStorage.setItem("storageRatedMovies", JSON.stringify(this.ratedMovies));
     },
     showInfo(item) {
       this.dialog = true;
@@ -139,8 +148,11 @@ export default {
       this.release_date = item.movie_data.release_date;
       this.img = item.movie_data.backdrop_path;
     },
+    getUserID () {
+      const userID= JSON.parse(localStorage.getItem("USERID")) || {};
+      this.userID  = userID.id
+    },
   },
-  mounted() {},
 };
 </script>
 

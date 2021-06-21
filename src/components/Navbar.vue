@@ -44,6 +44,7 @@
     >
       <v-list nav class="nav-list">
         <v-list-item-group v-model="group" active-class="black">
+          <v-img v-if="user.userAvatar !== undefined" :src="user.userAvatar" width="90" height="90" class="avatar ma-5 ma-auto"></v-img>
           <h5 id="username-drawer" class="text-center my-2 white--text">@{{user.userName}}</h5>
    
             <v-list-item dense to="/home">
@@ -56,14 +57,77 @@
 
           <v-divider></v-divider>
 
-          <v-list-item v-for="(items, i) in items" :key="i" :to="items.link">
-   
+          <v-list-item to="/search" v-if="!isDefault">
               <v-list-item-icon>
-                <v-icon class="nav-icons">{{ items.icon }}</v-icon>
-                <v-list-item-title class="nav-links">{{ items.title }}</v-list-item-title>
+                <v-icon class="nav-icons">
+                  mdi-magnify
+                </v-icon>
+                <v-list-item-title class="nav-links">
+                  Search
+                </v-list-item-title>
               </v-list-item-icon>
-  
           </v-list-item>
+          <v-list-item to="/mymovies" v-if="!isDefault">
+              <v-list-item-icon>
+                <v-icon class="nav-icons">
+                  mdi-star
+                </v-icon> 
+                <v-list-item-title class="nav-links">
+                  My movies
+                </v-list-item-title>
+              </v-list-item-icon>
+          </v-list-item>
+          <v-list-item to="/trending">
+              <v-list-item-icon>
+                <v-icon class="nav-icons">
+                  mdi-table
+                </v-icon>
+                <v-list-item-title class="nav-links">
+                  Trending
+                </v-list-item-title>
+              </v-list-item-icon>
+          </v-list-item>
+          <v-list-item to="/trailers">
+              <v-list-item-icon>
+                <v-icon class="nav-icons">
+                  mdi-video-vintage
+                </v-icon>
+                <v-list-item-title class="nav-links">
+                  Trailers
+                </v-list-item-title>
+              </v-list-item-icon>
+          </v-list-item>
+          <v-list-item to="/genres">
+              <v-list-item-icon>
+                <v-icon class="nav-icons">
+                  mdi-shape
+                </v-icon>
+                <v-list-item-title class="nav-links">
+                  Genres
+                </v-list-item-title>
+              </v-list-item-icon>
+          </v-list-item>
+          <v-list-item to="/ranking" v-if="!isDefault">
+              <v-list-item-icon>
+                <v-icon class="nav-icons">
+                  mdi-format-list-numbered
+                </v-icon>
+                <v-list-item-title class="nav-links">
+                  Ranking
+                </v-list-item-title>
+              </v-list-item-icon>
+          </v-list-item>
+          <v-list-item to="/changelog">
+              <v-list-item-icon>
+                <v-icon class="nav-icons">
+                  mdi-lead-pencil
+                </v-icon>
+                <v-list-item-title class="nav-links">
+                  Changelog
+                </v-list-item-title>
+              </v-list-item-icon>
+          </v-list-item>
+  
         </v-list-item-group>
       </v-list>
 
@@ -80,31 +144,27 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
 
 export default {
   name: "Navbar",
   data() {
     return {
       date: new Date().getFullYear(),
+      isDefault: Boolean,
+      user: {},
+      id: null,
       major: 1,
-      minor: 8,
+      minor: 9,
       patch: 0,
       group: null,
-      drawer: false,
-      items: [
-        { title: "Search", icon: "mdi-magnify", link: "/search" },
-        { title: "My Movies", icon: "mdi-star", link: "/mymovies" },
-        { title: "Trending", icon: "mdi-table", link: "/trending" },
-        { title: "Trailers", icon: "mdi-video-vintage", link: "/trailers" },
-        { title: "Genres", icon: "mdi-shape", link: "/genres" },
-        { title: "Ranking", icon: "mdi-format-list-numbered", link: "/ranking" },
-        { title: "Changelog", icon: "mdi-lead-pencil", link: "/changelog" },
-      ],
+      drawer: false
     }
   },
+  created () {
+    this.setUser()
+    console.log(this.isDefault)
+  },
   computed: {
-    ...mapState(["user"]),
     displayText() {
       switch (this.$vuetify.breakpoint.name) {
           case 'xs': return false
@@ -116,13 +176,19 @@ export default {
     },
   },
   methods: {
+    setUser () {
+      this.isDefault = this.$store.getters.defaultUser
+      if (!this.isDefault) {
+        const userStorageData = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+      const userid = JSON.parse(localStorage.getItem("USERID")) || {};
+
+      this.user = userStorageData[userid.id]
+      } else {
+        this.user.userName = "DefaultUser"
+      }
+    },
     logout() {
-      const userData = null;
-
-      this.$store.commit("setUser", userData);
-
-      localStorage.removeItem('storageUserDATA')
-
+      this.$store.commit("setDefault", false);
       this.$router.push("/")
       }
     }
@@ -173,6 +239,10 @@ text-transform: uppercase;
   }
 }
 
+.avatar {
+  border-radius: 50%;
+  border: 2px solid $primary;
+}
 
 
 
