@@ -26,6 +26,7 @@ export default new Vuex.Store({
     user: [],
     isDefault: false,
     userID: null,
+    isLogged: false,
   },
   mutations: {
     loadingError(state, payload) {
@@ -69,6 +70,9 @@ export default new Vuex.Store({
     },
     setID(state, payload) {
       state.userID = payload;
+    },
+    isLogged(state, payload) {
+      state.isLogged = payload;
     }
   },
   actions: {
@@ -164,6 +168,9 @@ export default new Vuex.Store({
       getUserData(state) {
         return state.user
       },
+      isLogged(state) {
+        return state.isLogged
+      }
     },
 })
 

@@ -129,10 +129,11 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const restrictedRoute = to.meta.restrictedRoute
+  const isLogged = store.getters.isLogged
   const registeredUsersOnly = to.meta.registeredUsersOnly
   
   if(restrictedRoute) {
-    if (store.getters.signedUser !== {}){
+    if (store.getters.signedUser !== {} && isLogged){
       next()
     }else{
       next('/')
@@ -142,7 +143,7 @@ router.beforeEach((to, from, next) => {
   }
 
   if(registeredUsersOnly) {
-    if (!store.getters.defaultUser){
+    if (!store.getters.defaultUser && isLogged){
       next()
     }else{
       next('/home')

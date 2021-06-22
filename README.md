@@ -14,6 +14,10 @@ With version 1.7.9 a temporary dummy login system was added. The idea is to add 
 
 Changelog:
 
+Version 1.9.1
+
+* Improved the protected router system.
+
 Version 1.9.0
 
 * Added a login/register system without backend using LocalStorage. 

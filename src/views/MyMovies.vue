@@ -114,7 +114,7 @@
         </v-row>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div>Favourite movies:</div>
+            <div>Favorite movies:</div>
           </v-col>
           <v-col>
             <div class="data-list-number" :style="{ color: color2 }">

@@ -118,6 +118,8 @@ export default {
 
                             this.$store.commit("setUser", item);
                             this.$store.commit("setID", item.id);
+                            this.$store.commit("isLogged", true);
+                            
 
                             const storage = JSON.parse(localStorage.getItem("USERID")) || {};
                             storage.id = item.id
@@ -134,9 +136,11 @@ export default {
 
                 }else{
                     this.validUser = false;
+                    this.$store.commit("isLogged", false);
             }
         },
         setDefault(){
+        this.$store.commit("isLogged", true);
         const userData = {};
 
         userData.userName = "defaultUser";
@@ -185,7 +189,7 @@ export default {
     font-size: 30px;
 }
 
-.menuable__content__active {
+.v-tooltip__content {
     background: linear-gradient(25deg, rgb(255, 199, 126), rgb(206, 130, 30), rgb(214, 52, 52), rgb(196, 17, 213));
     color: white;
     padding: 10px;

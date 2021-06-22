@@ -106,7 +106,7 @@ export default {
       trailerVideo: "",
       videoError: "",
       url: "https://image.tmdb.org/t/p/original",
-      no_overview: "We are sorry. This movie has not available overview.",
+      no_overview: "We are sorry. This movie have not available overview.",
     };
   },
   computed: {

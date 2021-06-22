@@ -286,7 +286,7 @@ export default {
       subtitle: "Movies per genre",
       genreDialog: false,
       url: "https://image.tmdb.org/t/p/original",
-      no_overview: "We sorry. This movie has not overview available.",
+      no_overview: "We sorry. This movie have not overview available.",
       loadingGenre: false,
       loadingError: "",
       movies_array: [],

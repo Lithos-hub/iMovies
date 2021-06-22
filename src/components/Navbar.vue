@@ -155,14 +155,13 @@ export default {
       id: null,
       major: 1,
       minor: 9,
-      patch: 0,
+      patch: 1,
       group: null,
       drawer: false
     }
   },
   created () {
     this.setUser()
-    console.log(this.isDefault)
   },
   computed: {
     displayText() {
@@ -188,7 +187,8 @@ export default {
       }
     },
     logout() {
-      this.$store.commit("setDefault", false);
+      this.$store.commit("setDefault", false)
+      this.$store.commit("isLogged", false)
       this.$router.push("/")
       }
     }

@@ -194,7 +194,7 @@ export default {
       input: "",
       url: "https://image.tmdb.org/t/p/original",
       no_image: require("../assets/img/no-image.jpg"),
-      no_overview: "We are sorry. This movie has not available overview.",
+      no_overview: "We are sorry. This movie have not available overview.",
       searchedMovies: [],
       wheretowatch: false,
       trailerVideo: "",
@@ -265,7 +265,7 @@ export default {
           if(buy !== undefined || buy !== null) {
             providers_buy_array.push(buy)
           }else{
-            console.log(buy + " has not providers")
+            console.log(buy + " have not providers")
           }
         }
 
@@ -278,7 +278,7 @@ export default {
           if(flatrate !== undefined || flatrate !== null) {
             providers_flatrate_array.push(flatrate)
           }else{
-            console.log(flatrate + " has not providers")
+            console.log(flatrate + " have not providers")
           }
         }
 
@@ -291,7 +291,7 @@ export default {
           if(rent !== undefined || rent !== null) {
             providers_rent_array.push(rent)
           }else{
-            console.log(rent + " has not providers")
+            console.log(rent + " have not providers")
           }
         }
 
@@ -301,12 +301,10 @@ export default {
 
             })
             .catch((e) => {
-              console.log("=> Some movies has not providers")
+              console.log("=> Some movies have not providers")
             })
 
           }
-       
-        console.log(this.searchedMovies)
 
         this.input = "";
 

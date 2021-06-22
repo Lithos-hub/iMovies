@@ -130,7 +130,6 @@ export default {
   methods: {
     removeMovie(item) {
       const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-      console.log(storage)
       if (this.category === "byrate") {
       const index = this.arrayMovies.indexOf(item);
         if (index > -1) {
