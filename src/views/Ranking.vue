@@ -20,7 +20,7 @@
 
     <!-- MENU EXPAND IN MOBILE DEVICES  -->
     <v-expand-transition>
-      <v-row id="years-menu" v-show="expand">
+      <v-row id="years-menu" v-if="expand">
         <v-col
           class="year-col"
           v-on:click="
@@ -195,7 +195,7 @@
 
     <div id="year-selected-mobile">{{ year }}</div>
 
-    <div class="moviesColumns" v-show="panelExpanded">
+    <div class="moviesColumns" v-if="panelExpanded">
       <v-row no-gutters>
         <v-col md="3" xs="12" v-for="(item, i) in moviesByYear" :key="'B' + i">
           <div class="fadeIn">
@@ -204,29 +204,31 @@
                 <v-col md="8" xs="12">
                   <!-- MOVIE IMAGE AND DYNAMIC ICONS -->
                   <v-img :src="url + item.poster_path" class="movie-img">
-                    <v-icon
-                      class="eye-icon-img"
-                      v-show="watchedMovies.includes(item) ? watched : !watched"
-                      v-model="watched"
-                      >mdi-eye</v-icon
-                    >
-                    <v-icon
-                      class="heart-icon-img"
-                      v-show="favoriteMovies.includes(item) ? favorite : !favorite"
-                      >mdi-heart</v-icon
-                    >
-                    <v-icon
-                      class="plus-icon-img"
-                      v-show="toWatchMovies.includes(item) ? towatch : !towatch"
-                      >mdi-plus</v-icon
-                    >
-
-                    <div>
-                      <div class="rate-img">
-                        {{ item.rate }}
-                      </div>
+                    <div v-for="(id_watched, i) in arrWatchedIDS" :key="'C' + i">
+                      <v-icon v-if="id_watched === item.id"
+                        class="eye-icon-img"
+                        >mdi-eye</v-icon
+                      >
                     </div>
+                    <div v-for="(id_favorite, i) in arrFavoriteIDS" :key="'D' + i">
+                      <v-icon v-if="id_favorite === item.id"
+                        class="heart-icon-img"
+                        >mdi-heart</v-icon
+                      >
+                  </div>
+                    <div v-for="(id_toWatch, i) in arrToWatchIDS" :key="'E' + i">
+                      <v-icon v-if="id_toWatch === item.id"
+                        class="plus-icon-img"
+                        >mdi-plus</v-icon
+                      >
+                  </div>
+                    <div v-for="(rated, i) in arrRatedIDS" :key="'F' + i">
+                        <div class="rate-img" v-if="rated.id === item.id">
+                          {{ rated.rate }}
+                        </div>
+                  </div>
                   </v-img>
+                  <h3 class="white--text">{{item.id}}</h3>
                   <!-- **************************************** -->
                   <h3 class="movie-title ma-auto">{{ item.title }}</h3>
                 </v-col>
@@ -241,7 +243,7 @@
                           class="white--text d-block mt-5 mx-2"
                           v-bind="attrs"
                           v-on="on"
-                          @click="addWatched(item)"
+                          @click="addWatched(item); saveIDMovies()"
                           :disabled="watchedMovies.includes(item) ? watched : !watched"
                           ><v-icon>mdi-eye</v-icon></v-btn
                         >
@@ -253,7 +255,7 @@
                       small
                       color="red"
                       class="white--text d-block mt-5 mx-2"
-                      @click="addFavorite(item)"
+                      @click="addFavorite(item); saveIDMovies()"
                       :disabled="favoriteMovies.includes(item) ? favorite : !favorite"
                       ><v-icon>mdi-heart</v-icon></v-btn
                     >
@@ -307,7 +309,7 @@
                                 <v-btn
                                   block
                                   color="secondary"
-                                  @click="addRate(item)"
+                                  @click="addRate(item); saveIDMovies()"
                                   v-on:click="rateDialog.value = false"
                                   >Done</v-btn
                                 >
@@ -327,7 +329,7 @@
                           class="white--text d-block mt-5 mx-2"
                           v-bind="attrs"
                           v-on="on"
-                          @click="addToWatch(item)"
+                          @click="addToWatch(item); saveIDMovies()"
                           ><v-icon>mdi-plus</v-icon></v-btn
                         >
                       </template>
@@ -346,7 +348,7 @@
 
 <script>
 import SectionTitle from "../components/SectionTitle";
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 import axios from "axios";
 
 export default {
@@ -366,10 +368,12 @@ export default {
       expand: false,
       errorMessage: "",
       panelExpanded: false,
-      arrWatched: [],
-      arrToWatch: [],
-      arrRated: [],
-      arrFavorite: [],
+      arrWatchedIDS: [],
+      arrToWatchIDS: [],
+      arrRatedIDS: [],
+      arrFavoriteIDS: [],
+      arrIDS: [],
+      loaded: false,
       rated: true,
       favorite: true,
       watched: true,
@@ -383,9 +387,10 @@ export default {
   computed: {
     ...mapState(["toWatchMovies", "watchedMovies", "favoriteMovies", "moviesWithRates"]),
   },
-  created() {
+  mounted() {
     this.getMoviesByYear('2010')
     this.getUserID()
+    this.saveIDMovies()
   },
   methods: {
     showSnackbar (category) {
@@ -404,6 +409,9 @@ export default {
           .then((resp) => {
             this.panelExpanded = true;
             this.moviesByYear = resp.data.results;
+            for (let data of this.moviesByYear) {
+              this.arrIDS.push(data.id)
+            }
           })
           .catch((e) => {
             console.info(e);
@@ -436,6 +444,10 @@ export default {
       const json = { rate: this.value / 10, movie: item };
 
       this.writeMovieData(json, 'isFavorite')
+
+      const storage = JSON.parse(localStorage.getItem("storageFavoriteMovies")) || [];
+      storage.push(json);
+      localStorage.setItem("storageFavoriteMovies", JSON.stringify(storage));
 a
     },
     addRate(item) {
@@ -455,9 +467,6 @@ a
       const storage = JSON.parse(localStorage.getItem("storageRatedMovies")) || [];
       storage.push(json);
       localStorage.setItem("storageRatedMovies", JSON.stringify(storage));
-
-      // ************************ //
-      this.moviesByYear.rate = value;
     },
     addToWatch(item) {
       this.showSnackbar('To Watch Movies')
@@ -486,6 +495,36 @@ a
         storage[this.userID].toWatchMovies.push(json)
       }
       localStorage.setItem("storageUserDATA", JSON.stringify(storage));
+    },
+    saveIDMovies () {
+      const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+      let watched = storage[this.userID].watchedMovies || [];
+      let favorite = storage[this.userID].favoriteMovies || [];
+      let rated = storage[this.userID].ratedMovies || [];
+      let toWatch = storage[this.userID].toWatchMovies || [];
+
+      watched.forEach((movie) => {
+        this.arrWatchedIDS.push(movie.movie.id);
+        });
+      rated.forEach((movie) => {
+        this.arrRatedIDS.push({
+          id: movie.movie_data.id,
+          rate: movie.rate
+        });
+        });
+      toWatch.forEach((movie) => {
+        this.arrToWatchIDS.push(movie.movie.id);
+        });
+      favorite.forEach((movie) => {
+        console.log(movie)
+        this.arrFavoriteIDS.push(movie.movie.id);
+        });
+
+        console.log(this.arrWatchedIDS)
+        console.log(this.arrRatedIDS)
+        console.log(this.arrToWatchIDS)
+        console.log(this.arrFavoriteIDS)
+
     }
   }
 };

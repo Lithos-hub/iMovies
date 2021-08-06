@@ -14,6 +14,10 @@ With version 1.7.9 a temporary dummy login system was added. The idea is to add 
 
 Changelog:
 
+Version 1.9.2
+
+* Added permanent icons in the Ranking section. Now the icons will remain over each corresponding movie even if the user exits the view or logs out.
+
 Version 1.9.1
 
 * Improved the protected router system.

@@ -155,7 +155,7 @@ export default {
       id: null,
       major: 1,
       minor: 9,
-      patch: 1,
+      patch: 2,
       group: null,
       drawer: false
     }

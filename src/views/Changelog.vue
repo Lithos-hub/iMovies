@@ -111,6 +111,14 @@ export default {
           version: "Version 1.9.0",
           changes: ["Added a login/register system without backend using LocalStorage. Added avatar option. The user is now be able to save movies in some categories with each account. On the other hand, the default account has now some hidden features."],
         },
+        {
+          version: "Version 1.9.1",
+          changes: ["Improved the protected router system."],
+        },
+        {
+          version: "Version 1.9.2",
+          changes: ["Added permanent icons in the Ranking section. Now the icons will remain over each corresponding movie even if the user exits the view or logs out."],
+        },
       ],
     };
   },
