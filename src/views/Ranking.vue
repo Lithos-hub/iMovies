@@ -251,14 +251,21 @@
                       <span>Add to watched movies</span>
                     </v-tooltip>
                     <!-- BUTTON - FAVORITE MOVIE  -->
-                    <v-btn
-                      small
-                      color="red"
-                      class="white--text d-block mt-5 mx-2"
-                      @click="addFavorite(item); saveIDMovies()"
-                      :disabled="favoriteMovies.includes(item) ? favorite : !favorite"
-                      ><v-icon>mdi-heart</v-icon></v-btn
-                    >
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          small
+                          color="red"
+                          class="white--text d-block mt-5 mx-2"
+                                                    v-bind="attrs"
+                              v-on="on"
+                          @click="addFavorite(item); saveIDMovies()"
+                          :disabled="favoriteMovies.includes(item) ? favorite : !favorite"
+                          ><v-icon>mdi-heart</v-icon></v-btn
+                        >
+                          </template>
+                        <span>Add to favourite movies</span>
+                    </v-tooltip>
 
                     <v-dialog transition="dialog-bottom-transition" max-width="600">
                       <template v-slot:activator="{ on, attrs }">
