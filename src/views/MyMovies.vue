@@ -142,8 +142,16 @@
             </div>
           </v-col>
         </v-row>
+        <v-row class="text-center">
+          <v-col></v-col>
+          <v-col cols="4">
+          <v-btn color="error" dark @click="reset">Reset statistics</v-btn>
+          </v-col>
+          <v-col></v-col>
+        </v-row>
       </v-container>
     </v-row>
+
 
     <MyMoviesCategory
       v-if="category === 'watched'"
@@ -286,6 +294,24 @@ export default {
         this.ratedMovies = removeDuplicated;
       }
     },
+    reset () { 
+      if (localStorage.getItem("storageUserDATA")) {
+        const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
+        userData[this.userID].toWatchMovies = []
+        userData[this.userID].watchedMovies = []
+        userData[this.userID].favoriteMovies = []
+        userData[this.userID].ratedMovies = []
+        localStorage.setItem("storageUserDATA", JSON.stringify(userData));
+        
+        this.toWatchMovies = []
+        
+        this.favoriteMovies = []
+        
+        this.watchedMovies = []
+        
+        this.ratedMovies = []
+      }
+    }
   },
   mounted() {
     this.getUserID();

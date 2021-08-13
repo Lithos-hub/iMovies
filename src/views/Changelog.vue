@@ -119,6 +119,10 @@ export default {
           version: "Version 1.9.2",
           changes: ["Added permanent icons in the Ranking section. Now the icons will remain over each corresponding movie even if the user exits the view or logs out."],
         },
+        {
+          version: "Version 1.9.3",
+          changes: ["Added reset statistics function in My Movies view. In the ranking section, if the movie has been previously selected, it will be deleted."],
+        },
       ],
     };
   },

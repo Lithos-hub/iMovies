@@ -201,9 +201,9 @@
           <div class="fadeIn">
             <v-card class="transparent mb-15" outlined>
               <v-row no-gutters class="d-flex justify-start">
-                <v-col md="8" xs="12">
-                  <!-- MOVIE IMAGE AND DYNAMIC ICONS -->
-                  <v-img :src="url + item.poster_path" class="movie-img">
+                <!-- MOVIE IMAGE AND DYNAMIC ICONS -->
+                <v-col  md="9" xs="12">
+                  <v-img :src="url + item.poster_path" class="movie-img ml-auto">
                     <div v-for="(id_watched, i) in arrWatchedIDS" :key="'C' + i">
                       <v-icon v-if="id_watched === item.id"
                         class="eye-icon-img"
@@ -228,11 +228,9 @@
                         </div>
                   </div>
                   </v-img>
-                  <h3 class="white--text">{{item.id}}</h3>
-                  <!-- **************************************** -->
-                  <h3 class="movie-title ma-auto">{{ item.title }}</h3>
+                  <!-- MOVIE BUTTONS -->
                 </v-col>
-                <v-col md="4" xs="12">
+                <v-col md="3" xs="12">
                   <div class="mt-10" id="btn-column">
                     <!-- BUTTON - WATCHED MOVIE  -->
                     <v-tooltip bottom>
@@ -345,6 +343,7 @@
                   </div>
                 </v-col>
               </v-row>
+              <h3 class="movie-title ma-auto justify-center">{{ item.title }}</h3>
             </v-card>
           </div>
         </v-col>
@@ -375,6 +374,10 @@ export default {
       expand: false,
       errorMessage: "",
       panelExpanded: false,
+      arrWatchedMovies: [],
+      arrFavoriteMovies: [],
+      arrToWatchMovies: [],
+      arrRatedMovies: [],
       arrWatchedIDS: [],
       arrToWatchIDS: [],
       arrRatedIDS: [],
@@ -434,15 +437,12 @@ export default {
     // **** LOCALSTORAGE FUNCTIONS **** //
     addWatched(item) {
       this.showSnackbar('Watched Movies')
-      this.watchedMovies.push(item);
 
       const json = { rate: this.value / 10, movie: item };
 
-      this.writeMovieData(json, 'isWatched')
+      this.watchedMovies.push(item);
 
-      const storage = JSON.parse(localStorage.getItem("storageWatchedMovies")) || [];
-      storage.push(json);
-      localStorage.setItem("storageWatchedMovies", JSON.stringify(storage));
+      this.writeMovieData(json, 'isWatched', item)
     },
     addFavorite(item) {
       this.showSnackbar('Favorite Movies')
@@ -451,10 +451,6 @@ export default {
       const json = { rate: this.value / 10, movie: item };
 
       this.writeMovieData(json, 'isFavorite')
-
-      const storage = JSON.parse(localStorage.getItem("storageFavoriteMovies")) || [];
-      storage.push(json);
-      localStorage.setItem("storageFavoriteMovies", JSON.stringify(storage));
 a
     },
     addRate(item) {
@@ -470,10 +466,6 @@ a
       json.rate = this.ratedMovies.rate;
 
       this.writeMovieData(json, 'isRated')
-
-      const storage = JSON.parse(localStorage.getItem("storageRatedMovies")) || [];
-      storage.push(json);
-      localStorage.setItem("storageRatedMovies", JSON.stringify(storage));
     },
     addToWatch(item) {
       this.showSnackbar('To Watch Movies')
@@ -482,15 +474,26 @@ a
       const json = { rate: this.value / 10, movie: item };
 
       this.writeMovieData(json, 'isToWatch')
-
-      const storage = JSON.parse(localStorage.getItem("storageToWatchMovies")) || [];
-      storage.push(json);
-      localStorage.setItem("storageToWatchMovies", JSON.stringify(storage));
     },
-    writeMovieData(json, type) {
+    writeMovieData(json, type, item) {
       const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+      let isRepeated = Boolean
+
       if(type === 'isWatched') {
-        storage[this.userID].watchedMovies.push(json)
+        for (let movie of this.arrWatchedMovies) {
+          if (movie.movie.id === item.id) {
+            console.log('Repeated movie!')
+            isRepeated = true
+            this.arrWatchedMovies.splice(this.arrWatchedMovies.indexOf(movie), 1);
+          } else { 
+            isRepeated = false
+          }
+        }
+        if (!isRepeated) {
+          console.log('New movie!')
+          this.arrWatchedMovies.push(json);
+        }
+        storage[this.userID].watchedMovies = this.arrWatchedMovies
       }
       if(type === 'isFavorite') {
         storage[this.userID].favoriteMovies.push(json)
@@ -505,32 +508,52 @@ a
     },
     saveIDMovies () {
       const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+
+      this.arrWatchedMovies = storage[this.userID].watchedMovies
+      this.arrFavoriteMovies = storage[this.userID].favoriteMovies
+      this.arrToWatchMovies = storage[this.userID].toWatchMovies
+      this.arrRatedMovies = storage[this.userID].ratedMovies
+
       let watched = storage[this.userID].watchedMovies || [];
       let favorite = storage[this.userID].favoriteMovies || [];
       let rated = storage[this.userID].ratedMovies || [];
       let toWatch = storage[this.userID].toWatchMovies || [];
 
-      watched.forEach((movie) => {
-        this.arrWatchedIDS.push(movie.movie.id);
-        });
-      rated.forEach((movie) => {
-        this.arrRatedIDS.push({
+      let watchedAuxArr = [];
+      let favoriteAuxArr = [];
+      let ratedAuxArr = [];
+      let toWatchAuxArr = [];
+
+      let uniqueWatched = [];
+      let uniqueFavorite = [];
+      let uniqueRated = [];
+      let uniqueToWatch = [];
+
+      for (let movie of watched) { 
+        watchedAuxArr.push(movie.movie.id)
+        uniqueWatched = [ ...new Set(watchedAuxArr)]
+      }
+     for (let movie of rated) {
+        ratedAuxArr.push({
           id: movie.movie_data.id,
           rate: movie.rate
-        });
-        });
-      toWatch.forEach((movie) => {
-        this.arrToWatchIDS.push(movie.movie.id);
-        });
-      favorite.forEach((movie) => {
-        console.log(movie)
-        this.arrFavoriteIDS.push(movie.movie.id);
-        });
+        })
+        uniqueRated = [ ...new Set(ratedAuxArr)]
+     }
+      for (let movie of toWatch) { 
+        toWatchAuxArr.push(movie.movie.id);
+        uniqueToWatch = [ ...new Set(toWatchAuxArr)]
+      }
+      for (let movie of favorite) {
+        favoriteAuxArr.push(movie.movie.id);
+        uniqueFavorite = [ ...new Set(favoriteAuxArr)]
+      }
 
-        console.log(this.arrWatchedIDS)
-        console.log(this.arrRatedIDS)
-        console.log(this.arrToWatchIDS)
-        console.log(this.arrFavoriteIDS)
+      this.arrWatchedIDS = uniqueWatched;
+      this.arrFavoriteIDS = uniqueFavorite;
+      this.arrRatedIDS = uniqueRated;
+      this.arrToWatchIDS = uniqueToWatch;
+
 
     }
   }
@@ -552,7 +575,6 @@ a
     opacity: 1;
   }
 }
-
 .eye-icon-img {
   color: white !important;
   text-shadow: none !important;
@@ -675,8 +697,7 @@ a
 
   #btn-column {
     display: flex !important;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-inline: 30px;
     justify-content: center;
   }
 
@@ -698,7 +719,7 @@ a
 
   .movie-title {
     font-weight: lighter;
-    font-size: 24px;
+    font-size: 1em;
     padding-top: 20px;
     color: white;
   }
@@ -787,8 +808,7 @@ a
 
   #btn-column {
     display: block !important;
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-inline: 0px;
     justify-content: center;
   }
 
@@ -905,7 +925,7 @@ a
 
   .movie-title {
     font-weight: lighter;
-    font-size: 1.5em;
+    font-size: 1em;
     color: white;
   }
 

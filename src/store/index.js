@@ -135,26 +135,6 @@ export default new Vuex.Store({
       });
     })
   },
-  getToWatchMovies({commit}) {
-    if (localStorage.getItem("storageToWatchMovies")) {
-    commit("setToWatchMovies", JSON.parse(localStorage.getItem("storageToWatchMovies")))
-    }
-  },
-  getWatchedMovies({commit}) {
-  if (localStorage.getItem("storageWatchedMovies")) {
-  commit("setWatchedMovies", JSON.parse(localStorage.getItem("storageWatchedMovies")))
-      }
-  },
-  getFavoriteMovies({commit}) {
-  if (localStorage.getItem("storageFavoriteMovies")) {
-  commit("setFavoriteMovies", JSON.parse(localStorage.getItem("storageFavoriteMovies")))
-      }
-  },
-  getRatedMovies({commit}) {
-  if (localStorage.getItem("storageRatedMovies")) {
-  commit("setRatedMovies", JSON.parse(localStorage.getItem("storageRatedMovies")))
-      }
-    },
     getters: {
       signedUser(state) {
         return !!state.user

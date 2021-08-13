@@ -25,14 +25,7 @@ export default {
   },
   methods: {
     getData() {
-      localStorage.getItem("storageUserDATA");
-      localStorage.getItem("storageToWatchMovies");
-      localStorage.getItem("storageWatchedMovies");
-      localStorage.getItem("storageFavoriteMovies");
-      localStorage.getItem("storageRatedMovies");
-
       const userData = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-
       const userID = JSON.parse(localStorage.getItem("USERID"));
 
       if(userData) {
