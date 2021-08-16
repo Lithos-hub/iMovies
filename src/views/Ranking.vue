@@ -3,12 +3,16 @@
     <SectionTitle :sectionSubtitle="subtitle" />
     <!-- SNACKBAR -->
     <v-snackbar
+      class="snackbar"
       v-model="snackbar"
       height="50px"
-      color="info"
+      :color="snackbarColor"
       tile
+      :timeout="1000"
     >
-      Added to <span class="secondary darken-1 pa-2 rounded ml-2"> {{ category }} </span>
+    <div class="text-center elevation-10 pa-2">
+      <span class="m-auto secondary px-10 rounded ml-2"> {{ snackbarText }} </span>
+    </div>
     </v-snackbar>
 
     <!-- BUTTON FOR MENU EXPAND IN MOBILE DEVICES -->
@@ -195,6 +199,7 @@
 
     <div id="year-selected-mobile">{{ year }}</div>
 
+    <v-container fluid>
     <div class="moviesColumns" v-if="panelExpanded">
       <v-row no-gutters>
         <v-col md="3" xs="12" v-for="(item, i) in moviesByYear" :key="'B' + i">
@@ -203,7 +208,7 @@
               <v-row no-gutters class="d-flex justify-start">
                 <!-- MOVIE IMAGE AND DYNAMIC ICONS -->
                 <v-col  md="9" xs="12">
-                  <v-img :src="url + item.poster_path" class="movie-img ml-auto">
+                  <v-img :src="url + item.poster_path" class="movie-img ml-auto" @click="showDetails(item)">
                     <div v-for="(id_watched, i) in arrWatchedIDS" :key="'C' + i">
                       <v-icon v-if="id_watched === item.id"
                         class="eye-icon-img"
@@ -227,7 +232,11 @@
                           {{ rated.rate }}
                         </div>
                   </div>
+                  <div class="movie-img-text">
+                    <p>Show details</p>
+                  </div>
                   </v-img>
+                  <h3 class="movie-title ma-auto justify-center">{{ item.title }}</h3>
                   <!-- MOVIE BUTTONS -->
                 </v-col>
                 <v-col md="3" xs="12">
@@ -242,7 +251,7 @@
                           v-bind="attrs"
                           v-on="on"
                           @click="addWatched(item); saveIDMovies()"
-                          :disabled="watchedMovies.includes(item) ? watched : !watched"
+                          :disabled="auxWatchedMovies.includes(item) ? true : false"
                           ><v-icon>mdi-eye</v-icon></v-btn
                         >
                       </template>
@@ -255,12 +264,12 @@
                           small
                           color="red"
                           class="white--text d-block mt-5 mx-2"
-                                                    v-bind="attrs"
-                              v-on="on"
+                          v-bind="attrs"
+                          v-on="on"
                           @click="addFavorite(item); saveIDMovies()"
-                          :disabled="favoriteMovies.includes(item) ? favorite : !favorite"
-                          ><v-icon>mdi-heart</v-icon></v-btn
-                        >
+                          :disabled="auxFavoriteMovies.includes(item) ? true: false"
+                          ><v-icon>mdi-heart</v-icon>
+                          </v-btn>
                           </template>
                         <span>Add to favourite movies</span>
                     </v-tooltip>
@@ -273,10 +282,11 @@
                             <template v-slot:activator="{ on2, attrs2 }">
                               <v-btn
                                 small
-                                color="purple"
-                                class="white--text d-block mt-5 mx-2"
+                                color="#2c112e"
+                                class="cyan--text d-block mt-5 mx-2"
                                 v-bind="attrs2"
                                 v-on="on2"
+                                @click="setRate(item)"
                                 ><v-icon>mdi-numeric</v-icon></v-btn
                               >
                             </template>
@@ -314,10 +324,15 @@
                                 <v-btn
                                   block
                                   color="secondary"
-                                  @click="addRate(item); saveIDMovies()"
-                                  v-on:click="rateDialog.value = false"
-                                  >Done</v-btn
-                                >
+                                  @click="addRate(item); saveIDMovies(); rateDialog.value = false"
+                                  >Done</v-btn>
+                                  <v-btn
+                                  v-if="auxRatedMovies.includes(item)"
+                                  block
+                                  color="error"
+                                  class="my-5"
+                                  @click="removeRate(item); rateDialog.value = false"
+                                  >Remove rate</v-btn>
                               </form>
                             </div>
                           </v-card-text>
@@ -335,6 +350,7 @@
                           v-bind="attrs"
                           v-on="on"
                           @click="addToWatch(item); saveIDMovies()"
+                          :disabled="auxToWatchMovies.includes(item) ? true: false"
                           ><v-icon>mdi-plus</v-icon></v-btn
                         >
                       </template>
@@ -343,18 +359,17 @@
                   </div>
                 </v-col>
               </v-row>
-              <h3 class="movie-title ma-auto justify-center">{{ item.title }}</h3>
             </v-card>
           </div>
         </v-col>
       </v-row>
     </div>
+    </v-container>
   </div>
 </template>
 
 <script>
 import SectionTitle from "../components/SectionTitle";
-import { mapState } from "vuex";
 import axios from "axios";
 
 export default {
@@ -369,33 +384,31 @@ export default {
       userID: null,
       year: '',
       snackbar: false,
+      snackbarText: '',
+      snackbarColor: '',
       category: '',
       rateDialog: false,
       expand: false,
       errorMessage: "",
       panelExpanded: false,
-      arrWatchedMovies: [],
-      arrFavoriteMovies: [],
-      arrToWatchMovies: [],
-      arrRatedMovies: [],
+      auxWatchedMovies: [],
+      auxFavoriteMovies: [],
+      auxToWatchMovies: [],
+      auxRatedMovies: [],
+      jsonWatchedMovies: [],
+      jsonFavoriteMovies: [],
+      jsonToWatchMovies: [],
+      jsonRatedMovies: [],
       arrWatchedIDS: [],
       arrToWatchIDS: [],
       arrRatedIDS: [],
       arrFavoriteIDS: [],
       arrIDS: [],
       loaded: false,
-      rated: true,
-      favorite: true,
-      watched: true,
-      towatch: true,
-      rated: true,
       value: 0,
       moviesByYear: [],
       userData: []
     };
-  },
-  computed: {
-    ...mapState(["toWatchMovies", "watchedMovies", "favoriteMovies", "moviesWithRates"]),
   },
   mounted() {
     this.getMoviesByYear('2010')
@@ -403,9 +416,18 @@ export default {
     this.saveIDMovies()
   },
   methods: {
-    showSnackbar (category) {
+    showSuccess (text) {
     this.snackbar = true
-    this.category = category
+    this.snackbarText = text
+    this.snackbarColor = 'cyan'
+    },
+    showWarning (text) {
+    this.snackbar = true
+    this.snackbarText = text
+    this.snackbarColor = 'orange'
+    },
+    showDetails (item) { 
+      this.$router.push(`/movie/${item.id}`)
     },
     getMoviesByYear(year) {
       this.year = year
@@ -436,83 +458,145 @@ export default {
     },
     // **** LOCALSTORAGE FUNCTIONS **** //
     addWatched(item) {
-      this.showSnackbar('Watched Movies')
-
       const json = { rate: this.value / 10, movie: item };
 
-      this.watchedMovies.push(item);
+      this.auxWatchedMovies.push(item);
 
       this.writeMovieData(json, 'isWatched', item)
     },
     addFavorite(item) {
-      this.showSnackbar('Favorite Movies')
-      this.favoriteMovies.push(item);
+    const json = { rate: this.value / 10, movie: item };
 
-      const json = { rate: this.value / 10, movie: item };
-
-      this.writeMovieData(json, 'isFavorite')
-a
-    },
-    addRate(item) {
-      this.showSnackbar('Rated Movies')
-
-      const value = this.value / 10;
-      const json = {};
-
-      this.ratedMovies = item;
-      this.ratedMovies.rate = value;
-
-      json.movie_data = this.ratedMovies;
-      json.rate = this.ratedMovies.rate;
-
-      this.writeMovieData(json, 'isRated')
+    this.auxFavoriteMovies.push(item);
+    
+    this.writeMovieData(json, 'isFavorite', item)
     },
     addToWatch(item) {
-      this.showSnackbar('To Watch Movies')
-      this.toWatchMovies.push(item);
-
       const json = { rate: this.value / 10, movie: item };
 
-      this.writeMovieData(json, 'isToWatch')
+      this.auxToWatchMovies.push(item);
+
+      this.writeMovieData(json, 'isToWatch', item)
+    },
+    addRate(item) {
+      const json = { rate: this.value / 10, movie: item };
+
+      this.auxRatedMovies.push(item);
+
+      this.writeMovieData(json, 'isRated', item)
+    },
+    setRate(item) {
+      this.value = 0
+      for (let data of this.jsonRatedMovies) {
+            if (data.movie.id === item.id) {
+                this.value = data.rate * 10
+              }
+          }
+    },
+    removeRate(item) { 
+      const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+        for (let data of this.auxRatedMovies) {
+          if (data.id === item.id) {
+              this.auxRatedMovies.splice(this.auxRatedMovies.indexOf(data), 1)
+            }
+        }
+        for (let data of this.arrRatedIDS) {
+          if (data.id === item.id) {
+              this.arrRatedIDS.splice(this.arrRatedIDS.indexOf(data), 1)
+            }
+        }
+        for (let data of this.jsonRatedMovies) {
+          if (data.movie.id === item.id) {
+              this.jsonRatedMovies.splice(this.jsonRatedMovies.indexOf(data), 1)
+            }
+        }
+        this.value = 0
+        storage[this.userID].ratedMovies = this.jsonRatedMovies;
     },
     writeMovieData(json, type, item) {
       const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-      let isRepeated = Boolean
 
-      if(type === 'isWatched') {
-        for (let movie of this.arrWatchedMovies) {
-          if (movie.movie.id === item.id) {
-            console.log('Repeated movie!')
-            isRepeated = true
-            this.arrWatchedMovies.splice(this.arrWatchedMovies.indexOf(movie), 1);
-          } else { 
-            isRepeated = false
+      if (type === 'isWatched') {
+        let isRepeated = false
+          for (let data of this.jsonWatchedMovies) {
+            if (data.movie.id === item.id) {
+              isRepeated = true
+                this.jsonWatchedMovies.splice(this.jsonWatchedMovies.indexOf(data), 1)
+                this.showWarning('Removed from WATCHED category')
+              } else { 
+                isRepeated = false
+              }
           }
-        }
-        if (!isRepeated) {
-          console.log('New movie!')
-          this.arrWatchedMovies.push(json);
-        }
-        storage[this.userID].watchedMovies = this.arrWatchedMovies
+          if (!isRepeated) {
+            this.jsonWatchedMovies.push(json)
+            this.showSuccess('Added to WATCHED category')
+          }
+          
+        storage[this.userID].watchedMovies = this.jsonWatchedMovies
       }
       if(type === 'isFavorite') {
-        storage[this.userID].favoriteMovies.push(json)
-      }
-      if(type === 'isRated') {
-        storage[this.userID].ratedMovies.push(json)
+        let isRepeated = false
+          for (let data of this.jsonFavoriteMovies) {
+              if (data.movie.id === item.id) {
+                isRepeated = true
+                this.jsonFavoriteMovies.splice(this.jsonFavoriteMovies.indexOf(data), 1)
+                this.showWarning('Removed from FAVORITE category')
+              } else { 
+                isRepeated = false
+              }
+          }
+          if (!isRepeated) {
+            this.jsonFavoriteMovies.push(json)
+            this.showSuccess('Added to FAVORITE category')
+          }
+          
+        storage[this.userID].favoriteMovies = this.jsonFavoriteMovies
       }
       if(type === 'isToWatch') {
-        storage[this.userID].toWatchMovies.push(json)
+        let isRepeated = false
+          for (let data of this.jsonToWatchMovies) {
+            if (data.movie.id === item.id) {
+              isRepeated = true
+                this.jsonToWatchMovies.splice(this.jsonToWatchMovies.indexOf(data), 1)
+                this.showWarning('Removed from TO WATCH category')
+              } else { 
+                isRepeated = false
+              }
+          }
+          if (!isRepeated) {
+            this.jsonToWatchMovies.push(json)
+            this.showSuccess('Added to TO WATCH category')
+          }
+          
+        storage[this.userID].toWatchMovies = this.jsonToWatchMovies
+      }
+      if(type === 'isRated') {
+          let isRepeated = false
+          for (let data of this.jsonRatedMovies) {
+              if (data.movie.id === item.id) {
+                isRepeated = true
+                data.rate = json.rate
+                this.showWarning('Modified rate')
+              } else { 
+                isRepeated = false
+              }
+          }
+          if (!isRepeated) {
+            this.jsonRatedMovies.push(json)
+            this.showSuccess('Added to RATED category')
+          }
+          
+        storage[this.userID].ratedMovies = this.jsonRatedMovies
       }
       localStorage.setItem("storageUserDATA", JSON.stringify(storage));
     },
     saveIDMovies () {
       const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
 
-      this.arrWatchedMovies = storage[this.userID].watchedMovies
-      this.arrFavoriteMovies = storage[this.userID].favoriteMovies
-      this.arrToWatchMovies = storage[this.userID].toWatchMovies
-      this.arrRatedMovies = storage[this.userID].ratedMovies
+      this.jsonWatchedMovies = storage[this.userID].watchedMovies
+      this.jsonFavoriteMovies = storage[this.userID].favoriteMovies
+      this.jsonToWatchMovies = storage[this.userID].toWatchMovies
+      this.jsonRatedMovies = storage[this.userID].ratedMovies
 
       let watched = storage[this.userID].watchedMovies || [];
       let favorite = storage[this.userID].favoriteMovies || [];
@@ -529,23 +613,23 @@ a
       let uniqueRated = [];
       let uniqueToWatch = [];
 
-      for (let movie of watched) { 
-        watchedAuxArr.push(movie.movie.id)
+      for (let data of watched) { 
+        watchedAuxArr.push(data.movie.id)
         uniqueWatched = [ ...new Set(watchedAuxArr)]
       }
-     for (let movie of rated) {
+     for (let data of rated) {
         ratedAuxArr.push({
-          id: movie.movie_data.id,
-          rate: movie.rate
+          id: data.movie.id,
+          rate: data.rate
         })
         uniqueRated = [ ...new Set(ratedAuxArr)]
      }
-      for (let movie of toWatch) { 
-        toWatchAuxArr.push(movie.movie.id);
+      for (let data of toWatch) { 
+        toWatchAuxArr.push(data.movie.id);
         uniqueToWatch = [ ...new Set(toWatchAuxArr)]
       }
-      for (let movie of favorite) {
-        favoriteAuxArr.push(movie.movie.id);
+      for (let data of favorite) {
+        favoriteAuxArr.push(data.movie.id);
         uniqueFavorite = [ ...new Set(favoriteAuxArr)]
       }
 
@@ -575,11 +659,51 @@ a
     opacity: 1;
   }
 }
+
+.snackbar { 
+  position: fixed !important;
+  bottom: -0.5rem !important;
+  width: 100% !important;
+
+}
+
+.movie-img-text { 
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 75%;
+  transform: translate(-50%, -50%);
+  color: cyan;
+  text-shadow: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  filter: none;
+  background: $dark;
+  padding: 1em;
+  opacity: 0;
+  transition: 0.3s;
+  font-size: 1em;
+  box-shadow: inset 0 0 10px black;
+}
+
+.movie-img { 
+  transition: 0.3s;
+  cursor: pointer;
+
+  &:hover { 
+    transform: scale(1.05);
+
+    .movie-img-text { 
+      opacity: 1;
+    }
+  }
+}
 .eye-icon-img {
   color: white !important;
   text-shadow: none !important;
   background: #2196f3;
   padding: 10px;
+  font-size: 30px;
   border-radius: 0px 10px 0px 0px;
   position: absolute;
   bottom: 0px;
@@ -590,6 +714,7 @@ a
   text-shadow: none !important;
   background: white;
   padding: 10px;
+  font-size: 30px;
   border-radius: 10px 0px 0px 0px;
   position: absolute;
   bottom: 0px;
@@ -601,15 +726,16 @@ a
   top: 0px;
   left: 0px;
   padding: 10px;
+  font-size: 30px;
   border-radius: 0px 0px 10px 0px;
   background: #404ea7;
   color: white;
   text-shadow: none;
 }
 .rate-img {
-  color: white !important;
+  color: rgb(0, 247, 255) !important;
   text-shadow: none !important;
-  background: #a438b6;
+  background: #2c112e;
   font-size: 20px;
   font-family: $style2;
   letter-spacing: 0px;

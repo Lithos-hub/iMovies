@@ -32,16 +32,15 @@
             {{ movieDetails.spoken_languages[0].english_name }}
           </p>
           <div class="d-flex justify-content-around">
-            <router-link to="/" style="text-decoration: none">
               <v-btn
                 color="indigo"
                 class="font-weight-bold mt-5"
                 dark
                 elevation="10"
                 id="come-back-btn"
+                @click="comeBack()"
                 >Come back</v-btn
               >
-            </router-link>
             <v-btn
               color="deep-orange darken-4"
               class="font-weight-bold mt-5"
@@ -76,7 +75,13 @@ export default {
       dialog: false,
     };
   },
+    mounted() {
+      this.getMovieDetails();
+    },
   methods: {
+    comeBack () { 
+      this.$router.go(-1);
+    },
     getMovieDetails() {
       const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
       const movie = `https://api.themoviedb.org/3/movie/${this.$route.params.id}?api_key=${apikey}&language=en-US`;
@@ -114,9 +119,6 @@ export default {
           });
       });
     },
-  },
-  mounted() {
-    this.getMovieDetails();
   },
 };
 </script>

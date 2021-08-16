@@ -93,7 +93,7 @@ export default {
         },
         {
           version: "Version 1.7.6",
-          changes: ["Fixed some issues with regard to the display of the trailer component.",],
+          changes: ["Fixed some issues with regard to the display of the trailer component."],
         },
         {
           version: "Version 1.7.7",
@@ -120,8 +120,8 @@ export default {
           changes: ["Added permanent icons in the Ranking section. Now the icons will remain over each corresponding movie even if the user exits the view or logs out."],
         },
         {
-          version: "Version 1.9.3",
-          changes: ["Added reset statistics function in My Movies view. In the ranking section, if the movie has been previously selected, it will be deleted."],
+          version: "Version 1.9.4",
+          changes: ["Added reset statistics function in My Movies view.", "In the ranking section, if the movie has been previously selected, it will be deleted. Now you can remove the rate or overwrite it.", "Added 'show details' function when clicking in a movie in Ranking section."]
         },
       ],
     };
