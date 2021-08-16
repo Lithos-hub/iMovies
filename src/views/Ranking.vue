@@ -138,7 +138,7 @@
       <v-tab
         active-class="cyan--text"
         class="white--text tab"
-        @click="getMoviesByYear('211')"
+        @click="getMoviesByYear('2011')"
         >2011</v-tab
       >
       <v-tab
