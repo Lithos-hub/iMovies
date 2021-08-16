@@ -14,6 +14,16 @@ With version 1.7.9 a temporary dummy login system was added. The idea is to add 
 
 Changelog:
 
+Version 1.9.5
+
+* Added reset statistics function in My Movies view.
+* In the ranking section, if the movie has been previously selected, it will be deleted. Now you can remove the rate or overwrite it.
+* Added 'show details' function when clicking in a movie in Ranking section.
+
+Version 1.9.2
+
+* Added permanent icons in the Ranking section. Now the icons will remain over each corresponding movie even if the user exits the view or logs out.
+
 Version 1.9.1
 
 * Improved the protected router system.

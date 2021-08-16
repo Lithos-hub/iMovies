@@ -45,7 +45,7 @@
                  <v-divider></v-divider>
                 </div>
 
-                <v-text-field required :rules="nameRules" label="User name" type="text" v-model="username" placeholder="Write your username or alias" counter="20"></v-text-field>
+                <v-text-field required :rules="nameRules" label="User name" type="text" v-model="username" placeholder="Write your username or alias" counter="10"></v-text-field>
                 <v-text-field required :rules="emailRules" label="E-mail" type="email" v-model="email" placeholder="Write your email"></v-text-field>
                 <v-text-field required label="Password" type="password" v-model.trim="password" placeholder="Write your password"></v-text-field>
                 <v-text-field required label="Repeat password" type="password" v-model.trim="repassword" placeholder="Repeat your password"></v-text-field>
