@@ -512,6 +512,7 @@ export default {
         }
         this.value = 0
         storage[this.userID].ratedMovies = this.jsonRatedMovies;
+        localStorage.setItem("storageUserDATA", JSON.stringify(storage));
     },
     writeMovieData(json, type, item) {
       const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
@@ -533,6 +534,7 @@ export default {
           }
           
         storage[this.userID].watchedMovies = this.jsonWatchedMovies
+        localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
       if(type === 'isFavorite') {
         let isRepeated = false
@@ -551,6 +553,7 @@ export default {
           }
           
         storage[this.userID].favoriteMovies = this.jsonFavoriteMovies
+        localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
       if(type === 'isToWatch') {
         let isRepeated = false
@@ -569,6 +572,7 @@ export default {
           }
           
         storage[this.userID].toWatchMovies = this.jsonToWatchMovies
+        localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
       if(type === 'isRated') {
           let isRepeated = false
@@ -587,8 +591,8 @@ export default {
           }
           
         storage[this.userID].ratedMovies = this.jsonRatedMovies
+        localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
-      localStorage.setItem("storageUserDATA", JSON.stringify(storage));
     },
     saveIDMovies () {
       const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
