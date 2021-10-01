@@ -1,7 +1,11 @@
 <template>
   <div>
     <!-- TRAILER DIALOG -->
-    <TrailerDialog :dialog="dialog" :trailerVideo="trailerVideo" :videoError="videoError"/>
+    <TrailerDialog
+      :dialog="dialog"
+      :trailerVideo="trailerVideo"
+      :videoError="videoError"
+    />
 
     <!-- ************** MOVIE CARD CONTENT ************** -->
     <v-container class="pa-5">
@@ -17,13 +21,19 @@
         >
 
         <v-container id="movie-text">
-          <v-card-title class="error white--text rounded pa-2">Overview</v-card-title>
+          <v-card-title class="error white--text rounded pa-2"
+            >Overview</v-card-title
+          >
           <p id="movie-overview">
             {{ movieDetails.overview }}
           </p>
-          <v-card-title class="green white--text rounded pa-2">Vote average</v-card-title>
+          <v-card-title class="green white--text rounded pa-2"
+            >Vote average</v-card-title
+          >
           <p id="movie-note">{{ movieDetails.vote_average }}</p>
-          <v-card-title class="blue white--text rounded pa-2">Vote count</v-card-title>
+          <v-card-title class="blue white--text rounded pa-2"
+            >Vote count</v-card-title
+          >
           <p id="movie-count">{{ movieDetails.vote_count }}</p>
           <v-card-title class="orange white--text rounded pa-2"
             >Original language</v-card-title
@@ -32,15 +42,15 @@
             {{ movieDetails.spoken_languages[0].english_name }}
           </p>
           <div class="d-flex justify-content-around">
-              <v-btn
-                color="indigo"
-                class="font-weight-bold mt-5"
-                dark
-                elevation="10"
-                id="come-back-btn"
-                @click="comeBack()"
-                >Come back</v-btn
-              >
+            <v-btn
+              color="indigo"
+              class="font-weight-bold mt-5"
+              dark
+              elevation="10"
+              id="come-back-btn"
+              @click="comeBack()"
+              >Come back</v-btn
+            >
             <v-btn
               color="deep-orange darken-4"
               class="font-weight-bold mt-5"
@@ -64,7 +74,7 @@ import TrailerDialog from "../components/TrailerDialog";
 export default {
   name: "Movie",
   components: {
-    TrailerDialog
+    TrailerDialog,
   },
   data() {
     return {
@@ -75,11 +85,11 @@ export default {
       dialog: false,
     };
   },
-    mounted() {
-      this.getMovieDetails();
-    },
+  mounted() {
+    this.getMovieDetails();
+  },
   methods: {
-    comeBack () { 
+    comeBack() {
       this.$router.go(-1);
     },
     getMovieDetails() {
@@ -93,7 +103,7 @@ export default {
             this.movieDetails = resp.data;
           })
           .catch((e) => {
-            console.log(e)
+            console.log(e);
           });
       });
     },
@@ -173,8 +183,6 @@ export default {
   #card {
     padding: 0px !important;
   }
-
-
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
@@ -224,7 +232,6 @@ export default {
   #card {
     padding: 30px !important;
   }
-  
 }
 
 // ******* DESKTOP RESPONSIVE ******* //

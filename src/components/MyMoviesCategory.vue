@@ -22,7 +22,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn block @click="dialog = false" class="close-info-btn"> Close </v-btn>
+          <v-btn block @click="dialog = false" class="close-info-btn">
+            Close
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -55,13 +57,21 @@
                         {{ item.movie.title }}
                       </p>
                       <p
-                        class="overline white--text text-center rounded movie-date mb-10"
+                        class="
+                          overline
+                          white--text
+                          text-center
+                          rounded
+                          movie-date
+                          mb-10
+                        "
                       >
                         {{ item.movie.release_date.slice(0, 4) }}
                       </p>
                       <v-divider class="white"></v-divider>
                       <div v-show="category === 'byrate'">
-                        <v-list-item-subtitle class="white--text mt-10 text-center"
+                        <v-list-item-subtitle
+                          class="white--text mt-10 text-center"
                           >My rate:
                           <span class="rate-number mt-10">{{
                             item.rate
@@ -94,7 +104,10 @@
                   </div>
                 </v-col>
                 <v-col cols="6">
-                  <v-img :src="url + item.movie.poster_path" class="movie-img"></v-img>
+                  <v-img
+                    :src="url + item.movie.poster_path"
+                    class="movie-img"
+                  ></v-img>
                 </v-col>
               </v-row>
             </div>
@@ -122,8 +135,8 @@ export default {
       userID: null,
     };
   },
-  mounted () {
-    this.getUserID()
+  mounted() {
+    this.getUserID();
   },
   computed: {
     ...mapState(["user"]),
@@ -133,27 +146,27 @@ export default {
       const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
 
       if (this.category === "watched") {
-      const index = this.arrayMovies.indexOf(item);
+        const index = this.arrayMovies.indexOf(item);
         if (index > -1) {
           this.arrayMovies.splice(index, 1);
         }
-        storage[this.userID].watchedMovies = this.arrayMovies
+        storage[this.userID].watchedMovies = this.arrayMovies;
         localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
       if (this.category === "towatch") {
-      const index = this.arrayMovies.indexOf(item);
+        const index = this.arrayMovies.indexOf(item);
         if (index > -1) {
           this.arrayMovies.splice(index, 1);
         }
-        storage[this.userID].toWatchMovies = this.arrayMovies
+        storage[this.userID].toWatchMovies = this.arrayMovies;
         localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
       if (this.category === "favorite") {
-      const index = this.arrayMovies.indexOf(item);
+        const index = this.arrayMovies.indexOf(item);
         if (index > -1) {
           this.arrayMovies.splice(index, 1);
         }
-        storage[this.userID].favoriteMovies = this.arrayMovies
+        storage[this.userID].favoriteMovies = this.arrayMovies;
         localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
     },
@@ -164,9 +177,9 @@ export default {
       this.release_date = item.movie.release_date;
       this.img = item.movie.backdrop_path;
     },
-    getUserID () {
-      const userID= JSON.parse(localStorage.getItem("USERID")) || {};
-      this.userID  = userID.id
+    getUserID() {
+      const userID = JSON.parse(localStorage.getItem("USERID")) || {};
+      this.userID = userID.id;
     },
   },
 };

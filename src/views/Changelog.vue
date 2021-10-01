@@ -5,14 +5,11 @@
     <div class="list-group">
       <div class="list" v-for="(item, i) in changes" :key="i">
         <span class="font-weight-bold">{{ item.version }}</span>
-        <ul style="list-style: none;">
-
-        
+        <ul style="list-style: none">
           <li v-for="(change, i) in item.changes" :key="i">
             <v-icon color="green">mdi-check</v-icon> {{ change }}
           </li>
         </ul>
-        
       </div>
     </div>
   </v-container>
@@ -75,41 +72,63 @@ export default {
         },
         {
           version: "Version 1.6.1",
-          changes: ["Dynamic changelog.", "New logo.", "Fixed some api issues."],
+          changes: [
+            "Dynamic changelog.",
+            "New logo.",
+            "Fixed some api issues.",
+          ],
         },
         {
           version: "Version 1.7.0",
-          changes: ["New section 'Search' added.", "Now you can search for movies and see information such as the platforms where those movies are available for streaming, buying or renting."],
+          changes: [
+            "New section 'Search' added.",
+            "Now you can search for movies and see information such as the platforms where those movies are available for streaming, buying or renting.",
+          ],
         },
         {
           version: "Version 1.7.2",
-          changes: ["More info is shown in Search section: dynamic movie genres (the API returns an ID for each movie genre and you have to 'translate' it in the specific genre); movie overview.",
-          "Some aesthetic improvements in that section have been added."],
+          changes: [
+            "More info is shown in Search section: dynamic movie genres (the API returns an ID for each movie genre and you have to 'translate' it in the specific genre); movie overview.",
+            "Some aesthetic improvements in that section have been added.",
+          ],
         },
         {
           version: "Version 1.7.5",
-          changes: ["New info displayed in Search section: vote average and vote ratings.",
-          "The 'View Trailer' button is now a component anywhere in the app."],
+          changes: [
+            "New info displayed in Search section: vote average and vote ratings.",
+            "The 'View Trailer' button is now a component anywhere in the app.",
+          ],
         },
         {
           version: "Version 1.7.6",
-          changes: ["Fixed some issues with regard to the display of the trailer component."],
+          changes: [
+            "Fixed some issues with regard to the display of the trailer component.",
+          ],
         },
         {
           version: "Version 1.7.7",
-          changes: ["Error 404 page added.",],
+          changes: ["Error 404 page added."],
         },
         {
           version: "Version 1.7.9",
-          changes: ["Fixed an issue with the API call in the trending section.", "Added an initial (non functional at this moment) page for user login and register."],
+          changes: [
+            "Fixed an issue with the API call in the trending section.",
+            "Added an initial (non functional at this moment) page for user login and register.",
+          ],
         },
         {
           version: "Version 1.8.0",
-          changes: ["Fixed an issue with the API call in the trailers section.", "Aesthetic changes and improvements in the trailers section.", "Responsive improvements in the navbar component."],
+          changes: [
+            "Fixed an issue with the API call in the trailers section.",
+            "Aesthetic changes and improvements in the trailers section.",
+            "Responsive improvements in the navbar component.",
+          ],
         },
         {
           version: "Version 1.9.0",
-          changes: ["Added a login/register system without backend using LocalStorage. Added avatar option. The user is now be able to save movies in some categories with each account. On the other hand, the default account has now some hidden features."],
+          changes: [
+            "Added a login/register system without backend using LocalStorage. Added avatar option. The user is now be able to save movies in some categories with each account. On the other hand, the default account has now some hidden features.",
+          ],
         },
         {
           version: "Version 1.9.1",
@@ -117,11 +136,21 @@ export default {
         },
         {
           version: "Version 1.9.2",
-          changes: ["Added permanent icons in the Ranking section. Now the icons will remain over each corresponding movie even if the user exits the view or logs out."],
+          changes: [
+            "Added permanent icons in the Ranking section. Now the icons will remain over each corresponding movie even if the user exits the view or logs out.",
+          ],
         },
         {
           version: "Version 1.9.5",
-          changes: ["Added reset statistics function in My Movies view.", "In the ranking section, if the movie has been previously selected, it will be deleted. Now you can remove the rate or overwrite it.", "Added 'show details' function when clicking in a movie in Ranking section."]
+          changes: [
+            "Added reset statistics function in My Movies view.",
+            "In the ranking section, if the movie has been previously selected, it will be deleted. Now you can remove the rate or overwrite it.",
+            "Added 'show details' function when clicking in a movie in Ranking section.",
+          ],
+        },
+        {
+          version: "Version 2.0.0",
+          changes: ["Added internationalization (ENG / SPA) in all the app."],
         },
       ],
     };
@@ -129,11 +158,11 @@ export default {
   methods: {
     showReverse() {
       this.changes.reverse();
-    }
+    },
   },
   mounted() {
     this.showReverse();
-  }
+  },
 };
 </script>
 

@@ -10,20 +10,33 @@
     >
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
-      <div id="username-toolbar">User: <span class="cyan--text">@{{user.userName}}</span></div>
-      
+      <div id="username-toolbar">
+        User: <span class="cyan--text">@{{ user.userName }}</span>
+      </div>
 
       <v-toolbar-title class="mx-auto">
-        <router-link to="/home" class="router-link-default" active-class="brand-title"
+        <router-link
+          to="/home"
+          class="router-link-default"
+          active-class="brand-title"
           ><p class="brand-title ma-auto">iMovies</p></router-link
         >
       </v-toolbar-title>
 
-      <v-btn small color="red darken-1" class="mr-2" @click="logout()">{{displayText ? 'logout' : ''}} <v-icon>mdi-account-cancel</v-icon></v-btn>
+      <v-btn small color="red darken-1" class="mr-2" @click="logout()"
+        >{{ displayText ? "logout" : "" }}
+        <v-icon>mdi-account-cancel</v-icon></v-btn
+      >
 
-      <v-btn small color="primary" to="/about">{{displayText ? 'about' : ''}}<v-icon v-if="!displayText">mdi-information-variant</v-icon></v-btn>
+      <v-btn small color="primary" to="/about"
+        >{{ displayText ? "about" : ""
+        }}<v-icon v-if="!displayText">mdi-information-variant</v-icon></v-btn
+      >
 
-      <a href="https://github.com/Lithos-hub/VUEJS-iMovies" style="text-decoration: none">
+      <a
+        href="https://github.com/Lithos-hub/VUEJS-iMovies"
+        style="text-decoration: none"
+      >
         <v-btn icon>
           <v-icon> mdi-github </v-icon>
         </v-btn>
@@ -44,99 +57,88 @@
     >
       <v-list nav class="nav-list">
         <v-list-item-group v-model="group" active-class="black">
-          <v-img v-if="user.userAvatar !== undefined" :src="user.userAvatar" width="90" height="90" class="avatar ma-5 ma-auto"></v-img>
-          <h5 id="username-drawer" class="text-center my-2 white--text">@{{user.userName}}</h5>
-   
-            <v-list-item dense to="/home">
-              <v-list-item-icon>
-                <v-icon class="nav-icons">mdi-home</v-icon>
-                <v-list-item-title class="nav-links">Home</v-list-item-title>
-              </v-list-item-icon>
-            </v-list-item>
-   
+          <v-img
+            v-if="user.userAvatar !== undefined"
+            :src="user.userAvatar"
+            width="90"
+            height="90"
+            class="avatar ma-5 ma-auto"
+          ></v-img>
+          <h5 id="username-drawer" class="text-center my-2 white--text">
+            @{{ user.userName }}
+          </h5>
+
+          <v-list-item dense to="/home">
+            <v-list-item-icon>
+              <v-icon class="nav-icons">mdi-home</v-icon>
+              <v-list-item-title class="nav-links">Home</v-list-item-title>
+            </v-list-item-icon>
+          </v-list-item>
 
           <v-divider></v-divider>
 
           <v-list-item to="/search" v-if="!isDefault">
-              <v-list-item-icon>
-                <v-icon class="nav-icons">
-                  mdi-magnify
-                </v-icon>
-                <v-list-item-title class="nav-links">
-                  Search
-                </v-list-item-title>
-              </v-list-item-icon>
+            <v-list-item-icon>
+              <v-icon class="nav-icons"> mdi-magnify </v-icon>
+              <v-list-item-title class="nav-links"> Search </v-list-item-title>
+            </v-list-item-icon>
           </v-list-item>
           <v-list-item to="/mymovies" v-if="!isDefault">
-              <v-list-item-icon>
-                <v-icon class="nav-icons">
-                  mdi-star
-                </v-icon> 
-                <v-list-item-title class="nav-links">
-                  My movies
-                </v-list-item-title>
-              </v-list-item-icon>
+            <v-list-item-icon>
+              <v-icon class="nav-icons"> mdi-star </v-icon>
+              <v-list-item-title class="nav-links">
+                My movies
+              </v-list-item-title>
+            </v-list-item-icon>
           </v-list-item>
           <v-list-item to="/trending">
-              <v-list-item-icon>
-                <v-icon class="nav-icons">
-                  mdi-table
-                </v-icon>
-                <v-list-item-title class="nav-links">
-                  Trending
-                </v-list-item-title>
-              </v-list-item-icon>
+            <v-list-item-icon>
+              <v-icon class="nav-icons"> mdi-table </v-icon>
+              <v-list-item-title class="nav-links">
+                Trending
+              </v-list-item-title>
+            </v-list-item-icon>
           </v-list-item>
           <v-list-item to="/trailers">
-              <v-list-item-icon>
-                <v-icon class="nav-icons">
-                  mdi-video-vintage
-                </v-icon>
-                <v-list-item-title class="nav-links">
-                  Trailers
-                </v-list-item-title>
-              </v-list-item-icon>
+            <v-list-item-icon>
+              <v-icon class="nav-icons"> mdi-video-vintage </v-icon>
+              <v-list-item-title class="nav-links">
+                Trailers
+              </v-list-item-title>
+            </v-list-item-icon>
           </v-list-item>
           <v-list-item to="/genres">
-              <v-list-item-icon>
-                <v-icon class="nav-icons">
-                  mdi-shape
-                </v-icon>
-                <v-list-item-title class="nav-links">
-                  Genres
-                </v-list-item-title>
-              </v-list-item-icon>
+            <v-list-item-icon>
+              <v-icon class="nav-icons"> mdi-shape </v-icon>
+              <v-list-item-title class="nav-links"> Genres </v-list-item-title>
+            </v-list-item-icon>
           </v-list-item>
           <v-list-item to="/ranking" v-if="!isDefault">
-              <v-list-item-icon>
-                <v-icon class="nav-icons">
-                  mdi-format-list-numbered
-                </v-icon>
-                <v-list-item-title class="nav-links">
-                  Ranking
-                </v-list-item-title>
-              </v-list-item-icon>
+            <v-list-item-icon>
+              <v-icon class="nav-icons"> mdi-format-list-numbered </v-icon>
+              <v-list-item-title class="nav-links"> Ranking </v-list-item-title>
+            </v-list-item-icon>
           </v-list-item>
           <v-list-item to="/changelog">
-              <v-list-item-icon>
-                <v-icon class="nav-icons">
-                  mdi-lead-pencil
-                </v-icon>
-                <v-list-item-title class="nav-links">
-                  Changelog
-                </v-list-item-title>
-              </v-list-item-icon>
+            <v-list-item-icon>
+              <v-icon class="nav-icons"> mdi-lead-pencil </v-icon>
+              <v-list-item-title class="nav-links">
+                Changelog
+              </v-list-item-title>
+            </v-list-item-icon>
           </v-list-item>
-  
         </v-list-item-group>
       </v-list>
 
       <v-divider class="name-divider"></v-divider>
       <p id="developedBy">
         {{ date }} - Developed by<br />
-        <a href="https://carlosseguragarciaweb.com" style="text-decoration: none">
-        <span id="developerName">Carlos Segura García</span>
-        <p id="visit-my-website">Go to my website</p>
+        <a
+          href="https://carlosseguragarciaweb.com"
+          style="text-decoration: none"
+        >
+          <span id="developerName">Carlos Segura García</span>
+          <p id="visit-my-website">Go to my website</p>
         </a>
       </p>
     </v-navigation-drawer>
@@ -144,7 +146,6 @@
 </template>
 
 <script>
-
 export default {
   name: "Navbar",
   data() {
@@ -153,46 +154,52 @@ export default {
       isDefault: Boolean,
       user: {},
       id: null,
-      major: 1,
-      minor: 9,
-      patch: 5,
+      major: 2,
+      minor: 0,
+      patch: 0,
       group: null,
-      drawer: false
-    }
+      drawer: false,
+    };
   },
-  created () {
-    this.setUser()
+  created() {
+    this.setUser();
   },
   computed: {
     displayText() {
       switch (this.$vuetify.breakpoint.name) {
-          case 'xs': return false
-          case 'sm': return false
-          case 'md': return true
-          case 'lg': return true
-          case 'xl': return true
+        case "xs":
+          return false;
+        case "sm":
+          return false;
+        case "md":
+          return true;
+        case "lg":
+          return true;
+        case "xl":
+          return true;
       }
     },
   },
   methods: {
-    setUser () {
-      this.isDefault = this.$store.getters.defaultUser
+    setUser() {
+      this.isDefault = this.$store.getters.defaultUser;
       if (!this.isDefault) {
-        const userStorageData = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-      const userid = JSON.parse(localStorage.getItem("USERID")) || {};
+        const userStorageData =
+          JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+        const userid = JSON.parse(localStorage.getItem("USERID")) || {};
 
-      this.user = userStorageData[userid.id]
+        this.user = userStorageData[userid.id];
       } else {
-        this.user.userName = "DefaultUser"
+        this.user.userName = "DefaultUser";
       }
     },
     logout() {
-      this.$store.commit("setDefault", false)
-      this.$store.commit("isLogged", false)
-      this.$router.push("/")
-      }
-    }
-  }
+      this.$store.commit("setDefault", false);
+      this.$store.commit("isLogged", false);
+      this.$router.push("/");
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -211,27 +218,25 @@ export default {
 }
 
 #visit-my-website {
-opacity: 0;
-transition: 0.5s;
- margin-top: 0px;
- text-transform: uppercase;
-
+  opacity: 0;
+  transition: 0.5s;
+  margin-top: 0px;
+  text-transform: uppercase;
 }
 
 #developerName {
-color: cyan;
-transition: 0.5s;
-opacity: 1;
-text-transform: uppercase;
+  color: cyan;
+  transition: 0.5s;
+  opacity: 1;
+  text-transform: uppercase;
 }
 
 #developedBy:hover {
-
   #developerName {
     color: white;
   }
 
-#visit-my-website {
+  #visit-my-website {
     opacity: 1;
     color: white;
     margin-top: 10px;
@@ -244,19 +249,15 @@ text-transform: uppercase;
   border: 2px solid $primary;
 }
 
-
-
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
-
-    #username-toolbar {
-  display: none;
+  #username-toolbar {
+    display: none;
   }
 
   #username-drawer {
     font-size: 12px;
   }
-
 
   .brand-title {
     padding-left: 0px;
@@ -293,7 +294,6 @@ text-transform: uppercase;
     letter-spacing: 2px;
     font-size: 12px;
     font-family: $style2;
-
   }
 
   #version-info {
@@ -304,7 +304,6 @@ text-transform: uppercase;
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
-
   #username-toolbar {
     display: block;
   }
@@ -312,7 +311,6 @@ text-transform: uppercase;
   #username-drawer {
     font-size: 15px;
   }
-
 
   .brand-title {
     padding-left: 120px;
@@ -349,7 +347,6 @@ text-transform: uppercase;
     letter-spacing: 2px;
     font-size: 13px;
     font-family: $style2;
-
   }
 
   #version-info {
@@ -359,27 +356,24 @@ text-transform: uppercase;
   }
 
   #csg-link {
-  transition: 0.5s;
-  
-  &:hover{ 
-    color: white;
-    transform: scale(1.1)
+    transition: 0.5s;
+
+    &:hover {
+      color: white;
+      transform: scale(1.1);
+    }
   }
-}
-
-
 }
 
 // ******* DESKTOP RESPONSIVE ******* //
 @media only screen and (min-width: 1370px) {
-    #username-toolbar {
+  #username-toolbar {
     display: block;
-    }
+  }
 
-    #username-drawer {
-      font-size: 18px;
-    }
-
+  #username-drawer {
+    font-size: 18px;
+  }
 
   .brand-title {
     padding-left: 120px;
@@ -418,7 +412,6 @@ text-transform: uppercase;
     font-family: $style2;
   }
 
-
   #version-info {
     position: relative;
     padding-top: 15px;
@@ -426,12 +419,12 @@ text-transform: uppercase;
   }
 
   #csg-link {
-  transition: 0.5s;
-  
-  &:hover{ 
-    color: white;
-    transform: scale(1.1)
+    transition: 0.5s;
+
+    &:hover {
+      color: white;
+      transform: scale(1.1);
+    }
   }
-}
 }
 </style>

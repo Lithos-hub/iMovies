@@ -1,6 +1,8 @@
 <template>
   <div>
-    <v-sheet class="section-subtitle" color="transparent">{{ sectionSubtitle }}</v-sheet>
+    <v-sheet class="section-subtitle" color="transparent">{{
+      sectionSubtitle
+    }}</v-sheet>
   </div>
 </template>
 

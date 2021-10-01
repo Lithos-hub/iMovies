@@ -10,9 +10,11 @@
       tile
       :timeout="1000"
     >
-    <div class="text-center elevation-10 pa-2">
-      <span class="m-auto secondary px-10 rounded ml-2"> {{ snackbarText }} </span>
-    </div>
+      <div class="text-center elevation-10 pa-2">
+        <span class="m-auto secondary px-10 rounded ml-2">
+          {{ snackbarText }}
+        </span>
+      </div>
     </v-snackbar>
 
     <!-- BUTTON FOR MENU EXPAND IN MOBILE DEVICES -->
@@ -27,99 +29,77 @@
       <v-row id="years-menu" v-if="expand">
         <v-col
           class="year-col"
-          v-on:click="
-            expand = !expand;
-          "
+          v-on:click="expand = !expand"
           @click="getMoviesByYear('2010')"
         >
           2010
         </v-col>
         <v-col
           class="year-col"
-          v-on:click="
-            expand = !expand;
-          "
+          v-on:click="expand = !expand"
           @click="getMoviesByYear('2011')"
         >
           2011
         </v-col>
         <v-col
           class="year-col"
-          v-on:click="
-            expand = !expand;
-          "
+          v-on:click="expand = !expand"
           @click="getMoviesByYear('2012')"
         >
           2012
         </v-col>
         <v-col
           class="year-col"
-          v-on:click="
-            expand = !expand;
-          "
+          v-on:click="expand = !expand"
           @click="getMoviesByYear('2013')"
         >
           2013
         </v-col>
         <v-col
           class="year-col"
-          v-on:click="
-            expand = !expand;
-          "
+          v-on:click="expand = !expand"
           @click="getMoviesByYear('2014')"
         >
           2014
         </v-col>
         <v-col
           class="year-col"
-          v-on:click="
-            expand = !expand;
-          "
+          v-on:click="expand = !expand"
           @click="getMoviesByYear('2015')"
         >
           2015
         </v-col>
         <v-col
           class="year-col"
-          v-on:click="
-            expand = !expand;
-          "
+          v-on:click="expand = !expand"
           @click="getMoviesByYear('2016')"
         >
           2016
         </v-col>
         <v-col
           class="year-col"
-          v-on:click="
-            expand = !expand;
-          "
+          v-on:click="expand = !expand"
           @click="getMoviesByYear('2017')"
         >
           2017
         </v-col>
         <v-col
           class="year-col"
-          v-on:click="
-            expand = !expand;
-          "
+          v-on:click="expand = !expand"
           @click="getMoviesByYear('2018')"
         >
           2018
         </v-col>
         <v-col
           class="year-col"
-          v-on:click="
-            expand = !expand;
-          "
+          v-on:click="expand = !expand"
           @click="getMoviesByYear('2019')"
         >
           2019
         </v-col>
         <v-col
           class="year-col"
-          v-on:click="
-            expand = !expand;
-          "
+          v-on:click="expand = !expand"
           @click="getMoviesByYear('2020')"
         >
           2020
@@ -200,170 +180,223 @@
     <div id="year-selected-mobile">{{ year }}</div>
 
     <v-container fluid>
-    <div class="moviesColumns" v-if="panelExpanded">
-      <v-row no-gutters>
-        <v-col md="3" xs="12" v-for="(item, i) in moviesByYear" :key="'B' + i">
-          <div class="fadeIn">
-            <v-card class="transparent mb-15" outlined>
-              <v-row no-gutters class="d-flex justify-start">
-                <!-- MOVIE IMAGE AND DYNAMIC ICONS -->
-                <v-col  md="9" xs="12">
-                  <v-img :src="url + item.poster_path" class="movie-img ml-auto" @click="showDetails(item)">
-                    <div v-for="(id_watched, i) in arrWatchedIDS" :key="'C' + i">
-                      <v-icon v-if="id_watched === item.id"
-                        class="eye-icon-img"
-                        >mdi-eye</v-icon
+      <div class="moviesColumns" v-if="panelExpanded">
+        <v-row no-gutters>
+          <v-col
+            md="3"
+            xs="12"
+            v-for="(item, i) in moviesByYear"
+            :key="'B' + i"
+          >
+            <div class="fadeIn">
+              <v-card class="transparent mb-15" outlined>
+                <v-row no-gutters class="d-flex justify-start">
+                  <!-- MOVIE IMAGE AND DYNAMIC ICONS -->
+                  <v-col md="9" xs="12">
+                    <v-img
+                      :src="url + item.poster_path"
+                      class="movie-img ml-auto"
+                      @click="showDetails(item)"
+                    >
+                      <div
+                        v-for="(id_watched, i) in arrWatchedIDS"
+                        :key="'C' + i"
                       >
-                    </div>
-                    <div v-for="(id_favorite, i) in arrFavoriteIDS" :key="'D' + i">
-                      <v-icon v-if="id_favorite === item.id"
-                        class="heart-icon-img"
-                        >mdi-heart</v-icon
+                        <v-icon
+                          v-if="id_watched === item.id"
+                          class="eye-icon-img"
+                          >mdi-eye</v-icon
+                        >
+                      </div>
+                      <div
+                        v-for="(id_favorite, i) in arrFavoriteIDS"
+                        :key="'D' + i"
                       >
-                  </div>
-                    <div v-for="(id_toWatch, i) in arrToWatchIDS" :key="'E' + i">
-                      <v-icon v-if="id_toWatch === item.id"
-                        class="plus-icon-img"
-                        >mdi-plus</v-icon
+                        <v-icon
+                          v-if="id_favorite === item.id"
+                          class="heart-icon-img"
+                          >mdi-heart</v-icon
+                        >
+                      </div>
+                      <div
+                        v-for="(id_toWatch, i) in arrToWatchIDS"
+                        :key="'E' + i"
                       >
-                  </div>
-                    <div v-for="(rated, i) in arrRatedIDS" :key="'F' + i">
+                        <v-icon
+                          v-if="id_toWatch === item.id"
+                          class="plus-icon-img"
+                          >mdi-plus</v-icon
+                        >
+                      </div>
+                      <div v-for="(rated, i) in arrRatedIDS" :key="'F' + i">
                         <div class="rate-img" v-if="rated.id === item.id">
                           {{ rated.rate }}
                         </div>
-                  </div>
-                  <div class="movie-img-text">
-                    <p>Show details</p>
-                  </div>
-                  </v-img>
-                  <h3 class="movie-title ma-auto justify-center">{{ item.title }}</h3>
-                  <!-- MOVIE BUTTONS -->
-                </v-col>
-                <v-col md="3" xs="12">
-                  <div class="mt-10" id="btn-column">
-                    <!-- BUTTON - WATCHED MOVIE  -->
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          small
-                          color="blue"
-                          class="white--text d-block mt-5 mx-2"
-                          v-bind="attrs"
-                          v-on="on"
-                          @click="addWatched(item); saveIDMovies()"
-                          :disabled="auxWatchedMovies.includes(item) ? true : false"
-                          ><v-icon>mdi-eye</v-icon></v-btn
-                        >
-                      </template>
-                      <span>Add to watched movies</span>
-                    </v-tooltip>
-                    <!-- BUTTON - FAVORITE MOVIE  -->
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          small
-                          color="red"
-                          class="white--text d-block mt-5 mx-2"
-                          v-bind="attrs"
-                          v-on="on"
-                          @click="addFavorite(item); saveIDMovies()"
-                          :disabled="auxFavoriteMovies.includes(item) ? true: false"
-                          ><v-icon>mdi-heart</v-icon>
+                      </div>
+                      <div class="movie-img-text">
+                        <p>Show details</p>
+                      </div>
+                    </v-img>
+                    <h3 class="movie-title ma-auto justify-center">
+                      {{ item.title }}
+                    </h3>
+                    <!-- MOVIE BUTTONS -->
+                  </v-col>
+                  <v-col md="3" xs="12">
+                    <div class="mt-10" id="btn-column">
+                      <!-- BUTTON - WATCHED MOVIE  -->
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            small
+                            color="blue"
+                            class="white--text d-block mt-5 mx-2"
+                            v-bind="attrs"
+                            v-on="on"
+                            @click="
+                              addWatched(item);
+                              saveIDMovies();
+                            "
+                            :disabled="
+                              auxWatchedMovies.includes(item) ? true : false
+                            "
+                            ><v-icon>mdi-eye</v-icon></v-btn
+                          >
+                        </template>
+                        <span>Add to watched movies</span>
+                      </v-tooltip>
+                      <!-- BUTTON - FAVORITE MOVIE  -->
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            small
+                            color="red"
+                            class="white--text d-block mt-5 mx-2"
+                            v-bind="attrs"
+                            v-on="on"
+                            @click="
+                              addFavorite(item);
+                              saveIDMovies();
+                            "
+                            :disabled="
+                              auxFavoriteMovies.includes(item) ? true : false
+                            "
+                            ><v-icon>mdi-heart</v-icon>
                           </v-btn>
-                          </template>
+                        </template>
                         <span>Add to favourite movies</span>
-                    </v-tooltip>
+                      </v-tooltip>
 
-                    <v-dialog transition="dialog-bottom-transition" max-width="600">
-                      <template v-slot:activator="{ on, attrs }">
-                        <div color="primary" v-bind="attrs" v-on="on">
-                          <!-- BUTTON - TO RATE MOVIE  -->
-                          <v-tooltip bottom>
-                            <template v-slot:activator="{ on2, attrs2 }">
-                              <v-btn
-                                small
-                                color="#2c112e"
-                                class="cyan--text d-block mt-5 mx-2"
-                                v-bind="attrs2"
-                                v-on="on2"
-                                @click="setRate(item)"
-                                ><v-icon>mdi-numeric</v-icon></v-btn
-                              >
-                            </template>
-                            <span>Rate movie</span>
-                          </v-tooltip>
-                        </div>
-                      </template>
-                      <template v-slot:default="rateDialog">
-                        <v-card>
-                          <v-toolbar color="primary" dark
-                            >{{ item.title }}
-
-                            <v-btn
-                              icon
-                              depressed
-                              class="ml-auto"
-                              @click="rateDialog.value = false"
-                              ><v-icon>mdi-close</v-icon></v-btn
-                            >
-                          </v-toolbar>
-
-                          <v-card-text>
-                            <div class="pa-12">
-                              <h4 class="text-center">Rate the movie</h4>
-                              <div class="text-center primary--text m-5" id="rate-number">
-                                {{ value / 10 }}
-                              </div>
-                              <!-- RATE THE MOVIE -->
-                              <form>
-                                <v-slider
-                                  v-model="value"
-                                  step="5"
-                                  class="mt-10"
-                                ></v-slider>
+                      <v-dialog
+                        transition="dialog-bottom-transition"
+                        max-width="600"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <div color="primary" v-bind="attrs" v-on="on">
+                            <!-- BUTTON - TO RATE MOVIE  -->
+                            <v-tooltip bottom>
+                              <template v-slot:activator="{ on2, attrs2 }">
                                 <v-btn
-                                  block
-                                  color="secondary"
-                                  @click="addRate(item); saveIDMovies(); rateDialog.value = false"
-                                  >Done</v-btn>
-                                  <v-btn
-                                  v-if="auxRatedMovies.includes(item)"
-                                  block
-                                  color="error"
-                                  class="my-5"
-                                  @click="removeRate(item); rateDialog.value = false"
-                                  >Remove rate</v-btn>
-                              </form>
-                            </div>
-                          </v-card-text>
-                        </v-card>
-                      </template>
-                    </v-dialog>
+                                  small
+                                  color="#2c112e"
+                                  class="cyan--text d-block mt-5 mx-2"
+                                  v-bind="attrs2"
+                                  v-on="on2"
+                                  @click="setRate(item)"
+                                  ><v-icon>mdi-numeric</v-icon></v-btn
+                                >
+                              </template>
+                              <span>Rate movie</span>
+                            </v-tooltip>
+                          </div>
+                        </template>
+                        <template v-slot:default="rateDialog">
+                          <v-card>
+                            <v-toolbar color="primary" dark
+                              >{{ item.title }}
 
-                    <!-- BUTTON - TO WATCH MOVIE  -->
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          small
-                          color="indigo darken-2"
-                          class="white--text d-block mt-5 mx-2"
-                          v-bind="attrs"
-                          v-on="on"
-                          @click="addToWatch(item); saveIDMovies()"
-                          :disabled="auxToWatchMovies.includes(item) ? true: false"
-                          ><v-icon>mdi-plus</v-icon></v-btn
-                        >
-                      </template>
-                      <span>Add to to-watch list</span>
-                    </v-tooltip>
-                  </div>
-                </v-col>
-              </v-row>
-            </v-card>
-          </div>
-        </v-col>
-      </v-row>
-    </div>
+                              <v-btn
+                                icon
+                                depressed
+                                class="ml-auto"
+                                @click="rateDialog.value = false"
+                                ><v-icon>mdi-close</v-icon></v-btn
+                              >
+                            </v-toolbar>
+
+                            <v-card-text>
+                              <div class="pa-12">
+                                <h4 class="text-center">Rate the movie</h4>
+                                <div
+                                  class="text-center primary--text m-5"
+                                  id="rate-number"
+                                >
+                                  {{ value / 10 }}
+                                </div>
+                                <!-- RATE THE MOVIE -->
+                                <form>
+                                  <v-slider
+                                    v-model="value"
+                                    step="5"
+                                    class="mt-10"
+                                  ></v-slider>
+                                  <v-btn
+                                    block
+                                    color="secondary"
+                                    @click="
+                                      addRate(item);
+                                      saveIDMovies();
+                                      rateDialog.value = false;
+                                    "
+                                    >Done</v-btn
+                                  >
+                                  <v-btn
+                                    v-if="auxRatedMovies.includes(item)"
+                                    block
+                                    color="error"
+                                    class="my-5"
+                                    @click="
+                                      removeRate(item);
+                                      rateDialog.value = false;
+                                    "
+                                    >Remove rate</v-btn
+                                  >
+                                </form>
+                              </div>
+                            </v-card-text>
+                          </v-card>
+                        </template>
+                      </v-dialog>
+
+                      <!-- BUTTON - TO WATCH MOVIE  -->
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            small
+                            color="indigo darken-2"
+                            class="white--text d-block mt-5 mx-2"
+                            v-bind="attrs"
+                            v-on="on"
+                            @click="
+                              addToWatch(item);
+                              saveIDMovies();
+                            "
+                            :disabled="
+                              auxToWatchMovies.includes(item) ? true : false
+                            "
+                            ><v-icon>mdi-plus</v-icon></v-btn
+                          >
+                        </template>
+                        <span>Add to to-watch list</span>
+                      </v-tooltip>
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-card>
+            </div>
+          </v-col>
+        </v-row>
+      </div>
     </v-container>
   </div>
 </template>
@@ -382,11 +415,11 @@ export default {
       subtitle: "Popular films of the last decade",
       url: "https://image.tmdb.org/t/p/original",
       userID: null,
-      year: '',
+      year: "",
       snackbar: false,
-      snackbarText: '',
-      snackbarColor: '',
-      category: '',
+      snackbarText: "",
+      snackbarColor: "",
+      category: "",
       rateDialog: false,
       expand: false,
       errorMessage: "",
@@ -407,30 +440,30 @@ export default {
       loaded: false,
       value: 0,
       moviesByYear: [],
-      userData: []
+      userData: [],
     };
   },
   mounted() {
-    this.getMoviesByYear('2010')
-    this.getUserID()
-    this.saveIDMovies()
+    this.getMoviesByYear("2010");
+    this.getUserID();
+    this.saveIDMovies();
   },
   methods: {
-    showSuccess (text) {
-    this.snackbar = true
-    this.snackbarText = text
-    this.snackbarColor = 'cyan'
+    showSuccess(text) {
+      this.snackbar = true;
+      this.snackbarText = text;
+      this.snackbarColor = "cyan";
     },
-    showWarning (text) {
-    this.snackbar = true
-    this.snackbarText = text
-    this.snackbarColor = 'orange'
+    showWarning(text) {
+      this.snackbar = true;
+      this.snackbarText = text;
+      this.snackbarColor = "orange";
     },
-    showDetails (item) { 
-      this.$router.push(`/movie/${item.id}`)
+    showDetails(item) {
+      this.$router.push(`/movie/${item.id}`);
     },
     getMoviesByYear(year) {
-      this.year = year
+      this.year = year;
       const url = "https://api.themoviedb.org/3";
       const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
       const moviesUrl = `${url}/discover/movie?year=${year}&api_key=${apikey}&sort_by=popularity.desc&page=1`;
@@ -442,7 +475,7 @@ export default {
             this.panelExpanded = true;
             this.moviesByYear = resp.data.results;
             for (let data of this.moviesByYear) {
-              this.arrIDS.push(data.id)
+              this.arrIDS.push(data.id);
             }
           })
           .catch((e) => {
@@ -452,9 +485,9 @@ export default {
           });
       });
     },
-    getUserID () {
-      const userID= JSON.parse(localStorage.getItem("USERID")) || {};
-      this.userID = userID.id
+    getUserID() {
+      const userID = JSON.parse(localStorage.getItem("USERID")) || {};
+      this.userID = userID.id;
     },
     // **** LOCALSTORAGE FUNCTIONS **** //
     addWatched(item) {
@@ -462,145 +495,154 @@ export default {
 
       this.auxWatchedMovies.push(item);
 
-      this.writeMovieData(json, 'isWatched', item)
+      this.writeMovieData(json, "isWatched", item);
     },
     addFavorite(item) {
-    const json = { rate: this.value / 10, movie: item };
+      const json = { rate: this.value / 10, movie: item };
 
-    this.auxFavoriteMovies.push(item);
-    
-    this.writeMovieData(json, 'isFavorite', item)
+      this.auxFavoriteMovies.push(item);
+
+      this.writeMovieData(json, "isFavorite", item);
     },
     addToWatch(item) {
       const json = { rate: this.value / 10, movie: item };
 
       this.auxToWatchMovies.push(item);
 
-      this.writeMovieData(json, 'isToWatch', item)
+      this.writeMovieData(json, "isToWatch", item);
     },
     addRate(item) {
       const json = { rate: this.value / 10, movie: item };
 
       this.auxRatedMovies.push(item);
 
-      this.writeMovieData(json, 'isRated', item)
+      this.writeMovieData(json, "isRated", item);
     },
     setRate(item) {
-      this.value = 0
+      this.value = 0;
       for (let data of this.jsonRatedMovies) {
-            if (data.movie.id === item.id) {
-                this.value = data.rate * 10
-              }
-          }
+        if (data.movie.id === item.id) {
+          this.value = data.rate * 10;
+        }
+      }
     },
-    removeRate(item) { 
+    removeRate(item) {
       const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-        for (let data of this.auxRatedMovies) {
-          if (data.id === item.id) {
-              this.auxRatedMovies.splice(this.auxRatedMovies.indexOf(data), 1)
-            }
+      for (let data of this.auxRatedMovies) {
+        if (data.id === item.id) {
+          this.auxRatedMovies.splice(this.auxRatedMovies.indexOf(data), 1);
         }
-        for (let data of this.arrRatedIDS) {
-          if (data.id === item.id) {
-              this.arrRatedIDS.splice(this.arrRatedIDS.indexOf(data), 1)
-            }
+      }
+      for (let data of this.arrRatedIDS) {
+        if (data.id === item.id) {
+          this.arrRatedIDS.splice(this.arrRatedIDS.indexOf(data), 1);
         }
-        for (let data of this.jsonRatedMovies) {
-          if (data.movie.id === item.id) {
-              this.jsonRatedMovies.splice(this.jsonRatedMovies.indexOf(data), 1)
-            }
+      }
+      for (let data of this.jsonRatedMovies) {
+        if (data.movie.id === item.id) {
+          this.jsonRatedMovies.splice(this.jsonRatedMovies.indexOf(data), 1);
         }
-        this.value = 0
-        storage[this.userID].ratedMovies = this.jsonRatedMovies;
-        localStorage.setItem("storageUserDATA", JSON.stringify(storage));
+      }
+      this.value = 0;
+      storage[this.userID].ratedMovies = this.jsonRatedMovies;
+      localStorage.setItem("storageUserDATA", JSON.stringify(storage));
     },
     writeMovieData(json, type, item) {
       const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
 
-      if (type === 'isWatched') {
-        let isRepeated = false
-          for (let data of this.jsonWatchedMovies) {
-            if (data.movie.id === item.id) {
-              isRepeated = true
-                this.jsonWatchedMovies.splice(this.jsonWatchedMovies.indexOf(data), 1)
-                this.showWarning('Removed from WATCHED category')
-              } else { 
-                isRepeated = false
-              }
+      if (type === "isWatched") {
+        let isRepeated = false;
+        for (let data of this.jsonWatchedMovies) {
+          if (data.movie.id === item.id) {
+            isRepeated = true;
+            this.jsonWatchedMovies.splice(
+              this.jsonWatchedMovies.indexOf(data),
+              1
+            );
+            this.showWarning("Removed from WATCHED category");
+          } else {
+            isRepeated = false;
           }
-          if (!isRepeated) {
-            this.jsonWatchedMovies.push(json)
-            this.showSuccess('Added to WATCHED category')
-          }
-          
-        storage[this.userID].watchedMovies = this.jsonWatchedMovies
+        }
+        if (!isRepeated) {
+          this.jsonWatchedMovies.push(json);
+          this.showSuccess("Added to WATCHED category");
+        }
+
+        storage[this.userID].watchedMovies = this.jsonWatchedMovies;
         localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
-      if(type === 'isFavorite') {
-        let isRepeated = false
-          for (let data of this.jsonFavoriteMovies) {
-              if (data.movie.id === item.id) {
-                isRepeated = true
-                this.jsonFavoriteMovies.splice(this.jsonFavoriteMovies.indexOf(data), 1)
-                this.showWarning('Removed from FAVORITE category')
-              } else { 
-                isRepeated = false
-              }
+      if (type === "isFavorite") {
+        let isRepeated = false;
+        for (let data of this.jsonFavoriteMovies) {
+          if (data.movie.id === item.id) {
+            isRepeated = true;
+            this.jsonFavoriteMovies.splice(
+              this.jsonFavoriteMovies.indexOf(data),
+              1
+            );
+            this.showWarning("Removed from FAVORITE category");
+          } else {
+            isRepeated = false;
           }
-          if (!isRepeated) {
-            this.jsonFavoriteMovies.push(json)
-            this.showSuccess('Added to FAVORITE category')
-          }
-          
-        storage[this.userID].favoriteMovies = this.jsonFavoriteMovies
+        }
+        if (!isRepeated) {
+          this.jsonFavoriteMovies.push(json);
+          this.showSuccess("Added to FAVORITE category");
+        }
+
+        storage[this.userID].favoriteMovies = this.jsonFavoriteMovies;
         localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
-      if(type === 'isToWatch') {
-        let isRepeated = false
-          for (let data of this.jsonToWatchMovies) {
-            if (data.movie.id === item.id) {
-              isRepeated = true
-                this.jsonToWatchMovies.splice(this.jsonToWatchMovies.indexOf(data), 1)
-                this.showWarning('Removed from TO WATCH category')
-              } else { 
-                isRepeated = false
-              }
+      if (type === "isToWatch") {
+        let isRepeated = false;
+        for (let data of this.jsonToWatchMovies) {
+          if (data.movie.id === item.id) {
+            isRepeated = true;
+            this.jsonToWatchMovies.splice(
+              this.jsonToWatchMovies.indexOf(data),
+              1
+            );
+            this.showWarning("Removed from TO WATCH category");
+          } else {
+            isRepeated = false;
           }
-          if (!isRepeated) {
-            this.jsonToWatchMovies.push(json)
-            this.showSuccess('Added to TO WATCH category')
-          }
-          
-        storage[this.userID].toWatchMovies = this.jsonToWatchMovies
+        }
+        if (!isRepeated) {
+          this.jsonToWatchMovies.push(json);
+          this.showSuccess("Added to TO WATCH category");
+        }
+
+        storage[this.userID].toWatchMovies = this.jsonToWatchMovies;
         localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
-      if(type === 'isRated') {
-          let isRepeated = false
-          for (let data of this.jsonRatedMovies) {
-              if (data.movie.id === item.id) {
-                isRepeated = true
-                data.rate = json.rate
-                this.showWarning('Modified rate')
-              } else { 
-                isRepeated = false
-              }
+      if (type === "isRated") {
+        let isRepeated = false;
+        for (let data of this.jsonRatedMovies) {
+          if (data.movie.id === item.id) {
+            isRepeated = true;
+            data.rate = json.rate;
+            this.showWarning("Modified rate");
+          } else {
+            isRepeated = false;
           }
-          if (!isRepeated) {
-            this.jsonRatedMovies.push(json)
-            this.showSuccess('Added to RATED category')
-          }
-          
-        storage[this.userID].ratedMovies = this.jsonRatedMovies
+        }
+        if (!isRepeated) {
+          this.jsonRatedMovies.push(json);
+          this.showSuccess("Added to RATED category");
+        }
+
+        storage[this.userID].ratedMovies = this.jsonRatedMovies;
         localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
     },
-    saveIDMovies () {
+    saveIDMovies() {
       const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
 
-      this.jsonWatchedMovies = storage[this.userID].watchedMovies
-      this.jsonFavoriteMovies = storage[this.userID].favoriteMovies
-      this.jsonToWatchMovies = storage[this.userID].toWatchMovies
-      this.jsonRatedMovies = storage[this.userID].ratedMovies
+      this.jsonWatchedMovies = storage[this.userID].watchedMovies;
+      this.jsonFavoriteMovies = storage[this.userID].favoriteMovies;
+      this.jsonToWatchMovies = storage[this.userID].toWatchMovies;
+      this.jsonRatedMovies = storage[this.userID].ratedMovies;
 
       let watched = storage[this.userID].watchedMovies || [];
       let favorite = storage[this.userID].favoriteMovies || [];
@@ -617,34 +659,32 @@ export default {
       let uniqueRated = [];
       let uniqueToWatch = [];
 
-      for (let data of watched) { 
-        watchedAuxArr.push(data.movie.id)
-        uniqueWatched = [ ...new Set(watchedAuxArr)]
+      for (let data of watched) {
+        watchedAuxArr.push(data.movie.id);
+        uniqueWatched = [...new Set(watchedAuxArr)];
       }
-     for (let data of rated) {
+      for (let data of rated) {
         ratedAuxArr.push({
           id: data.movie.id,
-          rate: data.rate
-        })
-        uniqueRated = [ ...new Set(ratedAuxArr)]
-     }
-      for (let data of toWatch) { 
+          rate: data.rate,
+        });
+        uniqueRated = [...new Set(ratedAuxArr)];
+      }
+      for (let data of toWatch) {
         toWatchAuxArr.push(data.movie.id);
-        uniqueToWatch = [ ...new Set(toWatchAuxArr)]
+        uniqueToWatch = [...new Set(toWatchAuxArr)];
       }
       for (let data of favorite) {
         favoriteAuxArr.push(data.movie.id);
-        uniqueFavorite = [ ...new Set(favoriteAuxArr)]
+        uniqueFavorite = [...new Set(favoriteAuxArr)];
       }
 
       this.arrWatchedIDS = uniqueWatched;
       this.arrFavoriteIDS = uniqueFavorite;
       this.arrRatedIDS = uniqueRated;
       this.arrToWatchIDS = uniqueToWatch;
-
-
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -664,14 +704,13 @@ export default {
   }
 }
 
-.snackbar { 
+.snackbar {
   position: fixed !important;
   bottom: -0.5rem !important;
   width: 100% !important;
-
 }
 
-.movie-img-text { 
+.movie-img-text {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -690,14 +729,14 @@ export default {
   box-shadow: inset 0 0 10px black;
 }
 
-.movie-img { 
+.movie-img {
   transition: 0.3s;
   cursor: pointer;
 
-  &:hover { 
+  &:hover {
     transform: scale(1.05);
 
-    .movie-img-text { 
+    .movie-img-text {
       opacity: 1;
     }
   }

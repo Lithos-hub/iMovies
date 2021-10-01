@@ -22,7 +22,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn block @click="dialog = false" class="close-info-btn"> Close </v-btn>
+          <v-btn block @click="dialog = false" class="close-info-btn">
+            Close
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -55,13 +57,21 @@
                         {{ item.movie_data.title }}
                       </p>
                       <p
-                        class="overline white--text text-center rounded movie-date mb-10"
+                        class="
+                          overline
+                          white--text
+                          text-center
+                          rounded
+                          movie-date
+                          mb-10
+                        "
                       >
                         {{ item.movie_data.release_date.slice(0, 4) }}
                       </p>
                       <v-divider class="white"></v-divider>
                       <div v-show="category === 'byrate'">
-                        <v-list-item-subtitle class="white--text mt-10 text-center"
+                        <v-list-item-subtitle
+                          class="white--text mt-10 text-center"
                           >My rate:
                           <span class="rate-number mt-10">{{
                             item.rate
@@ -109,7 +119,6 @@
 </template>
 
 <script>
-
 export default {
   props: ["category", "arrayMovies"],
   data() {
@@ -125,18 +134,18 @@ export default {
     };
   },
   mounted() {
-    this.getUserID()
+    this.getUserID();
   },
   methods: {
     removeMovie(item) {
       const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
       if (this.category === "byrate") {
-      const index = this.arrayMovies.indexOf(item);
+        const index = this.arrayMovies.indexOf(item);
         if (index > -1) {
           this.arrayMovies.splice(index, 1);
         }
-        storage[this.userID].ratedMovies = this.arrayMovies
-        
+        storage[this.userID].ratedMovies = this.arrayMovies;
+
         localStorage.setItem("storageUserDATA", JSON.stringify(storage));
       }
     },
@@ -147,9 +156,9 @@ export default {
       this.release_date = item.movie_data.release_date;
       this.img = item.movie_data.backdrop_path;
     },
-    getUserID () {
-      const userID= JSON.parse(localStorage.getItem("USERID")) || {};
-      this.userID  = userID.id
+    getUserID() {
+      const userID = JSON.parse(localStorage.getItem("USERID")) || {};
+      this.userID = userID.id;
     },
   },
 };

@@ -1,6 +1,13 @@
 <template>
   <v-app class="app">
-    <Navbar id="navbar" v-if="this.$route.path != '/404' && this.$route.path != '/' && this.$route.path != '/register'" />
+    <Navbar
+      id="navbar"
+      v-if="
+        this.$route.path != '/404' &&
+        this.$route.path != '/' &&
+        this.$route.path != '/register'
+      "
+    />
 
     <v-main class="main-content">
       <router-view class="routerview"></router-view>
@@ -9,6 +16,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import Navbar from "./components/Navbar";
 
 export default {
@@ -21,21 +29,22 @@ export default {
     return {};
   },
   mounted() {
-      this.getData();
+    this.getData();
   },
   methods: {
+    ...mapActions(['changeLanguage']),
     getData() {
-      const userData = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+      const userData =
+        JSON.parse(localStorage.getItem("storageUserDATA")) || [];
       const userID = JSON.parse(localStorage.getItem("USERID"));
 
-      if(userData) {
+      if (userData) {
         for (let user of userData) {
-          if(user.id === userID.id) {
+          if (user.id === userID.id) {
             this.$store.commit("setUser", user);
           }
         }
       }
-
     },
   },
 };
@@ -57,13 +66,13 @@ body {
 }
 
 .v-snack__wrapper {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    margin: 0 auto;
-    min-width: 100% !important;
-    border-radius: 0 !important;
-} 
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  margin: 0 auto;
+  min-width: 100% !important;
+  border-radius: 0 !important;
+}
 
 // Scroll Bar
 

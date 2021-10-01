@@ -1,24 +1,46 @@
 // Font families:
 
-$style1: 'Cairo', sans-serif;
-$style2: 'Archivo Narrow', sans-serif;
-$style3:  'Marvel', sans-serif;
-$style4: 'Teko', sans-serif;
+$style1: "Cairo", sans-serif;
+$style2: "Archivo Narrow", sans-serif;
+$style3: "Marvel", sans-serif;
+$style4: "Teko", sans-serif;
 
 // Colors
 
 $primary: #207ef2;
-$secondary: #F44336;
+$secondary: #f44336;
 $dark: #101010;
 $dark2: rgb(21, 21, 21);
 
 // Buttons
 
-$gradient_btn1: linear-gradient(30deg, rgb(181, 211, 207), rgb(255, 133, 51), rgb(156, 33, 218), rgb(252, 80, 109));
-$gradient_btn2:  linear-gradient(30deg, rgb(83, 199, 183), rgb(51, 122, 255), rgb(68, 58, 250), rgb(29, 4, 68));
-$gradient_btn3: linear-gradient(30deg, aqua, rgb(54, 130, 151), rgb(27, 0, 114));
-$gradient_btn4:  linear-gradient(30deg, rgb(21, 21, 53), rgb(53, 27, 72), rgb(106, 19, 88), rgb(94, 27, 86));
-
+$gradient_btn1: linear-gradient(
+  30deg,
+  rgb(181, 211, 207),
+  rgb(255, 133, 51),
+  rgb(156, 33, 218),
+  rgb(252, 80, 109)
+);
+$gradient_btn2: linear-gradient(
+  30deg,
+  rgb(83, 199, 183),
+  rgb(51, 122, 255),
+  rgb(68, 58, 250),
+  rgb(29, 4, 68)
+);
+$gradient_btn3: linear-gradient(
+  30deg,
+  aqua,
+  rgb(54, 130, 151),
+  rgb(27, 0, 114)
+);
+$gradient_btn4: linear-gradient(
+  30deg,
+  rgb(21, 21, 53),
+  rgb(53, 27, 72),
+  rgb(106, 19, 88),
+  rgb(94, 27, 86)
+);
 
 $gradient_success: linear-gradient(42deg, rgb(98, 209, 98), rgb(9, 121, 97));
 $gradient_warning: linear-gradient(42deg, rgb(228, 163, 24), rgb(194, 83, 32));

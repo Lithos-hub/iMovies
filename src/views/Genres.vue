@@ -3,7 +3,13 @@
     <SectionTitle :sectionSubtitle="subtitle" />
 
     <div class="error-sheet-container" v-if="loadingError">
-      <v-sheet dark class="error-sheet" height="100%" width="100%" elevation="10">
+      <v-sheet
+        dark
+        class="error-sheet"
+        height="100%"
+        width="100%"
+        elevation="10"
+      >
         {{ loadingError }}
       </v-sheet>
     </div>
@@ -200,7 +206,7 @@
             block
             tile
           >
-          War
+            War
           </v-btn>
 
           <!-- ********************* WESTERN BUTTON ********************* -->
@@ -218,17 +224,28 @@
         </v-col>
         <!-- ********************* GO UP BUTTON ********************* -->
         <a href="#" class="go_up_trigger">
-          <v-btn color="secondary" class="go-up-btn" @click="go_up()">Go up!</v-btn>
+          <v-btn color="secondary" class="go-up-btn" @click="go_up()"
+            >Go up!</v-btn
+          >
         </a>
       </v-row>
 
       <!--********************************** DIALOG MOVIES ********************************** -->
       <div v-for="(item, i) in movies_array" :key="i">
         <v-row>
-          <v-dialog v-model="genreDialog" v-if="genreDialog" class="movie-genres-dialog">
+          <v-dialog
+            v-model="genreDialog"
+            v-if="genreDialog"
+            class="movie-genres-dialog"
+          >
             <v-card>
               <v-toolbar tile elevation="10" dark color="secondary">
-                <v-btn icon dark @click="genreDialog = false" class="close-dialog-btn">
+                <v-btn
+                  icon
+                  dark
+                  @click="genreDialog = false"
+                  class="close-dialog-btn"
+                >
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
@@ -242,17 +259,18 @@
                     <v-sheet width="80%" id="genre-sheet">
                       <v-card-title id="genre-title"
                         >{{ item.title }}
-                        <span id="genre-date">{{ item.release_date }}</span></v-card-title
+                        <span id="genre-date">{{
+                          item.release_date
+                        }}</span></v-card-title
                       >
                     </v-sheet>
                   </v-col>
                   <v-col lg="12" xs="12">
                     <img
                       :src="url + item.backdrop_path"
-                      class="movie-img-dialog"/>
-                    
-                  
-                    
+                      class="movie-img-dialog"
+                    />
+
                     <p class="lead" id="genre-overview">
                       {{ item.overview }}
                       <br />
@@ -311,7 +329,6 @@ export default {
             this.loadingGenre = false;
             this.genreDialog = true;
             this.movies_array = resp.data.results;
-
           })
           .catch((e) => {
             console.info(e);
@@ -332,7 +349,6 @@ export default {
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
-
   .genre-btn {
     letter-spacing: 0px;
     height: 350px !important;
@@ -372,7 +388,6 @@ export default {
     z-index: 9999999;
     box-shadow: 0px -20px 20px black;
 
-
     &:hover {
       text-shadow: none;
     }
@@ -389,8 +404,6 @@ export default {
       margin-top: 10px;
     }
   }
-
-  
 
   .go-up-btn {
     position: relative;
@@ -432,13 +445,10 @@ export default {
     display: inline;
     margin-top: 50px;
     width: 100%;
-
   }
-
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
-
   .genre-btn {
     letter-spacing: 40px;
     height: 200px !important;
@@ -489,7 +499,6 @@ export default {
     background-image: url("../assets/img/gradient1.jpg");
     background-position: top;
     background-size: cover;
-
 
     &:hover {
       text-shadow: none;
@@ -550,7 +559,6 @@ export default {
 
 // ******* DESKTOP RESPONSIVE ******* //
 @media only screen and (min-width: 1370px) {
-
   .genre-btn {
     letter-spacing: 40px;
     height: 300px !important;
@@ -601,7 +609,6 @@ export default {
     background-position: top;
     background-size: cover;
 
-
     &:hover {
       text-shadow: none;
     }
@@ -618,7 +625,6 @@ export default {
       margin-top: 10px;
     }
   }
-
 
   .go-up-btn {
     position: relative;
@@ -654,171 +660,167 @@ export default {
   }
 
   .movie-img-dialog {
-
     display: inline;
     text-align: center;
     border-radius: 15px;
     margin-top: 0px;
   }
-
 }
-
 
 // ******** COMMON STYLES ******** //
 
 // COMMON STYLES
 
 .img1 {
-    background: url("../assets/img/actionimg.webp");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+  background: url("../assets/img/actionimg.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.img2 {
+  background: url("../assets/img/adventureimg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.img3 {
+  background: url("../assets/img/animationimg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.img4 {
+  background: url("../assets/img/comedyimg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.img5 {
+  background: url("../assets/img/crimeimg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.img6 {
+  background: url("../assets/img/documentaryimg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.img7 {
+  background: url("../assets/img/dramaticimg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.img8 {
+  background: url("../assets/img/fantasyimg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.img9 {
+  background: url("../assets/img/historyimg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.img10 {
+  background: url("../assets/img/horrorimg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.img11 {
+  background: url("../assets/img/musicalimg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.img12 {
+  background: url("../assets/img/romanticimg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.img13 {
+  background: url("../assets/img/scifiimg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.img14 {
+  background: url("../assets/img/thrillerimg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.img15 {
+  background: url("../assets/img/warimg.jpg");
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.img16 {
+  background: url("../assets/img/westernimg.jpg");
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+#genres-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+@keyframes move {
+  from {
+    margin-left: -5000px;
+    opacity: 0;
   }
-  .img2 {
-    background: url("../assets/img/adventureimg.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+  to {
+    margin-left: 0px;
+    opacity: 1;
   }
-  .img3 {
-    background: url("../assets/img/animationimg.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-  .img4 {
-    background: url("../assets/img/comedyimg.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-  .img5 {
-    background: url("../assets/img/crimeimg.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-  .img6 {
-    background: url("../assets/img/documentaryimg.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-  .img7 {
-    background: url("../assets/img/dramaticimg.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-  .img8 {
-    background: url("../assets/img/fantasyimg.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-  .img9 {
-    background: url("../assets/img/historyimg.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-  .img10 {
-    background: url("../assets/img/horrorimg.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-  .img11 {
-    background: url("../assets/img/musicalimg.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-  .img12 {
-    background: url("../assets/img/romanticimg.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-  .img13 {
-    background: url("../assets/img/scifiimg.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-  .img14 {
-    background: url("../assets/img/thrillerimg.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-  .img15 {
-    background: url("../assets/img/warimg.jpg");
-    background-size: cover;
+}
+
+@keyframes motion {
+  0% {
     background-position: top;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
   }
-  .img16 {
-    background: url("../assets/img/westernimg.jpg");
-    background-size: cover;
+
+  100% {
+    background-position: bottom;
+  }
+
+  0% {
     background-position: top;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
   }
+}
 
-  #genres-container {
-    position: relative;
-    width: 100%;
-    margin-bottom: 50px;
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
   }
-
-    @keyframes move {
-    from {
-      margin-left: -5000px;
-      opacity: 0;
-    }
-    to {
-      margin-left: 0px;
-      opacity: 1;
-    }
+  100% {
+    opacity: 1;
   }
-
-  @keyframes motion {
-    0% {
-      background-position: top;
-    }
-
-    100% {
-      background-position: bottom;
-    }
-
-    0% {
-      background-position: top;
-    }
-  }
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
+}
 </style>

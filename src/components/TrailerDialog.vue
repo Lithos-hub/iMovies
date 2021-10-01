@@ -1,58 +1,58 @@
 <template>
+  <v-dialog
+    class="dialog"
+    v-model="openDialog"
+    v-if="openDialog"
+    overlay-opacity="10"
+  >
+    <v-card height="100%" class="cardDialog">
+      <div class="row videoDialog">
+        <v-sheet
+          color="error darken-2"
+          width="100%"
+          height="100%"
+          dark
+          class="pa-5"
+          v-show="messageError.length != 0"
+        >
+          <h1 class="video-error">{{ messageError }}</h1>
+        </v-sheet>
 
-      <v-dialog class="dialog" v-model="openDialog" v-if="openDialog" overlay-opacity="10">
-        <v-card height="100%" class="cardDialog">
-          <div class="row videoDialog">
-            <v-sheet
-              color="error darken-2"
-              width="100%"
-              height="100%"
-              dark
-              class="pa-5"
-              v-show="messageError.length != 0"
-            >
-              <h1 class="video-error">{{ messageError }}</h1>
-            </v-sheet>
+        <iframe
+          class="video"
+          :src="videoURL"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          v-show="messageError.length != 0 ? false : true"
+        ></iframe>
+      </div>
 
-            <iframe
-              class="video"
-              :src="videoURL"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              v-show="messageError.length != 0 ? false : true"
-            ></iframe>
-          </div>
-
-          <div class="closeDialog-btn">
-            <v-btn color="error" block @click="closeDialog()" tile> Close </v-btn>
-          </div>
-        </v-card>
-      </v-dialog>
-
+      <div class="closeDialog-btn">
+        <v-btn color="error" block @click="closeDialog()" tile> Close </v-btn>
+      </div>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
 export default {
-    props: ["openDialog", "videoURL", "messageError"],
-    data() {
-        return {
-
-        }
+  props: ["openDialog", "videoURL", "messageError"],
+  data() {
+    return {};
+  },
+  methods: {
+    closeDialog() {
+      this.$emit("clicked", (this.dialog = false));
     },
-    methods: {
-      closeDialog() {
-        this.$emit('clicked', this.dialog = false)
-      }
-    }
-
-}
+  },
+};
 </script>
 
 <style lang="scss">
-@import 'src/scss/variables';
+@import "src/scss/variables";
 
-  //****************************** MOBILE DIALOG ******************************//
+//****************************** MOBILE DIALOG ******************************//
 @media only screen and (min-width: 360px) {
   .videoDialog {
     margin: 0px;
@@ -90,10 +90,9 @@ export default {
     height: 100%;
     overflow: hidden;
   }
-
 }
 
-  //****************************** LAPTOP DIALOG ******************************//
+//****************************** LAPTOP DIALOG ******************************//
 @media only screen and (min-width: 767px) {
   .videoDialog {
     padding: 20px;
@@ -132,7 +131,7 @@ export default {
 //****************************** DESKTOP DIALOG ******************************//
 @media only screen and (min-width: 1370px) {
   .videoDialog {
-    padding:20px;
+    padding: 20px;
     width: 100%;
     height: 100%;
   }
@@ -160,9 +159,6 @@ export default {
 
   .dialog {
     height: 100%;
-
   }
 }
-
-
 </style>

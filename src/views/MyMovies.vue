@@ -145,13 +145,12 @@
         <v-row class="text-center">
           <v-col></v-col>
           <v-col cols="4">
-          <v-btn color="error" dark @click="reset">Reset statistics</v-btn>
+            <v-btn color="error" dark @click="reset">Reset statistics</v-btn>
           </v-col>
           <v-col></v-col>
         </v-row>
       </v-container>
     </v-row>
-
 
     <MyMoviesCategory
       v-if="category === 'watched'"
@@ -238,17 +237,17 @@ export default {
     },
   },
   methods: {
-     getUserID () {
-      const userID= JSON.parse(localStorage.getItem("USERID")) || {};
-      const id = userID.id
-      this.userID = id
+    getUserID() {
+      const userID = JSON.parse(localStorage.getItem("USERID")) || {};
+      const id = userID.id;
+      this.userID = id;
     },
     getToWatchMovies() {
       if (localStorage.getItem("storageUserDATA")) {
         const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
-        const toWatchArr =  userData[this.userID].toWatchMovies
+        const toWatchArr = userData[this.userID].toWatchMovies;
         for (let movie of toWatchArr) {
-          this.toWatchMovies.push(movie)
+          this.toWatchMovies.push(movie);
         }
 
         const removeDuplicated = uniqBy(this.toWatchMovies, "movie.id");
@@ -259,9 +258,9 @@ export default {
     getWatchedMovies() {
       if (localStorage.getItem("storageUserDATA")) {
         const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
-        const watchedArr = userData[this.userID].watchedMovies
+        const watchedArr = userData[this.userID].watchedMovies;
         for (let movie of watchedArr) {
-          this.watchedMovies.push(movie)
+          this.watchedMovies.push(movie);
         }
 
         const removeDuplicated = uniqBy(this.watchedMovies, "movie.id");
@@ -272,10 +271,10 @@ export default {
     getFavoriteMovies() {
       if (localStorage.getItem("storageUserDATA")) {
         const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
-        
-        const favoriteArr = userData[this.userID].favoriteMovies
+
+        const favoriteArr = userData[this.userID].favoriteMovies;
         for (let movie of favoriteArr) {
-          this.favoriteMovies.push(movie)
+          this.favoriteMovies.push(movie);
         }
         const removeDuplicated = uniqBy(this.favoriteMovies, "movie.id");
 
@@ -285,33 +284,33 @@ export default {
     getRatedMovies() {
       if (localStorage.getItem("storageUserDATA")) {
         const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
-        const ratedArr = userData[this.userID].ratedMovies
+        const ratedArr = userData[this.userID].ratedMovies;
         for (let movie of ratedArr) {
-          this.ratedMovies.push(movie)
+          this.ratedMovies.push(movie);
         }
         const removeDuplicated = uniqBy(this.ratedMovies, "movie_data.id");
 
         this.ratedMovies = removeDuplicated;
       }
     },
-    reset () { 
+    reset() {
       if (localStorage.getItem("storageUserDATA")) {
         const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
-        userData[this.userID].toWatchMovies = []
-        userData[this.userID].watchedMovies = []
-        userData[this.userID].favoriteMovies = []
-        userData[this.userID].ratedMovies = []
+        userData[this.userID].toWatchMovies = [];
+        userData[this.userID].watchedMovies = [];
+        userData[this.userID].favoriteMovies = [];
+        userData[this.userID].ratedMovies = [];
         localStorage.setItem("storageUserDATA", JSON.stringify(userData));
-        
-        this.toWatchMovies = []
-        
-        this.favoriteMovies = []
-        
-        this.watchedMovies = []
-        
-        this.ratedMovies = []
+
+        this.toWatchMovies = [];
+
+        this.favoriteMovies = [];
+
+        this.watchedMovies = [];
+
+        this.ratedMovies = [];
       }
-    }
+    },
   },
   mounted() {
     this.getUserID();

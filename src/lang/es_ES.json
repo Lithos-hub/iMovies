@@ -1,0 +1,37 @@
+{
+  "view-access": {
+    "welcome": "Bienvenido a iMovies",
+    "access1": "Accede con ",
+    "access2": " E-mail y contraseña",
+    "info1": "Podrás guardar películas en diferentes categorías como favoritas, vistas, puntuadas, etc.",
+    "info2": "Podrás acceder a la aplicación, pero algunas características permanecerán ocultas",
+    "notAccount": "¿No tienes cuenta?",
+    "email": "E-mail",
+    "password": "Contraseña",
+    "accessSuccess": "¡Datos correctos! Cargando la aplicacion...",
+    "accessError": "El E-mail o la contraseña son incorrectos. Por favor, inténtalo de nuevo.",
+    "enter": "Acceder",
+    "register": "Quiero registrarme",
+    "access3": "Accede con una ",
+    "access4": " cuenta por defecto",
+    "emailRequired": "El E-mail es obligatorio",
+    "emailInvalid": "El formato del E-mail no es correcto"
+  },
+  "view-register": {
+    "comeback": "Volver",
+    "create": "Crear una cuenta",
+    "choose": "Elegir un avatar",
+    "username": "Nombre de usuario",
+    "email": "E-mail",
+    "password": "Contraseña",
+    "repeat": "Repite la contraseña",
+    "register": "Registrar",
+    "maximum": "10 caracteres como máximo",
+    "nameRequired": "El nombre es obligatorio",
+    "emailRequired": "El E-mail es obligatorio",
+    "emailInvalid": "El formato del E-mail no es correcto",
+    "passwordRequired": "La contraseña es obligatoria",
+    "success": "¡Genial! ¡Tu cuenta ha sido creada con éxito!",
+    "comingback": "Regresando..."
+  }
+}

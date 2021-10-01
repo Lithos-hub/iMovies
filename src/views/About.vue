@@ -15,23 +15,25 @@
               class="d-block ma-auto mb-5"
             ></v-img>
             This application uses
-            <span class="blue--text">The Movie Database (TMDB) API.</span><br /><br />
+            <span class="blue--text">The Movie Database (TMDB) API.</span
+            ><br /><br />
 
-            The app is divided into some sections that can be accesible by the expandible
-            side menu, like:
+            The app is divided into some sections that can be accesible by the
+            expandible side menu, like:
             <div class="list">
               <br />
               Famous current movies (Trending).<br />
               The latest available movie trailers (Trailers);<br />
               Movies classified by genres and popularity (Genres);<br />
-              Or a popular movies classification by year, from 2010 to 2020 (Ranking).<br /><br />
+              Or a popular movies classification by year, from 2010 to 2020
+              (Ranking).<br /><br />
             </div>
-            In some of those sections you may get or access certain info with buttons that
-            trigger a modal window.<br /><br />
-            Since <span class="green--text">Version 1.5.0</span> it is possible to save
-            movies in different categories using LocalStorage. Those movies can be saved
-            for now from the 'Ranking' section and can be shown in the 'My Movies'
-            section.
+            In some of those sections you may get or access certain info with
+            buttons that trigger a modal window.<br /><br />
+            Since <span class="green--text">Version 1.5.0</span> it is possible
+            to save movies in different categories using LocalStorage. Those
+            movies can be saved for now from the 'Ranking' section and can be
+            shown in the 'My Movies' section.
           </v-card-text>
         </v-card>
       </v-col>
@@ -45,24 +47,27 @@
               class="d-block ma-auto mb-5"
             ></v-img>
             Esta aplicación utiliza la API de
-            <span class="blue--text">The Movie Database (TMDB).</span> <br /><br />
+            <span class="blue--text">The Movie Database (TMDB).</span>
+            <br /><br />
 
-            La app se divide en varias secciones accesibles desde el menú lateral
-            desplegable, como:
+            La app se divide en varias secciones accesibles desde el menú
+            lateral desplegable, como:
             <div class="list">
               <br />
               Películas que se encuentran actualmente de moda (Trending);
-              <br />Últimos trailers disponibles (Trailers); <br />Clasificación de
-              películas por género y ordenadas en popularidad (Genres) <br />O una
-              clasificación de películas populares por año, desde 2010 hasta 2020
-              (Ranking). <br /><br />
+              <br />Últimos trailers disponibles (Trailers); <br />Clasificación
+              de películas por género y ordenadas en popularidad (Genres)
+              <br />O una clasificación de películas populares por año, desde
+              2010 hasta 2020 (Ranking). <br /><br />
             </div>
-            En algunas de estas secciones se puede ampliar o acceder a cierta información
-            mediante botones que lanzan una ventana modal. <br /><br />
-            Desde la <span class="green--text">Version 1.5.0</span> es posible el registro
-            de películas en diferentes categorías mediante LocalStorage. Las películas
-            pueden guardarse de momento desde la sección 'Ranking' y pueden consultarse
-            esas listas en la sección 'My Movies'.
+            En algunas de estas secciones se puede ampliar o acceder a cierta
+            información mediante botones que lanzan una ventana modal.
+            <br /><br />
+            Desde la <span class="green--text">Version 1.5.0</span> es posible
+            el registro de películas en diferentes categorías mediante
+            LocalStorage. Las películas pueden guardarse de momento desde la
+            sección 'Ranking' y pueden consultarse esas listas en la sección 'My
+            Movies'.
           </v-card-text>
         </v-card>
       </v-col>

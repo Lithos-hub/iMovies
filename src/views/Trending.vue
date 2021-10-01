@@ -3,8 +3,12 @@
     <SectionTitle :sectionSubtitle="subtitle" />
 
     <!-- TRAILER DIALOG -->
-    <TrailerDialog :openDialog="dialog" :videoURL="trailerVideo" :messageError="videoError" @clicked="onClickChild"/>
-
+    <TrailerDialog
+      :openDialog="dialog"
+      :videoURL="trailerVideo"
+      :messageError="videoError"
+      @clicked="onClickChild"
+    />
 
     <v-container fluid id="trending-container">
       <!-- LIST OF MOVIES -->
@@ -14,7 +18,9 @@
             <v-sheet width="80%" id="trending-sheet">
               <v-card-title id="trending-title"
                 >{{ item.title }}
-                <span id="trending-date">{{ item.release_date }}</span></v-card-title
+                <span id="trending-date">{{
+                  item.release_date
+                }}</span></v-card-title
               >
             </v-sheet>
           </v-col>
@@ -22,8 +28,17 @@
             <img :src="url + item.poster_path" width="200" class="movie-img" />
 
             <p class="lead" id="trending-overview">
-              <span class="small d-block mb-10">Overview:
-              <p :class="item.overview.length > 0 ? 'white--text mt-5' : 'error--text mt-10'">{{ item.overview.length > 0 ? item.overview : no_overview }}</p>
+              <span class="small d-block mb-10"
+                >Overview:
+                <p
+                  :class="
+                    item.overview.length > 0
+                      ? 'white--text mt-5'
+                      : 'error--text mt-10'
+                  "
+                >
+                  {{ item.overview.length > 0 ? item.overview : no_overview }}
+                </p>
               </span>
               <br />
 
@@ -74,7 +89,9 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn block @click="infoDialog = false" class="close-info-btn"> Close </v-btn>
+            <v-btn block @click="infoDialog = false" class="close-info-btn">
+              Close
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -92,7 +109,7 @@ import axios from "axios";
 export default {
   components: {
     SectionTitle,
-    TrailerDialog
+    TrailerDialog,
   },
   data() {
     return {
@@ -114,7 +131,7 @@ export default {
   },
   methods: {
     ...mapActions(["getTrending"]),
-    onClickChild (value) {
+    onClickChild(value) {
       this.dialog = value;
     },
     getMovieTrailer(item) {

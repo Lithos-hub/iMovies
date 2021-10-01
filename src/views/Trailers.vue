@@ -2,8 +2,13 @@
   <div>
     <SectionTitle :sectionSubtitle="subtitle" />
 
-        <!-- TRAILER DIALOG -->
-        <TrailerDialog :openDialog="dialog" :videoURL="trailerVideo" :messageError="videoError" @clicked="onClickChild"/>
+    <!-- TRAILER DIALOG -->
+    <TrailerDialog
+      :openDialog="dialog"
+      :videoURL="trailerVideo"
+      :messageError="videoError"
+      @clicked="onClickChild"
+    />
 
     <!-- END OF DIALOGS -->
 
@@ -12,14 +17,18 @@
         <div class="col-lg-3" v-for="(item, i) in moviesArray" :key="i">
           <v-card class="card">
             <img
-              :src="item.poster_path != null ? url + item.poster_path : no_image"
+              :src="
+                item.poster_path != null ? url + item.poster_path : no_image
+              "
               class="card-img"
               id="movie-img"
               v-on:click="getTrailerVideo(item)"
               @click="showDialog()"
             />
 
-            <h4 class="card-title" id="movie-title">{{ item.original_title }}</h4>
+            <h4 class="card-title" id="movie-title">
+              {{ item.original_title }}
+            </h4>
           </v-card>
         </div>
       </div>
@@ -37,7 +46,7 @@ export default {
   name: "Trailers",
   components: {
     SectionTitle,
-    TrailerDialog
+    TrailerDialog,
   },
   data() {
     return {
@@ -56,7 +65,7 @@ export default {
     };
   },
   methods: {
-    onClickChild (value) {
+    onClickChild(value) {
       this.dialog = value;
     },
     getLatestMovies() {
@@ -66,9 +75,14 @@ export default {
 
       let date = new Date();
 
-      const dateGreaterThan = `${date.getFullYear()}-${("0" + (date.getMonth())).slice(-2)}-${("0" + (date.getDate())).slice(-2)}`;
+      const dateGreaterThan = `${date.getFullYear()}-${(
+        "0" + date.getMonth()
+      ).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
 
-      const dateLessThan = `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
+      const dateLessThan = `${date.getFullYear()}-${(
+        "0" +
+        (date.getMonth() + 1)
+      ).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
 
       const latestMovies = `${url}/discover/movie?primary_release_date.gte=${dateGreaterThan}&primary_release_date.lte=${dateLessThan}&api_key=${apikey}&language=en-EN&include_video=true`;
 
@@ -157,9 +171,6 @@ export default {
     background: $dark;
     color: $secondary;
   }
-
-
-
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
@@ -218,7 +229,6 @@ export default {
   }
 }
 
-
 // ******* DESKTOP RESPONSIVE ******* //
 @media only screen and (min-width: 1370px) {
   #trailers-container {
@@ -274,6 +284,5 @@ export default {
       }
     }
   }
-
 }
 </style>
