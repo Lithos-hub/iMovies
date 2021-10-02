@@ -6,11 +6,12 @@ import i18n from "@/plugins/i18n";
 Vue.use(Vuex);
 
 const url = "https://api.themoviedb.org/3";
-const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
+
 const current_year = new Date().getFullYear();
 
 export default new Vuex.Store({
   state: {
+    apikey: "c9a3e87b703c630c13d5ea61ef62c7b6",
     language: "es-ES",
     loadingError: "",
     loadingGenre: false,
@@ -77,7 +78,7 @@ export default new Vuex.Store({
     },
     setLanguage(state, payload) {
       state.language = payload;
-      localStorage.setItem("storageLanguage", payload);
+      localStorage.setItem("storageLanguage", JSON.stringify(state.language));
     },
   },
   actions: {
@@ -85,7 +86,7 @@ export default new Vuex.Store({
       commit("setLanguage", payload);
       i18n.locale = payload.split('-')[0];
     },
-    getCurrentMovies({ commit }) {
+    getCurrentMovies({ commit }, apikey) {
       const apiurl = `${url}/discover/movie?year=${current_year}&api_key=${apikey}`;
 
       return new Promise((resolve) => {
@@ -103,7 +104,7 @@ export default new Vuex.Store({
           });
       });
     },
-    getTrending({ commit }) {
+    getTrending({ commit }, apikey) {
       const date = new Date();
 
       const dateGreaterThan = `${date.getFullYear()}-${(
@@ -117,7 +118,7 @@ export default new Vuex.Store({
       // ********************* Filter: note average of 7 or greater; English language; popularity desc; release time = 2 weeks ago ----------------------- //
       const apiurl = `${url}/discover/movie?primary_release_date.gte=${dateGreaterThan}&primary_release_date.lte=${dateLessThan}&api_key=${apikey}&vote_average.gte=7&language=en-EN&sort_by=popularity.desc&include_video=true`;
 
-      return new Promise((resolve) => {
+      return new Promise(() => {
         axios
           .get(apiurl)
           .then((resp) => {
@@ -132,25 +133,6 @@ export default new Vuex.Store({
           });
       });
     },
-  },
-  getMoviesByYear({ commit }) {
-    const year = "";
-    const movieURL = `${url}/discover/movie?year=${year}&api_key=${apikey}&sort_by=popularity.desc&page=1`;
-
-    return new Promise((resolve) => {
-      axios
-        .get(movieURL)
-        .then((resp) => {
-          commit("setMoviesByYear", resp.data.results);
-        })
-        .catch((e) => {
-          console.info(e);
-          commit(
-            "loadingError",
-            "The answer is taking too long. There may have been an error with the database. Please reload the website."
-          );
-        });
-    });
   },
   getters: {
     signedUser(state) {

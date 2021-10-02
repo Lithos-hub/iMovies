@@ -4,10 +4,10 @@
 
     <!-- TRAILER DIALOG -->
     <TrailerDialog
-      :openDialog="dialog"
-      :videoURL="trailerVideo"
-      :messageError="videoError"
-      @clicked="onClickChild"
+      v-if="dialog"
+      :video="trailerVideo"
+      :message-error="videoError"
+      @close-dialog="dialog = false"
     />
 
     <v-container fluid id="trending-container">
@@ -127,16 +127,16 @@ export default {
     };
   },
   computed: {
-    ...mapState(["trending"]),
+    ...mapState(["trending", "apikey"]),
+  },
+  created() {
+    this.getTrending(this.apikey);
   },
   methods: {
     ...mapActions(["getTrending"]),
-    onClickChild(value) {
-      this.dialog = value;
-    },
+
     getMovieTrailer(item) {
-      const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
-      const video_url = `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${apikey}&language=en-US`;
+      const video_url = `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${this.apikey}&language=en-US`;
       this.dialog = true;
 
       return new Promise((resolve) => {
@@ -165,9 +165,6 @@ export default {
       this.releaseDate = item.release_date;
       this.average = item.vote_average;
     },
-  },
-  created() {
-    this.getTrending();
   },
 };
 </script>

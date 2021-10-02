@@ -3,9 +3,9 @@
     <Navbar
       id="navbar"
       v-if="
-        this.$route.path != '/404' &&
-        this.$route.path != '/' &&
-        this.$route.path != '/register'
+        this.$route.path !== '/404' &&
+        this.$route.path !== '/' &&
+        this.$route.path !== '/register'
       "
     />
 

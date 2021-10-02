@@ -2,9 +2,10 @@
   <div>
     <!-- TRAILER DIALOG -->
     <TrailerDialog
-      :dialog="dialog"
-      :trailerVideo="trailerVideo"
-      :videoError="videoError"
+      v-if="dialog"
+      :video="trailerVideo"
+      :message-error="videoError"
+      @close-dialog="dialog = false"
     />
 
     <!-- ************** MOVIE CARD CONTENT ************** -->
@@ -70,6 +71,7 @@
 <script>
 import axios from "axios";
 import TrailerDialog from "../components/TrailerDialog";
+import { mapState } from 'vuex';
 
 export default {
   name: "Movie",
@@ -88,13 +90,15 @@ export default {
   mounted() {
     this.getMovieDetails();
   },
+  computed: {
+    ...mapState(["apikey"])
+  },
   methods: {
     comeBack() {
       this.$router.go(-1);
     },
     getMovieDetails() {
-      const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
-      const movie = `https://api.themoviedb.org/3/movie/${this.$route.params.id}?api_key=${apikey}&language=en-US`;
+      const movie = `https://api.themoviedb.org/3/movie/${this.$route.params.id}?api_key=${this.apikey}&language=en-US`;
 
       return new Promise((resolve) => {
         axios
@@ -108,8 +112,7 @@ export default {
       });
     },
     getMovieTrailer() {
-      const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
-      const video_url = `https://api.themoviedb.org/3/movie/${this.$route.params.id}/videos?api_key=${apikey}&language=en-US`;
+      const video_url = `https://api.themoviedb.org/3/movie/${this.$route.params.id}/videos?api_key=${this.apikey}&language=en-US`;
 
       return new Promise((resolve) => {
         axios

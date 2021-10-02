@@ -2,11 +2,14 @@
   <div class="container-fluid">
     <div class="container mt-15">
       <h1 id="title">
-        Latest<br />
-        releases<br />
+        {{ $t('view-home.latest')}} <br />
+        {{ $t('view-home.releases')}}<br />
       </h1>
     </div>
-    <div class="horizontal-scroll-wrapper squares">
+    <div class="arrow-right">
+      <v-icon color="cyan" size="80px">mdi-arrow-right</v-icon>
+    </div>
+    <div class="horizontal-scroll-wrapper squares" @scroll="hideArrowOnRight">
       <div v-for="(item, i) in current" :key="i">
         <v-sheet height="200%" width="100%" class="sheet">
           <router-link :to="`/movie/${item.id}`">
@@ -35,14 +38,30 @@ export default {
       url: "https://image.tmdb.org/t/p/original",
     };
   },
+  created() {
+    this.getCurrentMovies(this.apikey);
+  },
+  mounted () {
+    this.hideArrowOnRight();
+  },
   computed: {
-    ...mapState(["current"]),
+    ...mapState(["current", "apikey"]),
   },
   methods: {
     ...mapActions(["getCurrentMovies"]),
-  },
-  created() {
-    this.getCurrentMovies();
+    hideArrowOnRight () {
+      let arrow = document.querySelector('.arrow-right');
+      let scroll = document.querySelector('.horizontal-scroll-wrapper');
+      let scrollWidth = scroll.scrollHeight;
+      let scrollY = scroll.scrollTop
+      let clientWidth = scroll.clientHeight;
+      arrow.style.transition = 'opacity 0.5s';
+      if (scrollY + clientWidth >= scrollWidth) {
+        arrow.style.opacity = '0';
+      } else {
+        arrow.style.opacity = '1';
+      }
+    }
   },
 };
 </script>
@@ -61,15 +80,20 @@ export default {
     overflow: hidden;
   }
 
+  .arrow-right {
+    display: none;
+  }
+
   #title {
     margin: 0 auto;
     text-align: center;
     color: white;
-    font-size: 5em;
+    font-size: 3em;
     display: block;
     background-image: url("../assets/img/background1.jpg");
     filter: brightness(2);
     background-repeat: repeat;
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     z-index: 9;
@@ -114,16 +138,26 @@ export default {
     overflow: hidden;
   }
 
+  .arrow-right {
+    display: block;
+    position: fixed;
+    right: 2em;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: motionToRight 0.5s ease-in-out infinite alternate-reverse;
+  }
+
   #title {
-    position: absolute;
-    top: 25%;
-    margin: 0 auto;
-    color: white;
-    font-size: 8em;
     text-align: left;
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translate(0%, -50%);
+    font-size: 5em;
     background-image: url("../assets/img/background1.jpg");
     filter: brightness(2);
     background-repeat: repeat;
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     z-index: 0;
@@ -186,7 +220,7 @@ export default {
 }
 
 // ******* DESKTOP RESPONSIVE ******* //
-@media only screen and (min-width: 1370px) {
+@media only screen and (min-width: 1200px) {
   $finalHeight: 100%;
   $finalWidth: $finalHeight;
   $scrollBarHeight: 0px;
@@ -204,15 +238,26 @@ export default {
     overflow: hidden;
   }
 
-  #title {
-    margin: 0 auto;
-    color: white;
-    font-size: 13em;
-    text-align: left;
+  .arrow-right {
     display: block;
+    position: fixed;
+    right: 2em;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: motionToRight 0.5s ease-in-out infinite alternate-reverse;
+  }
+
+  #title {
+    text-align: left;
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translate(0%, -50%);
+    font-size: 10em;
     background-image: url("../assets/img/background1.jpg");
     filter: brightness(2);
     background-repeat: repeat;
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -230,7 +275,6 @@ export default {
     top: 0px;
     left: 50%;
     width: 850px;
-    max-height: 100%;
     margin: 0;
     padding-top: $scrollBarHeight;
     overflow-y: scroll;
@@ -271,6 +315,15 @@ export default {
   .hover-img:hover {
     cursor: pointer;
     transform: scale(1.1);
+  }
+}
+
+@keyframes motionToRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(2em);
   }
 }
 </style>

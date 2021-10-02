@@ -4,10 +4,10 @@
 
     <!-- TRAILER DIALOG -->
     <TrailerDialog
-      :openDialog="dialog"
-      :videoURL="trailerVideo"
-      :messageError="videoError"
-      @clicked="onClickChild"
+      v-if="dialog"
+      :video="trailerVideo"
+      :message-error="videoError"
+      @close-dialog="dialog = false"
     />
 
     <!-- END OF DIALOGS -->
@@ -23,7 +23,7 @@
               class="card-img"
               id="movie-img"
               v-on:click="getTrailerVideo(item)"
-              @click="showDialog()"
+              @click="dialog = true"
             />
 
             <h4 class="card-title" id="movie-title">
@@ -55,7 +55,6 @@ export default {
       no_image: require("../assets/img/no-image.jpg"),
       video: "",
       movieTitle: "",
-      videoDialog: "",
       dialog: false,
       moviesArray: [],
       moviesIDs: [],
@@ -65,9 +64,6 @@ export default {
     };
   },
   methods: {
-    onClickChild(value) {
-      this.dialog = value;
-    },
     getLatestMovies() {
       const url = "https://api.themoviedb.org/3";
 
@@ -104,9 +100,6 @@ export default {
             console.info("Global trailer errors: " + e);
           });
       });
-    },
-    showDialog() {
-      this.dialog = true;
     },
     getTrailerVideo(item) {
       const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";

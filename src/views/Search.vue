@@ -1,29 +1,22 @@
 <template>
   <div>
-    <SectionTitle :sectionSubtitle="subtitle" />
-
-    <!-- TRAILER DIALOG -->
-
-    <TrailerDialog
-      :openDialog="dialog"
-      :videoURL="trailerVideo"
-      :messageError="videoError"
-      @clicked="onClickChild"
-    />
+    <SectionTitle :sectionSubtitle="searchByMovie ? 'Search by movie title' : 'Search by actor/actress name'" v-if="showContent" />
 
     <!-- SEARCH BAR -->
-    <v-container>
+    <v-container v-if="showContent">
       <v-row no-gutters>
         <v-col></v-col>
         <v-col cols="12">
-          <form @submit.prevent="searchMovie(input)">
+          <form @submit.prevent="searchBy(movie, person, input)">
             <div class="input-container">
               <v-text-field
                 v-model="input"
-                outlined
-                placeholder="Search"
-                append-outer-icon="mdi-magnify"
+                filled
                 dark
+                rounded
+                label="Search"
+                :background-color="searchByMovie ? 'primary' : 'green'"
+                append-icon="mdi-magnify"
                 full-width
               ></v-text-field>
             </div>
@@ -33,9 +26,32 @@
       </v-row>
     </v-container>
 
-    <!-- RESULTS -->
+    <v-row :class="showContent ? 'options-buttons' : 'options-buttons-start'">
+      <v-col cols="6" class="text-right">
+        <v-btn dark color="primary" large width="350px" @click="searchByMovie = true; showContent = true">
+          Search by movie title
+        </v-btn>
+      </v-col>
+      <v-col cols="6" class="text-left">
+        <v-btn dark color="green" large width="350px" @click="searchByMovie = false; showContent = true">
+          Search by actor/actress name
+        </v-btn>
+      </v-col>
+    </v-row>
+
     <v-divider></v-divider>
-    <v-container v-if="searchedMovies.length > 0">
+
+    <!-- TRAILER DIALOG -->
+
+    <TrailerDialog
+      v-if="dialog"
+      :video="trailerVideo"
+      :message-error="videoError"
+      @close-dialog="dialog = false"
+    />
+
+    <!-- RESULTS -->
+    <v-container v-if="searchedMovies.length">
       <v-btn
         id="show-where-btn"
         dark
@@ -241,6 +257,7 @@
 import SectionTitle from "../components/SectionTitle";
 import axios from "axios";
 import TrailerDialog from "../components/TrailerDialog";
+import { mapState } from 'vuex';
 
 export default {
   components: {
@@ -249,8 +266,9 @@ export default {
   },
   data() {
     return {
+      searchByMovie: false,
+      showContent: false,
       dialog: false,
-      subtitle: "Search movies",
       input: "",
       url: "https://image.tmdb.org/t/p/original",
       no_image: require("../assets/img/no-image.jpg"),
@@ -261,13 +279,12 @@ export default {
       videoError: "",
     };
   },
+  computed: {
+    ...mapState(["apikey"])
+  },
   methods: {
-    onClickChild(value) {
-      this.dialog = value;
-    },
     getTrailerVideo(item) {
-      const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
-      const movieURL = `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${apikey}&language=en-US`;
+      const movieURL = `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${this.apikey}&language=en-US`;
       this.dialog = true;
 
       axios
@@ -283,13 +300,12 @@ export default {
           this.videoError = "Sorry. This video is no available.";
         });
     },
-    searchMovie(input) {
-      const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
-      const url = "https://api.themoviedb.org/3";
-      const movieURL = `https://api.themoviedb.org/3/search/movie?api_key=${apikey}&query=${input}`;
-
+    searchBy(searchByMovie = this.searchByMovie, searchByPerson = !this.searchByMovie, input) {
+      let url
+      if (searchByMovie) {
+        url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&query=${input}`;
       axios
-        .get(movieURL)
+        .get(url)
         .then((res) => {
           this.searchedMovies = res.data.results;
         })
@@ -298,7 +314,7 @@ export default {
         });
 
       axios
-        .get(movieURL)
+        .get(url)
         .then((res) => {
           // GET WATCH PROVIDERS (NETFLIX, GOOGLE PLAY, HBO, ETC)
 
@@ -306,16 +322,13 @@ export default {
 
           for (let i = 0; i < 20; i++) {
             const movie_list = data[i];
-
             const id = movie_list.id;
-
-            const providers = `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${apikey}`;
+            const providers = `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${this.apikey}`;
 
             axios
               .get(providers)
               .then((res) => {
                 const ES_buy_providers = res.data.results.ES.buy;
-
                 const providers_buy_array = [];
 
                 for (let z = 0; z < ES_buy_providers.length; z++) {
@@ -328,7 +341,6 @@ export default {
                 }
 
                 const ES_flatrate_providers = res.data.results.ES.flatrate;
-
                 const providers_flatrate_array = [];
 
                 for (let y = 0; y < ES_flatrate_providers.length; y++) {
@@ -341,7 +353,6 @@ export default {
                 }
 
                 const ES_rent_providers = res.data.results.ES.rent;
-
                 const providers_rent_array = [];
 
                 for (let y = 0; y < ES_flatrate_providers.length; y++) {
@@ -364,11 +375,17 @@ export default {
           }
 
           this.input = "";
-
           this.wheretowatch = false;
         })
-        .catch((e) => {});
+        .catch((e) => {console.log(e)});
+      }
+      if (searchByPerson) {
+        console.log('searching by person')
+      }
     },
+    // searchByActor(input) {
+    //   const url = `https://api.themoviedb.org/3/search/person?api_key=c9a3e87b703c630c13d5ea61ef62c7b6&language=en-US&query=${query}&page=1&include_adult=false`
+    // }
   },
 };
 </script>
@@ -558,6 +575,22 @@ export default {
 
   #trailer-btn {
     width: auto;
+  }
+
+  .options-buttons-start {
+    transition: all 1s ease-out;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .options-buttons {
+    transition: all 1s ease-out;
+    position: relative;
+    left: 50%;
+    top: 17%;
+    transform: translate(-50%, 0);
   }
 }
 </style>

@@ -404,6 +404,7 @@
 <script>
 import SectionTitle from "../components/SectionTitle";
 import axios from "axios";
+import { mapState } from 'vuex';
 
 export default {
   name: "Ranking",
@@ -448,6 +449,9 @@ export default {
     this.getUserID();
     this.saveIDMovies();
   },
+  computed: {
+    ...mapState(["apikey"])
+  },
   methods: {
     showSuccess(text) {
       this.snackbar = true;
@@ -465,8 +469,8 @@ export default {
     getMoviesByYear(year) {
       this.year = year;
       const url = "https://api.themoviedb.org/3";
-      const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
-      const moviesUrl = `${url}/discover/movie?year=${year}&api_key=${apikey}&sort_by=popularity.desc&page=1`;
+      
+      const moviesUrl = `${url}/discover/movie?year=${year}&api_key=${this.apikey}&sort_by=popularity.desc&page=1`;
 
       return new Promise(() => {
         axios

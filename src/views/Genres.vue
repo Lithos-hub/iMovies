@@ -293,6 +293,7 @@
 <script>
 import SectionTitle from "../components/SectionTitle";
 import axios from "axios";
+import { mapState } from 'vuex';
 
 export default {
   name: "Genres",
@@ -312,13 +313,16 @@ export default {
       genre: "",
     };
   },
+  computed: {
+    ...mapState(["apikey"])
+  },
   methods: {
     getMovies() {
       const url = "https://api.themoviedb.org/3";
-      const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
+      
       const genre = this.genre;
 
-      const movieurl = `${url}/discover/movie?&api_key=${apikey}&sort_by=popularity.desc&page=1&with_genres=${genre}`;
+      const movieurl = `${url}/discover/movie?&api_key=${this.apikey}&sort_by=popularity.desc&page=1&with_genres=${genre}`;
 
       return new Promise((resolve) => {
         this.loadingGenre = true;

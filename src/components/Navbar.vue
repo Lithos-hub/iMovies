@@ -68,7 +68,7 @@
             @{{ user.userName }}
           </h5>
 
-          <v-list-item dense to="/home">
+          <v-list-item to="/home">
             <v-list-item-icon>
               <v-icon class="nav-icons">mdi-home</v-icon>
               <v-list-item-title class="nav-links">Home</v-list-item-title>
@@ -76,57 +76,20 @@
           </v-list-item>
 
           <v-divider></v-divider>
-
-          <v-list-item to="/search" v-if="!isDefault">
+        <div v-for="(item, i) in navbarItems" :key="i">
+          <v-list-item v-if="isDefault && item.visibleToDefaultUser" :to="item.to">
             <v-list-item-icon>
-              <v-icon class="nav-icons"> mdi-magnify </v-icon>
-              <v-list-item-title class="nav-links"> Search </v-list-item-title>
+              <v-icon class="nav-icons"> {{ item.icon }} </v-icon>
+              <v-list-item-title class="nav-links"> {{ item.text }} </v-list-item-title>
             </v-list-item-icon>
           </v-list-item>
-          <v-list-item to="/mymovies" v-if="!isDefault">
+          <v-list-item v-if="!isDefault" :to="item.to">
             <v-list-item-icon>
-              <v-icon class="nav-icons"> mdi-star </v-icon>
-              <v-list-item-title class="nav-links">
-                My movies
-              </v-list-item-title>
+              <v-icon class="nav-icons"> {{ item.icon }} </v-icon>
+              <v-list-item-title class="nav-links"> {{ item.text }} </v-list-item-title>
             </v-list-item-icon>
           </v-list-item>
-          <v-list-item to="/trending">
-            <v-list-item-icon>
-              <v-icon class="nav-icons"> mdi-table </v-icon>
-              <v-list-item-title class="nav-links">
-                Trending
-              </v-list-item-title>
-            </v-list-item-icon>
-          </v-list-item>
-          <v-list-item to="/trailers">
-            <v-list-item-icon>
-              <v-icon class="nav-icons"> mdi-video-vintage </v-icon>
-              <v-list-item-title class="nav-links">
-                Trailers
-              </v-list-item-title>
-            </v-list-item-icon>
-          </v-list-item>
-          <v-list-item to="/genres">
-            <v-list-item-icon>
-              <v-icon class="nav-icons"> mdi-shape </v-icon>
-              <v-list-item-title class="nav-links"> Genres </v-list-item-title>
-            </v-list-item-icon>
-          </v-list-item>
-          <v-list-item to="/ranking" v-if="!isDefault">
-            <v-list-item-icon>
-              <v-icon class="nav-icons"> mdi-format-list-numbered </v-icon>
-              <v-list-item-title class="nav-links"> Ranking </v-list-item-title>
-            </v-list-item-icon>
-          </v-list-item>
-          <v-list-item to="/changelog">
-            <v-list-item-icon>
-              <v-icon class="nav-icons"> mdi-lead-pencil </v-icon>
-              <v-list-item-title class="nav-links">
-                Changelog
-              </v-list-item-title>
-            </v-list-item-icon>
-          </v-list-item>
+        </div>
         </v-list-item-group>
       </v-list>
 
@@ -159,6 +122,15 @@ export default {
       patch: 0,
       group: null,
       drawer: false,
+      navbarItems: [ 
+        { visibleToDefaultUser: false, to: "/search", text: "Search", icon: "mdi-magnify" },
+        { visibleToDefaultUser: false, to: "/myMovies", text: "My movies", icon: "mdi-star" },
+        { visibleToDefaultUser: false, to: "/trending", text: "Trending", icon: "mdi-table" },
+        { visibleToDefaultUser: true, to: "/trailers", text: "Trailers", icon: "mdi-video-vintage" },
+        { visibleToDefaultUser: true, to: "/genres", text: "Genres", icon: "mdi-shape" },
+        { visibleToDefaultUser: false, to: "/ranking", text: "Ranking", icon: "mdi-format-list-numbered" },
+        { visibleToDefaultUser: true, to: "/changelog", text: "Changelog", icon: "mdi-lead-pencil" }
+      ]
     };
   },
   created() {

@@ -1,8 +1,7 @@
 <template>
   <v-dialog
+    v-model="show"
     class="dialog"
-    v-model="openDialog"
-    v-if="openDialog"
     overlay-opacity="10"
   >
     <v-card height="100%" class="cardDialog">
@@ -20,7 +19,7 @@
 
         <iframe
           class="video"
-          :src="videoURL"
+          :src="video"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
@@ -37,13 +36,15 @@
 
 <script>
 export default {
-  props: ["openDialog", "videoURL", "messageError"],
+  props: ["video", "messageError"],
   data() {
-    return {};
+    return {
+      show: true,
+    };
   },
   methods: {
     closeDialog() {
-      this.$emit("clicked", (this.dialog = false));
+      this.$emit("close-dialog");
     },
   },
 };
