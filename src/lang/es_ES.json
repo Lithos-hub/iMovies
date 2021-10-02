@@ -33,5 +33,23 @@
     "passwordRequired": "La contraseña es obligatoria",
     "success": "¡Genial! ¡Tu cuenta ha sido creada con éxito!",
     "comingback": "Regresando..."
+  },
+  "navbar": {
+    "user": "Usuario: ",
+    "logout": "Cerrar Sesión",
+    "about": "Acerca de...",
+    "home": "Principal",
+    "search": "Buscar",
+    "mymovies": "Mis películas",
+    "trending": "Popular",
+    "trailers": "Trailers",
+    "genres": "Géneros",
+    "ranking": "Ranking",
+    "changelog": "Changelog",
+    "developed": "Desarrollado por "
+  },
+  "view-home": {
+    "latest": "Últimos",
+    "releases": "lanzamientos"
   }
 }

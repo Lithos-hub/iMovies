@@ -6,7 +6,9 @@ Vue.use(VueI18n);
 import en from "../lang/en_EN";
 import es from "../lang/es_ES";
 
-const storageLang = localStorage.getItem("storageLanguage");
+let storageLang = ''
+
+storageLang = JSON.parse(localStorage.getItem("storageLanguage")) || [];
 
 const i18n = new VueI18n({
   locale: !storageLang.length ? window.navigator.language : storageLang,
