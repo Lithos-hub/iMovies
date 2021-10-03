@@ -1,39 +1,43 @@
 <template>
   <div>
-    <SectionTitle :sectionSubtitle="searchByMovie ? 'Search by movie title' : 'Search by actor/actress name'" v-if="showContent" />
+    <SectionTitle :sectionSubtitle="isSearchingMovie ? 'Search by movie title' : 'Search by actor/actress name'" v-if="showContent" />
 
     <!-- SEARCH BAR -->
-    <v-container v-if="showContent">
+    <v-container v-if="showContent" id="search-bar">
       <v-row no-gutters>
-        <v-col></v-col>
         <v-col cols="12">
-          <form @submit.prevent="searchBy(movie, person, input)">
             <div class="input-container">
               <v-text-field
+                class="input-text-field"
                 v-model="input"
                 filled
                 dark
                 rounded
                 label="Search"
-                :background-color="searchByMovie ? 'primary' : 'green'"
+                :background-color="isSearchingMovie ? 'primary' : 'green'"
                 append-icon="mdi-magnify"
                 full-width
-              ></v-text-field>
+                @input="fillItemsList"
+                />
+                <v-list dark v-if="inputItemsList.length">
+                    <v-list-item v-for="(item, i) in inputItemsList" :key="i" @click="searchByInput(item)">
+                      <p class="white--text" v-if="!isSearchingMovie">{{ item.name }}</p>
+                      <p class="white--text" v-if="isSearchingMovie">{{ item.title }}</p>
+                    </v-list-item>
+                </v-list>
             </div>
-          </form>
         </v-col>
-        <v-col></v-col>
       </v-row>
     </v-container>
 
     <v-row :class="showContent ? 'options-buttons' : 'options-buttons-start'">
       <v-col cols="6" class="text-right">
-        <v-btn dark color="primary" large width="350px" @click="searchByMovie = true; showContent = true">
+        <v-btn dark color="primary" large width="350px" @click="isSearchingMovie = true; showContent = true">
           Search by movie title
         </v-btn>
       </v-col>
       <v-col cols="6" class="text-left">
-        <v-btn dark color="green" large width="350px" @click="searchByMovie = false; showContent = true">
+        <v-btn dark color="green" large width="350px" @click="isSearchingMovie = false; showContent = true">
           Search by actor/actress name
         </v-btn>
       </v-col>
@@ -49,19 +53,77 @@
       :message-error="videoError"
       @close-dialog="dialog = false"
     />
+    
+    <v-progress-circular
+      v-if="loading"
+      class="progressSpinner"
+      :size="100"
+      :width="10"
+      color="cyan"
+      indeterminate
+    ></v-progress-circular>
 
-    <!-- RESULTS -->
-    <v-container v-if="searchedMovies.length">
+    <!-- RESULTS SEARCHING BY PERSON -->
+
+    <v-container v-if="!loading">
+      <v-row v-for="(person, i) in searchedPerson" :key="'A' + i" class="pb-10 mt-10">
+        <v-col cols="3" class="mt-15">
+          <v-img
+            :src="person.profile_path !== null ? url + person.profile_path : no_image"
+            id="person-img"
+            width="100%"
+            class="rounded elevation-10">
+          </v-img>
+          <v-list dark dense>
+            <v-list-item>
+              Age: <span class="ml-2 cyan--text"> {{ person.info.age }}</span>
+            </v-list-item>
+            <v-list-item>
+              Place of birth: <span class="ml-2 cyan--text"> {{ person.info.place_of_birth }}</span>
+            </v-list-item>
+            <v-list-item>
+              Homepage:<span class="ml-2 cyan--text"> 
+                <a v-if="person.info.homepage" :href="person.info.homepage">{{ person.info.homepage }}</a>
+                <div v-else class="red--text">No homepage</div>
+                </span>
+            </v-list-item>
+            <v-list-item>
+              Gender: <span class="ml-2 cyan--text"> {{ person.info.gender }}</span>
+            </v-list-item>
+          </v-list>
+        </v-col>
+        <v-col>
+          <h1>
+          {{ person.name}}
+          </h1>
+          <v-divider></v-divider>
+          <v-list dark dense>
+              <v-list-item v-for="(movie, j) in personMoviesList" :key="'B' + j" class="my-5" :to="'/movie/' + movie.id">
+            <v-img
+              aspect-ratio="1"
+              max-width="200px"
+              class="mr-5 elevation-5"
+              :src="movie.poster_path != null ? url + movie.poster_path : no_image" />
+                <h2 class="mr-10 cyan--text">{{ movie.title }}</h2>
+                <h3 class="ml-auto">{{ movie.release_date }}</h3>
+              </v-list-item>
+          </v-list>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <!-- RESULTS SEARCHING BY MOVIE TITLE -->
+    <v-container v-if="searchedMovie.length">
       <v-btn
         id="show-where-btn"
         dark
-        :color="wheretowatch ? 'red' : 'green'"
+        :color="wheretowatch ? 'red' : 'info'"
         @click="wheretowatch = !wheretowatch"
         >{{ wheretowatch ? "Hide info" : "Show where to watch" }}</v-btn
       >
     </v-container>
     <v-container fluid>
-      <v-row v-for="(item, i) in searchedMovies" :key="i" class="pb-10 mt-10">
+      <v-row v-for="(item, i) in searchedMovie" :key="i" class="pb-10 mt-10">
         <v-col lg="3" md="4">
           <!-- MOVIE IMG -->
           <v-img
@@ -150,9 +212,9 @@
                 <h3 class="text-center blue--text">Buy</h3>
                 <h2
                   class="error--text text-center"
-                  v-if="item.providers_buy === undefined"
+                  v-if="!item.providers_buy.length"
                 >
-                  No available
+                  No data
                 </h2>
                 <li
                   style="list-style: none"
@@ -163,9 +225,7 @@
                   <v-divider></v-divider>
                   <p>
                     {{
-                      buy_provider === undefined || buy_provider === null
-                        ? "No data"
-                        : buy_provider.provider_name
+                        buy_provider !== undefined ? buy_provider.provider_name : ""
                     }}
                   </p>
 
@@ -183,9 +243,9 @@
                 <h3 class="text-center orange--text">Flatrate</h3>
                 <h2
                   class="error--text text-center"
-                  v-if="item.providers_flatrate === undefined"
+                  v-if="!item.providers_flatrate.length"
                 >
-                  No available
+                  No data
                 </h2>
                 <li
                   style="list-style: none"
@@ -196,10 +256,7 @@
                   <v-divider></v-divider>
                   <p>
                     {{
-                      flatrate_provider === undefined ||
-                      flatrate_provider === null
-                        ? "No data"
-                        : flatrate_provider.provider_name
+                      flatrate_provider !== undefined ? flatrate_provider.provider_name : ""
                     }}
                   </p>
                   <img
@@ -217,9 +274,9 @@
                 <h3 class="text-center green--text">Rent</h3>
                 <h2
                   class="error--text text-center"
-                  v-if="item.providers_rent === undefined"
+                  v-if="!item.providers_rent.length"
                 >
-                  No available
+                  No data
                 </h2>
                 <li
                   style="list-style: none"
@@ -230,9 +287,7 @@
                   <v-divider></v-divider>
                   <p>
                     {{
-                      rent_provider === undefined || rent_provider === null
-                        ? "No data"
-                        : rent_provider.provider_name
+                      rent_provider !== undefined ? rent_provider.provider_name : ""
                     }}
                   </p>
                   <img
@@ -250,39 +305,82 @@
         </v-col>
       </v-row>
     </v-container>
+    <!-- SNACKBAR -->
+    <div v-if="snackbarObject.snackbar">
+      <Snackbar
+        :snackbar-color="snackbarObject.snackbarColor"
+        :snackbar-text="snackbarObject.snackbarText" />
+    </div>
   </div>
 </template>
 
 <script>
 import SectionTitle from "../components/SectionTitle";
 import axios from "axios";
+import Snackbar from "../components/Snackbar";
 import TrailerDialog from "../components/TrailerDialog";
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   components: {
     SectionTitle,
     TrailerDialog,
+    Snackbar
   },
   data() {
     return {
-      searchByMovie: false,
+      loading: false,
+      isSearchingMovie: false,
       showContent: false,
       dialog: false,
       input: "",
       url: "https://image.tmdb.org/t/p/original",
       no_image: require("../assets/img/no-image.jpg"),
       no_overview: "We are sorry. This movie have not available overview.",
-      searchedMovies: [],
+      searchedMovie: [],
+      searchedPerson: [],
+      personMoviesList: [],
+      inputItemsList: [],
       wheretowatch: false,
       trailerVideo: "",
       videoError: "",
     };
   },
   computed: {
-    ...mapState(["apikey"])
+    ...mapState(["apikey", "snackbarObject", "language"])
+  },
+  mounted () {
+    if (this.input.length > 1) {
+      this.fillItemsList()
+    }
   },
   methods: {
+    ...mapActions(['showSuccess', 'showError']),
+    formatDate (date) {
+      if (!date) return null
+
+      const [year, month, day] = date.split('-')
+      return `${day}/${month}/${year}`
+    },
+    getPersonAge (birthday) {
+        let birthYear = birthday.split('-')[0]
+        let birthMonth = birthday.split('-')[1]
+        let birthDay = birthday.split('-')[2]
+  
+        let currentYear = new Date().getFullYear();
+        let currentMonth = new Date().getMonth() + 1;
+        let currentDay = new Date().getDate();
+
+        let age = currentYear - birthYear;
+
+        if (currentMonth < (birthMonth - 1)) {
+          age--;
+        }
+        if (((birthMonth - 1) == currentMonth) && (currentDay < birthDay)) {
+          age--;
+        }
+        return age;
+    },
     getTrailerVideo(item) {
       const movieURL = `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${this.apikey}&language=en-US`;
       this.dialog = true;
@@ -300,92 +398,232 @@ export default {
           this.videoError = "Sorry. This video is no available.";
         });
     },
-    searchBy(searchByMovie = this.searchByMovie, searchByPerson = !this.searchByMovie, input) {
-      let url
-      if (searchByMovie) {
-        url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&query=${input}`;
-      axios
-        .get(url)
-        .then((res) => {
-          this.searchedMovies = res.data.results;
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-
-      axios
-        .get(url)
-        .then((res) => {
+    getProviders() {
           // GET WATCH PROVIDERS (NETFLIX, GOOGLE PLAY, HBO, ETC)
-
-          const data = res.data.results;
-
-          for (let i = 0; i < 20; i++) {
-            const movie_list = data[i];
-            const id = movie_list.id;
-            const providers = `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${this.apikey}`;
+        let providers;
+          for (let data of this.searchedMovie) {
+            providers = `https://api.themoviedb.org/3/movie/${data.id}/watch/providers?api_key=${this.apikey}`;
 
             axios
               .get(providers)
               .then((res) => {
-                const ES_buy_providers = res.data.results.ES.buy;
-                const providers_buy_array = [];
+                let spain = res.data.results['ES'];
 
-                for (let z = 0; z < ES_buy_providers.length; z++) {
-                  const buy = ES_buy_providers[z];
-                  if (buy !== undefined || buy !== null) {
-                    providers_buy_array.push(buy);
+                if (spain !== undefined) {
+                  let buy_providers = spain.buy
+                  let flat_providers = spain.flatrate
+                  let rent_providers = spain.rent
+                  if (buy_providers !== undefined) {
+                      for (let buyProv of spain.buy) {
+                        if (buyProv !== undefined || buyProv !== null) {
+                          data.providers_buy.push(buyProv);
+                      }
+                    }
                   } else {
-                    console.log(buy + " have not providers");
+                    data.providers_buy = []
                   }
-                }
 
-                const ES_flatrate_providers = res.data.results.ES.flatrate;
-                const providers_flatrate_array = [];
-
-                for (let y = 0; y < ES_flatrate_providers.length; y++) {
-                  const flatrate = ES_flatrate_providers[y];
-                  if (flatrate !== undefined || flatrate !== null) {
-                    providers_flatrate_array.push(flatrate);
+                  if (flat_providers !== undefined) {
+                    for (let flatProv of spain.flatrate) {
+                      if (flatProv !== undefined || flatProv !== null) {
+                        data.providers_flatrate.push(flatProv);
+                      }
+                    }
                   } else {
-                    console.log(flatrate + " have not providers");
+                    data.providers_flatrate = []
                   }
-                }
-
-                const ES_rent_providers = res.data.results.ES.rent;
-                const providers_rent_array = [];
-
-                for (let y = 0; y < ES_flatrate_providers.length; y++) {
-                  const rent = ES_rent_providers[y];
-                  if (rent !== undefined || rent !== null) {
-                    providers_rent_array.push(rent);
+                  
+                  if (rent_providers !== undefined) {
+                    for (let rentProv of spain.rent) {
+                      if (rentProv !== undefined || rentProv !== null) {
+                        data.providers_rent.push(rentProv);
+                      }
+                    }
                   } else {
-                    console.log(rent + " have not providers");
+                    data.providers_flatrate = []
                   }
-                }
+                } 
 
-                this.searchedMovies[i].providers_buy = providers_buy_array;
-                this.searchedMovies[i].providers_flatrate =
-                  providers_flatrate_array;
-                this.searchedMovies[i].providers_rent = providers_rent_array;
               })
               .catch((e) => {
-                console.log("=> Some movies have not providers");
+                console.log(e);
+                this.showError('Database connection error')
               });
           }
-
           this.input = "";
           this.wheretowatch = false;
-        })
-        .catch((e) => {console.log(e)});
-      }
-      if (searchByPerson) {
-        console.log('searching by person')
+    },
+    fillItemsList() {
+      let url
+      let arrNames = [];
+      let arrTitles = [];
+      if (this.input.length) {
+        if (this.isSearchingMovie) {
+          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${this.language}&query=${this.input}`;
+          axios
+          .get(url)
+          .then((res) => {
+            for (let data of res.data.results) {
+              arrTitles.push({
+                id: data.id,
+                title: data.title
+              })
+            }
+
+            this.inputItemsList = arrTitles;
+          })
+          .catch((e) => {
+            this.showError('Database connection error')
+            console.log(e);
+          })
+        } else {
+          url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&${this.language}&query=${this.input}&page=1`
+          axios
+          .get(url)
+          .then((res) => {
+            for (let data of res.data.results) {
+              arrNames.push({
+                id: data.id,
+                name: data.name
+              })
+            }
+
+            this.inputItemsList = arrNames;
+          })
+          .catch((e) => {
+            this.showError('Database connection error')
+            console.log(e);
+          });
+        }
       }
     },
-    // searchByActor(input) {
-    //   const url = `https://api.themoviedb.org/3/search/person?api_key=c9a3e87b703c630c13d5ea61ef62c7b6&language=en-US&query=${query}&page=1&include_adult=false`
-    // }
+    searchByInput(item) {
+      this.searchedMovie = [];
+      this.searchedPerson = [];
+      this.personMoviesList = [];
+      let url;
+      let arrMovie = [];
+
+      if (this.isSearchingMovie) {
+        url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${this.language}&query=${item.title}`;
+      axios
+        .get(url)
+        .then((res) => {
+          for (let data of res.data.results) {
+            arrMovie.push({
+              id: data.id,
+              poster_path: data.poster_path,
+              title: data.title,
+              release_date: data.release_date,
+              genre_ids: data.genre_ids,
+              vote_average: data.vote_average,
+              vote_count: data.vote_count,
+              overview: data.overview,
+              genre_ids: data.genre_ids,
+              providers_buy: [],
+              providers_flatrate: [],
+              providers_rent: []
+            })
+          }
+          this.searchedMovie = arrMovie;
+        })
+        .catch((e) => {
+          this.showError('Database connection error')
+          console.log(e);
+        });
+
+        this.getProviders();
+
+      } else {
+        url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&${this.language}&query=${item.name}&page=1`
+        axios
+        .get(url)
+        .then((res) => {
+          for (let data of res.data.results) {
+            this.searchedPerson.push({
+              id: data.id,
+              known_for: data.known_for,
+              name: data.name,
+              profile_path: data.profile_path,
+              info: {}
+            })
+            this.getMoviesByPerson(data.id)
+          }
+
+          this.getPersonInfo();
+
+        })
+        .catch((e) => {
+          this.showError('Database connection error')
+          console.log(e);
+        });
+
+      }
+    },
+    getMoviesByPerson(id) {
+      this.inputItemsList = []
+      this.loading = true;
+      let url = `https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${this.apikey}&language=${this.language}`
+      let arr = []
+      axios
+      .get(url)
+      .then((res) => {
+        if (res.data.cast !== []) {
+            for (let data of res.data.cast) {
+              if (data !== undefined) {
+                arr.push({
+                  id: data.id,
+                  title: data.title,
+                  character: data.character,
+                  release_date: data.release_date,
+                  poster_path: data.poster_path,
+                  year: ""
+              })
+            }
+          }
+        }
+
+        arr.forEach(movie => {
+          if (movie.release_date) {
+            movie.release_date = this.formatDate(movie.release_date)
+            movie.year = movie.release_date.split("/")[2]
+          }
+        })
+
+        arr = arr.sort((a, b) => {
+          return b.year - a.year
+        })
+
+        for (let movie of arr) {
+          this.personMoviesList.push(movie)
+        }
+      })
+      .catch((e) => {
+        this.showError('Database connection error')
+        console.log(e);
+      });
+    },
+    async getPersonInfo () {
+      for (let person of this.searchedPerson) {
+        let url = `https://api.themoviedb.org/3/person/${person.id}?api_key=${this.apikey}&sort_by=popularity.desc`
+        await axios
+        .get(url)
+        .then((res) => {
+            person.info = {
+              place_of_birth: res.data.place_of_birth,
+              homepage: res.data.homepage,
+              gender: res.data.gender === 2 ? 'Male' : 'Female',
+              age: res.data.birthday ? this.getPersonAge(res.data.birthday) : ""
+            }
+            
+
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+      }
+      this.loading = false;
+    }
   },
 };
 </script>
@@ -397,6 +635,18 @@ export default {
   border-radius: 5px;
   text-align: center;
   font-size: 30px;
+}
+
+#search-bar {
+  animation: fadeIn 1s ease-in;
+}
+
+.progressSpinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
 // ******* MOBILE RESPONSIVE ******* //
@@ -557,6 +807,11 @@ export default {
     text-align: justify;
   }
 
+  #movie-img {
+    width: 100%;
+    margin: 0 auto;
+  }
+
   #movie-genres {
     border-radius: 25px;
     padding-left: 10px;
@@ -589,8 +844,9 @@ export default {
     transition: all 1s ease-out;
     position: relative;
     left: 50%;
-    top: 17%;
+    top: 0;
     transform: translate(-50%, 0);
+    animation: fadeIn 1s ease-in;
   }
 }
 </style>

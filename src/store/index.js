@@ -13,6 +13,11 @@ export default new Vuex.Store({
   state: {
     apikey: "c9a3e87b703c630c13d5ea61ef62c7b6",
     language: "es-ES",
+    snackbarObject: {
+      snackbar: false,
+      snackbarColor: "",
+      snackbarText: ""
+    },
     loadingError: "",
     loadingGenre: false,
     current: [],
@@ -80,8 +85,30 @@ export default new Vuex.Store({
       state.language = payload;
       localStorage.setItem("storageLanguage", JSON.stringify(state.language));
     },
+    showSuccess(state, payload) {
+      state.snackbarObject = {
+        snackbar: true,
+        snackbarColor: "success",
+        snackbarText: payload,
+      }
+      setTimeout(() => { state.snackbarObject.snackbar = false }, 3000);
+    },
+    showError(state, payload) {
+      state.snackbarObject = {
+        snackbar: true,
+        snackbarColor: "error",
+        snackbarText: payload,
+      }
+      setTimeout(() => { state.snackbarObject.snackbar = false }, 3000);
+    },
   },
   actions: {
+    showSuccess({ commit }, payload) {
+      commit("showSuccess", payload);
+    },
+    showError({ commit }, payload) {
+      commit("showError", payload);
+    },
     changeLanguage({ commit }, payload) {
       commit("setLanguage", payload);
       i18n.locale = payload.split('-')[0];
