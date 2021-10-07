@@ -293,7 +293,6 @@
 <script>
 import SectionTitle from "../components/SectionTitle";
 import axios from "axios";
-import { mapState } from 'vuex';
 
 export default {
   name: "Genres",
@@ -312,9 +311,6 @@ export default {
       movieTitle: "",
       genre: "",
     };
-  },
-  computed: {
-    ...mapState(["apikey"])
   },
   methods: {
     getMovies() {

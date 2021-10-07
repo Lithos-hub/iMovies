@@ -142,35 +142,28 @@
             </div>
           </v-col>
         </v-row>
-        <v-row class="text-center">
-          <v-col></v-col>
-          <v-col cols="4">
-            <v-btn color="error" dark @click="reset">Reset statistics</v-btn>
-          </v-col>
-          <v-col></v-col>
-        </v-row>
       </v-container>
     </v-row>
 
     <MyMoviesCategory
       v-if="category === 'watched'"
-      :arrayMovies="watchedMovies"
+      :array-movies="watchedMovies"
       :category="watched"
     />
     <MyMoviesCategory
       v-if="category === 'towatch'"
-      :arrayMovies="toWatchMovies"
+      :array-movies="toWatchMovies"
       :category="towatch"
     />
     <MyMoviesCategory
       v-if="category === 'favorite'"
-      :arrayMovies="favoriteMovies"
+      :array-movies="favoriteMovies"
       :category="favorite"
     />
     <ByRateMovies
       v-if="category === 'byrate'"
       :category="byrate"
-      :arrayMovies="ratedMovies"
+      :array-movies="ratedMovies"
     />
   </div>
 </template>
@@ -285,30 +278,11 @@ export default {
       if (localStorage.getItem("storageUserDATA")) {
         const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
         const ratedArr = userData[this.userID].ratedMovies;
+        let arr = [];
         for (let movie of ratedArr) {
-          this.ratedMovies.push(movie);
+          arr.push(movie);
         }
-        const removeDuplicated = uniqBy(this.ratedMovies, "movie_data.id");
-
-        this.ratedMovies = removeDuplicated;
-      }
-    },
-    reset() {
-      if (localStorage.getItem("storageUserDATA")) {
-        const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
-        userData[this.userID].toWatchMovies = [];
-        userData[this.userID].watchedMovies = [];
-        userData[this.userID].favoriteMovies = [];
-        userData[this.userID].ratedMovies = [];
-        localStorage.setItem("storageUserDATA", JSON.stringify(userData));
-
-        this.toWatchMovies = [];
-
-        this.favoriteMovies = [];
-
-        this.watchedMovies = [];
-
-        this.ratedMovies = [];
+        this.ratedMovies = [... new Set(arr)];
       }
     },
   },
@@ -354,8 +328,7 @@ export default {
   .data-list {
     font-size: 20px;
     background: $dark;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-inline: 10px;
     border-bottom: 2px solid $secondary;
   }
 
@@ -376,8 +349,7 @@ export default {
   .data-list {
     font-size: 20px;
     background: $dark;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-inline: 10px;
     border-bottom: 2px solid $secondary;
   }
 
@@ -399,8 +371,7 @@ export default {
   .data-list {
     font-size: 20px;
     background: $dark;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-inline: 10px;
     border-bottom: 2px solid $secondary;
   }
 

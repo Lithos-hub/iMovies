@@ -2,29 +2,71 @@
   <div>
     <v-row class="register">
       <v-col></v-col>
-      <v-col>
+      <v-col lg="8" md="10" cols="10">
         <v-card class="pa-5" dark>
-          <v-btn to="/" class="btn-gradient2 mb-5" block>
+          <div class="text-center">
+          <v-btn to="/" class="btn-gradient2 mb-5" width="250px">
           {{ $t("view-register.comeback") }}</v-btn>
           <h5 class="text-center">
             {{ $t("view-register.create") }}
           </h5>
+          </div>
           <v-divider></v-divider>
 
-          <v-form @submit.prevent="validate" ref="form" v-model="valid">
+          <v-form ref="form" v-model="valid">
+            <div v-if="avatar !== ''">
+              <v-img
+                :src="avatar"
+                width="120"
+                height="120"
+                class="avatar ma-5 ma-auto"
+              ></v-img>
+            </div>
+
+            <v-text-field
+              required
+              :rules="nameRules"
+              type="text"
+              v-model="username"
+              :label="$t('view-register.username')"
+              counter="10"
+            ></v-text-field>
+            <v-text-field
+              required
+              :rules="emailRules"
+              type="email"
+              v-model="email"
+              :label="$t('view-register.email')"
+            ></v-text-field>
+            <v-text-field
+              required
+              :rules="[passwordRules.required, passwordRules.length]"
+              type="password"
+              v-model.trim="password"
+              :label="$t('view-register.password')"
+            ></v-text-field>
+            <v-text-field
+              required
+              :rules="[passwordRules.match, passwordRules.required]"
+              type="password"
+              v-model.trim="repassword"
+              :label="$t('view-register.repeat')"
+            ></v-text-field>
+
             <v-dialog v-model="dialog" width="800" persistent>
               <template v-slot:activator="{ on, attrs }">
+                <div class="text-center">
                 <v-btn
-                  color="info"
+                  color="green"
                   rounded
-                  block
+                  width="250px"
                   class="my-5"
                   v-bind="attrs"
                   v-on="on"
                   >
                   {{ $t("view-register.choose") }}
-                  </v-btn
-                >
+                  </v-btn>
+                </div>
               </template>
 
               <v-card>
@@ -47,60 +89,17 @@
               </v-card>
             </v-dialog>
 
-            <div v-if="avatar !== ''">
-              <v-divider></v-divider>
-
-              <v-img
-                :src="avatar"
-                width="120"
-                height="120"
-                class="avatar ma-5 ma-auto"
-              ></v-img>
-
-              <v-divider></v-divider>
-            </div>
-
-            <v-text-field
-              required
-              :rules="nameRules"
-              type="text"
-              v-model="username"
-              :label="$t('view-register.username')"
-              counter="10"
-            ></v-text-field>
-            <v-text-field
-              required
-              :rules="emailRules"
-              type="email"
-              v-model="email"
-              :label="$t('view-register.email')"
-            ></v-text-field>
-            <v-text-field
-              required
-              :rules="passwordRules"
-              type="password"
-              v-model.trim="password"
-              :label="$t('view-register.password')"
-            ></v-text-field>
-            <v-text-field
-              required
-              :rules="passwordRules"
-              type="password"
-              v-model.trim="repassword"
-              :label="$t('view-register.repeat')"
-            ></v-text-field>
-
             <div class="text-center">
               <v-btn
                 color="darken-1"
                 class="btn-gradient1"
-                :disabled="validForm"
-                type="submit"
+                @click="validate"
                 >
                 {{ $t('view-register.register') }}
                </v-btn
               >
             </div>
+
           </v-form>
         </v-card>
         <div v-show="registered">
@@ -121,31 +120,24 @@
       </v-col>
       <v-col></v-col>
     </v-row>
-
-    <!-- SNACKBAR -->
-    <v-row class="d-flex">
-      <v-snackbar
-        v-model="snackbar"
-        height="50px"
-        tile
-        absolute
-        :color="snackColor"
-      >
-        {{ snackMsg }}
-      </v-snackbar>
-    </v-row>
+    <div v-if="snackbarObject.snackbar">
+      <Snackbar
+        :snackbar-color="snackbarObject.snackbarColor"
+        :snackbar-text="snackbarObject.snackbarText" />
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import Snackbar from "../components/Snackbar";
+import { mapActions, mapState } from 'vuex';
 
 export default {
+  components: {
+    Snackbar
+  },
   data() {
     return {
-      snackbar: false,
-      snackColor: "",
-      snackMsg: "",
       dialog: false,
       valid: false,
       username: "",
@@ -154,13 +146,19 @@ export default {
       repassword: "",
       avatar: "",
       registered: false,
-      nameRules: [(v) => v.length < 11 || this.$t('view-register.maximum'),
-        (v) => !!v || this.$t('view-register.nameRequired')],
+      nameRules: [
+        (v) => !!v || this.$t('view-register.nameRequired'),
+        (v) => v.length < 11 || this.$t('view-register.maximum')
+      ],
       emailRules: [
         (v) => !!v || this.$t('view-register.emailRequired'),
         (v) => /.+@.+\..+/.test(v) || this.$t('view-register.emailInvalid'),
       ],
-      passwordRules: [(v) => !!v || this.$t('view-register.passwordRequired')],
+      passwordRules: {
+        required: (v) => !!v || this.$t('view-register.passwordRequired'),
+        length: (v) => v.length >= 8 || this.$t('view-register.passwordLength'),
+        match: (v) => v === this.password || this.$t('view-register.passwordMatch')
+      },
       avatar_imgs: [
         require("../assets/avatars/godfather1.jpg"),
         require("../assets/avatars/godfather2.jpg"),
@@ -186,71 +184,63 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user"]),
-    validForm() {
-      if (this.password.length > 5 && this.password === this.repassword) {
-        return false;
-      } else {
-        return true;
-      }
-    },
+    ...mapState(["snackbarObject", "user"]),
   },
   methods: {
+    ...mapActions(["showSuccess", "showError"]),
+    checkPasswords () {
+      this.password === this.repassword ? '' : this.$t('view-register.passwordMatch')
+    },
     validate() {
+      // First, we check if the user already exists
       let storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-      if (storage) {
-        for (let user of storage) {
-          if (
-            user.userEmail === this.email ||
-            user.userName === this.username
-          ) {
-            this.valid = false;
-            this.showError("That user already exists!");
-          } else {
-            this.valid = true;
+        if (storage) {
+          for (let user of storage) {
+            if (
+              user.userEmail === this.email ||
+              user.userName === this.username
+            ) {
+              this.valid = false;
+              this.showError("That user already exists!");
+            } else {
+              this.valid = true;
+            }
           }
         }
-      }
-
-      let userData = {
-        id: storage.length,
-        userName: this.username,
-        userEmail: this.email,
-        userPassword: this.password,
-        userAvatar: this.avatar,
-        toWatchMovies: [],
-        watchedMovies: [],
-        favoriteMovies: [],
-        ratedMovies: [],
-      };
-
+      
+      this.valid = this.$refs.form.validate()
       if (this.valid) {
+
+        let userData = {
+          id: storage.length,
+          userName: this.username,
+          userEmail: this.email,
+          userPassword: this.password,
+          userAvatar: this.avatar,
+          toWatchMovies: [],
+          watchedMovies: [],
+          favoriteMovies: [],
+          ratedMovies: [],
+        };
+
         storage.push(userData);
         localStorage.setItem("storageUserDATA", JSON.stringify(storage));
 
         this.$store.commit("setUser", userData);
 
-        this.$refs.form.validate();
-
         this.registered = !this.registered;
-        setTimeout(() => {
-          this.$router.push("/");
-        }, 2500);
+          setTimeout(() => {
+            this.$router.push("/");
+          }, 3000);
+
+
+      } else {
+        this.showError('Formulario inválido')
       }
     },
     selectAvatar(item) {
       this.avatar = item;
       this.dialog = false;
-    },
-    showError(text) {
-      this.snackbar = true;
-      this.snackColor = "red";
-      this.snackMsg = text;
-    },
-    showSuccess(text) {
-      this.snackbar = true;
-      this.snackColor = "success";
-      this.snackMsg = text;
     },
   },
 };
@@ -260,8 +250,10 @@ export default {
 @import "src/scss/variables";
 
 .register {
-  position: relative;
-  margin-top: 1%;
+  position: absolute;
+  inset: 0;
+  justify-content: center;
+  align-items: center;
 }
 
 .btn-gradient1 {

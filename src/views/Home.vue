@@ -1,29 +1,123 @@
 <template>
-  <div class="container-fluid">
-    <div class="container mt-15">
-      <h1 id="title">
-        {{ $t('view-home.latest')}} <br />
-        {{ $t('view-home.releases')}}<br />
-      </h1>
-    </div>
-    <div class="arrow-right">
-      <v-icon color="cyan" size="80px">mdi-arrow-right</v-icon>
-    </div>
-    <div class="horizontal-scroll-wrapper squares" @scroll="hideArrowOnRight">
-      <div v-for="(item, i) in current" :key="i">
-        <v-sheet height="200%" width="100%" class="sheet">
+  <div id="home-view">
+      <v-row no-gutters class="d-flex horizontal-scroll-wrapper" @scroll="horizontalScroll">
+        <div v-for="(item, i) in latestReleases" :key="i" :class="`movie-wrapper-${i}`">
           <router-link :to="`/movie/${item.id}`">
-            <img
-              id="movie-img"
-              :src="url + item.poster_path"
-              class="hover-img rounded"
-              max-width="100%"
-              height="80%"
-            />
+            <v-img
+              class="movie-img"
+              :src="url + item.backdrop_path">
+              </v-img>
+              <h3 class="movie-title">
+                {{ item.title }}
+              </h3>
           </router-link>
-        </v-sheet>
-      </div>
-    </div>
+        </div>
+      </v-row>
+      <v-row no-gutters class="d-flex mt-5 pa-0">
+        <v-col>
+      <h5 class="ml-10 info--text">Trailer of the week</h5>
+        </v-col>
+        <v-col>
+      <h5 class="info--text">Movie of the week</h5>
+        </v-col>
+      </v-row>
+      <v-container fluid id="home-container" class="ma-0">
+        <div id="trailer-of-the-week-section">
+          <iframe
+            class="movie-video"
+            :src="trailerVideo"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div id="movie-of-the-week-section">
+          <v-row>
+            <v-col cols="4">
+              <!-- MOVIE IMG -->
+              <v-img
+                width="auto"
+                height="100%"
+                :src="movieOfTheWeek.poster_path != null ? url + movieOfTheWeek.poster_path : no_image"
+                class="movieOfTheWeek-img rounded">
+                <p class="movieOfTheWeek-date pa-2">{{
+                  movieOfTheWeek.release_date !== undefined
+                    ? formatDate(movieOfTheWeek.release_date)
+                    : "Release date no availble"
+                }}</p>
+            </v-img>
+            </v-col>
+            <v-col>
+              <v-row>
+                <v-col>
+              <!-- MOVIE TITLE -->
+              <h3 class="red--text">{{ movieOfTheWeek.title }}</h3>
+              <!-- MOVIE GENRES -->
+              <small class="d-block mt-2">
+                <span
+                  v-for="(genre, z) in movieOfTheWeek.genre_ids"
+                  :key="'A' + z"
+                  class="movieOfTheWeek-genres"
+                >
+                  {{ genre === 28 ? "Action" : "" }}
+                  {{ genre === 12 ? "Adventure" : "" }}
+                  {{ genre === 16 ? "Animation" : "" }}
+                  {{ genre === 35 ? "Comedy" : "" }}
+                  {{ genre === 80 ? "Crime" : "" }}
+                  {{ genre === 99 ? "Documentary" : "" }}
+                  {{ genre === 18 ? "Drama" : "" }}
+                  {{ genre === 10751 ? "Family" : "" }}
+                  {{ genre === 14 ? "Fantasy" : "" }}
+                  {{ genre === 36 ? "History" : "" }}
+                  {{ genre === 27 ? "Horror" : "" }}
+                  {{ genre === 10402 ? "Music" : "" }}
+                  {{ genre === 9648 ? "Mystery" : "" }}
+                  {{ genre === 10749 ? "Romance" : "" }}
+                  {{ genre === 878 ? "Science Fiction" : "" }}
+                  {{ genre === 10770 ? "TV Movie" : "" }}
+                  {{ genre === 53 ? "Thriller" : "" }}
+                  {{ genre === 10752 ? "War" : "" }}
+                  {{ genre === 37 ? "Western" : "" }}
+                </span>
+              </small>
+
+                  <!-- VOTE AVERAGE -->
+                  <div class="mt-5">
+                    <h4 :class="`${computedRateColor} d-inline px-5`">
+                      {{ movieOfTheWeek.vote_average }}
+                    </h4>
+                    <h5
+                      class="font-weight-bold d-inline primary--text ml-2"
+                    >
+                      {{ movieOfTheWeek.vote_count }}
+                    </h5>
+                    <span class="font-weight-light d-inline">ratings</span>
+                  </div>
+                  <!-- MOVIE OVERVIEW -->
+                  <p :class="!movieOfTheWeek.overview.length ? 'error--text mt-5 text-justify' : 'mt-5 text-justify'">
+                    {{ !movieOfTheWeek.overview.length ? 'Sorry. This overview is not available in your language.' : movieOfTheWeek.overview }}
+                  </p>
+                </v-col>
+                <v-col>
+                  <!-- MOVIE ACTIONS -->
+                  <v-btn
+                    class="d-block"
+                    width="350px"
+                    outlined
+                    color="red"
+                    large
+                    tile
+                    @click="getTrailer(item)"
+                    dark
+                    id="trailer-btn">
+                    <span class="white--text">View trailer</span>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </div>
+      </v-container>
   </div>
 </template>
 
@@ -36,31 +130,70 @@ export default {
   data() {
     return {
       url: "https://image.tmdb.org/t/p/original",
+      trailerOfTheWeek: "",
+      no_image: ""
     };
   },
-  created() {
-    this.getCurrentMovies(this.apikey);
-  },
   mounted () {
-    this.hideArrowOnRight();
+    this.getLatestReleases(false);
+    this.animateScroll();
+    this.horizontalScroll();
+    this.getTrending(true);
+    setTimeout(() => {
+      this.getMovieTrailer(this.trendingMovies[0].id)
+    }, 1000)
+    this.getMovieOfTheWeek()
   },
   computed: {
-    ...mapState(["current", "apikey"]),
+    ...mapState(["latestReleases", "trendingMovies", "trailerVideo", "movieOfTheWeek", "no_image"]),
+    computedRateColor () {
+      let movieRate = this.movieOfTheWeek.vote_average
+      let color = ''
+      if (movieRate < 10) {
+        color = 'green'
+      }
+      if (movieRate < 8) {
+        color = 'info'
+      }
+      if (movieRate < 5) {
+        color = 'red'
+      }
+      return color
+    }
   },
   methods: {
-    ...mapActions(["getCurrentMovies"]),
-    hideArrowOnRight () {
-      let arrow = document.querySelector('.arrow-right');
+    ...mapActions(["getLatestReleases", "getMovieTrailer", "getTrending", "getMovieOfTheWeek"]),
+    formatDate(date) {
+      const [year, month, day] = date.split('-')
+      return `${day}/${month}/${year}`
+    },
+    horizontalScroll () {
       let scroll = document.querySelector('.horizontal-scroll-wrapper');
-      let scrollWidth = scroll.scrollHeight;
-      let scrollY = scroll.scrollTop
-      let clientWidth = scroll.clientHeight;
-      arrow.style.transition = 'opacity 0.5s';
-      if (scrollY + clientWidth >= scrollWidth) {
-        arrow.style.opacity = '0';
-      } else {
-        arrow.style.opacity = '1';
-      }
+      
+      window.addEventListener("wheel", function(e) {
+        scroll.scrollLeft += e.deltaY / 50;
+      });
+    },
+    animateScroll() {
+      const SCROLL_MAX = 58080
+      let i = 0
+      let scroll = document.querySelector('.horizontal-scroll-wrapper');
+      setInterval(() => { 
+        if (i < SCROLL_MAX) {
+          scroll.style.transition = "0.5s ease-out";
+          scroll.style.opacity = "1";
+          scroll.scrollLeft += 1
+          i++
+        }
+        if (scroll.scrollLeft === SCROLL_MAX) {
+          scroll.style.transition = "0.5s ease-out";
+          scroll.style.opacity = "0";
+          setTimeout(() => {
+            scroll.scrollLeft = 0
+            i = 0;
+          }, 500)
+        }
+      }, 10)
     }
   },
 };
@@ -70,160 +203,157 @@ export default {
 @import "src/scss/variables";
 
 // ******* MOBILE RESPONSIVE ******* //
-@media only screen and (min-width: 360px) {
-  $finalHeight: 100%;
-  $finalWidth: $finalHeight;
-  $scrollBarHeight: 0px;
+// @media only screen and (min-width: 360px) {
+//   $finalHeight: 100%;
+//   $finalWidth: $finalHeight;
+//   $scrollBarHeight: 0px;
 
-  html,
-  body {
-    overflow: hidden;
-  }
+//   html,
+//   body {
+//     overflow: hidden;
+//   }
 
-  .arrow-right {
-    display: none;
-  }
+//   .arrow-right {
+//     display: none;
+//   }
 
-  #title {
-    margin: 0 auto;
-    text-align: center;
-    color: white;
-    font-size: 3em;
-    display: block;
-    background-image: url("../assets/img/background1.jpg");
-    filter: brightness(2);
-    background-repeat: repeat;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    z-index: 9;
-  }
+//   #title {
+//     margin: 0 auto;
+//     text-align: center;
+//     color: white;
+//     font-size: 3em;
+//     display: block;
+//     background-image: url("../assets/img/background1.jpg");
+//     filter: brightness(2);
+//     background-repeat: repeat;
+//     background-clip: text;
+//     -webkit-background-clip: text;
+//     -webkit-text-fill-color: transparent;
+//     z-index: 9;
+//   }
 
-  .container {
-    position: relative;
-    left: 0px;
-    top: -20px;
-    width: 100%;
-  }
+//   .container {
+//     position: relative;
+//     left: 0px;
+//     top: -20px;
+//     width: 100%;
+//   }
 
-  .sheet {
-    margin: 0 auto;
-    text-align: center;
-    background: $dark2 !important;
-    z-index: 999;
-  }
+//   .sheet {
+//     margin: 0 auto;
+//     text-align: center;
+//     background: $dark2 !important;
+//     z-index: 999;
+//   }
 
-  #movie-img {
-    width: 300px !important;
-    height: 500px;
-    margin-top: 20px;
-  }
-}
+//   #movie-img {
+//     width: 300px !important;
+//     height: 500px;
+//     margin-top: 20px;
+//   }
+// }
 // ******* LAPTOP RESPONSIVE ******* //
-@media only screen and (min-width: 767px) {
-  ::-webkit-scrollbar {
-    display: none !important;
-  }
+// @media only screen and (min-width: 767px) {
+//   ::-webkit-scrollbar {
+//     display: none !important;
+//   }
 
-  ::-webkit-scrollbar-button {
-    display: none !important;
-  }
+//   ::-webkit-scrollbar-button {
+//     display: none !important;
+//   }
 
-  $finalHeight: 100%;
-  $finalWidth: $finalHeight;
-  $scrollBarHeight: 0px;
+//   $finalHeight: 100%;
+//   $finalWidth: $finalHeight;
+//   $scrollBarHeight: 0px;
 
-  html,
-  body {
-    overflow: hidden;
-  }
+//   html,
+//   body {
+//     overflow: hidden;
+//   }
 
-  .arrow-right {
-    display: block;
-    position: fixed;
-    right: 2em;
-    top: 50%;
-    transform: translateY(-50%);
-    animation: motionToRight 0.5s ease-in-out infinite alternate-reverse;
-  }
+//   .arrow-right {
+//     display: block;
+//     position: fixed;
+//     right: 2em;
+//     top: 50%;
+//     transform: translateY(-50%);
+//     animation: motionToRight 0.5s ease-in-out infinite alternate-reverse;
+//   }
 
-  #title {
-    text-align: left;
-    position: fixed;
-    top: 50%;
-    left: 0;
-    transform: translate(0%, -50%);
-    font-size: 5em;
-    background-image: url("../assets/img/background1.jpg");
-    filter: brightness(2);
-    background-repeat: repeat;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    z-index: 0;
-  }
+//   #title {
+//     text-align: left;
+//     position: fixed;
+//     top: 25%;
+//     left: 0;
+//     transform: translate(0%, -25%);
+//     font-size: 2em;
+//     background-image: url("../assets/img/background1.jpg");
+//     filter: brightness(2);
+//     background-repeat: repeat;
+//     background-clip: text;
+//     -webkit-background-clip: text;
+//     -webkit-text-fill-color: transparent;
+//     z-index: 0;
+//   }
 
-  .container {
-    position: absolute;
-    left: 0px;
-    top: -20px;
-  }
+//   .container {
+//     position: absolute;
+//     left: 0px;
+//     top: -20px;
+//   }
 
-  .horizontal-scroll-wrapper {
-    position: absolute;
-    display: block;
-    top: 20px;
-    left: 40%;
-    width: 680px;
-    max-height: 0%;
-    margin: 0;
-    padding-top: $scrollBarHeight;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    transform: rotate(-90deg) translateY(-$finalHeight);
-    transform-origin: right top;
-    & > div {
-      transform: rotate(90deg);
-      transform-origin: right top;
-    }
-  }
+//   .horizontal-scroll-wrapper {
+//     position: absolute;
+//     display: block;
+//     top: 20px;
+//     left: 40%;
+//     width: 680px;
+//     max-height: 0%;
+//     margin: 0;
+//     padding-top: $scrollBarHeight;
+//     overflow-y: scroll;
+//     overflow-x: hidden;
+//     transform: rotate(-90deg) translateY(-$finalHeight);
+//     transform-origin: right top;
+//     & > div {
+//       transform: rotate(90deg);
+//       transform-origin: right top;
+//     }
+//   }
 
-  .squares {
-    padding: $finalHeight 0 0 0;
-    & > div {
-      width: 100%;
-      height: 100%;
-      margin: 0 auto;
-    }
-  }
+//   .squares {
+//     padding: $finalHeight 0 0 0;
+//     & > div {
+//       width: 100%;
+//       height: 100%;
+//       margin: 0 auto;
+//     }
+//   }
 
-  .sheet {
-    padding: 0px;
-    background: $dark2 !important;
-    z-index: 999;
-  }
+//   .sheet {
+//     padding: 0px;
+//     background: $dark2 !important;
+//     z-index: 999;
+//   }
 
-  #movie-img {
-    width: 50% !important;
-    height: 50%;
-    margin: 0px;
-  }
+//   #movie-img {
+//     width: 50% !important;
+//     height: 50%;
+//     margin: 0px;
+//   }
 
-  .hover-img {
-    transition: 0.5s;
-  }
+//   .hover-img {
+//     transition: 0.5s;
+//   }
 
-  .hover-img:hover {
-    cursor: pointer;
-    transform: scale(1.1);
-  }
-}
+//   .hover-img:hover {
+//     cursor: pointer;
+//     transform: scale(1.1);
+//   }
+// }
 
 // ******* DESKTOP RESPONSIVE ******* //
 @media only screen and (min-width: 1200px) {
-  $finalHeight: 100%;
-  $finalWidth: $finalHeight;
-  $scrollBarHeight: 0px;
 
   ::-webkit-scrollbar {
     display: none !important;
@@ -233,27 +363,11 @@ export default {
     display: none !important;
   }
 
-  html,
-  body {
-    overflow: hidden;
-  }
-
-  .arrow-right {
-    display: block;
-    position: fixed;
-    right: 2em;
-    top: 50%;
-    transform: translateY(-50%);
-    animation: motionToRight 0.5s ease-in-out infinite alternate-reverse;
-  }
-
   #title {
-    text-align: left;
-    position: fixed;
-    top: 50%;
-    left: 0;
-    transform: translate(0%, -50%);
-    font-size: 10em;
+    position: absolute;
+    top: 0;
+    left: 2em;
+    font-size: 3em;
     background-image: url("../assets/img/background1.jpg");
     filter: brightness(2);
     background-repeat: repeat;
@@ -262,68 +376,115 @@ export default {
     -webkit-text-fill-color: transparent;
   }
 
-  .container {
-    position: absolute;
-    left: 0px;
-    top: -20px;
-    width: 100%;
-  }
-
   .horizontal-scroll-wrapper {
-    position: absolute;
-    display: block;
-    top: 0px;
-    left: 50%;
-    width: 850px;
+    box-shadow: 0px 5px 10px black;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-height: 280px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    justify-items: flex-start;
+  }
+
+  .horizontal-scroll-wrapper > div {
     margin: 0;
-    padding-top: $scrollBarHeight;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    transform: rotate(-90deg) translateY(-$finalHeight);
-    transform-origin: right top;
-    & > div {
-      transform: rotate(90deg);
-      transform-origin: right top;
-    }
+    padding: 0;
+    text-align: center;
+    width: auto;
+    max-width: 600px;
+    background: #ffffff;
   }
 
-  .squares {
-    padding: $finalHeight 0 0 0;
-    & > div {
-      width: 900px;
-      height: 800px;
-      margin: 0 auto;
-    }
-  }
-
-  .sheet {
-    padding: 50px;
-    background: $dark2 !important;
-    z-index: 999;
-  }
-
-  #movie-img {
-    width: 550px !important;
-    height: 850px;
-    margin: 20px;
-  }
-
-  .hover-img {
-    transition: 0.5s;
-  }
-
-  .hover-img:hover {
+  .movie-img {
     cursor: pointer;
-    transform: scale(1.1);
+    width: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    transition: all 0.3s ease-out;
+    &:hover {
+      filter: sepia(0.5);
+      opacity: 0.8;
+    }
   }
-}
 
-@keyframes motionToRight {
-  0% {
-    transform: translateX(0);
+  .movie-title {
+    position: absolute;
+    bottom: -1em;
+    padding-block: 0.5em;
+    padding-inline: 2em;
+    background: #151515ce;
+    height: 3em;
+    width: 600px;
+    color: white;
+    text-align: left;
+    font-size: 16px;
+    backdrop-filter: blur(5px);
   }
-  100% {
-    transform: translateX(2em);
+
+  #home-container {
+    position: relative;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    margin: 0;
+  }
+
+  #trailer-of-the-week-section {
+    display: block;
+    width: calc(1920px / 2.15);
+    height: calc(1080px / 2.15);
+    background: transparent;
+    margin-right: 5px;
+    margin: 0 auto;
+    box-shadow: 0px 10px 10px black;
+  }
+
+  .movie-video {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  #movie-of-the-week-section {
+    display: block;
+    width: calc(1920px / 2);
+    height: calc(1080px / 2);
+    background: transparent;
+    margin: 0;
+  }
+
+  .movieOfTheWeek-date {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    backdrop-filter: blur(5px);
+    background: #15151569;
+    color: white;
+  }
+
+  .movieOfTheWeek-img {
+    box-shadow: 0px 5px 10px black;
+  }
+
+  .movieOfTheWeek-genres {
+    border-radius: 25px;
+    padding-inline: 10px;
+    padding-block: 5px;
+    text-align: center;
+    background: $primary;
+    margin-right: 10px;
+    font-family: $style1;
+    text-transform: uppercase;
+    font-size: 12px;
+    display: inline-block;
+    margin-bottom: 10px;
   }
 }
 </style>

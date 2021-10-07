@@ -90,9 +90,6 @@ export default {
   mounted() {
     this.getMovieDetails();
   },
-  computed: {
-    ...mapState(["apikey"])
-  },
   methods: {
     comeBack() {
       this.$router.go(-1);

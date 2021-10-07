@@ -3,18 +3,14 @@
     <v-snackbar
       v-model="snackbar"
       min-width="100%"
-      class="snackbar ma-0 mt-auto"
+      class="snackbar"
       elevation="0"
       rounded="0"
       :color="snackbarColor"
     >
-      <v-row>
-          <v-col cols="12">
-        <div class="snackbar-text">
-          {{ snackbarText }}
-        </div>
-          </v-col>
-      </v-row>
+      <div class="snackbar-text">
+        {{ snackbarText }}
+      </div>
     </v-snackbar>
   </div>
 </template>
@@ -55,11 +51,13 @@ export default {
 }
 
 .snackbar-text {
-    font-size: 18px;
+    text-align: center;
+    font-size: 20px;
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    inset: 0;
+    padding-top: 10px;
+    justify-content: center;
+    align-self: center;
 }
 
 </style>

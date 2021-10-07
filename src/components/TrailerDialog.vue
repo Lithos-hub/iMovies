@@ -1,30 +1,31 @@
 <template>
   <v-dialog
     v-model="show"
-    class="dialog"
-    overlay-opacity="10"
+    :overlay-opacity="0.8"
   >
-    <v-card height="100%" class="cardDialog">
-      <div class="row videoDialog">
+    <v-card height="auto" width="auto" class="cardDialog pa-0 ma-0">
+      <div class="videoDialog">
         <v-sheet
+          v-if="videoNoAvailable"
           color="error darken-2"
           width="100%"
           height="100%"
           dark
           class="pa-5"
-          v-show="messageError.length != 0"
         >
           <h1 class="video-error">{{ messageError }}</h1>
         </v-sheet>
 
+        <div v-if="!videoNoAvailable">
         <iframe
           class="video"
           :src="video"
           frameborder="0"
+          width="auto" height="100%"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
-          v-show="messageError.length != 0 ? false : true"
         ></iframe>
+        </div>
       </div>
 
       <div class="closeDialog-btn">
@@ -35,12 +36,41 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
-  props: ["video", "messageError"],
+  props: ["video"],
   data() {
     return {
       show: true,
+      messageError: "Video no available"
     };
+  },
+  computed: {
+    ...mapState(['videoNoAvailable']),
+    width () {
+      switch (this.$vuetify.breakpoint.name) {
+          case 'xs': return '220px'
+          case 'sm': return '400px'
+          case 'md': return '500px'
+          case 'lg': return '600px'
+          case 'xl': return '800px'
+        }
+    },
+    height () {
+      switch (this.$vuetify.breakpoint.name) {
+          case 'xs': return '220px'
+          case 'sm': return '400px'
+          case 'md': return '500px'
+          case 'lg': return '600px'
+          case 'xl': return '800px'
+        }
+    }
+  },
+  mounted () {
+    console.log(this.video)
+    if (this.videoNoAvailable) {
+      console.log('Video no available')
+    }
   },
   methods: {
     closeDialog() {
@@ -56,47 +86,7 @@ export default {
 //****************************** MOBILE DIALOG ******************************//
 @media only screen and (min-width: 360px) {
   .videoDialog {
-    margin: 0px;
     padding: 0px;
-    width: 100%;
-    height: 100%;
-  }
-
-  .closeDialog-btn {
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
-    width: 100%;
-    padding: 0px;
-  }
-
-  .video {
-    height: 600px;
-  }
-
-  .cardDialog {
-    bottom: 0px;
-    width: 100%;
-    height: 100%;
-    z-index: 999999;
-    background: $dark2 !important;
-  }
-
-  .video-error {
-    font-size: 1em;
-    text-align: center;
-  }
-
-  .dialog {
-    height: 100%;
-    overflow: hidden;
-  }
-}
-
-//****************************** LAPTOP DIALOG ******************************//
-@media only screen and (min-width: 767px) {
-  .videoDialog {
-    padding: 20px;
     width: 100%;
     height: 100%;
   }
@@ -104,46 +94,12 @@ export default {
   .closeDialog-btn {
     position: relative;
     width: 100%;
-    top: 0px;
+  }
+
+  .video {
     margin: 0 auto;
-  }
-
-  .video {
-    height: 500px;
-  }
-
-  .cardDialog {
+    height: 200px;
     width: 100%;
-    height: 100%;
-    z-index: 999999;
-    background: $dark2 !important;
-  }
-
-  .video-error {
-    font-size: 1.5em;
-    text-align: center;
-  }
-
-  .dialog {
-    height: 100%;
-  }
-}
-
-//****************************** DESKTOP DIALOG ******************************//
-@media only screen and (min-width: 1370px) {
-  .videoDialog {
-    padding: 20px;
-    width: 100%;
-    height: 100%;
-  }
-
-  .closeDialog-btn {
-    position: relative;
-    width: 100%;
-  }
-
-  .video {
-    height: 700px;
   }
 
   .cardDialog {
@@ -157,9 +113,69 @@ export default {
     font-size: 2em;
     text-align: center;
   }
+}
 
-  .dialog {
+//****************************** LAPTOP DIALOG ******************************//
+@media only screen and (min-width: 767px) {
+  .videoDialog {
+    padding: 0px;
+    width: 100%;
     height: 100%;
+  }
+
+  .closeDialog-btn {
+    position: relative;
+    width: 100%;
+  }
+
+  .video {
+    margin: 0 auto;
+    height: 500px;
+    width: 100%;
+  }
+
+  .cardDialog {
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    background: $dark2 !important;
+  }
+
+  .video-error {
+    font-size: 2em;
+    text-align: center;
+  }
+}
+
+//****************************** DESKTOP DIALOG ******************************//
+@media only screen and (min-width: 1370px) {
+  .videoDialog {
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .closeDialog-btn {
+    position: relative;
+    width: 100%;
+  }
+
+  .video {
+    margin: 0 auto;
+    height: 800px;
+    width: 100%;
+  }
+
+  .cardDialog {
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    background: $dark2 !important;
+  }
+
+  .video-error {
+    font-size: 2em;
+    text-align: center;
   }
 }
 </style>

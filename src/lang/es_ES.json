@@ -31,6 +31,8 @@
     "emailRequired": "El E-mail es obligatorio",
     "emailInvalid": "El formato del E-mail no es correcto",
     "passwordRequired": "La contraseña es obligatoria",
+    "passwordLength": "Introduce un mínimo de 8 caracteres",
+    "passwordMatch": "Las contraseñas no coinciden",
     "success": "¡Genial! ¡Tu cuenta ha sido creada con éxito!",
     "comingback": "Regresando..."
   },

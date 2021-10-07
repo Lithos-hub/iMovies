@@ -5,75 +5,63 @@ import i18n from "@/plugins/i18n";
 
 Vue.use(Vuex);
 
-const url = "https://api.themoviedb.org/3";
-
-const current_year = new Date().getFullYear();
+import {
+  URL,
+  APIKEY,
+  CURRENT_YEAR,
+  ONE_MONTH_AGO,
+  CURRENT_DATE,
+  ONE_WEEK_AGO,
+  LANGUAGE } from "@/constants/constants.js"
 
 export default new Vuex.Store({
   state: {
     apikey: "c9a3e87b703c630c13d5ea61ef62c7b6",
     language: "es-ES",
+    no_image: require("@/assets/img/no-image.jpg"),
     snackbarObject: {
       snackbar: false,
       snackbarColor: "",
       snackbarText: ""
     },
-    loadingError: "",
-    loadingGenre: false,
-    current: [],
-    trending: [],
-    genre: "",
-    moviesByYear: [],
-    movieDetails: [],
-    watchedMovies: [],
-    toWatchMovies: [],
-    favoriteMovies: [],
-    moviesWithRates: [],
-    rates: [],
+    latestReleases: [],
+    trendingMovies: [],
+    moviesID: [],
+    movieCasting: [],
+    movieOfTheWeek: {},
+    trailerVideo: "",
+    videoNoAvailable: false,
+    isLogged: false,
     user: [],
     isDefault: false,
-    userID: null,
-    isLogged: false,
   },
   mutations: {
-    loadingError(state, payload) {
-      state.loadingError = payload;
-    },
-    loadingTrending(state, payload) {
-      state.loadingTrending = payload;
-    },
-    loadingGenre(state, payload) {
-      state.loadingGenre = payload;
-    },
-    setCurrent(state, payload) {
-      state.current = payload;
-    },
-    setTrending(state, payload) {
-      state.trending = payload;
-    },
-    setMoviesByYear(state, payload) {
-      state.moviesByYear = payload;
-    },
-    setToWatchMovies(state, payload) {
-      state.toWatchMovies = payload;
-    },
-    setWatchedMovies(state, payload) {
-      state.watchedMovies = payload;
-    },
-    setFavoriteMovies(state, payload) {
-      state.favoriteMovies = payload;
-    },
-    setRatedMovies(state, payload) {
-      state.moviesWithRates = payload;
-    },
-    setSearchedMovies(state, payload) {
-      state.searchedMovies = payload;
-    },
     setUser(state, payload) {
       state.user.push(payload);
     },
     setDefault(state, payload) {
       state.isDefault = payload;
+    },
+    setTrending(state, payload) {
+      state.trendingMovies = payload;
+    },
+    setMoviesID(state, payload) {
+      state.moviesID = payload;
+    },
+    setLatestReleases(state, payload) {
+      state.latestReleases = payload;
+    },
+    setTrailerVideo(state, payload) {
+      state.trailerVideo = payload
+    },
+    setVideoAvailable(state, payload) {
+      state.videoNoAvailable = payload
+    },
+    setMovieCasting(state, payload) {
+      state.movieCasting = payload
+    },
+    setMovieOfTheWeek(state, payload) {
+      state.movieOfTheWeek = payload
     },
     setID(state, payload) {
       state.userID = payload;
@@ -113,53 +101,114 @@ export default new Vuex.Store({
       commit("setLanguage", payload);
       i18n.locale = payload.split('-')[0];
     },
-    getCurrentMovies({ commit }, apikey) {
-      const apiurl = `${url}/discover/movie?year=${current_year}&api_key=${apikey}`;
+    async getLatestReleases({ commit }, byPopularity) {
+      let CALL_URL;
 
-      return new Promise((resolve) => {
-        axios
-          .get(apiurl)
+      let arr = []
+      let pages = [1, 2, 3, 4, 5]
+
+      for (let page of pages) {
+        if (byPopularity) {
+          CALL_URL = `${URL}/discover/movie?year=${CURRENT_YEAR}&api_key=${APIKEY}&page=${page}&vote_average.gte=7&sort_by=popularity.desc`;
+        } else {
+          CALL_URL = `${URL}/discover/movie?year=${CURRENT_YEAR}&api_key=${APIKEY}&page=${page}`;
+        }
+        await axios
+        .get(CALL_URL)
+        .then((resp) => {
+          for (let data of resp.data.results) {
+            arr.push(data)
+          }
+          commit("setLatestReleases", arr);
+        })
+        .catch((e) => {
+          console.log(e);
+          commit("showError", "Database error connection")
+          });
+        }
+    },
+    async getTrending({ commit }, byPopularity) {
+      let CALL_URL;
+
+      if (byPopularity) {
+        CALL_URL = `${URL}/discover/movie?primary_release_date.gte=${ONE_MONTH_AGO}&primary_release_date.lte=${CURRENT_DATE}&api_key=${APIKEY}&vote_average.gte=7&${LANGUAGE}&sort_by=popularity.desc&include_video=true`;
+      } else {
+        CALL_URL = `${URL}/discover/movie?primary_release_date.gte=${ONE_MONTH_AGO}&primary_release_date.lte=${CURRENT_DATE}&api_key=${APIKEY}&${LANGUAGE}&include_video=true`;
+      }
+
+      let arrMovies = []
+      let arrMoviesID = []
+
+          await axios
+          .get(CALL_URL)
           .then((resp) => {
-            commit("setCurrent", resp.data.results);
+            for (let data of resp.data.results) {
+              arrMovies.push(data)
+              arrMoviesID.push(data.id)
+              
+            }
+            commit("setMoviesID", arrMoviesID)
           })
           .catch((e) => {
-            console.info(e);
-            commit(
-              "loadingError",
-              "The answer is taking too long. There may have been an error with the database. Please reload the website."
-            );
+            console.log(e);
+            commit("showError", "Database error connection")
           });
-      });
+
+          
+          for (let movie of arrMovies) {
+            movie.cast = []
+            const CALL_URL_CAST = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${APIKEY}&language=${LANGUAGE}`
+            axios
+            .get(CALL_URL_CAST)
+            .then((resp) => {
+              for (let data of resp.data.cast) {
+                movie.cast.push({
+                  name: data.name,
+                  character: data.character
+                })
+              }
+              commit("setTrending", arrMovies)
+            })
+            .catch((e) => {
+              console.log(e)
+          });
+        }
     },
-    getTrending({ commit }, apikey) {
-      const date = new Date();
-
-      const dateGreaterThan = `${date.getFullYear()}-${(
-        "0" + date.getMonth()
-      ).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
-      const dateLessThan = `${date.getFullYear()}-${(
-        "0" +
-        (date.getMonth() + 1)
-      ).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
-
-      // ********************* Filter: note average of 7 or greater; English language; popularity desc; release time = 2 weeks ago ----------------------- //
-      const apiurl = `${url}/discover/movie?primary_release_date.gte=${dateGreaterThan}&primary_release_date.lte=${dateLessThan}&api_key=${apikey}&vote_average.gte=7&language=en-EN&sort_by=popularity.desc&include_video=true`;
-
-      return new Promise(() => {
-        axios
-          .get(apiurl)
+    async getMovieTrailer({ commit }, id) {
+      const CALL_URL = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${APIKEY}&language=${LANGUAGE}`;
+        await axios
+          .get(CALL_URL)
           .then((resp) => {
-            commit("setTrending", resp.data.results);
+            if (resp.data.results.length) {
+              const KEY = resp.data.results[0].key;
+              const VIDEO_YOUTUBE = "https://www.youtube.com/embed/" + KEY;
+              commit('setTrailerVideo', VIDEO_YOUTUBE)
+            } else {
+              // If the video doesn't have trailer video available:
+              commit('setVideoAvailable', true)
+            }
+
           })
           .catch((e) => {
-            console.info(e);
-            commit(
-              "loadingError",
-              "The answer is taking too long. There may have been an error with the database. Please reload the website."
-            );
+            console.log(e);
+            commit("showError", "Database error connection")
           });
-      });
     },
+    async getMovieOfTheWeek({ commit}) {
+      const CALL_URL = `${URL}/discover/movie?primary_release_date.gte=${ONE_WEEK_AGO}&primary_release_date.lte=${CURRENT_DATE}&api_key=${APIKEY}&language=${LANGUAGE}&sort_by=popularity.desc&include_video=true`;
+        await axios
+          .get(CALL_URL)
+          .then((resp) => {
+            if (resp.data.results.length) {
+              commit('setMovieOfTheWeek', resp.data.results[0])
+            }
+
+          })
+          .catch((e) => {
+            console.log(e);
+            commit("showError", "Database error connection")
+          });
+    }
   },
   getters: {
     signedUser(state) {
@@ -167,12 +216,6 @@ export default new Vuex.Store({
     },
     defaultUser(state) {
       return state.isDefault;
-    },
-    userID(state) {
-      return state.user.id;
-    },
-    getUserData(state) {
-      return state.user;
     },
     isLogged(state) {
       return state.isLogged;

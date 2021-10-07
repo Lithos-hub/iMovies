@@ -41,6 +41,7 @@ import SectionTitle from "../components/SectionTitle";
 import TrailerDialog from "../components/TrailerDialog";
 
 import axios from "axios";
+import { mapActions } from 'vuex';
 
 export default {
   name: "Trailers",
@@ -63,49 +64,16 @@ export default {
       videoError: "",
     };
   },
+  mounted () {
+    this.getLatestReleases()
+  },
   methods: {
-    getLatestMovies() {
-      const url = "https://api.themoviedb.org/3";
-
-      const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
-
-      let date = new Date();
-
-      const dateGreaterThan = `${date.getFullYear()}-${(
-        "0" + date.getMonth()
-      ).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
-
-      const dateLessThan = `${date.getFullYear()}-${(
-        "0" +
-        (date.getMonth() + 1)
-      ).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
-
-      const latestMovies = `${url}/discover/movie?primary_release_date.gte=${dateGreaterThan}&primary_release_date.lte=${dateLessThan}&api_key=${apikey}&language=en-EN&include_video=true`;
-
-      return new Promise((resolve) => {
-        axios
-          .get(latestMovies)
-          .then((resp) => {
-            const movies_array = [];
-            const movies_IDs = [];
-
-            for (let i = 0; i < 20; i++) {
-              movies_array.push(resp.data.results[i]);
-              movies_IDs.push(resp.data.results[i].id);
-            }
-            this.moviesArray = movies_array;
-            this.moviesIDs = movies_IDs;
-          })
-          .catch((e) => {
-            console.info("Global trailer errors: " + e);
-          });
-      });
-    },
-    getTrailerVideo(item) {
+    ...mapActions(['getLatestReleases']),
+    async getTrailerVideo(item) {
       const apikey = "c9a3e87b703c630c13d5ea61ef62c7b6";
       const movieURL = `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${apikey}&language=en-US`;
 
-      axios
+      await axios
         .get(movieURL)
         .then((resp) => {
           this.videoError = "";
@@ -118,9 +86,6 @@ export default {
           this.videoError = "Sorry. This video is no available.";
         });
     },
-  },
-  mounted() {
-    this.getLatestMovies();
   },
 };
 </script>

@@ -404,7 +404,6 @@
 <script>
 import SectionTitle from "../components/SectionTitle";
 import axios from "axios";
-import { mapState } from 'vuex';
 
 export default {
   name: "Ranking",
@@ -449,9 +448,6 @@ export default {
     this.getUserID();
     this.saveIDMovies();
   },
-  computed: {
-    ...mapState(["apikey"])
-  },
   methods: {
     showSuccess(text) {
       this.snackbar = true;
@@ -495,21 +491,21 @@ export default {
     },
     // **** LOCALSTORAGE FUNCTIONS **** //
     addWatched(item) {
-      const json = { rate: this.value / 10, movie: item };
+      const json = { movie: item };
 
       this.auxWatchedMovies.push(item);
 
       this.writeMovieData(json, "isWatched", item);
     },
     addFavorite(item) {
-      const json = { rate: this.value / 10, movie: item };
+      const json = { movie: item };
 
       this.auxFavoriteMovies.push(item);
 
       this.writeMovieData(json, "isFavorite", item);
     },
     addToWatch(item) {
-      const json = { rate: this.value / 10, movie: item };
+      const json = { movie: item };
 
       this.auxToWatchMovies.push(item);
 
@@ -555,70 +551,22 @@ export default {
       const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
 
       if (type === "isWatched") {
-        let isRepeated = false;
-        for (let data of this.jsonWatchedMovies) {
-          if (data.movie.id === item.id) {
-            isRepeated = true;
-            this.jsonWatchedMovies.splice(
-              this.jsonWatchedMovies.indexOf(data),
-              1
-            );
-            this.showWarning("Removed from WATCHED category");
-          } else {
-            isRepeated = false;
-          }
-        }
-        if (!isRepeated) {
-          this.jsonWatchedMovies.push(json);
-          this.showSuccess("Added to WATCHED category");
-        }
-
+        this.jsonWatchedMovies.push(json);
         storage[this.userID].watchedMovies = this.jsonWatchedMovies;
         localStorage.setItem("storageUserDATA", JSON.stringify(storage));
+        this.showSuccess("Added to WATCHED category");
       }
       if (type === "isFavorite") {
-        let isRepeated = false;
-        for (let data of this.jsonFavoriteMovies) {
-          if (data.movie.id === item.id) {
-            isRepeated = true;
-            this.jsonFavoriteMovies.splice(
-              this.jsonFavoriteMovies.indexOf(data),
-              1
-            );
-            this.showWarning("Removed from FAVORITE category");
-          } else {
-            isRepeated = false;
-          }
-        }
-        if (!isRepeated) {
-          this.jsonFavoriteMovies.push(json);
-          this.showSuccess("Added to FAVORITE category");
-        }
-
+        this.jsonFavoriteMovies.push(json);
         storage[this.userID].favoriteMovies = this.jsonFavoriteMovies;
         localStorage.setItem("storageUserDATA", JSON.stringify(storage));
+        this.showSuccess("Added to FAVORITE category");
       }
       if (type === "isToWatch") {
-        let isRepeated = false;
-        for (let data of this.jsonToWatchMovies) {
-          if (data.movie.id === item.id) {
-            isRepeated = true;
-            this.jsonToWatchMovies.splice(
-              this.jsonToWatchMovies.indexOf(data),
-              1
-            );
-            this.showWarning("Removed from TO WATCH category");
-          } else {
-            isRepeated = false;
-          }
-        }
-        if (!isRepeated) {
-          this.jsonToWatchMovies.push(json);
-          this.showSuccess("Added to TO WATCH category");
-        }
-
+        this.jsonToWatchMovies.push(json);
         storage[this.userID].toWatchMovies = this.jsonToWatchMovies;
         localStorage.setItem("storageUserDATA", JSON.stringify(storage));
+        this.showSuccess("Added to TO WATCH category");
       }
       if (type === "isRated") {
         let isRepeated = false;

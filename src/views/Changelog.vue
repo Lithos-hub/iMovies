@@ -150,7 +150,10 @@ export default {
         },
         {
           version: "Version 2.0.0",
-          changes: ["Added internationalization (ENG / SPA) in all the app."],
+          changes: [
+            "Added internationalization (ENG / SPA) in all the app.",
+            "Improved and expanded the search system. Now, is posible to search by movie title or actor/actress name"
+            ],
         },
       ],
     };

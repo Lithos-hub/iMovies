@@ -5,7 +5,7 @@
     <!-- SEARCH BAR -->
     <v-container v-if="showContent" id="search-bar">
       <v-row no-gutters>
-        <v-col cols="12">
+        <v-col md="12">
             <div class="input-container">
               <v-text-field
                 class="input-text-field"
@@ -19,7 +19,7 @@
                 full-width
                 @input="fillItemsList"
                 />
-                <v-list dark v-if="inputItemsList.length">
+                <v-list dark v-if="inputItemsList.length" id="items-list">
                     <v-list-item v-for="(item, i) in inputItemsList" :key="i" @click="searchByInput(item)">
                       <p class="white--text" v-if="!isSearchingMovie">{{ item.name }}</p>
                       <p class="white--text" v-if="isSearchingMovie">{{ item.title }}</p>
@@ -31,19 +31,19 @@
     </v-container>
 
     <v-row :class="showContent ? 'options-buttons' : 'options-buttons-start'">
-      <v-col cols="6" class="text-right">
+      <v-col cols="12" lg="6" md="12">
         <v-btn dark color="primary" large width="350px" @click="isSearchingMovie = true; showContent = true">
           Search by movie title
         </v-btn>
       </v-col>
-      <v-col cols="6" class="text-left">
+      <v-col cols="12" lg="6" md="12">
         <v-btn dark color="green" large width="350px" @click="isSearchingMovie = false; showContent = true">
           Search by actor/actress name
         </v-btn>
       </v-col>
     </v-row>
 
-    <v-divider></v-divider>
+    <v-divider v-if="showContent"></v-divider>
 
     <!-- TRAILER DIALOG -->
 
@@ -67,7 +67,7 @@
 
     <v-container v-if="!loading">
       <v-row v-for="(person, i) in searchedPerson" :key="'A' + i" class="pb-10 mt-10">
-        <v-col cols="3" class="mt-15">
+        <v-col md="3" class="mt-15">
           <v-img
             :src="person.profile_path !== null ? url + person.profile_path : no_image"
             id="person-img"
@@ -100,8 +100,8 @@
           <v-list dark dense>
               <v-list-item v-for="(movie, j) in personMoviesList" :key="'B' + j" class="my-5" :to="'/movie/' + movie.id">
             <v-img
-              aspect-ratio="1"
               max-width="200px"
+              max-height="100%"
               class="mr-5 elevation-5"
               :src="movie.poster_path != null ? url + movie.poster_path : no_image" />
                 <h2 class="mr-10 cyan--text">{{ movie.title }}</h2>
@@ -124,7 +124,7 @@
     </v-container>
     <v-container fluid>
       <v-row v-for="(item, i) in searchedMovie" :key="i" class="pb-10 mt-10">
-        <v-col lg="3" md="4">
+        <v-col cols="12" lg="3" md="12">
           <!-- MOVIE IMG -->
           <v-img
             :src="item.poster_path != null ? url + item.poster_path : no_image"
@@ -133,7 +133,7 @@
           ></v-img>
         </v-col>
         <!-- PRIMARY INFO -->
-        <v-col lg="4" cols="12">
+        <v-col lg="4" md="12" sm="12">
           <h1 class="movie-title">{{ item.title }}</h1>
           <small
             :class="
@@ -205,7 +205,7 @@
         </v-col>
 
         <!-- WHERE TO WATCH INFO -->
-        <v-col lg="4" md="8">
+        <v-col cols="12" lg="4" md="12">
           <v-expand-transition>
             <v-row no-gutters class="mt-2" v-if="wheretowatch">
               <v-col lg="4">
@@ -318,8 +318,8 @@
 import SectionTitle from "../components/SectionTitle";
 import axios from "axios";
 import Snackbar from "../components/Snackbar";
-import TrailerDialog from "../components/TrailerDialog";
 import { mapActions, mapState } from 'vuex';
+import TrailerDialog from "../components/TrailerDialog";
 
 export default {
   components: {
@@ -335,7 +335,6 @@ export default {
       dialog: false,
       input: "",
       url: "https://image.tmdb.org/t/p/original",
-      no_image: require("../assets/img/no-image.jpg"),
       no_overview: "We are sorry. This movie have not available overview.",
       searchedMovie: [],
       searchedPerson: [],
@@ -347,7 +346,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["apikey", "snackbarObject", "language"])
+    ...mapState(["snackbarObject", "language", "apikey", "no_image"])
   },
   mounted () {
     if (this.input.length > 1) {
@@ -459,7 +458,7 @@ export default {
       let arrTitles = [];
       if (this.input.length) {
         if (this.isSearchingMovie) {
-          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${this.language}&query=${this.input}`;
+          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${this.language}&query=${this.input}&sorty_by=popularity.desc`;
           axios
           .get(url)
           .then((res) => {
@@ -477,7 +476,7 @@ export default {
             console.log(e);
           })
         } else {
-          url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&${this.language}&query=${this.input}&page=1`
+          url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&${this.language}&query=${this.input}&sorty_by=popularity.desc`
           axios
           .get(url)
           .then((res) => {
@@ -501,6 +500,7 @@ export default {
       this.searchedMovie = [];
       this.searchedPerson = [];
       this.personMoviesList = [];
+      this.inputItemsList = [];
       let url;
       let arrMovie = [];
 
@@ -649,6 +649,13 @@ export default {
   z-index: 1;
 }
 
+#items-list {
+  border-radius: 10px;
+  box-shadow: 0px 5px 10px #151515;
+  overflow-y: scroll;
+  max-height: 300px;
+}
+
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
   #show-where-btn {
@@ -691,10 +698,8 @@ export default {
 
   #movie-genres {
     border-radius: 25px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-inline: 10px;
+    padding-block: 5px;
     text-align: center;
     background: $primary;
     margin-right: 10px;
@@ -708,6 +713,24 @@ export default {
   #trailer-btn {
     width: 100%;
   }
+
+    .options-buttons-start {
+    transition: all 1s ease-out;
+    position: absolute;
+    inset: 0;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+
+  }
+
+  .options-buttons {
+    transition: all 1s ease-out;
+    position: relative;
+    animation: fadeIn 1s ease-in;
+    text-align: center;
+  }
+  
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
@@ -752,10 +775,8 @@ export default {
 
   #movie-genres {
     border-radius: 25px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-inline: 10px;
+    padding-block: 5px;
     text-align: center;
     background: $primary;
     margin-right: 10px;
@@ -814,10 +835,8 @@ export default {
 
   #movie-genres {
     border-radius: 25px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-inline: 10px;
+    padding-block: 5px;
     text-align: center;
     background: $primary;
     margin-right: 10px;
@@ -835,9 +854,9 @@ export default {
   .options-buttons-start {
     transition: all 1s ease-out;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    inset: 0;
+    justify-content: center;
+    align-content: center;
   }
 
   .options-buttons {

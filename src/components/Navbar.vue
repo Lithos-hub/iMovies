@@ -18,17 +18,39 @@
         <router-link
           to="/home"
           class="router-link-default"
-          active-class="brand-title"
-          ><p class="brand-title ma-auto">iMovies</p></router-link
-        >
+          >
+          <div class="brand-title">iMovies</div>
+          </router-link>
       </v-toolbar-title>
 
-      <v-btn small color="red darken-1" class="mr-2" @click="logout()"
+
+            <small class="white--text mr-3">Lang</small>
+          <v-menu bottom offset-y v-model="langMenu">
+          <template v-slot:activator="{ on, attrs }">
+          <v-btn fab icon outlined width="100ox" small class="mr-2" v-bind="attrs" v-on="on" @click="langMenu = true">
+            <v-icon class="language-icon">
+              mdi-earth
+            </v-icon>
+          </v-btn>
+          </template>
+
+
+            <v-list dark>
+              <v-list-item>
+                <v-list-item-title class="language-menu-item" id="esp-option" @click="changeLanguage('es-ES'); langMenu = false"><span>ESP</span></v-list-item-title>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-title class="language-menu-item" id="eng-option" @click="changeLanguage('en-EN'); langMenu = false"><span>ENG</span></v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+
+      <v-btn outlined tile width="120px" small color="red darken-1" class="mr-2" @click="logout()"
         >{{ displayText ? "logout" : "" }}
         <v-icon>mdi-account-cancel</v-icon></v-btn
       >
 
-      <v-btn small color="primary" to="/about"
+      <v-btn outlined tile width="120px" small color="primary" to="/about"
         >{{ displayText ? "about" : ""
         }}<v-icon v-if="!displayText">mdi-information-variant</v-icon></v-btn
       >
@@ -95,7 +117,7 @@
 
       <v-divider class="name-divider"></v-divider>
       <p id="developedBy">
-        {{ date }} - Developed by<br />
+        {{ date }} <v-icon size="17">mdi-copyright</v-icon> Developed by<br />
         <a
           href="https://carlosseguragarciaweb.com"
           style="text-decoration: none"
@@ -122,6 +144,7 @@ export default {
       patch: 0,
       group: null,
       drawer: false,
+      langMenu: false,
       navbarItems: [ 
         { visibleToDefaultUser: false, to: "/search", text: "Search", icon: "mdi-magnify" },
         { visibleToDefaultUser: false, to: "/myMovies", text: "My movies", icon: "mdi-star" },
@@ -182,6 +205,20 @@ export default {
   font-family: $style2;
 }
 
+.brand-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.language-icon {
+  background: $gradient_btn1;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 #username-toolbar {
   position: absolute;
   left: 5%;
@@ -232,15 +269,12 @@ export default {
   }
 
   .brand-title {
-    padding-left: 0px;
-    letter-spacing: 0px;
     margin: 0 auto;
   }
 
   .nav-icons {
     font-size: 1em !important;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-block: 5px;
     padding-right: 50px;
   }
   .nav-links {
@@ -285,15 +319,12 @@ export default {
   }
 
   .brand-title {
-    padding-left: 120px;
-    letter-spacing: 10px;
-    margin: 10px;
+    letter-spacing: 5px;
   }
 
   .nav-icons {
     font-size: 12px !important;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-block: 5px;
     padding-right: 50px;
   }
   .nav-links {
@@ -348,9 +379,7 @@ export default {
   }
 
   .brand-title {
-    padding-left: 120px;
-    letter-spacing: 10px;
-    margin: 15px;
+    letter-spacing: 5px;
   }
 
   .nav-icons {
@@ -378,10 +407,11 @@ export default {
   #developedBy {
     position: relative;
     text-align: center;
+    color: white;
     margin-top: 40px;
     letter-spacing: 2px;
-    font-size: 13px;
-    font-family: $style2;
+    font-size: 15px;
+    font-family: $style3;
   }
 
   #version-info {
@@ -398,5 +428,20 @@ export default {
       transform: scale(1.1);
     }
   }
+
+.language-menu-item {
+    cursor: pointer;
+    margin: 0 auto;
+    padding-inline: 2em;
+
+    &:hover {
+        color: cyan !important;
+
+        span {
+            opacity: 1;
+        }
+    }
+}
+
 }
 </style>

@@ -44,7 +44,7 @@
         <v-col
           lg="4"
           v-for="(item, i) in arrayMovies"
-          :key="'A' + i"
+          :key="i"
           class="text-center mx-auto"
         >
           <div>

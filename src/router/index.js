@@ -1,19 +1,18 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 
 import store from "../store";
 
 Vue.use(VueRouter);
 
 const routes = [
+  { path: "*", redirect: "/404" },
+  { path: "/404", component: () => import("../views/404.vue") },
   {
     path: "/",
     name: "Access",
     component: () => import("../views/Access.vue"),
   },
-  { path: "/404", component: () => import("../views/404.vue") },
-  { path: "*", redirect: "/404" },
   {
     path: "/register",
     name: "Register",
@@ -22,7 +21,7 @@ const routes = [
   {
     path: "/home",
     name: "Home",
-    component: Home,
+    component: () => import("../views/Home.vue"),
     meta: {
       restrictedRoute: true,
       registeredUsersOnly: false,
@@ -126,30 +125,30 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  const restrictedRoute = to.meta.restrictedRoute;
-  const isLogged = store.getters.isLogged;
-  const registeredUsersOnly = to.meta.registeredUsersOnly;
+// router.beforeEach((to, next) => {
+//   const restrictedRoute = to.meta.restrictedRoute;
+//   const isLogged = store.getters.isLogged;
+//   const registeredUsersOnly = to.meta.registeredUsersOnly;
 
-  if (restrictedRoute) {
-    if (store.getters.signedUser !== {} && isLogged) {
-      next();
-    } else {
-      next("/");
-    }
-  } else {
-    next();
-  }
+//   if (restrictedRoute) {
+//     if (store.getters.signedUser !== {} && isLogged) {
+//       next();
+//     } else {
+//       next("/");
+//     }
+//   } else {
+//     next();
+//   }
 
-  if (registeredUsersOnly) {
-    if (!store.getters.defaultUser && isLogged) {
-      next();
-    } else {
-      next("/home");
-    }
-  } else {
-    next();
-  }
-});
+//   if (registeredUsersOnly) {
+//     if (!store.getters.defaultUser && isLogged) {
+//       next();
+//     } else {
+//       next("/home");
+//     }
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;
