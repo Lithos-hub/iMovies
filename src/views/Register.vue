@@ -184,7 +184,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["snackbarObject", "user"]),
+    ...mapState(['snackbarObject', "user"]),
   },
   methods: {
     ...mapActions(["showSnackbar", "showError"]),

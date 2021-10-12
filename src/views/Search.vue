@@ -8,8 +8,8 @@
         <v-col md="12">
             <div class="input-container">
               <v-text-field
-                class="input-text-field"
                 v-model="input"
+                class="input-text-field"
                 filled
                 dark
                 rounded
@@ -18,6 +18,7 @@
                 append-icon="mdi-magnify"
                 full-width
                 @input="fillItemsList"
+                v-on:keyup.enter="searchByInput(input)"
                 />
                 <v-list dark v-if="inputItemsList.length" id="items-list">
                     <v-list-item v-for="(item, i) in inputItemsList" :key="i" @click="searchByInput(item)">
@@ -30,28 +31,39 @@
       </v-row>
     </v-container>
 
-    <v-row :class="showContent ? 'options-buttons' : 'options-buttons-start'">
+    <v-row class="options-buttons" v-if="showContent">
       <v-col cols="12" lg="6" md="12">
-        <v-btn dark color="primary" large width="350px" @click="isSearchingMovie = true; showContent = true">
+        <v-btn dark color="primary" large width="350px" @click="isSearchingMovie = true">
           Search by movie title
         </v-btn>
       </v-col>
       <v-col cols="12" lg="6" md="12">
-        <v-btn dark color="green" large width="350px" @click="isSearchingMovie = false; showContent = true">
+        <v-btn dark color="green" large width="350px" @click="isSearchingMovie = false">
           Search by actor/actress name
         </v-btn>
       </v-col>
     </v-row>
 
+      <v-row no-gutters id="btn-row" v-if="!showContent">
+        <v-col cols="12" lg="6" md="12">
+          <v-img id="byMovie-btn" src="../assets/img/lotr.jpg" @click="isSearchingMovie = true; showContent = true">
+            <h1 id="byMovie-text" class="text-h4">Search by movie title</h1>
+          </v-img>
+        </v-col>
+        <v-col cols="12" lg="6" md="12">
+          <v-img id="byPerson-btn" src="../assets/img/tomhanks.jpg"  @click="isSearchingMovie = false; showContent = true">
+            <h1 id="byPerson-text" class="text-h4">Search by actor/actress name</h1>
+          </v-img>
+        </v-col>
+      </v-row>
+
     <v-divider v-if="showContent"></v-divider>
 
     <!-- TRAILER DIALOG -->
-
     <TrailerDialog
       v-if="trailerDialog"
       :video="trailerVideo"
-      :message-error="videoError"
-      @close-dialog="dialog = false"
+      @close-dialog="trailerDialog = false"
     />
     
     <v-progress-circular
@@ -69,7 +81,7 @@
       <v-row v-for="(person, i) in searchedPerson" :key="'A' + i" class="pb-10 mt-10">
         <v-col md="3" class="mt-15">
           <v-img
-            :src="person.profile_path !== null ? url + person.profile_path : no_image"
+            :src="person.profile_path !== null ? imageURL + person.profile_path : no_image"
             id="person-img"
             width="100%"
             class="rounded elevation-10">
@@ -98,36 +110,25 @@
           </h1>
           <v-divider></v-divider>
           <v-list dark dense>
-              <v-list-item v-for="(movie, j) in personMoviesList" :key="'B' + j" class="my-5" :to="'/movie/' + movie.id">
+              <v-list-item v-for="(movie, j) in personMoviesList" :key="'B' + j" :to="'/movie/' + movie.id" class="my-1">
             <v-img
-              max-width="200px"
+              max-width="100px"
               max-height="100%"
               class="mr-5 elevation-5"
-              :src="movie.poster_path != null ? url + movie.poster_path : no_image" />
-                <h2 class="mr-10 cyan--text">{{ movie.title }}</h2>
-                <h3 class="ml-auto">{{ movie.release_date }}</h3>
+              :src="movie.poster_path != null ? imageURL + movie.poster_path : no_image" />
+                <p class="text-h5 mr-10 cyan--text">{{ movie.title }}</p>
+                <p class="text-h6 ml-auto">{{ movie.release_date }}</p>
               </v-list-item>
           </v-list>
         </v-col>
       </v-row>
-    </v-container>
-
-    <!-- RESULTS SEARCHING BY MOVIE TITLE -->
-    <v-container v-if="searchedMovie.length">
-      <v-btn
-        id="show-where-btn"
-        dark
-        :color="wheretowatch ? 'red' : 'info'"
-        @click="wheretowatch = !wheretowatch"
-        >{{ wheretowatch ? "Hide info" : "Show where to watch" }}</v-btn
-      >
     </v-container>
     <v-container fluid>
       <v-row v-for="(item, i) in searchedMovie" :key="i" class="pb-10 mt-10">
         <v-col cols="12" lg="3" md="12">
           <!-- MOVIE IMG -->
           <v-img
-            :src="item.poster_path != null ? url + item.poster_path : no_image"
+            :src="item.poster_path != null ? imageURL + item.poster_path : no_image"
             id="movie-img"
             class="rounded"
           ></v-img>
@@ -154,25 +155,7 @@
               :key="'A' + z"
               id="movie-genres"
             >
-              {{ genre === 28 ? "Action" : "" }}
-              {{ genre === 12 ? "Adventure" : "" }}
-              {{ genre === 16 ? "Animation" : "" }}
-              {{ genre === 35 ? "Comedy" : "" }}
-              {{ genre === 80 ? "Crime" : "" }}
-              {{ genre === 99 ? "Documentary" : "" }}
-              {{ genre === 18 ? "Drama" : "" }}
-              {{ genre === 10751 ? "Family" : "" }}
-              {{ genre === 14 ? "Fantasy" : "" }}
-              {{ genre === 36 ? "History" : "" }}
-              {{ genre === 27 ? "Horror" : "" }}
-              {{ genre === 10402 ? "Music" : "" }}
-              {{ genre === 9648 ? "Mystery" : "" }}
-              {{ genre === 10749 ? "Romance" : "" }}
-              {{ genre === 878 ? "Science Fiction" : "" }}
-              {{ genre === 10770 ? "TV Movie" : "" }}
-              {{ genre === 53 ? "Thriller" : "" }}
-              {{ genre === 10752 ? "War" : "" }}
-              {{ genre === 37 ? "Western" : "" }}
+            {{ formatGenre(genre) }}
             </span>
           </small>
 
@@ -196,18 +179,23 @@
 
           <!-- MOVIE ACTIONS -->
           <v-btn
-            class="red"
+            class="d-block my-1 mr-auto"
+            block
+            outlined
+            color="red"
+            large
+            tile
+            @click="getTrailer(item)"
             dark
-            id="trailer-btn"
-            @click="getTrailerVideo(item)"
-            >View trailer</v-btn
-          >
+            >
+            <span class="white--text">View trailer</span>
+          </v-btn>
         </v-col>
 
         <!-- WHERE TO WATCH INFO -->
         <v-col cols="12" lg="4" md="12">
           <v-expand-transition>
-            <v-row no-gutters class="mt-2" v-if="wheretowatch">
+            <v-row no-gutters class="mt-2">
               <v-col lg="4">
                 <h3 class="text-center blue--text">Buy</h3>
                 <h2
@@ -233,14 +221,14 @@
                     :src="
                       buy_provider === undefined || buy_provider === null
                         ? false
-                        : url + buy_provider.logo_path
+                        : imageURL + buy_provider.logo_path
                     "
                     class="provider-logo"
                   />
                 </li>
               </v-col>
               <v-col lg="4">
-                <h3 class="text-center orange--text">Flatrate</h3>
+                <h3 class="text-center orange--text">Streaming</h3>
                 <h2
                   class="error--text text-center"
                   v-if="!item.providers_flatrate.length"
@@ -264,7 +252,7 @@
                       flatrate_provider === undefined ||
                       flatrate_provider === null
                         ? false
-                        : url + flatrate_provider.logo_path
+                        : imageURL + flatrate_provider.logo_path
                     "
                     class="provider-logo"
                   />
@@ -294,7 +282,7 @@
                     :src="
                       rent_provider === undefined || rent_provider === null
                         ? false
-                        : url + rent_provider.logo_path
+                        : imageURL + rent_provider.logo_path
                     "
                     class="provider-logo"
                   />
@@ -329,6 +317,7 @@ export default {
   },
   data() {
     return {
+      isNotSelected: false,
       loading: false,
       isSearchingMovie: false,
       showContent: false,
@@ -340,12 +329,10 @@ export default {
       personMoviesList: [],
       inputItemsList: [],
       wheretowatch: false,
-      trailerVideo: "",
-      videoError: "",
     };
   },
   computed: {
-    ...mapState(["snackbarObject", "language", "apikey", "no_image", "imageURL"])
+    ...mapState(['snackbarObject', "language", "apikey", "no_image", "imageURL", "trailerVideo"])
   },
   mounted () {
     if (this.input.length > 1) {
@@ -353,7 +340,31 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['showError']),
+    ...mapActions(['showError', 'getMovieTrailer']),
+      formatGenre (genre) {
+      let genres = {
+        ['28']: "Action",
+        ['12']: "Adventure",
+        ['16']: "Animation",
+        ['35']: "Comedy",
+        ['80']: "Crime",
+        ['99']: "Documentary",
+        ['18']: "Drama",
+        ['10751']: "Family",
+        ['14']: "Fantasy",
+        ['36']: "History",
+        ['27']: "Horror",
+        ['10402']: "Music",
+        ['9648']: "Mystery",
+        ['10749']: "Romance",
+        ['878']: "Science Fiction",
+        ['10770']: "TV Movie",
+        ['53']: "Thriller",
+        ['10752']: "War",
+        ['37']: "Western"
+      }
+      return genres[genre]
+    },
     formatDate (date) {
       if (!date) return null
 
@@ -379,32 +390,21 @@ export default {
         }
         return age;
     },
-    getTrailerVideo(item) {
-      const movieURL = `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${this.apikey}&language=en-US`;
-      this.trailerDialog = true;
-
-      axios
-        .get(movieURL)
-        .then((resp) => {
-          this.videoError = "";
-          let videoKey = resp.data.results[0].key;
-          let video = "https://www.youtube.com/embed/" + videoKey;
-          this.trailerVideo = video;
-        })
-        .catch((e) => {
-          console.log("Trailer movie 1 " + e);
-          this.videoError = "Sorry. This video is no available.";
-        });
+    getTrailer(item) {
+      this.trailerDialog = true
+      this.getMovieTrailer({ type: 'other', id: item.id })
     },
     getProviders() {
           // GET WATCH PROVIDERS (NETFLIX, GOOGLE PLAY, HBO, ETC)
         let providers;
           for (let data of this.searchedMovie) {
+            console.log(data)
             providers = `https://api.themoviedb.org/3/movie/${data.id}/watch/providers?api_key=${this.apikey}`;
 
             axios
               .get(providers)
               .then((res) => {
+                console.log(res)
                 let spain = res.data.results['ES'];
 
                 if (spain !== undefined) {
@@ -455,61 +455,63 @@ export default {
       let url
       let arrNames = [];
       let arrTitles = [];
-      if (this.input.length) {
-        if (this.isSearchingMovie) {
-          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${this.language}&query=${this.input}&sorty_by=popularity.desc`;
-          axios
-          .get(url)
-          .then((res) => {
-            for (let data of res.data.results) {
-              arrTitles.push({
-                id: data.id,
-                title: data.title
-              })
-            }
+      if (this.isSearchingMovie) {
+        url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${this.language}&query=${this.input}&sorty_by=popularity.desc`;
+        axios
+        .get(url)
+        .then((res) => {
+          for (let data of res.data.results) {
+            arrTitles.push({
+              id: data.id,
+              title: data.title
+            })
+          }
 
-            this.inputItemsList = arrTitles;
-          })
-          .catch((e) => {
-            this.showError('Database connection error')
-            console.log(e);
-          })
-        } else {
-          url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&${this.language}&query=${this.input}&sorty_by=popularity.desc`
-          axios
-          .get(url)
-          .then((res) => {
-            for (let data of res.data.results) {
-              arrNames.push({
-                id: data.id,
-                name: data.name
-              })
-            }
+          this.inputItemsList = arrTitles;
+        })
+        .catch((e) => {
+          this.showError('Database connection error')
+          console.log(e);
+        })
+      } else {
+        url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&${this.language}&query=${this.input}&sorty_by=popularity.desc`
+        axios
+        .get(url)
+        .then((res) => {
+          for (let data of res.data.results) {
+            arrNames.push({
+              id: data.id,
+              name: data.name
+            })
+          }
 
-            this.inputItemsList = arrNames;
-          })
-          .catch((e) => {
-            this.showError('Database connection error')
-            console.log(e);
-          });
-        }
+          this.inputItemsList = arrNames;
+        })
+        .catch((e) => {
+          this.showError('Database connection error')
+          console.log(e);
+        });
       }
     },
     searchByInput(item) {
+      let query = this.input
       this.searchedMovie = [];
       this.searchedPerson = [];
       this.personMoviesList = [];
       this.inputItemsList = [];
       let url;
-      let arrMovie = [];
 
       if (this.isSearchingMovie) {
-        url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${this.language}&query=${item.title}`;
+        if (item !== this.input) {
+          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${this.language}&query=${item.title}`;
+        } else {
+          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${this.language}&query=${query}`;
+        }
       axios
         .get(url)
         .then((res) => {
           for (let data of res.data.results) {
-            arrMovie.push({
+            this.searchedMovie.push({
               id: data.id,
               poster_path: data.poster_path,
               title: data.title,
@@ -524,14 +526,12 @@ export default {
               providers_rent: []
             })
           }
-          this.searchedMovie = arrMovie;
+          this.getProviders();
         })
         .catch((e) => {
           this.showError('Database connection error')
           console.log(e);
         });
-
-        this.getProviders();
 
       } else {
         url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&${this.language}&query=${item.name}&page=1`
@@ -653,6 +653,52 @@ export default {
   box-shadow: 0px 5px 10px #151515;
   overflow-y: scroll;
   max-height: 300px;
+}
+
+#btn-row {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#byMovie-btn {
+  margin-left: auto;
+  clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+}
+
+#byPerson-btn {
+   margin-right: auto;
+  clip-path: polygon(100% 0, 85% 100%, 0 100%, 15% 0);
+}
+
+#byMovie-btn, #byPerson-btn {
+  border: 5px solid cyan;
+  border-radius: 50px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 800px;
+  height: 350px;
+  transition: all 0.3s ease-out;
+  filter: grayscale(2); 
+  &:hover {
+    filter: grayscale(0);
+  }
+}
+
+#byMovie-text, #byPerson-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+  color: white;
+  text-shadow: 0px 2px 5px black;
+  transition: all 0.3s ease-out;
 }
 
 // ******* MOBILE RESPONSIVE ******* //

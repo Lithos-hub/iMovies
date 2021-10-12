@@ -40,8 +40,10 @@
                     <v-img
                       id="movie-img"
                       max-width="300px"
+                      height="100%"
                       max-height="400px"
                       :src="item.poster_path !== null ? `${imageURL + item.poster_path}` : no_image"
+                      :lazy-src="loadingIMG"
                       class="mb-5 mx-auto elevation-10"
                       @click="showDetails(item)"
                     >
@@ -134,7 +136,6 @@ export default {
       expand: false,
       value: 0,
       userData: [],
-      reachedBottom: false,
       page: 1
     };
   },
@@ -146,7 +147,7 @@ export default {
     this.infiniteScroll();
   },
   computed: {
-    ...mapState(['moviesByYear', 'moviesID', 'no_image', 'imageURL', 'loadingScroll'])
+    ...mapState(['moviesByYear', 'moviesID', 'no_image', 'imageURL', 'loadingScroll', 'loadingIMG'])
   },
   methods: {
     ...mapActions(['getMoviesByYear']),
@@ -163,21 +164,25 @@ export default {
       this.year < 1878 ? this.incorrectYear = true : this.incorrectYear = false
     },
     infiniteScroll () {
-      this.reachedBottom = false
       let counter = 1
+      let reachedBottom = false
       window.onscroll = () => {
         let sum = window.innerHeight + window.pageYOffset
-        if (sum >= document.body.offsetHeight) {
-          document.body.scrollTop = window.pageYOffset / 0.5
-          document.documentElement.scrollTop = window.pageYOffset / 0.5
-          this.reachedBottom = true
-          this.page = counter++
+        if (sum === document.body.offsetHeight) {
+          reachedBottom = true
+          counter++
+          console.log(counter)
+          this.page = counter
           this.getMoviesByYear({ year: this.year, page: this.page })
+          reachedBottom = false
+          setTimeout(() => {
+            if (!reachedBottom) {
+              document.body.scrollTop = window.pageYOffset / 1.25
+              document.documentElement.scrollTop = window.pageYOffset / 1.25
+            }
+          }, 500)
         }
-        if (sum <= document.body.scrollHeight - 250) {
-          this.reachedBottom = false
         }
-      }
     },
   },
 };

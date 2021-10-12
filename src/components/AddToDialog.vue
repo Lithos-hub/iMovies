@@ -17,27 +17,27 @@
           <v-btn
             large
             icon
-            color="red darken-4"
+            :color="!addedFavourite ? 'black' : 'red darken-4'"
             width="80px"
             height="80px"
             @click="addToFavourites"
           >
             <v-icon size="50px">{{ !addedFavourite ? 'mdi-heart-outline' : 'mdi-heart' }}</v-icon>
           </v-btn>
-          <p>Favourite</p>
+          <p :class="!addedFavourite ? 'black--text' : 'red--text'">Favourite</p>
           </v-col>
           <v-col class="text-center">
           <v-btn
             large
             icon
-            color="primary"
+            :color="!addedWatched ? 'black' : 'primary'"
             width="80px"
             height="80px"
             @click="addToWatched"
           >
             <v-icon size="50px">{{ !addedWatched ? 'mdi-eye-outline' : 'mdi-eye' }}</v-icon>
           </v-btn>
-          <p>Watched</p>
+          <p :class="!addedWatched ? 'black--text' : 'primary--text'">Watched</p>
           </v-col>
         </v-row>
         <v-row>
@@ -45,27 +45,27 @@
           <v-btn
             large
             icon
-            color="amber"
+            :color="!addedWishlist ? 'black' : 'amber'"
             width="80px"
             height="80px"
             @click="addToWishList"
           >
             <v-icon size="50px">{{ !addedWishlist ? 'mdi-star-shooting-outline' : 'mdi-star-shooting' }}</v-icon>
           </v-btn>
-          <p>Wish List</p>
+          <p :class="!addedWishlist ? 'black--text' : 'amber--text'">Wish List</p>
           </v-col>
           <v-col class="text-center">
           <v-btn
             large
             icon
-            color="green"
+            :color="!addedRate ? 'black' : 'green'"
             width="80px"
             height="80px"
             @click="rateMovie()"
           >
             <v-icon size="50px">{{ !addedRate ? 'mdi-sort-numeric-variant' : 'mdi-numeric' }}</v-icon>
           </v-btn>
-          <p>{{ !addedRate ? 'Rate' : `Rated with ${rate} points` }}</p>
+          <p :class="!addedRate ? 'black--text' : 'green--text'">{{ !addedRate ? 'Rate' : `Rated with ${rate} points` }}</p>
           </v-col>
         </v-row>
 

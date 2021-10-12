@@ -6,7 +6,7 @@
     <TrailerDialog
       v-if="trailerDialog"
       :video="trailerVideo"
-      @close-dialog="dialog = false"
+      @close-dialog="trailerDialog = false"
     />
 
     <!-- ADD TO MY MOVIES DIALOG -->
@@ -64,8 +64,9 @@
                 tile
                 @click="getTrailer(item)"
                 dark
-                id="trailer-btn"
-                ><span class="white--text">View trailer</span></v-btn>
+                >
+                <span class="white--text">View trailer</span>
+              </v-btn>
               <v-btn
                 class="d-block my-1 ml-auto"
                 width="350px"
@@ -75,7 +76,6 @@
                 tile
                 @click="showAddToDialog(true); setAddMovie(item)"
                 dark
-                id="add-to-btn"
                 >
                   <span class="white--text">Add to My Movies</span>
                 </v-btn>

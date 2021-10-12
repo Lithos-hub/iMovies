@@ -6,7 +6,7 @@
     <TrailerDialog
       v-if="trailerDialog"
       :video="trailerVideo"
-      @close-dialog="dialog = false"
+      @close-dialog="trailerDialog = false"
     />
 
     <!-- END OF DIALOGS -->

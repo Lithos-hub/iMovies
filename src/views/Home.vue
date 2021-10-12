@@ -5,7 +5,12 @@
     <TrailerDialog
       v-if="trailerDialog"
       :video="trailerVideo"
-      @close-dialog="dialog = false"
+      @close-dialog="trailerDialog = false"
+    />
+
+        <!-- ADD TO MY MOVIES DIALOG -->
+    <AddToDialog
+      v-if="addToDialog"
     />
 
 
@@ -50,6 +55,7 @@
                 width="auto"
                 max-width="400px"
                 height="100%"
+                max-height="430px"
                 :src="movieOfTheWeek.poster_path !== null ? imageURL + movieOfTheWeek.poster_path : no_image"
                 class="movieOfTheWeek-img rounded">
                 <p class="movieOfTheWeek-date pa-2">{{
@@ -60,8 +66,7 @@
             </v-img>
             </v-col>
             <v-col>
-              <v-row>
-                <v-col>
+              <v-container>
               <!-- MOVIE TITLE -->
               <h3 class="red--text">{{ movieOfTheWeek.title }}</h3>
               <!-- MOVIE GENRES -->
@@ -71,28 +76,9 @@
                   :key="'A' + z"
                   class="movieOfTheWeek-genres"
                 >
-                  {{ genre === 28 ? "Action" : "" }}
-                  {{ genre === 12 ? "Adventure" : "" }}
-                  {{ genre === 16 ? "Animation" : "" }}
-                  {{ genre === 35 ? "Comedy" : "" }}
-                  {{ genre === 80 ? "Crime" : "" }}
-                  {{ genre === 99 ? "Documentary" : "" }}
-                  {{ genre === 18 ? "Drama" : "" }}
-                  {{ genre === 10751 ? "Family" : "" }}
-                  {{ genre === 14 ? "Fantasy" : "" }}
-                  {{ genre === 36 ? "History" : "" }}
-                  {{ genre === 27 ? "Horror" : "" }}
-                  {{ genre === 10402 ? "Music" : "" }}
-                  {{ genre === 9648 ? "Mystery" : "" }}
-                  {{ genre === 10749 ? "Romance" : "" }}
-                  {{ genre === 878 ? "Science Fiction" : "" }}
-                  {{ genre === 10770 ? "TV Movie" : "" }}
-                  {{ genre === 53 ? "Thriller" : "" }}
-                  {{ genre === 10752 ? "War" : "" }}
-                  {{ genre === 37 ? "Western" : "" }}
+                {{ formatGenre(genre) }}
                 </span>
               </small>
-
                   <!-- VOTE AVERAGE -->
                   <div class="mt-5">
                     <h4 :class="`${computedRateColor} d-inline px-5`">
@@ -109,22 +95,38 @@
                   <p :class="!movieOfTheWeek.overview.length ? 'error--text mt-5 text-justify' : 'mt-5 text-justify'">
                     {{ !movieOfTheWeek.overview.length ? 'Sorry. This overview is not available in your language.' : movieOfTheWeek.overview }}
                   </p>
+              </v-container>
+              <v-container>
+              <v-row>
+                <v-col cols="6">
+                  <v-btn
+                    block
+                    outlined
+                    color="red"
+                    large
+                    tile
+                    @click="getTrailer(movieOfTheWeek)"
+                    dark
+                    id="trailer-btn">
+                    <span class="white--text">View trailer</span>
+                  </v-btn>
                 </v-col>
-                <v-col>
+                <v-col cols="6">
+                  <v-btn
+                    block
+                    outlined
+                    color="purple"
+                    large
+                    tile
+                    @click="showAddToDialog(true); setAddMovie(item)"
+                    dark
+                    id="add-to-btn"
+                    >
+                    <span class="white--text">Add to My Movies</span>
+                  </v-btn>
                 </v-col>
               </v-row>
-              <v-btn
-                class="d-block"
-                width="350px"
-                outlined
-                color="red"
-                large
-                tile
-                @click="getTrailer(movieOfTheWeek)"
-                dark
-                id="trailer-btn">
-                <span class="white--text">View trailer</span>
-              </v-btn>
+              </v-container>
             </v-col>
           </v-row>
         </v-col>
@@ -135,11 +137,13 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import TrailerDialog from "@/components/TrailerDialog.vue";
+import AddToDialog from "../components/AddToDialog";
 
 export default {
   name: 'Ranking',
   components: {
-    TrailerDialog
+    TrailerDialog,
+    AddToDialog,
   },
   data() {
     return {
@@ -160,7 +164,7 @@ export default {
 
   },
   computed: {
-    ...mapState(['latestReleases', 'trendingMovies', 'trailerOfTheWeekVideo', 'trailerVideo', 'movieOfTheWeek', 'no_image', 'imageURL']),
+    ...mapState(['latestReleases', 'trendingMovies', 'trailerOfTheWeekVideo', 'trailerVideo', 'movieOfTheWeek', 'no_image', 'imageURL', 'addToDialog']),
     computedRateColor () {
       let movieRate = this.movieOfTheWeek.vote_average
       let color = ''
@@ -177,10 +181,34 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getLatestReleases', 'getMovieTrailer', 'getTrending', 'getMovieOfTheWeek', 'getMovieDetails']),
+    ...mapActions(['getLatestReleases', 'getMovieTrailer', 'getTrending', 'getMovieOfTheWeek', 'getMovieDetails', 'showAddToDialog']),
     formatDate(date) {
       const [year, month, day] = date.split('-')
       return `${day}/${month}/${year}`
+    },
+    formatGenre (genre) {
+      let genres = {
+        ['28']: "Action",
+        ['12']: "Adventure",
+        ['16']: "Animation",
+        ['35']: "Comedy",
+        ['80']: "Crime",
+        ['99']: "Documentary",
+        ['18']: "Drama",
+        ['10751']: "Family",
+        ['14']: "Fantasy",
+        ['36']: "History",
+        ['27']: "Horror",
+        ['10402']: "Music",
+        ['9648']: "Mystery",
+        ['10749']: "Romance",
+        ['878']: "Science Fiction",
+        ['10770']: "TV Movie",
+        ['53']: "Thriller",
+        ['10752']: "War",
+        ['37']: "Western"
+      }
+      return genres[genre]
     },
     enableScrollX () {
       let homeView = document.querySelector('#home-view')

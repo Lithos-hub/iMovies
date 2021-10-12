@@ -24,6 +24,7 @@ export default new Vuex.Store({
     apikey: "c9a3e87b703c630c13d5ea61ef62c7b6",
     language: "es-ES",
     no_image: require("@/assets/img/no-image.jpg"),
+    loadingIMG: require("@/assets/img/loadingIMG.gif"),
     snackbarObject: {
       snackbar: false,
       snackbarColor: "",
@@ -266,7 +267,7 @@ export default new Vuex.Store({
           });
     },
     async getMovieOfTheWeek({ commit }) {
-      const CALL_URL = `${URL}/discover/movie?primary_release_date.gte=${ONE_WEEK_AGO}&primary_release_date.lte=${CURRENT_DATE}&api_key=${APIKEY}&language=${LANGUAGE}&sort_by=popularity.desc&include_video=true&include_adult=false`;
+      const CALL_URL = `${URL}/discover/movie?primary_release_date.gte=${ONE_WEEK_AGO}&primary_release_date.lte=${CURRENT_DATE}&api_key=${APIKEY}&vote_average.gte=7&language=${LANGUAGE}&sort_by=popularity.desc&include_video=true&include_adult=false`;
         await axios
           .get(CALL_URL)
           .then((resp) => {
@@ -280,15 +281,14 @@ export default new Vuex.Store({
             commit("showError", "Database error connection")
           });
     },
-    getMoviesByYear({ commit }, {year, page}) {
+    async getMoviesByYear({ commit }, {year, page}) {
       commit('setLoadingScroll', true)
       let arrMovies = []
       let arrMoviesID = []
+      if (year >= 1878) {
       for (let i = 1; i <= page; i++) {
         const CALL_URL = `${URL}/discover/movie?year=${year}&api_key=${APIKEY}&sort_by=popularity.desc&page=${i}&include_adult=false`;
-        if (year >= 1878) {
-          setTimeout(() => {
-            axios
+            await axios
             .get(CALL_URL)
             .then((resp) => {
               if (resp.data.results.length) {
@@ -297,21 +297,20 @@ export default new Vuex.Store({
                   arrMoviesID.push(data.id);
                 }
             }
+            commit('setLoadingScroll', false)
             commit('setMoviesByYear', arrMovies)
             commit('setMoviesID', arrMoviesID)
-            commit('setLoadingScroll', false)
           })
           .catch((e) => {
             console.info(e);
             commit("showError", "Database error connection")
             commit('setLoadingScroll', false)
           });
-        }, 2000)
-        } else {
-          commit('setMoviesByYear', [])
-          commit('setMoviesID', []);
-          commit('setLoadingScroll', false)
         }
+      } else {
+        commit('setMoviesByYear', [])
+        commit('setMoviesID', []);
+        commit('setLoadingScroll', false)
       }
     },
     async getMovieDetails({ commit }, id) {

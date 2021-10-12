@@ -53,22 +53,15 @@
 
       <v-btn outlined tile width="120px" small color="red darken-1" class="mr-2" @click="logout()">
         {{ displayText ? "logout" : "" }}
-        <v-icon>mdi-account-cancel</v-icon></v-btn>
-
-      <v-btn outlined tile width="120px" small color="primary" to="/about">
-      {{ displayText ? "about" : ""}}
-      <v-icon v-if="!displayText">mdi-information-variant</v-icon>
+        <v-icon>mdi-account-cancel</v-icon>
       </v-btn>
-
-      <a
-        href="https://github.com/Lithos-hub/VUEJS-iMovies"
-        style="text-decoration: none">
-        <v-btn icon>
-          <v-icon> mdi-github </v-icon>
-        </v-btn>
-      </a>
-      <div id="version-info">
-        <p>v.{{ major }}.{{ minor }}.{{ patch }}</p>
+      <div>
+          <v-btn icon tile width="100%" class="px-5" href="https://github.com/Lithos-hub/VUEJS-iMovies" target="_blank">
+            <v-icon class="mr-2"> mdi-github </v-icon>
+              <div id="version-info" class="ml-2">
+                <p>v.{{ major }}.{{ minor }}.{{ patch }}</p>
+              </div>
+          </v-btn>
       </div>
     </v-app-bar>
 
@@ -161,7 +154,8 @@ export default {
         { visibleToDefaultUser: true, to: "/trailers", text: "Trailers", icon: "mdi-video-vintage" },
         { visibleToDefaultUser: true, to: "/genres", text: "Genres", icon: "mdi-shape" },
         { visibleToDefaultUser: false, to: "/popular", text: "Popular", icon: "mdi-format-list-numbered" },
-        { visibleToDefaultUser: true, to: "/changelog", text: "Changelog", icon: "mdi-lead-pencil" }
+        { visibleToDefaultUser: true, to: "/changelog", text: "Changelog", icon: "mdi-lead-pencil" },
+        { visibleToDefaultUser: true, to: "/about", text: "About", icon: "mdi-information-variant" },
       ]
     };
   },
