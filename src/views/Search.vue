@@ -48,7 +48,7 @@
     <!-- TRAILER DIALOG -->
 
     <TrailerDialog
-      v-if="dialog"
+      v-if="trailerDialog"
       :video="trailerVideo"
       :message-error="videoError"
       @close-dialog="dialog = false"
@@ -332,9 +332,8 @@ export default {
       loading: false,
       isSearchingMovie: false,
       showContent: false,
-      dialog: false,
+      trailerDialog: false,
       input: "",
-      url: "https://image.tmdb.org/t/p/original",
       no_overview: "We are sorry. This movie have not available overview.",
       searchedMovie: [],
       searchedPerson: [],
@@ -346,7 +345,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["snackbarObject", "language", "apikey", "no_image"])
+    ...mapState(["snackbarObject", "language", "apikey", "no_image", "imageURL"])
   },
   mounted () {
     if (this.input.length > 1) {
@@ -354,7 +353,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['showSuccess', 'showError']),
+    ...mapActions(['showError']),
     formatDate (date) {
       if (!date) return null
 
@@ -382,7 +381,7 @@ export default {
     },
     getTrailerVideo(item) {
       const movieURL = `https://api.themoviedb.org/3/movie/${item.id}/videos?api_key=${this.apikey}&language=en-US`;
-      this.dialog = true;
+      this.trailerDialog = true;
 
       axios
         .get(movieURL)

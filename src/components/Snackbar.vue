@@ -52,12 +52,15 @@ export default {
 
 .snackbar-text {
     text-align: center;
-    font-size: 20px;
+    font-size: 18px;
     position: absolute;
-    inset: 0;
-    padding-top: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     justify-content: center;
     align-self: center;
+    font-family: 'Roboto', sans-serif;
+    text-shadow: 2px 2px 4px black;
 }
 
 </style>

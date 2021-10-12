@@ -2,18 +2,22 @@
   <div>
     <!-- TRAILER DIALOG -->
     <TrailerDialog
-      v-if="dialog"
+      v-if="trailerDialog"
       :video="trailerVideo"
-      :message-error="videoError"
       @close-dialog="dialog = false"
     />
 
-    <!-- ************** MOVIE CARD CONTENT ************** -->
-    <v-container class="pa-5">
-      <v-card class="pa-5 d-flex" height="100%" width="100%" id="card">
-        <v-img :src="url + movieDetails.poster_path" id="movie-img"></v-img>
+    <!-- ADD TO MY MOVIES DIALOG -->
+    <AddToDialog
+      v-if="addToDialog"
+    />
 
-        <v-card-title id="movie-title"
+    <!-- ************** MOVIE CARD CONTENT ************** -->
+      <v-card tile class="pa-5 d-flex" height="75%" width="100%" id="card">
+    <v-container class="d-flex">
+        <v-img :src="imageURL + movieDetails.poster_path" id="movie-img"></v-img>
+
+        <v-card-title id="movie-title" class="text-h2 blue--text"
           >{{ movieDetails.title }}
           <p id="movie-date">
             Release date:
@@ -42,92 +46,86 @@
           <p id="movie-language">
             {{ movieDetails.spoken_languages[0].english_name }}
           </p>
-          <div class="d-flex justify-content-around">
-            <v-btn
-              color="indigo"
-              class="font-weight-bold mt-5"
-              dark
-              elevation="10"
-              id="come-back-btn"
-              @click="comeBack()"
-              >Come back</v-btn
-            >
-            <v-btn
-              color="deep-orange darken-4"
-              class="font-weight-bold mt-5"
-              elevation="10"
-              dark
-              id="trailer-btn"
-              @click="getMovieTrailer()"
-              >View trailer</v-btn
-            >
-          </div>
+            <v-row>
+            <v-col class="text-center">
+              <v-btn
+                block
+                class="d-block my-1 ml-auto"
+                width="auto"
+                color="secondary"
+                large
+                tile
+                @click="comeBack()"
+                dark
+                id="trailer-btn"
+                ><span class="white--text">Come back</span></v-btn>
+            </v-col>
+            <v-col class="text-center">
+              <v-btn
+                block
+                class="d-block my-1 ml-auto"
+                width="auto"
+                color="red"
+                large
+                tile
+                @click="getTrailer(movieDetails)"
+                dark
+                id="trailer-btn"
+                ><span class="white--text">View trailer</span></v-btn>
+            </v-col>
+            <v-col class="text-center">
+              <v-btn
+                block
+                class="d-block my-1 ml-auto"
+                width="auto"
+                color="purple"
+                large
+                tile
+                @click="showAddToDialog(true); setAddMovie(movieDetails)"
+                dark
+                id="add-to-btn"
+                ><span class="white--text">Add to My Movies</span></v-btn>
+              </v-col>
+           </v-row>
         </v-container>
-      </v-card>
-    </v-container>
+      </v-container>
+    </v-card>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import TrailerDialog from "../components/TrailerDialog";
-import { mapState } from 'vuex';
+import AddToDialog from "../components/AddToDialog";
+import { mapActions, mapState } from 'vuex';
 
 export default {
   name: "Movie",
   components: {
     TrailerDialog,
+    AddToDialog,
   },
   data() {
     return {
-      movieDetails: {},
-      url: "https://image.tmdb.org/t/p/original",
-      trailerVideo: "",
-      videoError: "",
-      dialog: false,
+      trailerDialog: false,
     };
   },
-  mounted() {
-    this.getMovieDetails();
+  created() {
+    this.getMovieDetails(this.$route.params.id);
+  },
+  destroyed() {
+    commit('setMovieDetails', {})
+  },
+  computed: {
+    ...mapState(['movieDetails', 'trailerVideo', 'addToDialog', 'imageURL'])
   },
   methods: {
+    ...mapActions(['getMovieDetails', 'getMovieTrailer', 'showAddToDialog', 'setAddMovie']),
+    getTrailer(movieDetails) {
+      this.trailerDialog = true
+      this.getMovieTrailer({ type: 'other', id: movieDetails.id })
+    },
     comeBack() {
       this.$router.go(-1);
-    },
-    getMovieDetails() {
-      const movie = `https://api.themoviedb.org/3/movie/${this.$route.params.id}?api_key=${this.apikey}&language=en-US`;
-
-      return new Promise((resolve) => {
-        axios
-          .get(movie)
-          .then((resp) => {
-            this.movieDetails = resp.data;
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      });
-    },
-    getMovieTrailer() {
-      const video_url = `https://api.themoviedb.org/3/movie/${this.$route.params.id}/videos?api_key=${this.apikey}&language=en-US`;
-
-      return new Promise((resolve) => {
-        axios
-          .get(video_url)
-          .then((resp) => {
-            this.dialog = true;
-
-            const key = resp.data.results[0].key;
-
-            const youtube_video = "https://www.youtube.com/embed/" + key;
-
-            this.trailerVideo = youtube_video;
-          })
-          .catch((e) => {
-            console.log(e);
-            this.videoError = "Sorry. This video is no available.";
-          });
-      });
     },
   },
 };
@@ -266,7 +264,7 @@ export default {
 
   #movie-date {
     position: absolute;
-    right: 55px;
+    right: 10%;
     font-size: 40px;
     color: white;
     bottom: 10px;

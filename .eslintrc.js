@@ -17,5 +17,6 @@ module.exports = {
         ignoreUrls: true,
       },
     ],
+    "quotes": ["error", "double"]
   },
 };

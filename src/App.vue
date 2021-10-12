@@ -21,18 +21,15 @@ import Navbar from "./components/Navbar";
 
 export default {
   name: "App",
-
   components: {
     Navbar,
   },
-  data() {
-    return {};
-  },
   mounted() {
     this.getData();
+    this.getUserID();
   },
   methods: {
-    ...mapActions(['changeLanguage']),
+    ...mapActions(['changeLanguage', 'getUserID']),
     getData() {
       const userData =
         JSON.parse(localStorage.getItem("storageUserDATA")) || [];

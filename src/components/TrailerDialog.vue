@@ -46,35 +46,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(['videoNoAvailable']),
-    width () {
-      switch (this.$vuetify.breakpoint.name) {
-          case 'xs': return '220px'
-          case 'sm': return '400px'
-          case 'md': return '500px'
-          case 'lg': return '600px'
-          case 'xl': return '800px'
-        }
-    },
-    height () {
-      switch (this.$vuetify.breakpoint.name) {
-          case 'xs': return '220px'
-          case 'sm': return '400px'
-          case 'md': return '500px'
-          case 'lg': return '600px'
-          case 'xl': return '800px'
-        }
-    }
-  },
-  mounted () {
-    console.log(this.video)
-    if (this.videoNoAvailable) {
-      console.log('Video no available')
-    }
+    ...mapState(['videoNoAvailable'])
   },
   methods: {
     closeDialog() {
       this.$emit("close-dialog");
+      this.$store.commit('setTrailerVideo', "")
+      this.$store.commit('setVideoAvailable', false)
     },
   },
 };

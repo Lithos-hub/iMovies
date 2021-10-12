@@ -1,11 +1,21 @@
 <template>
   <div id="home-view">
-      <v-row no-gutters class="d-flex horizontal-scroll-wrapper" @scroll="horizontalScroll">
+
+        <!-- TRAILER DIALOG -->
+    <TrailerDialog
+      v-if="trailerDialog"
+      :video="trailerVideo"
+      @close-dialog="dialog = false"
+    />
+
+
+      <v-row id="scroll-x" no-gutters class="d-flex" @scroll="enableScrollX">
         <div v-for="(item, i) in latestReleases" :key="i" :class="`movie-wrapper-${i}`">
           <router-link :to="`/movie/${item.id}`">
             <v-img
               class="movie-img"
-              :src="url + item.backdrop_path">
+              :src="imageURL + item.backdrop_path"
+              @click="getMovieDetails(item.id)">
               </v-img>
               <h3 class="movie-title">
                 {{ item.title }}
@@ -13,32 +23,34 @@
           </router-link>
         </div>
       </v-row>
-      <v-row no-gutters class="d-flex mt-5 pa-0">
+      <v-row>
         <v-col>
-      <h5 class="ml-10 info--text">Trailer of the week</h5>
+      <h5 class="info--text ml-13">Trailer of the week</h5>
         </v-col>
         <v-col>
       <h5 class="info--text">Movie of the week</h5>
         </v-col>
       </v-row>
-      <v-container fluid id="home-container" class="ma-0">
-        <div id="trailer-of-the-week-section">
+      <v-row>
+        <v-col class="text-right">
           <iframe
+            id="trailer-of-the-week"
             class="movie-video"
-            :src="trailerVideo"
+            :src="trailerOfTheWeekVideo"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
           ></iframe>
-        </div>
-        <div id="movie-of-the-week-section">
+        </v-col>
+        <v-col id="movie-of-the-week-section">
           <v-row>
             <v-col cols="4">
               <!-- MOVIE IMG -->
               <v-img
                 width="auto"
+                max-width="400px"
                 height="100%"
-                :src="movieOfTheWeek.poster_path != null ? url + movieOfTheWeek.poster_path : no_image"
+                :src="movieOfTheWeek.poster_path !== null ? imageURL + movieOfTheWeek.poster_path : no_image"
                 class="movieOfTheWeek-img rounded">
                 <p class="movieOfTheWeek-date pa-2">{{
                   movieOfTheWeek.release_date !== undefined
@@ -99,53 +111,56 @@
                   </p>
                 </v-col>
                 <v-col>
-                  <!-- MOVIE ACTIONS -->
-                  <v-btn
-                    class="d-block"
-                    width="350px"
-                    outlined
-                    color="red"
-                    large
-                    tile
-                    @click="getTrailer(item)"
-                    dark
-                    id="trailer-btn">
-                    <span class="white--text">View trailer</span>
-                  </v-btn>
                 </v-col>
               </v-row>
+              <v-btn
+                class="d-block"
+                width="350px"
+                outlined
+                color="red"
+                large
+                tile
+                @click="getTrailer(movieOfTheWeek)"
+                dark
+                id="trailer-btn">
+                <span class="white--text">View trailer</span>
+              </v-btn>
             </v-col>
           </v-row>
-        </div>
-      </v-container>
+        </v-col>
+      </v-row>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState } from 'vuex';
+import TrailerDialog from "@/components/TrailerDialog.vue";
 
 export default {
-  name: "Ranking",
-  components: {},
+  name: 'Ranking',
+  components: {
+    TrailerDialog
+  },
   data() {
     return {
-      url: "https://image.tmdb.org/t/p/original",
-      trailerOfTheWeek: "",
-      no_image: ""
+      trailerDialog: false
     };
   },
-  mounted () {
-    this.getLatestReleases(false);
-    this.animateScroll();
-    this.horizontalScroll();
+  created () {
     this.getTrending(true);
-    setTimeout(() => {
-      this.getMovieTrailer(this.trendingMovies[0].id)
-    }, 1000)
+    this.getLatestReleases(false);
     this.getMovieOfTheWeek()
   },
+  mounted () {
+    setTimeout(() => {
+      this.getMovieTrailer({type: 'ofTheWeek', id: this.trendingMovies[0].id })
+      this.enableScrollX();
+      this.animateScroll();
+    }, 1000)
+
+  },
   computed: {
-    ...mapState(["latestReleases", "trendingMovies", "trailerVideo", "movieOfTheWeek", "no_image"]),
+    ...mapState(['latestReleases', 'trendingMovies', 'trailerOfTheWeekVideo', 'trailerVideo', 'movieOfTheWeek', 'no_image', 'imageURL']),
     computedRateColor () {
       let movieRate = this.movieOfTheWeek.vote_average
       let color = ''
@@ -162,30 +177,34 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["getLatestReleases", "getMovieTrailer", "getTrending", "getMovieOfTheWeek"]),
+    ...mapActions(['getLatestReleases', 'getMovieTrailer', 'getTrending', 'getMovieOfTheWeek', 'getMovieDetails']),
     formatDate(date) {
       const [year, month, day] = date.split('-')
       return `${day}/${month}/${year}`
     },
-    horizontalScroll () {
-      let scroll = document.querySelector('.horizontal-scroll-wrapper');
+    enableScrollX () {
+      let homeView = document.querySelector('#home-view')
+      let scroll = homeView.querySelector('#scroll-x');
       
-      window.addEventListener("wheel", function(e) {
+      scroll.addEventListener('wheel', function(e) {
         scroll.scrollLeft += e.deltaY / 50;
       });
     },
     animateScroll() {
+      let homeView = document.querySelector('#home-view')
+      let scroll = homeView.querySelector('#scroll-x');
       const SCROLL_MAX = 58080
       let i = 0
-      let scroll = document.querySelector('.horizontal-scroll-wrapper');
       setInterval(() => { 
         if (i < SCROLL_MAX) {
+          scroll = homeView.querySelector('#scroll-x');
           scroll.style.transition = "0.5s ease-out";
           scroll.style.opacity = "1";
           scroll.scrollLeft += 1
           i++
         }
         if (scroll.scrollLeft === SCROLL_MAX) {
+          scroll = homeView.querySelector('#scroll-x');
           scroll.style.transition = "0.5s ease-out";
           scroll.style.opacity = "0";
           setTimeout(() => {
@@ -193,8 +212,12 @@ export default {
             i = 0;
           }, 500)
         }
-      }, 10)
-    }
+      }, 30)
+    },
+    getTrailer(item) {
+      this.trailerDialog = true
+      this.getMovieTrailer({ type: 'other', id: item.id })
+    },
   },
 };
 </script>
@@ -302,7 +325,7 @@ export default {
 //     top: -20px;
 //   }
 
-//   .horizontal-scroll-wrapper {
+//   #scroll-x {
 //     position: absolute;
 //     display: block;
 //     top: 20px;
@@ -363,6 +386,10 @@ export default {
     display: none !important;
   }
 
+  #home-view {
+    overflow-y: hidden;
+  }
+
   #title {
     position: absolute;
     top: 0;
@@ -376,7 +403,7 @@ export default {
     -webkit-text-fill-color: transparent;
   }
 
-  .horizontal-scroll-wrapper {
+  #scroll-x {
     box-shadow: 0px 5px 10px black;
     position: relative;
     top: 0;
@@ -390,7 +417,7 @@ export default {
     justify-items: flex-start;
   }
 
-  .horizontal-scroll-wrapper > div {
+  #scroll-x > div {
     margin: 0;
     padding: 0;
     text-align: center;
@@ -427,27 +454,17 @@ export default {
     backdrop-filter: blur(5px);
   }
 
-  #home-container {
-    position: relative;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    margin: 0;
-  }
-
-  #trailer-of-the-week-section {
-    display: block;
+  #trailer-of-the-week {
     width: calc(1920px / 2.15);
     height: calc(1080px / 2.15);
-    background: transparent;
-    margin-right: 5px;
-    margin: 0 auto;
-    box-shadow: 0px 10px 10px black;
+    max-height: 430px;
+    box-shadow: 0px 10px 10px 2px black;
   }
 
   .movie-video {
     position: relative;
     width: 100%;
+    max-height: 430px;
     height: 100%;
   }
 

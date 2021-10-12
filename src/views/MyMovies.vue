@@ -108,7 +108,7 @@
           </v-col>
           <v-col>
             <div class="data-list-number" :style="{ color: color1 }">
-              {{ toWatchMovies.length }}
+              {{ wishListMovies.length }}
             </div>
           </v-col>
         </v-row>
@@ -118,7 +118,7 @@
           </v-col>
           <v-col>
             <div class="data-list-number" :style="{ color: color2 }">
-              {{ favoriteMovies.length }}
+              {{ favouriteMovies.length }}
             </div>
           </v-col>
         </v-row>
@@ -152,12 +152,12 @@
     />
     <MyMoviesCategory
       v-if="category === 'towatch'"
-      :array-movies="toWatchMovies"
+      :array-movies="wishListMovies"
       :category="towatch"
     />
     <MyMoviesCategory
       v-if="category === 'favorite'"
-      :array-movies="favoriteMovies"
+      :array-movies="favouriteMovies"
       :category="favorite"
     />
     <ByRateMovies
@@ -189,9 +189,9 @@ export default {
       userData: {},
       userID: null,
       watched: "watched",
-      toWatchMovies: [],
+      wishListMovies: [],
       watchedMovies: [],
-      favoriteMovies: [],
+      favouriteMovies: [],
       ratedMovies: [],
       towatch: "towatch",
       favorite: "favorite",
@@ -201,14 +201,14 @@ export default {
   },
   computed: {
     color1() {
-      if (!this.toWatchMovies.length) {
+      if (!this.wishListMovies.length) {
         return "#F44336";
       } else {
         return "#207ef2";
       }
     },
     color2() {
-      if (!this.favoriteMovies.length) {
+      if (!this.favouriteMovies.length) {
         return "#F44336";
       } else {
         return "#207ef2";
@@ -238,14 +238,14 @@ export default {
     getToWatchMovies() {
       if (localStorage.getItem("storageUserDATA")) {
         const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
-        const toWatchArr = userData[this.userID].toWatchMovies;
+        const toWatchArr = userData[this.userID].wishListMovies;
         for (let movie of toWatchArr) {
-          this.toWatchMovies.push(movie);
+          this.wishListMovies.push(movie);
         }
 
-        const removeDuplicated = uniqBy(this.toWatchMovies, "movie.id");
+        const removeDuplicated = uniqBy(this.wishListMovies, "movie.id");
 
-        this.toWatchMovies = removeDuplicated;
+        this.wishListMovies = removeDuplicated;
       }
     },
     getWatchedMovies() {
@@ -265,13 +265,13 @@ export default {
       if (localStorage.getItem("storageUserDATA")) {
         const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
 
-        const favoriteArr = userData[this.userID].favoriteMovies;
+        const favoriteArr = userData[this.userID].favouriteMovies;
         for (let movie of favoriteArr) {
-          this.favoriteMovies.push(movie);
+          this.favouriteMovies.push(movie);
         }
-        const removeDuplicated = uniqBy(this.favoriteMovies, "movie.id");
+        const removeDuplicated = uniqBy(this.favouriteMovies, "movie.id");
 
-        this.favoriteMovies = removeDuplicated;
+        this.favouriteMovies = removeDuplicated;
       }
     },
     getRatedMovies() {

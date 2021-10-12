@@ -29,7 +29,7 @@
               type="text"
               v-model="username"
               :label="$t('view-register.username')"
-              counter="10"
+              counter="15"
             ></v-text-field>
             <v-text-field
               required
@@ -53,7 +53,7 @@
               :label="$t('view-register.repeat')"
             ></v-text-field>
 
-            <v-dialog v-model="dialog" width="800" persistent>
+            <v-avatarDialog v-model="avatarDialog" width="800" persistent>
               <template v-slot:activator="{ on, attrs }">
                 <div class="text-center">
                 <v-btn
@@ -87,7 +87,7 @@
                   </v-row>
                 </v-container>
               </v-card>
-            </v-dialog>
+            </v-avatarDialog>
 
             <div class="text-center">
               <v-btn
@@ -138,7 +138,7 @@ export default {
   },
   data() {
     return {
-      dialog: false,
+      avatarDialog: false,
       valid: false,
       username: "",
       email: "",
@@ -148,7 +148,7 @@ export default {
       registered: false,
       nameRules: [
         (v) => !!v || this.$t('view-register.nameRequired'),
-        (v) => v.length < 11 || this.$t('view-register.maximum')
+        (v) => v.length < 15 || this.$t('view-register.maximum')
       ],
       emailRules: [
         (v) => !!v || this.$t('view-register.emailRequired'),
@@ -187,7 +187,7 @@ export default {
     ...mapState(["snackbarObject", "user"]),
   },
   methods: {
-    ...mapActions(["showSuccess", "showError"]),
+    ...mapActions(["showSnackbar", "showError"]),
     checkPasswords () {
       this.password === this.repassword ? '' : this.$t('view-register.passwordMatch')
     },
@@ -217,10 +217,12 @@ export default {
           userEmail: this.email,
           userPassword: this.password,
           userAvatar: this.avatar,
-          toWatchMovies: [],
-          watchedMovies: [],
-          favoriteMovies: [],
-          ratedMovies: [],
+          myMovies: {
+            favourite: [],
+            watched: [],
+            wishlist: [],
+            rated: []
+          }
         };
 
         storage.push(userData);
@@ -240,7 +242,7 @@ export default {
     },
     selectAvatar(item) {
       this.avatar = item;
-      this.dialog = false;
+      this.avatarDialog = false;
     },
   },
 };

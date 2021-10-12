@@ -4,12 +4,17 @@
 
     <!-- TRAILER DIALOG -->
     <TrailerDialog
-      v-if="dialog"
+      v-if="trailerDialog"
       :video="trailerVideo"
       @close-dialog="dialog = false"
     />
 
-    <v-container fluid id="trendingMovies-container">
+    <!-- ADD TO MY MOVIES DIALOG -->
+    <AddToDialog
+      v-if="addToDialog"
+    />
+
+    <v-container id="trendingMovies-container">
       <!-- LIST OF MOVIES -->
         <div v-for="(item, i) in trendingMovies" :key="i" class="my-2">
           <v-row>
@@ -24,7 +29,7 @@
             </v-row>
           <v-row>
             <v-col cols="2">
-              <v-img :src="url + item.poster_path" width="100%" class="movie-img" />
+              <v-img :src="imageURL + item.poster_path" width="100%" class="movie-img" />
             </v-col>
             <v-col cols="3">
               <h4>Overview</h4>
@@ -50,7 +55,6 @@
               </p>
             </v-col>
             <v-col cols="3" class="text-right">
-              <!-- SHOW INFO DIALOG BUTTON -->
               <v-btn
                 class="d-block my-1 ml-auto"
                 width="350px"
@@ -61,11 +65,20 @@
                 @click="getTrailer(item)"
                 dark
                 id="trailer-btn"
-                ><span class="white--text">View trailer</span></v-btn
-              >
-              <v-btn>
-                Add 
-              </v-btn>
+                ><span class="white--text">View trailer</span></v-btn>
+              <v-btn
+                class="d-block my-1 ml-auto"
+                width="350px"
+                outlined
+                color="purple"
+                large
+                tile
+                @click="showAddToDialog(true); setAddMovie(item)"
+                dark
+                id="add-to-btn"
+                >
+                  <span class="white--text">Add to My Movies</span>
+                </v-btn>
               </v-col>
             </v-row>
       </div>
@@ -76,6 +89,7 @@
 <script>
 import SectionTitle from "../components/SectionTitle";
 import TrailerDialog from "../components/TrailerDialog";
+import AddToDialog from "../components/AddToDialog";
 
 import { mapActions, mapState } from "vuex";
 
@@ -83,6 +97,7 @@ export default {
   components: {
     SectionTitle,
     TrailerDialog,
+    AddToDialog,
   },
   data() {
     return {
@@ -91,28 +106,26 @@ export default {
       overview: "",
       releaseDate: "",
       average: "",
-      dialog: false,
-      url: "https://image.tmdb.org/t/p/original",
+      trailerDialog: false,
       no_overview: "We are sorry. This movie have not available overview.",
     };
   },
   computed: {
-    ...mapState(["trendingMovies", "trailerVideo"]),
+    ...mapState(["trendingMovies", "trailerVideo", "addToDialog", "imageURL"]),
   },
   mounted() {
     this.getTrending(true);
-    console.log(this.trendingMovies)
   },
   methods: {
-    ...mapActions(["getTrending", "getMovieTrailer"]),
+    ...mapActions(["getTrending", "getMovieTrailer", "showAddToDialog", "setAddMovie"]),
     getTrailer(item) {
-      this.dialog = true
-      this.getMovieTrailer(item.id)
+      this.trailerDialog = true
+      this.getMovieTrailer({ type: 'other', id: item.id })
     },
     formatDate(date) {
       const [year, month, day] = date.split('-')
       return `${day}/${month}/${year}`
-    }
+    },
   },
 };
 </script>

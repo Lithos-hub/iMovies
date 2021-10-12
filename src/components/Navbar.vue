@@ -24,41 +24,45 @@
       </v-toolbar-title>
 
 
-            <small class="white--text mr-3">Lang</small>
+        <small class="white--text mr-3">Lang: <span class="cyan--text">{{ i18Lang }}</span></small>
           <v-menu bottom offset-y v-model="langMenu">
-          <template v-slot:activator="{ on, attrs }">
-          <v-btn fab icon outlined width="100ox" small class="mr-2" v-bind="attrs" v-on="on" @click="langMenu = true">
-            <v-icon class="language-icon">
-              mdi-earth
-            </v-icon>
-          </v-btn>
-          </template>
-
-
-            <v-list dark>
-              <v-list-item>
-                <v-list-item-title class="language-menu-item" id="esp-option" @click="changeLanguage('es-ES'); langMenu = false"><span>ESP</span></v-list-item-title>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-title class="language-menu-item" id="eng-option" @click="changeLanguage('en-EN'); langMenu = false"><span>ENG</span></v-list-item-title>
-              </v-list-item>
-            </v-list>
+            <template v-slot:activator="{ on, attrs }">
+            <v-btn color="pink lighten-3" fab icon outlined width="100ox" small class="mr-2" v-bind="attrs" v-on="on" @click="langMenu = true">
+              <v-icon class="language-icon">
+                mdi-earth
+              </v-icon>
+            </v-btn>
+            </template>
+            <v-row no-gutters class="d-flex">
+              <v-col>
+              <v-list class="lang-list pa-0">
+                <v-list-item class="ma-0 pa-0" @click="changeLanguage('es-ES'); refresh()">
+                  <v-list-item-title class="px-5 language-menu-item"><span class="white--text">ESP</span></v-list-item-title>
+                </v-list-item>
+              </v-list>
+              </v-col>
+              <v-col>
+              <v-list class="lang-list pa-0">
+                <v-list-item class="ma-0 pa-0" @click="changeLanguage('en-EN'); refresh()">
+                  <v-list-item-title class="px-5 language-menu-item"><span class="white--text">ENG</span></v-list-item-title>
+                </v-list-item>
+              </v-list>
+              </v-col>
+            </v-row>
           </v-menu>
 
-      <v-btn outlined tile width="120px" small color="red darken-1" class="mr-2" @click="logout()"
-        >{{ displayText ? "logout" : "" }}
-        <v-icon>mdi-account-cancel</v-icon></v-btn
-      >
+      <v-btn outlined tile width="120px" small color="red darken-1" class="mr-2" @click="logout()">
+        {{ displayText ? "logout" : "" }}
+        <v-icon>mdi-account-cancel</v-icon></v-btn>
 
-      <v-btn outlined tile width="120px" small color="primary" to="/about"
-        >{{ displayText ? "about" : ""
-        }}<v-icon v-if="!displayText">mdi-information-variant</v-icon></v-btn
-      >
+      <v-btn outlined tile width="120px" small color="primary" to="/about">
+      {{ displayText ? "about" : ""}}
+      <v-icon v-if="!displayText">mdi-information-variant</v-icon>
+      </v-btn>
 
       <a
         href="https://github.com/Lithos-hub/VUEJS-iMovies"
-        style="text-decoration: none"
-      >
+        style="text-decoration: none">
         <v-btn icon>
           <v-icon> mdi-github </v-icon>
         </v-btn>
@@ -77,16 +81,15 @@
       app
       width="220px"
     >
-      <v-list nav class="nav-list">
+      <v-list dense nav>
         <v-list-item-group v-model="group" active-class="black">
           <v-img
             v-if="user.userAvatar !== undefined"
             :src="user.userAvatar"
             width="90"
             height="90"
-            class="avatar ma-5 ma-auto"
-          ></v-img>
-          <h5 id="username-drawer" class="text-center my-2 white--text">
+            class="avatar ma-5 ma-auto" />
+          <h5 class="username-drawer text-center my-2">
             @{{ user.userName }}
           </h5>
 
@@ -98,6 +101,7 @@
           </v-list-item>
 
           <v-divider></v-divider>
+
         <div v-for="(item, i) in navbarItems" :key="i">
           <v-list-item v-if="isDefault && item.visibleToDefaultUser" :to="item.to">
             <v-list-item-icon>
@@ -115,22 +119,26 @@
         </v-list-item-group>
       </v-list>
 
-      <v-divider class="name-divider"></v-divider>
-      <p id="developedBy">
-        {{ date }} <v-icon size="17">mdi-copyright</v-icon> Developed by<br />
-        <a
-          href="https://carlosseguragarciaweb.com"
-          style="text-decoration: none"
-        >
-          <span id="developerName">Carlos Segura García</span>
-          <p id="visit-my-website">Go to my website</p>
-        </a>
-      </p>
+      <div id="drawer-below-section">
+      <v-divider></v-divider>
+        <p id="developedBy">
+          {{ date }} <v-icon size="17">mdi-copyright</v-icon> Developed by<br />
+          <a
+            href="https://carlosseguragarciaweb.com"
+            style="text-decoration: none">
+              <small id="developerName">Carlos Segura García</small>
+              <p id="visit-my-website">Go to my website</p>
+          </a>
+        </p>
+      </div>
     </v-navigation-drawer>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+import i18n from "@/plugins/i18n";
+
 export default {
   name: "Navbar",
   data() {
@@ -146,12 +154,13 @@ export default {
       drawer: false,
       langMenu: false,
       navbarItems: [ 
+        { visibleToDefaultUser: false, to: "/account", text: "My Account", icon: "mdi-account" },
         { visibleToDefaultUser: false, to: "/search", text: "Search", icon: "mdi-magnify" },
         { visibleToDefaultUser: false, to: "/myMovies", text: "My movies", icon: "mdi-star" },
         { visibleToDefaultUser: false, to: "/trending", text: "Trending", icon: "mdi-table" },
         { visibleToDefaultUser: true, to: "/trailers", text: "Trailers", icon: "mdi-video-vintage" },
         { visibleToDefaultUser: true, to: "/genres", text: "Genres", icon: "mdi-shape" },
-        { visibleToDefaultUser: false, to: "/ranking", text: "Ranking", icon: "mdi-format-list-numbered" },
+        { visibleToDefaultUser: false, to: "/popular", text: "Popular", icon: "mdi-format-list-numbered" },
         { visibleToDefaultUser: true, to: "/changelog", text: "Changelog", icon: "mdi-lead-pencil" }
       ]
     };
@@ -174,8 +183,12 @@ export default {
           return true;
       }
     },
+    i18Lang() {
+      return i18n.locale.split('-')[0].toUpperCase()
+    }
   },
   methods: {
+  ...mapActions(["changeLanguage"]),
     setUser() {
       this.isDefault = this.$store.getters.defaultUser;
       if (!this.isDefault) {
@@ -193,12 +206,16 @@ export default {
       this.$store.commit("isLogged", false);
       this.$router.push("/");
     },
+    refresh() {
+      this.$router.go(0);
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "src/scss/variables";
+
 
 * {
   color: $primary;
@@ -224,6 +241,22 @@ export default {
   left: 5%;
   color: $primary;
   font-weight: lighter;
+}
+
+.username-drawer {
+  background: $gradient_btn1;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: brightness(2);
+}
+
+#drawer-below-section {
+  position: absolute;
+  left: 50%;
+  bottom: 0%;
+  transform: translate(-50%, 0%);
+  width: 100%;
 }
 
 #visit-my-website {
@@ -264,7 +297,7 @@ export default {
     display: none;
   }
 
-  #username-drawer {
+  .username-drawer {
     font-size: 12px;
   }
 
@@ -312,10 +345,6 @@ export default {
 @media only screen and (min-width: 767px) {
   #username-toolbar {
     display: block;
-  }
-
-  #username-drawer {
-    font-size: 15px;
   }
 
   .brand-title {
@@ -374,7 +403,7 @@ export default {
     display: block;
   }
 
-  #username-drawer {
+  .username-drawer {
     font-size: 18px;
   }
 
@@ -429,11 +458,14 @@ export default {
     }
   }
 
+  .lang-list {
+    border: 1px solid pink !important;
+    background: $gradient_btn4 !important;
+  }
+
 .language-menu-item {
     cursor: pointer;
-    margin: 0 auto;
     padding-inline: 2em;
-
     &:hover {
         color: cyan !important;
 

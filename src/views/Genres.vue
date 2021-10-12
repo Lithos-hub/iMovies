@@ -267,7 +267,7 @@
                   </v-col>
                   <v-col lg="12" xs="12">
                     <img
-                      :src="url + item.backdrop_path"
+                      :src="imageURL + item.backdrop_path"
                       class="movie-img-dialog"
                     />
 
@@ -293,6 +293,7 @@
 <script>
 import SectionTitle from "../components/SectionTitle";
 import axios from "axios";
+import { mapState } from 'vuex';
 
 export default {
   name: "Genres",
@@ -303,7 +304,6 @@ export default {
     return {
       subtitle: "Movies per genre",
       genreDialog: false,
-      url: "https://image.tmdb.org/t/p/original",
       no_overview: "We sorry. This movie have not overview available.",
       loadingGenre: false,
       loadingError: "",
@@ -311,6 +311,9 @@ export default {
       movieTitle: "",
       genre: "",
     };
+  },
+  computed: {
+    ...mapState(['imageURL'])
   },
   methods: {
     getMovies() {

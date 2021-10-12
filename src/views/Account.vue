@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SectionTitle :sectionName="name" />
+    <SectionTitle :sectionSubtitle="subtitle" />
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
   },
   data() {
     return {
-      name: "My Account",
+      subtitle: "My Account",
     };
   },
 };

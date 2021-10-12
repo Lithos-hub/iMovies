@@ -6,11 +6,11 @@
       v-model="dialog"
       width="800"
       height="100%"
-      v-if="dialog"
+      v-if="trailerDialog"
       overlay-opacity="2"
     >
       <v-card>
-        <v-img :src="url + img" width="100%" height="100%" class="pa-5">
+        <v-img :src="imageURL + img" width="100%" height="100%" class="pa-5">
           <v-card-title id="dialog-title">
             {{ title }}
           </v-card-title>
@@ -105,7 +105,7 @@
                 </v-col>
                 <v-col cols="6">
                   <v-img
-                    :src="url + item.movie.poster_path"
+                    :src="imageURL + item.movie.poster_path"
                     class="movie-img"
                   ></v-img>
                 </v-col>
@@ -119,19 +119,18 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
 export default {
-  props: ["arrayMovies", "category", "rate"],
+  props: ['arrayMovies', 'category', 'rate'],
   data() {
     return {
-      url: "https://image.tmdb.org/t/p/original",
       userID: null,
-      dialog: false,
-      title: "",
-      release_date: "",
-      overview: "",
-      img: "",
+      trailerDialog: false,
+      title: '',
+      release_date: '',
+      overview: '',
+      img: '',
       userID: null,
     };
   },
@@ -139,46 +138,46 @@ export default {
     this.getUserID();
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState(['user', 'imageURL']),
   },
   methods: {
     removeMovie(item) {
-      const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+      const storage = JSON.parse(localStorage.getItem('storageUserDATA')) || [];
 
-      if (this.category === "watched") {
+      if (this.category === 'watched') {
         const index = this.arrayMovies.indexOf(item);
         if (index > -1) {
           this.arrayMovies.splice(index, 1);
         }
         storage[this.userID].watchedMovies = this.arrayMovies;
-        localStorage.setItem("storageUserDATA", JSON.stringify(storage));
+        localStorage.setItem('storageUserDATA', JSON.stringify(storage));
       }
-      if (this.category === "towatch") {
+      if (this.category === 'towatch') {
         const index = this.arrayMovies.indexOf(item);
         if (index > -1) {
           this.arrayMovies.splice(index, 1);
         }
-        storage[this.userID].toWatchMovies = this.arrayMovies;
-        localStorage.setItem("storageUserDATA", JSON.stringify(storage));
+        storage[this.userID].wishListMovies = this.arrayMovies;
+        localStorage.setItem('storageUserDATA', JSON.stringify(storage));
       }
-      if (this.category === "favorite") {
+      if (this.category === 'favorite') {
         const index = this.arrayMovies.indexOf(item);
         if (index > -1) {
           this.arrayMovies.splice(index, 1);
         }
-        storage[this.userID].favoriteMovies = this.arrayMovies;
-        localStorage.setItem("storageUserDATA", JSON.stringify(storage));
+        storage[this.userID].favouriteMovies = this.arrayMovies;
+        localStorage.setItem('storageUserDATA', JSON.stringify(storage));
       }
     },
     showInfo(item) {
-      this.dialog = true;
+      this.trailerDialog = true;
       this.title = item.movie.title;
       this.overview = item.movie.overview;
       this.release_date = item.movie.release_date;
       this.img = item.movie.backdrop_path;
     },
     getUserID() {
-      const userID = JSON.parse(localStorage.getItem("USERID")) || {};
+      const userID = JSON.parse(localStorage.getItem('USERID')) || {};
       this.userID = userID.id;
     },
   },

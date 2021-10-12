@@ -82,9 +82,9 @@ const routes = [
     },
   },
   {
-    path: "/ranking",
+    path: "/popular",
     name: "Ranking",
-    component: () => import("../views/Ranking.vue"),
+    component: () => import("../views/Popular.vue"),
     meta: {
       restrictedRoute: true,
       registeredUsersOnly: true,

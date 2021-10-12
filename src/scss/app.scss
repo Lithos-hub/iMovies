@@ -1,0 +1,19 @@
+@import "src/scss/variables";
+
+
+.gradient-background-4 {
+    background: $gradient_btn4;
+}
+
+.fadeIn {
+    animation: fadeIn 1s ease;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }

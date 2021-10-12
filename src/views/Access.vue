@@ -124,15 +124,15 @@
     <div class="language-selector">
       <v-menu open-on-hover offset-y top class="language-menu">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn width="100px" large class="language-btn" v-bind="attrs" v-on="on">
+          <v-btn tile width="200px" large class="language-btn" v-bind="attrs" v-on="on">
             <v-icon>mdi-earth</v-icon>
           </v-btn>
         </template>
-        <v-list dark>
-          <v-list-item>
+        <v-list dark width="200px">
+          <v-list-item class="text-center">
             <v-list-item-title class="language-menu-item" id="esp-option" @click="changeLanguage('es-ES')"><span>ESP</span></v-list-item-title>
           </v-list-item>
-          <v-list-item>
+          <v-list-item class="text-center">
             <v-list-item-title class="language-menu-item" id="eng-option" @click="changeLanguage('en-EN')"><span>ENG</span></v-list-item-title>
           </v-list-item>
         </v-list>
@@ -230,9 +230,9 @@ export default {
       userData.userName = "defaultUser";
       userData.userEmail = "";
       userData.userPassword = "";
-      userData.toWatchMovies = [];
+      userData.wishListMovies = [];
       userData.watchedMovies = [];
-      userData.favoriteMovies = [];
+      userData.favouriteMovies = [];
       userData.ratedMovies = [];
 
       this.$store.commit("setUser", userData);
@@ -406,15 +406,19 @@ h5 {
 }
 
 #esp-option {
+    transition: all 0.3s ease-out;
     margin: 0 auto;
     padding: 1em;
+    max-width: 70px;
     background: url("../assets/img/spanish-icon.jpg") no-repeat;
     background-size: contain;
     background-position: center;
 }
 #eng-option {
+    transition: all 0.3s ease-out;
     margin: 0 auto;
     padding: 1em;
+    max-width: 70px;
     background: url("../assets/img/english-icon.jpg") no-repeat;
     background-size: contain;
     background-position: center;

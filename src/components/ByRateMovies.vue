@@ -6,11 +6,11 @@
       v-model="dialog"
       width="800"
       height="100%"
-      v-if="dialog"
+      v-if="trailerDialog"
       overlay-opacity="2"
     >
       <v-card>
-        <v-img :src="url + img" width="100%" height="100%" class="pa-5">
+        <v-img :src="imageURL + img" width="100%" height="100%" class="pa-5">
           <v-card-title id="dialog-title">
             {{ title }}
           </v-card-title>
@@ -105,7 +105,7 @@
                 </v-col>
                 <v-col cols="6">
                   <v-img
-                    :src="url + item.movie_data.poster_path"
+                    :src="imageURL + item.movie_data.poster_path"
                     class="movie-img"
                   ></v-img>
                 </v-col>
@@ -119,12 +119,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   props: ["category", "arrayMovies"],
   data() {
     return {
-      url: "https://image.tmdb.org/t/p/original",
-      dialog: false,
+      trailerDialog: false,
       title: "",
       release_date: "",
       overview: "",
@@ -135,6 +135,9 @@ export default {
   },
   mounted() {
     this.getUserID();
+  },
+  computed: {
+    ...mapState(['imageURL'])
   },
   methods: {
     removeMovie(item) {
@@ -150,7 +153,7 @@ export default {
       }
     },
     showInfo(item) {
-      this.dialog = true;
+      this.trailerDialog = true;
       this.title = item.movie_data.title;
       this.overview = item.movie_data.overview;
       this.release_date = item.movie_data.release_date;
