@@ -42,7 +42,7 @@ export default {
         {
           version: "Version 1.3.0",
           changes: [
-            "Optimized code in the Genres section using v-bind and v-on:click to use a single function to return movies of different genres.",
+            "Optimized code in the Genres section using v-bind and @click to use a single function to return movies of different genres.",
             "Some aesthetic changes in general.",
           ],
         },

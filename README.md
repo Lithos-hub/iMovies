@@ -4,7 +4,7 @@
 
 iMovies is a web app I'm developing using Vue.js.
 
-This application uses The Movie Database (TMDB) API to show info about movies (release dates, titles, vote average, overviews, etc). In adition, since the Version 1.5.0, the user can create custom lists of movies based in some categories like favorite movies or want to watch. That information is shown in My Movies section and is storaged using LocalStorage.
+This application uses The Movie Database (TMDB) API to show info about movies (release dates, titles, vote average, overviews, etc). In adition, since the Version 1.5.0, the user can create custom lists of movies based in some categories like favourite movies or want to watch. That information is shown in My Movies section and is storaged using LocalStorage.
 
 //////////////
 
@@ -95,7 +95,7 @@ Version 1.4.0
 
 Version 1.3.0
 
-- Optimized code in the Genres section using v-bind and v-on:click to use a single function to return movies of different genres.
+- Optimized code in the Genres section using v-bind and @click to use a single function to return movies of different genres.
 - Some aesthetic changes in general.
 
 Version 1.2.0

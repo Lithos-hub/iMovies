@@ -260,11 +260,11 @@ export default {
           if (this.addedFavourite) {
             settedArray.splice(settedArray.indexOf(movieToAdd), 1)
             this.auxFavourite.splice(this.auxFavourite.indexOf(movieToAdd), 1)
-            this.showSnackbar({text: "Removed from FAVORITE category", color: "secondary"});
+            this.showSnackbar({text: "Removed from FAVOURITE category", color: "secondary"});
             storage[this.userID].myMovies.favourite = settedArray;
             localStorage.setItem("storageUserDATA", JSON.stringify(storage));
           } else {
-            this.showSnackbar({text: "Added to FAVORITE category", color: "red darken-4"});
+            this.showSnackbar({text: "Added to FAVOURITE category", color: "red darken-4"});
             storage[this.userID].myMovies.favourite = settedArray;
             localStorage.setItem("storageUserDATA", JSON.stringify(storage));
           }

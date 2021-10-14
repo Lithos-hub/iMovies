@@ -37,7 +37,7 @@
                   elevation="10"
                   rounded="2"
                 >
-                  <form v-on:submit.prevent="login(email, password)">
+                  <form @submit.prevent="login(email, password)">
                     <v-text-field
                       required
                       id="email-input"

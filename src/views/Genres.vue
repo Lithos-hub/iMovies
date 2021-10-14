@@ -31,8 +31,7 @@
           <v-btn
             id="actionBtn"
             class="genre-btn img1"
-            v-on:click="[(genre = '28')], [(genreTitle = 'action')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '28')], [(genreTitle = 'action')]"
             dark
             block
             tile
@@ -44,8 +43,7 @@
           <v-btn
             color="green"
             class="genre-btn img2"
-            v-on:click="[(genre = '12')], [(genreTitle = 'adventure')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '12')], [(genreTitle = 'adventure')]"
             dark
             block
             tile
@@ -56,8 +54,7 @@
           <v-btn
             color="orange"
             class="genre-btn img3"
-            v-on:click="[(genre = '16')], [(genreTitle = 'animation')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '16')], [(genreTitle = 'animation')]"
             dark
             block
             tile
@@ -68,8 +65,7 @@
           <v-btn
             color="purple"
             class="genre-btn img4"
-            v-on:click="[(genre = '35')], [(genreTitle = 'comedy')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '35')], [(genreTitle = 'comedy')]"
             dark
             block
             tile
@@ -80,8 +76,7 @@
           <v-btn
             color="secondary"
             class="genre-btn img5"
-            v-on:click="[(genre = '80')], [(genreTitle = 'crime')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '80')], [(genreTitle = 'crime')]"
             dark
             block
             tile
@@ -92,8 +87,7 @@
           <v-btn
             color="pink"
             class="genre-btn img6"
-            v-on:click="[(genre = '99')], [(genreTitle = 'documentary')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '99')], [(genreTitle = 'documentary')]"
             dark
             block
             tile
@@ -104,8 +98,7 @@
           <v-btn
             color="yellow darken-4"
             class="genre-btn img7"
-            v-on:click="[(genre = '18')], [(genreTitle = 'dramatic')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '18')], [(genreTitle = 'dramatic')]"
             dark
             block
             tile
@@ -116,8 +109,7 @@
           <v-btn
             color="blue"
             class="genre-btn img8"
-            v-on:click="[(genre = '14')], [(genreTitle = 'fantasy')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '14')], [(genreTitle = 'fantasy')]"
             dark
             block
             tile
@@ -128,8 +120,7 @@
           <v-btn
             color="brown"
             class="genre-btn img9"
-            v-on:click="[(genre = '36')], [(genreTitle = 'history')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '36')], [(genreTitle = 'history')]"
             dark
             block
             tile
@@ -140,8 +131,7 @@
           <v-btn
             color="gray"
             class="genre-btn img10"
-            v-on:click="[(genre = '27')], [(genreTitle = 'horror')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '27')], [(genreTitle = 'horror')]"
             dark
             block
             tile
@@ -152,8 +142,7 @@
           <v-btn
             color="cyan"
             class="genre-btn img11"
-            v-on:click="[(genre = '10402')], [(genreTitle = 'musical')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '10402')], [(genreTitle = 'musical')]"
             dark
             block
             tile
@@ -164,8 +153,7 @@
           <v-btn
             color="error"
             class="genre-btn img12"
-            v-on:click="[(genre = '10749')], [(genreTitle = 'romantic')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '10749')], [(genreTitle = 'romantic')]"
             dark
             block
             tile
@@ -176,8 +164,7 @@
           <v-btn
             color="blue"
             class="genre-btn img13"
-            v-on:click="[(genre = '878')], [(genreTitle = 'sci-fi')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '878')], [(genreTitle = 'sci-fi')]"
             dark
             block
             tile
@@ -188,8 +175,7 @@
           <v-btn
             color="orange"
             class="genre-btn img14"
-            v-on:click="[(genre = '53')], [(genreTitle = 'thriller')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '53')], [(genreTitle = 'thriller')]"
             dark
             block
             tile
@@ -200,8 +186,7 @@
           <v-btn
             color="red"
             class="genre-btn img15"
-            v-on:click="[(genre = '10752')], [(genreTitle = 'war')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '10752')], [(genreTitle = 'war')]"
             dark
             block
             tile
@@ -213,8 +198,7 @@
           <v-btn
             color="indigo"
             class="genre-btn img16"
-            v-on:click="[(genre = '37')], [(genreTitle = 'western')]"
-            @click="getMovies()"
+            @click="getMovies(); [(genre = '37')], [(genreTitle = 'western')]"
             dark
             block
             tile

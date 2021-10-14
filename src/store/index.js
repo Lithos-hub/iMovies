@@ -287,7 +287,7 @@ export default new Vuex.Store({
       let arrMoviesID = []
       if (year >= 1878) {
       for (let i = 1; i <= page; i++) {
-        const CALL_URL = `${URL}/discover/movie?year=${year}&api_key=${APIKEY}&sort_by=popularity.desc&page=${i}&include_adult=false`;
+        const CALL_URL = `${URL}/discover/movie?year=${year}&api_key=${APIKEY}&language=${LANGUAGE}&sort_by=popularity.desc&page=${i}&include_adult=false`;
             await axios
             .get(CALL_URL)
             .then((resp) => {
@@ -296,10 +296,12 @@ export default new Vuex.Store({
                   arrMovies.push(data)
                   arrMoviesID.push(data.id);
                 }
-            }
-            commit('setLoadingScroll', false)
-            commit('setMoviesByYear', arrMovies)
-            commit('setMoviesID', arrMoviesID)
+                setTimeout(() => {
+                  commit('setMoviesByYear', arrMovies)
+                  commit('setMoviesID', arrMoviesID)
+                  commit('setLoadingScroll', false)
+                }, 2000)
+              }
           })
           .catch((e) => {
             console.info(e);
@@ -314,7 +316,7 @@ export default new Vuex.Store({
       }
     },
     async getMovieDetails({ commit }, id) {
-      const CALL_URL = `${URL}/movie/${id}?api_key=${APIKEY}&language=en-US&include_adult=false`;
+      const CALL_URL = `${URL}/movie/${id}?api_key=${APIKEY}&language=${LANGUAGE}&include_adult=false`;
 
       await axios
         .get(CALL_URL)

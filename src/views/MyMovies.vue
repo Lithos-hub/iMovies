@@ -9,35 +9,31 @@
       <v-tab
         active-class="cyan--text"
         class="cyan--text tab"
-        v-on:click="category = 'summary'"
+        @click="category = 'summary'"
         >Summary</v-tab
       >
       <v-tab
         active-class="error--text"
         class="white--text tab"
-        v-on:click="category = 'towatch'"
-        @click="getToWatchMovies()"
-        >To watch</v-tab
-      >
-      <v-tab
-        active-class="error--text"
-        class="white--text tab"
-        v-on:click="category = 'favorite'"
-        @click="getFavoriteMovies()"
+        @click="category = 'favourite'"
         >Favorite</v-tab
       >
       <v-tab
         active-class="error--text"
         class="white--text tab"
-        v-on:click="category = 'watched'"
-        @click="getWatchedMovies()"
+        @click="category = 'towatch'"
+        >To watch</v-tab
+      >
+      <v-tab
+        active-class="error--text"
+        class="white--text tab"
+        @click="category = 'watched'"
         >Watched</v-tab
       >
       <v-tab
         active-class="error--text"
         class="white--text tab"
-        v-on:click="category = 'byrate'"
-        @click="getRatedMovies()"
+        @click="category = 'byrate'"
         >By rate</v-tab
       >
     </v-tabs>
@@ -52,45 +48,41 @@
     <!-- MENU EXPAND FOR MOBILE DEVICES  -->
     <v-expand-x-transition>
       <v-container>
-        <v-row id="categories-menu" v-show="expand" no-gutters>
-          <div class="category-col ma-auto" v-on:click="category = 'summary'">
+        <v-row id="categories-menu" v-if="expand" no-gutters>
+          <div class="category-col ma-auto" @click="category = 'summary'">
             <v-btn block class="category-btn"> Summary </v-btn>
           </div>
           <div
             class="category-col ma-auto"
-            v-on:click="
+            @click="
               category = 'towatch';
               expand = !expand;
             "
-            @click="getToWatchMovies()"
           >
             <v-btn block class="category-btn">To watch </v-btn>
           </div>
           <div
             class="category-col ma-auto"
-            v-on:click="
-              category = 'favorite';
+            @click="
+              category = 'favourite';
               expand = !expand;
             "
-            @click="getFavoriteMovies()"
           >
             <v-btn block class="category-btn"> Favorite </v-btn>
           </div>
           <div
             class="category-col ma-auto"
-            v-on:click="
+            @click="
               category = 'watched';
               expand = !expand;
             "
-            @click="getWatchedMovies()"
           ></div>
           <div
             class="category-col ma-auto"
-            v-on:click="
+            @click="
               category = 'byrate';
               expand = !expand;
             "
-            @click="getRatedMovies()"
           >
             <v-btn block class="category-btn"> By Rate </v-btn>
           </div>
@@ -146,6 +138,11 @@
     </v-row>
 
     <MyMoviesCategory
+      v-if="category === 'favourite'"
+      :array-movies="favouriteMovies"
+      :category="favourite"
+    />
+    <MyMoviesCategory
       v-if="category === 'watched'"
       :array-movies="watchedMovies"
       :category="watched"
@@ -156,11 +153,6 @@
       :category="towatch"
     />
     <MyMoviesCategory
-      v-if="category === 'favorite'"
-      :array-movies="favouriteMovies"
-      :category="favorite"
-    />
-    <ByRateMovies
       v-if="category === 'byrate'"
       :category="byrate"
       :array-movies="ratedMovies"
@@ -171,35 +163,32 @@
 <script>
 import SectionTitle from "../components/SectionTitle";
 import MyMoviesCategory from "../components/MyMoviesCategory";
-import ByRateMovies from "../components/ByRateMovies";
 
-import { uniqBy } from "lodash";
+import { mapState } from 'vuex';
 
 export default {
   name: "MyMovies",
   components: {
     SectionTitle,
     MyMoviesCategory,
-    ByRateMovies,
   },
   data() {
     return {
       subtitle: "Saved movies",
       category: "summary",
-      userData: {},
-      userID: null,
       watched: "watched",
       wishListMovies: [],
       watchedMovies: [],
       favouriteMovies: [],
       ratedMovies: [],
       towatch: "towatch",
-      favorite: "favorite",
+      favourite: "favourite",
       byrate: "byrate",
       expand: false,
     };
   },
   computed: {
+    ...mapState(['userID']),
     color1() {
       if (!this.wishListMovies.length) {
         return "#F44336";
@@ -229,69 +218,23 @@ export default {
       }
     },
   },
+  mounted () {
+    this.getStoragedMovies()
+  },
   methods: {
     getUserID() {
       const userID = JSON.parse(localStorage.getItem("USERID")) || {};
       const id = userID.id;
       this.userID = id;
     },
-    getToWatchMovies() {
-      if (localStorage.getItem("storageUserDATA")) {
-        const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
-        const toWatchArr = userData[this.userID].wishListMovies;
-        for (let movie of toWatchArr) {
-          this.wishListMovies.push(movie);
-        }
-
-        const removeDuplicated = uniqBy(this.wishListMovies, "movie.id");
-
-        this.wishListMovies = removeDuplicated;
-      }
+    getStoragedMovies() {
+      const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+      let movies = storage[this.userID].myMovies
+      this.favouriteMovies = movies.favourite
+      this.watchedMovies = movies.watched
+      this.wishListMovies = movies.wishlist
+      this.ratedMovies = movies.rated
     },
-    getWatchedMovies() {
-      if (localStorage.getItem("storageUserDATA")) {
-        const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
-        const watchedArr = userData[this.userID].watchedMovies;
-        for (let movie of watchedArr) {
-          this.watchedMovies.push(movie);
-        }
-
-        const removeDuplicated = uniqBy(this.watchedMovies, "movie.id");
-
-        this.watchedMovies = removeDuplicated;
-      }
-    },
-    getFavoriteMovies() {
-      if (localStorage.getItem("storageUserDATA")) {
-        const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
-
-        const favoriteArr = userData[this.userID].favouriteMovies;
-        for (let movie of favoriteArr) {
-          this.favouriteMovies.push(movie);
-        }
-        const removeDuplicated = uniqBy(this.favouriteMovies, "movie.id");
-
-        this.favouriteMovies = removeDuplicated;
-      }
-    },
-    getRatedMovies() {
-      if (localStorage.getItem("storageUserDATA")) {
-        const userData = JSON.parse(localStorage.getItem("storageUserDATA"));
-        const ratedArr = userData[this.userID].ratedMovies;
-        let arr = [];
-        for (let movie of ratedArr) {
-          arr.push(movie);
-        }
-        this.ratedMovies = [... new Set(arr)];
-      }
-    },
-  },
-  mounted() {
-    this.getUserID();
-    this.getWatchedMovies();
-    this.getFavoriteMovies();
-    this.getToWatchMovies();
-    this.getRatedMovies();
   },
 };
 </script>

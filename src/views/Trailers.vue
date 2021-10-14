@@ -13,13 +13,13 @@
 
     <div id="trailers-container">
       <v-row>
-        <v-col cols="3" v-for="(item, i) in latestReleases" :key="i">
+        <v-col cols="2" v-for="(item, i) in latestReleases" :key="i">
           <div class="white">
-            <img
+            <v-img
               id="movie-img"
-              height="auto"
-              max-height="500px"
-              width="100%"
+              max-height="100%"
+              width="auto"
+              :lazy-src="loadingIMG"
               :src="item.poster_path != null ? imageURL + item.poster_path : no_image"
               @click="getTrailer(item)"
             />
@@ -59,7 +59,7 @@ export default {
     this.getLatestReleases()
   },
   computed: {
-    ...mapState(['latestReleases', 'trailerVideo', 'no_image', 'imageURL'])
+    ...mapState(['latestReleases', 'trailerVideo', 'no_image', 'imageURL', 'loadingIMG'])
   },
   methods: {
     ...mapActions(['getLatestReleases', 'getMovieTrailer']),

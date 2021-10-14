@@ -18,7 +18,7 @@
                 append-icon="mdi-magnify"
                 full-width
                 @input="fillItemsList"
-                v-on:keyup.enter="searchByInput(input)"
+                @keyup.enter="searchByInput(input)"
                 />
                 <v-list dark v-if="inputItemsList.length" id="items-list">
                     <v-list-item v-for="(item, i) in inputItemsList" :key="i" @click="searchByInput(item)">
@@ -46,12 +46,12 @@
 
       <v-row no-gutters id="btn-row" v-if="!showContent">
         <v-col cols="12" lg="6" md="12">
-          <v-img id="byMovie-btn" src="../assets/img/lotr.jpg" @click="isSearchingMovie = true; showContent = true">
+          <v-img id="byMovie-btn" :src="randomMovieIMG" @click="isSearchingMovie = true; showContent = true">
             <h1 id="byMovie-text" class="text-h4">Search by movie title</h1>
           </v-img>
         </v-col>
         <v-col cols="12" lg="6" md="12">
-          <v-img id="byPerson-btn" src="../assets/img/tomhanks.jpg"  @click="isSearchingMovie = false; showContent = true">
+          <v-img id="byPerson-btn" :src="randomPersonIMG"  @click="isSearchingMovie = false; showContent = true">
             <h1 id="byPerson-text" class="text-h4">Search by actor/actress name</h1>
           </v-img>
         </v-col>
@@ -332,7 +332,15 @@ export default {
     };
   },
   computed: {
-    ...mapState(['snackbarObject', "language", "apikey", "no_image", "imageURL", "trailerVideo"])
+    ...mapState(['snackbarObject', "language", "apikey", "no_image", "imageURL", "trailerVideo"]),
+    randomMovieIMG () {
+      let random = Math.floor(Math.random() * 11) + 1
+      return require(`../assets/img/random-movie-${random}.jpg`);
+    },
+    randomPersonIMG () {
+      let random = Math.floor(Math.random() * 11) + 1
+      return require(`../assets/img/random-person-${random}.jpg`);
+    }
   },
   mounted () {
     if (this.input.length > 1) {
@@ -667,16 +675,17 @@ export default {
 
 #byMovie-btn {
   margin-left: auto;
+  border: 5px solid rgb(31, 153, 220);
   clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
 }
 
 #byPerson-btn {
-   margin-right: auto;
+  margin-right: auto;
+  border: 5px solid rgb(63, 202, 63);
   clip-path: polygon(100% 0, 85% 100%, 0 100%, 15% 0);
 }
 
 #byMovie-btn, #byPerson-btn {
-  border: 5px solid cyan;
   border-radius: 50px;
   cursor: pointer;
   width: 100%;

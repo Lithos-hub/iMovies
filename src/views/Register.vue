@@ -102,7 +102,7 @@
 
           </v-form>
         </v-card>
-        <div v-show="registered">
+        <div v-if="registered">
           <v-alert class="mt-5 text-center success-alert"
             >
             {{ $t('view-register.success') }}</v-alert

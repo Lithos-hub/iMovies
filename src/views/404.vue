@@ -5,7 +5,7 @@
       <v-col lg="4" cols="12" class="text-center mx-auto">
         <v-btn
           color="transparent"
-          v-on:click="sound = !sound"
+          @click="sound = !sound"
           id="sound-btn"
           elevation="10"
         >

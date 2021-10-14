@@ -2,59 +2,35 @@
   <v-container fluid>
     <!-- INFO DIALOG -->
 
-    <v-dialog
-      v-model="dialog"
-      width="800"
-      height="100%"
+    <!-- TRAILER DIALOG -->
+    <TrailerDialog
       v-if="trailerDialog"
-      overlay-opacity="2"
+      :video="trailerVideo"
+      @close-dialog="trailerDialog = false"
+    />
+
+
+    <v-card
+      color="error"
+      class="white--text pa-2 m-5 empty-error-message"
+      v-if="arrayMovies.length === 0"
+      >There are no movies in this category yet.</v-card
     >
-      <v-card>
-        <v-img :src="imageURL + img" width="100%" height="100%" class="pa-5">
-          <v-card-title id="dialog-title">
-            {{ title }}
-          </v-card-title>
-        </v-img>
 
-        <v-card-text id="dialog-text" class="mt-5">
-          <p id="dialog-date">{{ release_date }}</p>
-          <p id="dialog-overview">{{ overview }}</p>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn block @click="dialog = false" class="close-info-btn">
-            Close
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <v-row class="mt-5">
-      <v-col></v-col>
-      <v-col>
-        <v-card
-          color="error"
-          class="white--text pa-2 m-5 empty-error-message"
-          v-if="arrayMovies.length === 0"
-          >There are no movies in this category yet.</v-card
-        >
-      </v-col>
-      <v-col></v-col>
       <v-row no-gutters>
         <v-col
-          lg="4"
+         cols="3"
           v-for="(item, i) in arrayMovies"
           :key="i"
           class="text-center mx-auto"
         >
-          <div>
-            <div class="movie-card indigo darken-4 white--text">
+            <v-card height="auto" tile class="elevation-10 movie-card indigo darken-4 white--text">
               <v-row no-gutters>
                 <v-col cols="6">
                   <v-list-item three-line>
                     <v-list-item-content>
-                      <p class="headline white--text text-center movie-title">
-                        {{ item.movie.title }}
+                      <p class="text-h5 white--text text-center movie-title">
+                        {{ item.title }}
                       </p>
                       <p
                         class="
@@ -63,122 +39,140 @@
                           text-center
                           rounded
                           movie-date
-                          mb-10
+                          mb-0
                         "
                       >
-                        {{ item.movie.release_date.slice(0, 4) }}
+                        {{ formatDate(item.release_date) }}
                       </p>
                       <v-divider class="white"></v-divider>
-                      <div v-show="category === 'byrate'">
+                      <div v-if="category === 'byrate'">
                         <v-list-item-subtitle
                           class="white--text mt-10 text-center"
                           >My rate:
                           <span class="rate-number mt-10">{{
-                            item.rate
+                            item.myrate
                           }}</span></v-list-item-subtitle
                         >
                       </div>
                     </v-list-item-content>
                   </v-list-item>
-                  <div class="card-buttons">
-                    <v-card-actions>
-                      <v-btn
-                        rounded
-                        color="info darken-2"
-                        elevation="5"
-                        class="white--text mx-auto"
-                        v-on:click="showInfo(item)"
-                      >
-                        <v-icon>mdi-information</v-icon>
-                      </v-btn>
-                      <v-btn
-                        rounded
-                        color="red"
-                        elevation="5"
-                        class="white--text mx-auto"
-                        @click="removeMovie(item)"
-                      >
-                        <v-icon>mdi-delete</v-icon>
-                      </v-btn>
-                    </v-card-actions>
-                  </div>
                 </v-col>
                 <v-col cols="6">
                   <v-img
-                    :src="imageURL + item.movie.poster_path"
+                    :src="imageURL + item.poster_path"
+                    max-height="325px"
                     class="movie-img"
                   ></v-img>
                 </v-col>
               </v-row>
-            </div>
-          </div>
+              <v-card-actions>
+                <v-row class="py-2">
+                  <v-col>
+                  <v-btn
+                    tile
+                    width="100%"
+                    color="info darken-2"
+                    elevation="5"
+                    class="white--text mx-auto"
+                    @click="showInfo(item)"
+                  >
+                    <v-icon>mdi-information</v-icon>
+                    </v-btn>    
+                    </v-col>
+                  <v-col>
+                    <v-btn
+                      tile
+                      width="100%"
+                      color="red"
+                      elevation="5"
+                      class="white--text mx-auto"
+                      @click="removeMovie(item)"
+                    >
+                      <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-card-actions>
+            </v-card>
         </v-col>
       </v-row>
-    </v-row>
+    <div v-if="snackbarObject.snackbar">
+      <Snackbar
+        :snackbar-color="snackbarObject.snackbarColor"
+        :snackbar-text="snackbarObject.snackbarText" />
+    </div>
   </v-container>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
+import Snackbar from '../components/Snackbar'
+import TrailerDialog from '../components/TrailerDialog'
 
 export default {
   props: ['arrayMovies', 'category', 'rate'],
+  components: {
+    Snackbar,
+    TrailerDialog
+  },
   data() {
     return {
-      userID: null,
       trailerDialog: false,
       title: '',
       release_date: '',
       overview: '',
       img: '',
-      userID: null,
     };
   },
-  mounted() {
-    this.getUserID();
-  },
   computed: {
-    ...mapState(['user', 'imageURL']),
+    ...mapState(['snackbarObject', 'user', 'imageURL', 'userID']),
   },
   methods: {
+    ...mapActions(['showSnackbar']),
+    formatDate(date) {
+      const [year, month, day] = date.split('-')
+      return `${day}/${month}/${year}`
+    },
     removeMovie(item) {
-      const storage = JSON.parse(localStorage.getItem('storageUserDATA')) || [];
+      const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+          let arrFavourite = this.arrayMovies
+          let arrWishlist = this.arrayMovies
+          let arrWatched = this.arrayMovies
+          let arrRated = this.arrayMovies
 
-      if (this.category === 'watched') {
-        const index = this.arrayMovies.indexOf(item);
-        if (index > -1) {
-          this.arrayMovies.splice(index, 1);
+          console.log(arrWatched)
+
+        if (this.category === "favourite") {
+          arrFavourite.splice(arrFavourite.indexOf(item), 1)
+          this.showSnackbar({text: "Removed from FAVOURITE category", color: "secondary"});
+          storage[this.userID].myMovies.favourite = arrFavourite;
+          localStorage.setItem("storageUserDATA", JSON.stringify(storage));
         }
-        storage[this.userID].watchedMovies = this.arrayMovies;
-        localStorage.setItem('storageUserDATA', JSON.stringify(storage));
-      }
-      if (this.category === 'towatch') {
-        const index = this.arrayMovies.indexOf(item);
-        if (index > -1) {
-          this.arrayMovies.splice(index, 1);
+        if (this.category === "towatch") {
+          arrWishlist.splice(arrWishlist.indexOf(item), 1)
+          this.showSnackbar({text: "Removed from WISH LIST category", color: "secondary"});
+          storage[this.userID].myMovies.wishlist = arrWishlist;
+          localStorage.setItem("storageUserDATA", JSON.stringify(storage));
         }
-        storage[this.userID].wishListMovies = this.arrayMovies;
-        localStorage.setItem('storageUserDATA', JSON.stringify(storage));
-      }
-      if (this.category === 'favorite') {
-        const index = this.arrayMovies.indexOf(item);
-        if (index > -1) {
-          this.arrayMovies.splice(index, 1);
+        if (this.category === "watched") {
+          arrWatched.splice(arrWatched.indexOf(item), 1)
+          this.showSnackbar({text: "Removed from WATCHED category", color: "secondary"});
+          storage[this.userID].myMovies.watched = arrWatched;
+          localStorage.setItem("storageUserDATA", JSON.stringify(storage));
         }
-        storage[this.userID].favouriteMovies = this.arrayMovies;
-        localStorage.setItem('storageUserDATA', JSON.stringify(storage));
-      }
+        if (this.category === "byrate") {
+          arrRated.splice(arrRated.indexOf(item), 1)
+          this.showSnackbar({text: "Removed from RATED category", color: "secondary"});
+          storage[this.userID].myMovies.rated = arrRated;
+          localStorage.setItem("storageUserDATA", JSON.stringify(storage));
+        }
     },
     showInfo(item) {
-      this.trailerDialog = true;
-      this.title = item.movie.title;
-      this.overview = item.movie.overview;
-      this.release_date = item.movie.release_date;
-      this.img = item.movie.backdrop_path;
-    },
-    getUserID() {
-      const userID = JSON.parse(localStorage.getItem('USERID')) || {};
-      this.userID = userID.id;
+      // this.trailerDialog = true;
+      // this.title = item.title;
+      // this.overview = item.overview;
+      // this.release_date = item.release_date;
+      // this.img = item.backdrop_path;
     },
   },
 };
@@ -194,7 +188,6 @@ export default {
     height: 100%;
     background: linear-gradient(to right, rgb(33, 33, 33), rgb(0, 20, 56));
     margin-bottom: 50px;
-    border-radius: 10px;
     box-shadow: 0px 10px 10px black;
   }
 
@@ -260,7 +253,6 @@ export default {
     height: auto;
     background: linear-gradient(to right, rgb(33, 33, 33), rgb(0, 20, 56));
     margin-bottom: 100px;
-    border-radius: 10px;
     box-shadow: 0px 10px 10px black;
     margin: 20px;
   }
@@ -328,8 +320,7 @@ export default {
     height: auto;
     background: linear-gradient(to right, rgb(33, 33, 33), rgb(0, 20, 56));
     margin-bottom: 50px;
-    border-radius: 10px;
-    box-shadow: 0px 10px 10px black;
+    box-shadow: 0px 10px 20px black;
   }
 
   .movie-img {

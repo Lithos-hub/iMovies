@@ -2,6 +2,12 @@
   <div id="popular-view">
     <SectionTitle :sectionSubtitle="subtitle" />
 
+    
+    <!-- ADD TO MY MOVIES DIALOG -->
+    <AddToDialog
+      v-if="addToDialog"
+    />
+
     <v-row>
       <v-col />
       <v-col cols="1">
@@ -24,7 +30,6 @@
     <h3 class="error--text text-center" v-if="incorrectYear">The first 'movie' was made in 1878 and it's called <i class="cyan--text">The Horse in Motion </i>or<i class="cyan--text"> Sallie Gardner at a Gallop</i>. <br> So, try with another year!</h3>
     
     <v-container>
-      <div class="moviesColumns">
         <v-row no-gutters>
           <v-col
             md="3"
@@ -58,11 +63,11 @@
                         >
                       </div>
                       <div
-                        v-for="(id_favorite, i) in arrFavoriteIDS"
+                        v-for="(id_favourite, i) in arrFavoriteIDS"
                         :key="'D' + i"
                       >
                         <v-icon
-                          v-if="id_favorite === item.id"
+                          v-if="id_favourite === item.id"
                           class="heart-icon-img"
                           >mdi-heart</v-icon
                         >
@@ -103,13 +108,12 @@
             </div>
           </v-col>
         </v-row>
-      </div>
     </v-container>
     <v-container v-if="loadingScroll" fluid id="loading-container">
       <v-progress-circular
       id="loading-scroll"
       :size="100"
-      color="cyan"
+      color="#00ffff"
       indeterminate
     ></v-progress-circular>
     </v-container>
@@ -119,11 +123,13 @@
 <script>
 import SectionTitle from "../components/SectionTitle";
 import { mapActions, mapState } from 'vuex';
+import AddToDialog from '../components/AddToDialog.vue'
 
 export default {
   name: "Ranking",
   components: {
     SectionTitle,
+    AddToDialog
   },
   data() {
     return {
@@ -147,10 +153,11 @@ export default {
     this.infiniteScroll();
   },
   computed: {
-    ...mapState(['moviesByYear', 'moviesID', 'no_image', 'imageURL', 'loadingScroll', 'loadingIMG'])
+    ...mapState(['moviesByYear', 'moviesID', 'no_image', 'imageURL', 'loadingScroll', 'loadingIMG', 'addToDialog'])
   },
   methods: {
-    ...mapActions(['getMoviesByYear']),
+    ...mapActions(['getMoviesByYear', 'showAddToDialog', 'setAddMovie']),
+    // TODO: save the year in the localStorage when clicking on show details and comeback
     showDetails(item) {
       this.$router.push(`/movie/${item.id}`);
     },
@@ -164,25 +171,20 @@ export default {
       this.year < 1878 ? this.incorrectYear = true : this.incorrectYear = false
     },
     infiniteScroll () {
-      let counter = 1
-      let reachedBottom = false
-      window.onscroll = () => {
-        let sum = window.innerHeight + window.pageYOffset
-        if (sum === document.body.offsetHeight) {
-          reachedBottom = true
-          counter++
-          console.log(counter)
-          this.page = counter
-          this.getMoviesByYear({ year: this.year, page: this.page })
-          reachedBottom = false
-          setTimeout(() => {
-            if (!reachedBottom) {
-              document.body.scrollTop = window.pageYOffset / 1.25
-              document.documentElement.scrollTop = window.pageYOffset / 1.25
-            }
-          }, 500)
+      if (this.$route.path === '/popular') { 
+        window.onscroll = () => {
+          let sum = window.innerHeight + window.pageYOffset
+          console.log(window.pageYOffset)
+          if (sum >= document.body.offsetHeight) {
+            document.body.scrollTop = window.pageYOffset * 0.75
+            document.documentElement.scrollTop = window.pageYOffset * 0.75
+            setTimeout(() => {
+              this.page++
+              this.getMoviesByYear({ year: this.year, page: this.page })
+            }, 500)
+          }
         }
-        }
+      }
     },
   },
 };
