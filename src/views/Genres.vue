@@ -2,28 +2,6 @@
   <div>
     <SectionTitle :sectionSubtitle="subtitle" />
 
-    <div class="error-sheet-container" v-if="loadingError">
-      <v-sheet
-        dark
-        class="error-sheet"
-        height="100%"
-        width="100%"
-        elevation="10"
-      >
-        {{ loadingError }}
-      </v-sheet>
-    </div>
-
-    <div v-if="loadingGenre" width="100%" class="loaderBar">
-      <span class="loadingData-text"> Loading data... </span>
-      <v-progress-circular
-        :size="40"
-        color="white"
-        indeterminate
-        class="spinner"
-      ></v-progress-circular>
-    </div>
-
     <div id="genres-container" class="mt-5">
       <v-row no-gutters>
         <v-col cols="12">
@@ -31,179 +9,179 @@
           <v-btn
             id="actionBtn"
             class="genre-btn img1"
-            @click="getMovies(); [(genre = '28')], [(genreTitle = 'action')]"
+            @click="getMoviesByGenre({genre: '28', page: page})"
             dark
             block
             tile
           >
-            Action
+            {{ formatGenreTitle('28') }}
           </v-btn>
           <!-- ********************* ADVENTURE BUTTON ********************* -->
 
           <v-btn
             color="green"
             class="genre-btn img2"
-            @click="getMovies(); [(genre = '12')], [(genreTitle = 'adventure')]"
+            @click="getMoviesByGenre({genre: '12', page: page})"
             dark
             block
             tile
           >
-            Adventure
+            {{ formatGenreTitle('12') }}
           </v-btn>
           <!-- ********************* ANIMATION BUTTON ********************* -->
           <v-btn
             color="orange"
             class="genre-btn img3"
-            @click="getMovies(); [(genre = '16')], [(genreTitle = 'animation')]"
+            @click="getMoviesByGenre({genre: '16', page: page})"
             dark
             block
             tile
           >
-            Animation
+            {{ formatGenreTitle('16') }}
           </v-btn>
           <!-- ********************* COMEDY BUTTON ********************* -->
           <v-btn
             color="purple"
             class="genre-btn img4"
-            @click="getMovies(); [(genre = '35')], [(genreTitle = 'comedy')]"
+            @click="getMoviesByGenre({genre: '35', page: page})"
             dark
             block
             tile
           >
-            Comedy
+            {{ formatGenreTitle('35') }}
           </v-btn>
           <!-- ********************* CRIME BUTTON ********************* -->
           <v-btn
             color="secondary"
             class="genre-btn img5"
-            @click="getMovies(); [(genre = '80')], [(genreTitle = 'crime')]"
+            @click="getMoviesByGenre({genre: '80', page: page})"
             dark
             block
             tile
           >
-            Crime
+            {{ formatGenreTitle('80') }}
           </v-btn>
           <!-- ********************* DOCUMENTARY BUTTON ********************* -->
           <v-btn
             color="pink"
             class="genre-btn img6"
-            @click="getMovies(); [(genre = '99')], [(genreTitle = 'documentary')]"
+            @click="getMoviesByGenre({genre: '99', page: page})"
             dark
             block
             tile
           >
-            Documentary
+            {{ formatGenreTitle('99') }}
           </v-btn>
           <!-- ********************* DRAMATIC BUTTON ********************* -->
           <v-btn
             color="yellow darken-4"
             class="genre-btn img7"
-            @click="getMovies(); [(genre = '18')], [(genreTitle = 'dramatic')]"
+            @click="getMoviesByGenre({genre: '18', page: page})"
             dark
             block
             tile
           >
-            Dramatic
+            {{ formatGenreTitle('18') }}
           </v-btn>
           <!-- ********************* FANTASY BUTTON ********************* -->
           <v-btn
             color="blue"
             class="genre-btn img8"
-            @click="getMovies(); [(genre = '14')], [(genreTitle = 'fantasy')]"
+            @click="getMoviesByGenre({genre: '14', page: page})"
             dark
             block
             tile
           >
-            Fantasy
+            {{ formatGenreTitle('14') }}
           </v-btn>
           <!-- ********************* HISTORY BUTTON ********************* -->
           <v-btn
             color="brown"
             class="genre-btn img9"
-            @click="getMovies(); [(genre = '36')], [(genreTitle = 'history')]"
+            @click="getMoviesByGenre({genre: '36', page: page})"
             dark
             block
             tile
           >
-            History
+            {{ formatGenreTitle('36') }}
           </v-btn>
           <!-- ********************* HORROR BUTTON ********************* -->
           <v-btn
             color="gray"
             class="genre-btn img10"
-            @click="getMovies(); [(genre = '27')], [(genreTitle = 'horror')]"
+            @click="getMoviesByGenre({genre: '27', page: page})"
             dark
             block
             tile
           >
-            Horror
+            {{ formatGenreTitle('27') }}
           </v-btn>
           <!-- ********************* MUSICAL BUTTON ********************* -->
           <v-btn
             color="cyan"
             class="genre-btn img11"
-            @click="getMovies(); [(genre = '10402')], [(genreTitle = 'musical')]"
+            @click="getMoviesByGenre({genre: '10402', page: page})"
             dark
             block
             tile
           >
-            Musical
+            {{ formatGenreTitle('10402') }}
           </v-btn>
           <!-- ********************* ROMANTIC BUTTON ********************* -->
           <v-btn
             color="error"
             class="genre-btn img12"
-            @click="getMovies(); [(genre = '10749')], [(genreTitle = 'romantic')]"
+            @click="getMoviesByGenre({genre: '10749', page: page})"
             dark
             block
             tile
           >
-            Romantic
+            {{ formatGenreTitle('10749') }}
           </v-btn>
           <!-- ********************* SCI-FI BUTTON ********************* -->
           <v-btn
             color="blue"
             class="genre-btn img13"
-            @click="getMovies(); [(genre = '878')], [(genreTitle = 'sci-fi')]"
+            @click="getMoviesByGenre({genre: '878', page: page})"
             dark
             block
             tile
           >
-            Sci-fi
+            {{ formatGenreTitle('878') }}
           </v-btn>
           <!-- ********************* THRILLER BUTTON ********************* -->
           <v-btn
             color="orange"
             class="genre-btn img14"
-            @click="getMovies(); [(genre = '53')], [(genreTitle = 'thriller')]"
+            @click="getMoviesByGenre({genre: '53', page: page})"
             dark
             block
             tile
           >
-            Thriller
+            {{ formatGenreTitle('53') }}
           </v-btn>
           <!-- ********************* WAR BUTTON ********************* -->
           <v-btn
             color="red"
             class="genre-btn img15"
-            @click="getMovies(); [(genre = '10752')], [(genreTitle = 'war')]"
+            @click="getMoviesByGenre({genre: '10752', page: page})"
             dark
             block
             tile
           >
-            War
+            {{ formatGenreTitle('10752') }}
           </v-btn>
 
           <!-- ********************* WESTERN BUTTON ********************* -->
           <v-btn
             color="indigo"
             class="genre-btn img16"
-            @click="getMovies(); [(genre = '37')], [(genreTitle = 'western')]"
+            @click="getMoviesByGenre({genre: '37', page: page})"
             dark
             block
             tile
           >
-            Western
+            {{ formatGenreTitle('37') }}
           </v-btn>
         </v-col>
         <!-- ********************* GO UP BUTTON ********************* -->
@@ -215,30 +193,30 @@
       </v-row>
 
       <!--********************************** DIALOG MOVIES ********************************** -->
-      <div v-for="(item, i) in movies_array" :key="i">
         <v-row>
           <v-dialog
+            overlay-opacity="0.2"
+            max-width="100%"
             v-model="genreDialog"
-            v-if="genreDialog"
-            class="movie-genres-dialog"
+            elevation-4
           >
-            <v-card>
-              <v-toolbar tile elevation="10" dark color="secondary">
+              <v-toolbar id="genre-dialog-toolbar" tile elevation="5" dark color="secondary">
                 <v-btn
                   icon
                   dark
-                  @click="genreDialog = false"
+                  @click="closeDialog"
                   class="close-dialog-btn"
                 >
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">{{
-                  genreTitle
-                }}</v-toolbar-title>
+                <v-toolbar-title class="card-genre-title">
+                  {{ formatGenreTitle(selectedGenre) }}
+                </v-toolbar-title>
               </v-toolbar>
+           <div v-for="(item, i) in moviesByGenre" :key="i">
+            <v-card id="genre-dialog-card">
               <v-row no-gutters class="text-center">
-                <div v-for="(item, i) in movies_array" :key="i">
                   <v-col lg="12" xs="12" class="d-flex">
                     <v-sheet width="80%" id="genre-sheet">
                       <v-card-title id="genre-title"
@@ -264,65 +242,74 @@
                     </p>
                   </v-col>
                   <hr class="error" />
-                </div>
               </v-row>
             </v-card>
+           </div>
           </v-dialog>
         </v-row>
-      </div>
     </div>
+    <div v-if="snackbarObject.snackbar">
+      <Snackbar
+        :snackbar-color="snackbarObject.snackbarColor"
+        :snackbar-text="snackbarObject.snackbarText" />
+    </div>
+
+    <LoadingData v-if="loadingData" />
   </div>
 </template>
 
 <script>
 import SectionTitle from "../components/SectionTitle";
-import axios from "axios";
-import { mapState } from 'vuex';
+import Snackbar from "../components/Snackbar";
+import LoadingData from "../components/LoadingData";
+import { mapActions, mapState } from 'vuex';
 
 export default {
   name: "Genres",
   components: {
     SectionTitle,
+    Snackbar,
+    LoadingData
   },
   data() {
     return {
-      subtitle: "Movies per genre",
-      genreDialog: false,
+      subtitle: "Movies by genre",
       no_overview: "We sorry. This movie have not overview available.",
-      loadingGenre: false,
-      loadingError: "",
-      movies_array: [],
       movieTitle: "",
-      genre: "",
+      page: 1
     };
   },
   computed: {
-    ...mapState(['imageURL'])
+    ...mapState(['snackbarObject', 'imageURL', 'moviesByGenre', 'selectedGenre', 'genreDialog', 'loadingData']),
   },
   methods: {
-    getMovies() {
-      const url = "https://api.themoviedb.org/3";
-      
-      const genre = this.genre;
-
-      const movieurl = `${url}/discover/movie?&api_key=${this.apikey}&sort_by=popularity.desc&page=1&with_genres=${genre}`;
-
-      return new Promise((resolve) => {
-        this.loadingGenre = true;
-        this.genreDialog = false;
-        axios
-          .get(movieurl)
-          .then((resp) => {
-            this.loadingGenre = false;
-            this.genreDialog = true;
-            this.movies_array = resp.data.results;
-          })
-          .catch((e) => {
-            console.info(e);
-            this.loadingError =
-              "Something wrong happened :( There may have been an error with the database. Please reload the website.";
-          });
-      });
+    ...mapActions(['getMoviesByGenre']),
+    formatGenreTitle (genre) {
+      let genres = {
+        ['28']: "Action",
+        ['12']: "Adventure",
+        ['16']: "Animation",
+        ['35']: "Comedy",
+        ['80']: "Crime",
+        ['99']: "Documentary",
+        ['18']: "Drama",
+        ['10751']: "Family",
+        ['14']: "Fantasy",
+        ['36']: "History",
+        ['27']: "Horror",
+        ['10402']: "Music",
+        ['9648']: "Mystery",
+        ['10749']: "Romance",
+        ['878']: "Science Fiction",
+        ['10770']: "TV Movie",
+        ['53']: "Thriller",
+        ['10752']: "War",
+        ['37']: "Western"
+      }
+      return genres[genre]
+    },
+    closeDialog() {
+      this.$store.commit('setGenreDialog', false)
     },
     go_up() {
       window.scrollTo(0, 0);
@@ -333,6 +320,18 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/scss/variables";
+
+#genre-dialog-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
+#genre-dialog-card {
+  padding-top: 5em !important;
+}
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
@@ -348,10 +347,6 @@ export default {
     filter: grayscale(0);
   }
 
-  .movie-genres-dialog {
-    z-index: 99999;
-  }
-
   .close-dialog-btn:focus {
     outline: none;
   }
@@ -362,34 +357,6 @@ export default {
     letter-spacing: 0px;
     text-align: right;
     font-family: $style3;
-  }
-
-  .loaderBar {
-    background-image: url("../assets/img/gradient1.jpg");
-    background-position: top;
-    background-size: auto;
-    text-align: center;
-    position: fixed;
-    bottom: 0px;
-    width: 100%;
-    z-index: 9999999;
-    box-shadow: 0px -20px 20px black;
-
-    &:hover {
-      text-shadow: none;
-    }
-
-    .loadingData-text {
-      font-size: 1.5em;
-    }
-
-    .spinner {
-      display: block;
-      margin: 0 auto;
-      justify-content: center;
-      margin-bottom: 10px;
-      margin-top: 10px;
-    }
   }
 
   .go-up-btn {
@@ -439,7 +406,7 @@ export default {
   .genre-btn {
     letter-spacing: 40px;
     height: 200px !important;
-    font-size: 3em;
+    font-size: 2em;
     text-shadow: 0px 0px 10px black;
     margin-bottom: 20px;
     transition: 0.5s;
@@ -454,14 +421,10 @@ export default {
     &:hover {
       color: white;
       text-shadow: 0px 0px 10px cyan, 0px 0px 3px cyan;
-      font-size: 6em;
+      font-size: 4em;
       letter-spacing: 50px;
       filter: none;
     }
-  }
-
-  .movie-genres-dialog {
-    z-index: 99999;
   }
 
   .close-dialog-btn:focus {
@@ -474,34 +437,6 @@ export default {
     letter-spacing: 20px;
     text-align: right;
     font-family: $style3;
-  }
-
-  .loaderBar {
-    text-align: center;
-    position: fixed;
-    bottom: 0px;
-    width: 100%;
-    z-index: 99999999;
-    box-shadow: 0px -20px 20px black;
-    background-image: url("../assets/img/gradient1.jpg");
-    background-position: top;
-    background-size: cover;
-
-    &:hover {
-      text-shadow: none;
-    }
-
-    .loadingData-text {
-      font-size: 2em;
-    }
-
-    .spinner {
-      display: block;
-      margin: 0 auto;
-      justify-content: center;
-      margin-bottom: 10px;
-      margin-top: 10px;
-    }
   }
 
   .go-up-btn {
@@ -564,14 +499,10 @@ export default {
     &:hover {
       color: white;
       text-shadow: 0px 0px 10px cyan, 0px 0px 3px cyan;
-      font-size: 10em;
+      font-size: 5em;
       letter-spacing: 50px;
       filter: none;
     }
-  }
-
-  .movie-genres-dialog {
-    z-index: 99999;
   }
 
   .close-dialog-btn:focus {
@@ -583,34 +514,6 @@ export default {
     text-transform: uppercase;
     letter-spacing: 20px;
     font-family: $style3;
-  }
-
-  .loaderBar {
-    text-align: center;
-    position: fixed;
-    bottom: 0px;
-    width: 100%;
-    z-index: 99999999;
-    box-shadow: 0px -20px 20px black;
-    background-image: url("../assets/img/gradient1.jpg");
-    background-position: top;
-    background-size: cover;
-
-    &:hover {
-      text-shadow: none;
-    }
-
-    .loadingData-text {
-      font-size: 2em;
-    }
-
-    .spinner {
-      display: block;
-      margin: 0 auto;
-      justify-content: center;
-      margin-bottom: 10px;
-      margin-top: 10px;
-    }
   }
 
   .go-up-btn {

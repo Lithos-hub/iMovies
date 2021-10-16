@@ -31,18 +31,21 @@ export default new Vuex.Store({
       snackbarText: ""
     },
     addToDialog: false,
+    genreDialog: false,
+    loadingData: false,
     movieToAdd: {},
     latestReleases: [],
     trendingMovies: [],
     moviesByYear: [],
+    moviesByGenre: [],
     moviesID: [],
     movieCasting: [],
     movieOfTheWeek: {},
     movieDetails: {},
+    selectedGenre: "",
     trailerOfTheWeekVideo: "",
     trailerVideo: "",
     videoNoAvailable: false,
-    loadingScroll: false,
     storagedMovies: {
       favourite: [],
       watched: [],
@@ -131,8 +134,17 @@ export default new Vuex.Store({
         state.storagedMovies.rated.push(movie);
       }
     },
-    setLoadingScroll (state, payload) {
-      state.loadingScroll = payload
+    setMoviesByGenre (state, payload) {
+      state.moviesByGenre = payload
+    },
+    setGenreDialog (state, payload) {
+      state.genreDialog = payload
+    },
+    setLoadingData (state, payload) {
+      state.loadingData = payload
+    },
+    setSelectedGenre (state, payload) {
+      state.selectedGenre = payload
     }
   },
   actions: {
@@ -281,8 +293,8 @@ export default new Vuex.Store({
             commit("showError", "Database error connection")
           });
     },
-    async getMoviesByYear({ commit }, {year, page}) {
-      commit('setLoadingScroll', true)
+    async getMoviesByYear({ commit }, {genre, page}) {
+      commit('setLoadingData', true)
       let arrMovies = []
       let arrMoviesID = []
       if (year >= 1878) {
@@ -299,20 +311,20 @@ export default new Vuex.Store({
                 setTimeout(() => {
                   commit('setMoviesByYear', arrMovies)
                   commit('setMoviesID', arrMoviesID)
-                  commit('setLoadingScroll', false)
+                  commit('setLoadingData', false)
                 }, 2000)
               }
           })
           .catch((e) => {
             console.info(e);
             commit("showError", "Database error connection")
-            commit('setLoadingScroll', false)
+            commit('setLoadingData', false)
           });
         }
       } else {
         commit('setMoviesByYear', [])
         commit('setMoviesID', []);
-        commit('setLoadingScroll', false)
+        commit('setLoadingData', false)
       }
     },
     async getMovieDetails({ commit }, id) {
@@ -327,7 +339,30 @@ export default new Vuex.Store({
           console.log(e);
           commit("showError", "Database error connection")
         });
-      }
+      },
+    async getMoviesByGenre({ commit }, {genre, page}) {  
+      console.log(genre)
+      console.log(page)
+      commit('setLoadingData', true)
+      commit('setSelectedGenre', genre)
+
+      // TODO: INFINITE SCROLL
+
+      const CALL_URL = `${URL}/discover/movie?&api_key=${APIKEY}&sort_by=popularity.desc&language=${LANGUAGE}&page=${page}&with_genres=${genre}`;
+
+        await axios
+          .get(CALL_URL)
+          .then((resp) => {
+            commit('setMoviesByGenre', resp.data.results)
+            commit('setGenreDialog', true)
+            commit('setLoadingData', false)
+          })
+          .catch((e) => {
+            console.info(e);
+            commit("showError", "Database error connection")
+            commit('setLoadingData', false)
+          });
+    }
   },
   getters: {
     signedUser(state) {

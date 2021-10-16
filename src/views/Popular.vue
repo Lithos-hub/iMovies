@@ -21,7 +21,7 @@
         width="auto"
         label="Write a year"
         class="rounded-0"
-        @change="getMoviesByYear({year, page}); checkYear()">
+        @change="getMoviesByYear({year, page}); checkAndSave()">
         </v-text-field>
       </v-col>
       <v-col />
@@ -109,27 +109,24 @@
           </v-col>
         </v-row>
     </v-container>
-    <v-container v-if="loadingScroll" fluid id="loading-container">
-      <v-progress-circular
-      id="loading-scroll"
-      :size="100"
-      color="#00ffff"
-      indeterminate
-    ></v-progress-circular>
-    </v-container>
+
+    <LoadingData v-if="loadingData" />
+
   </div>
 </template>
 
 <script>
 import SectionTitle from "../components/SectionTitle";
-import { mapActions, mapState } from 'vuex';
+import LoadingData from "../components/LoadingData";
 import AddToDialog from '../components/AddToDialog.vue'
+import { mapActions, mapState } from 'vuex';
 
 export default {
   name: "Ranking",
   components: {
     SectionTitle,
-    AddToDialog
+    AddToDialog,
+    LoadingData
   },
   data() {
     return {
@@ -149,15 +146,19 @@ export default {
     this.getRandomYear()
   },
   mounted() {
+    this.getSavedYear()
     this.getMoviesByYear({ year: this.year, page: this.page });
     this.infiniteScroll();
   },
   computed: {
-    ...mapState(['moviesByYear', 'moviesID', 'no_image', 'imageURL', 'loadingScroll', 'loadingIMG', 'addToDialog'])
+    ...mapState(['moviesByYear', 'moviesID', 'no_image', 'imageURL', 'loadingData', 'loadingIMG', 'addToDialog'])
   },
   methods: {
     ...mapActions(['getMoviesByYear', 'showAddToDialog', 'setAddMovie']),
-    // TODO: save the year in the localStorage when clicking on show details and comeback
+    getSavedYear() {
+      let storagedYear = localStorage.getItem('popularYear');
+      this.year = storagedYear
+    },
     showDetails(item) {
       this.$router.push(`/movie/${item.id}`);
     },
@@ -167,14 +168,17 @@ export default {
         let random = Math.floor(Math.random() * (max - min + 1) + min);
         this.year = random
     },
-    checkYear () {
+    checkAndSave () {
       this.year < 1878 ? this.incorrectYear = true : this.incorrectYear = false
+
+      if (this.year !== '') {
+        localStorage.setItem('popularYear', this.year)
+      }
     },
     infiniteScroll () {
       if (this.$route.path === '/popular') { 
         window.onscroll = () => {
           let sum = window.innerHeight + window.pageYOffset
-          console.log(window.pageYOffset)
           if (sum >= document.body.offsetHeight) {
             document.body.scrollTop = window.pageYOffset * 0.75
             document.documentElement.scrollTop = window.pageYOffset * 0.75
@@ -303,21 +307,5 @@ export default {
   &:focus {
     outline: none;
   }
-}
-
-#loading-container {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: $dark;
-  height: 120px;
-}
-
-#loading-scroll {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 </style>

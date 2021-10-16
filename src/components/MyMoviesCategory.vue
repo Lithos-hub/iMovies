@@ -27,9 +27,7 @@
             <v-card height="auto" tile class="elevation-10 movie-card indigo darken-4 white--text">
               <v-row no-gutters>
                 <v-col cols="6">
-                  <v-list-item three-line>
-                    <v-list-item-content>
-                      <p class="text-h5 white--text text-center movie-title">
+                      <p class="text-h5 white--text text-center movie-title mt-2">
                         {{ item.title }}
                       </p>
                       <p
@@ -45,17 +43,17 @@
                         {{ formatDate(item.release_date) }}
                       </p>
                       <v-divider class="white"></v-divider>
-                      <div v-if="category === 'byrate'">
-                        <v-list-item-subtitle
-                          class="white--text mt-10 text-center"
+                      <div class="myrate-section" v-if="category === 'byrate'">
+                        <small
+                          class="white--text text-center"
                           >My rate:
-                          <span class="rate-number mt-10">{{
+                          <span class="rate-number">
+                          {{
                             item.myrate
-                          }}</span></v-list-item-subtitle
-                        >
+                          }}
+                          </span>
+                        </small>
                       </div>
-                    </v-list-item-content>
-                  </v-list-item>
                 </v-col>
                 <v-col cols="6">
                   <v-img
@@ -181,6 +179,20 @@ export default {
 <style lang="scss" scoped>
 @import "src/scss/variables";
 
+.movie-img {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0px 10px 0px 0px;
+}
+
+.myrate-section {
+  position: absolute;
+  bottom: 25%;
+  left: 25%;
+  transform: translate(-50%, 0);
+}
+
+
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
   .movie-card {
@@ -191,11 +203,6 @@ export default {
     box-shadow: 0px 10px 10px black;
   }
 
-  .movie-img {
-    width: 100% !important;
-    height: 100% !important;
-    border-radius: 0px 10px 10px 0px;
-  }
 
   .empty-error-message {
     margin: 50px;
@@ -257,12 +264,6 @@ export default {
     margin: 20px;
   }
 
-  .movie-img {
-    width: auto !important;
-    height: 100% !important;
-    border-radius: 0px 10px 10px 0px;
-  }
-
   .empty-error-message {
     margin: 50px;
     width: 400px;
@@ -321,12 +322,6 @@ export default {
     background: linear-gradient(to right, rgb(33, 33, 33), rgb(0, 20, 56));
     margin-bottom: 50px;
     box-shadow: 0px 10px 20px black;
-  }
-
-  .movie-img {
-    width: auto !important;
-    height: 100% !important;
-    border-radius: 0px 10px 10px 0px;
   }
 
   .empty-error-message {

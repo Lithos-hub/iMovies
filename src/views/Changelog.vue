@@ -152,7 +152,15 @@ export default {
           version: "Version 2.0.0",
           changes: [
             "Added internationalization (ENG / SPA) in all the app.",
-            "Improved and expanded the search system. Now, is posible to search by movie title or actor/actress name"
+            "Improved and expanded the search system. Now, is posible to search by movie title or actor/actress name.",
+            "Added design improvements globally.",
+            "Added a new 'Add to My Movies' system globally.",
+            "Added infinite scroll in Popular view (old Ranking view).",
+            "Now the user can search by year in Popular view.",
+            "Refactoring and improvements with Vuex.",
+            "New components: Snackbar to success/error/info messages; loading data bar; Add to my Movies dialog.",
+            "New landing page in /home.",
+            "New view to view and modify the account settings."
             ],
         },
       ],
