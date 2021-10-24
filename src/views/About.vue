@@ -4,73 +4,18 @@
       <div id="faviconbar"></div>
     </v-row>
 
-    <v-row class="text-center">
-      <v-col lg="6" xs="12">
-        <v-card color="transparent" height="100%" elevation="10">
-          <v-card-text class="about-text">
-            <v-img
-              src="../assets/img/english-icon.jpg"
-              width="100"
-              height="50"
-              class="d-block ma-auto mb-5"
-            ></v-img>
-            This application uses
-            <span class="blue--text">The Movie Database (TMDB) API.</span
-            ><br /><br />
-
-            The app is divided into some sections that can be accesible by the
-            expandible side menu, like:
-            <div class="list">
-              <br />
-              Famous current movies (Trending).<br />
-              The latest available movie trailers (Trailers);<br />
-              Movies classified by genres and popularity (Genres);<br />
-              Or a popular movies classification by year, from 2010 to 2020
-              (Ranking).<br /><br />
-            </div>
-            In some of those sections you may get or access certain info with
-            buttons that trigger a modal window.<br /><br />
-            Since <span class="green--text">Version 1.5.0</span> it is possible
-            to save movies in different categories using LocalStorage. Those
-            movies can be saved for now from the 'Ranking' section and can be
-            shown in the 'My Movies' section.
-          </v-card-text>
-        </v-card>
+    <v-row class="mt-10">
+      <v-col></v-col>
+      <v-col class="text-center">
+        <h2 class="text-h1 cyan--text text-center mb-10">About iMovies</h2>
+        <p>iMovies is an app to show information about movies using The Movie Database API.</p>
+        <p>Since the 1.9.0 version, it is possible to save movies in some categories such as 'Favourite', 'Wish List', 'Watched' and 'Rated'.</p>
+        <p>In November 2021 was released the 2.0.0 version with a lot of improvements and some new features. The storage system was improved and setted in a globally way, so the user is able to save and rate movies all around the app using LocalStorage.</p>
+        <p>In the other hand, the landing page was changed in a 'Netflix style'. Ranking view was renamed as Popular, and it was added a symple way to search movies by year. The Search view was modified and it was included a dual search system: by movie, and by actor/actress name.</p>
+        <p>Last but not least, it was added internationalization using i18n. So, both the app and the movies info is available in English and Spanish.</p>
+        <p>This app is under constant development, and it will be new content in the future.</p>
       </v-col>
-      <v-col lg="6" xs="12">
-        <v-card color="transparent" height="100%" tile elevation="10">
-          <v-card-text class="about-text">
-            <v-img
-              src="../assets/img/spanish-icon.jpg"
-              width="100"
-              height="50"
-              class="d-block ma-auto mb-5"
-            ></v-img>
-            Esta aplicación utiliza la API de
-            <span class="blue--text">The Movie Database (TMDB).</span>
-            <br /><br />
-
-            La app se divide en varias secciones accesibles desde el menú
-            lateral desplegable, como:
-            <div class="list">
-              <br />
-              Películas que se encuentran actualmente de moda (Trending);
-              <br />Últimos trailers disponibles (Trailers); <br />Clasificación
-              de películas por género y ordenadas en popularidad (Genres)
-              <br />O una clasificación de películas populares por año, desde
-              2010 hasta 2020 (Ranking). <br /><br />
-            </div>
-            En algunas de estas secciones se puede ampliar o acceder a cierta
-            información mediante botones que lanzan una ventana modal.
-            <br /><br />
-            Desde la <span class="green--text">Version 1.5.0</span> es posible
-            el registro de películas en diferentes categorías mediante
-            LocalStorage. Las películas pueden guardarse de momento desde la
-            sección 'Ranking' y pueden consultarse esas listas en la sección 'My
-            Movies'.
-          </v-card-text>
-        </v-card>
-      </v-col>
+      <v-col></v-col>
     </v-row>
   </div>
 </template>
@@ -97,9 +42,13 @@ export default {
 #faviconbar {
   background: url("../assets/img/favicon.jpg");
   margin: 0 auto;
-  width: 150px;
-  height: 150px;
+  width: 100%;
+  position: fixed;
+  right: 0;
+  opacity: 0.2;
+  height: 1000px;
   background-size: cover;
+  background-position: center;
 }
 
 #faviconbar-row {

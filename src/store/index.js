@@ -293,7 +293,7 @@ export default new Vuex.Store({
             commit("showError", "Database error connection")
           });
     },
-    async getMoviesByYear({ commit }, {genre, page}) {
+    async getMoviesByYear({ commit }, {year, page}) {
       commit('setLoadingData', true)
       let arrMovies = []
       let arrMoviesID = []

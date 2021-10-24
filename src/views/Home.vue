@@ -48,7 +48,7 @@
           ></iframe>
         </v-col>
         <v-col id="movie-of-the-week-section">
-          <v-row>
+          <v-row no-gutters>
             <v-col cols="4">
               <!-- MOVIE IMG -->
               <v-img
@@ -66,19 +66,20 @@
             </v-img>
             </v-col>
             <v-col>
-              <v-container>
-              <!-- MOVIE TITLE -->
-              <h3 class="red--text">{{ movieOfTheWeek.title }}</h3>
-              <!-- MOVIE GENRES -->
-              <small class="d-block mt-2">
-                <span
-                  v-for="(genre, z) in movieOfTheWeek.genre_ids"
-                  :key="'A' + z"
-                  class="movieOfTheWeek-genres"
-                >
-                {{ formatGenre(genre) }}
-                </span>
-              </small>
+                <v-row no-gutters class="mx-5">
+                  <v-col>
+                  <!-- MOVIE TITLE -->
+                  <h3 class="red--text">{{ movieOfTheWeek.title }}</h3>
+                  <!-- MOVIE GENRES -->
+                  <small class="d-block mt-2">
+                    <span
+                      v-for="(genre, z) in movieOfTheWeek.genre_ids"
+                      :key="'A' + z"
+                      class="movieOfTheWeek-genres"
+                    >
+                    {{ formatGenre(genre) }}
+                    </span>
+                  </small>
                   <!-- VOTE AVERAGE -->
                   <div class="mt-5">
                     <h4 :class="`${computedRateColor} d-inline px-5`">
@@ -91,42 +92,45 @@
                     </h5>
                     <span class="font-weight-light d-inline">ratings</span>
                   </div>
+                  </v-col>
+                  <v-col>
+                    <v-row>
+                      <v-col>
+                        <v-btn
+                          block
+                          outlined
+                          color="red"
+                          large
+                          tile
+                          @click="getTrailer(movieOfTheWeek)"
+                          dark
+                          id="trailer-btn">
+                          <span class="white--text">View trailer</span>
+                        </v-btn>
+                      </v-col>
+                      <v-col>
+                        <v-btn
+                          block
+                          outlined
+                          color="purple"
+                          large
+                          tile
+                          @click="showAddToDialog(true); setAddMovie(item)"
+                          dark
+                          id="add-to-btn"
+                          >
+                          <span class="white--text">Add to My Movies</span>
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                </v-row>
+                <v-container>
                   <!-- MOVIE OVERVIEW -->
                   <p :class="!movieOfTheWeek.overview.length ? 'error--text mt-5 text-justify' : 'mt-5 text-justify'">
                     {{ !movieOfTheWeek.overview.length ? 'Sorry. This overview is not available in your language.' : movieOfTheWeek.overview }}
                   </p>
-              </v-container>
-              <v-container>
-              <v-row>
-                <v-col cols="6">
-                  <v-btn
-                    block
-                    outlined
-                    color="red"
-                    large
-                    tile
-                    @click="getTrailer(movieOfTheWeek)"
-                    dark
-                    id="trailer-btn">
-                    <span class="white--text">View trailer</span>
-                  </v-btn>
-                </v-col>
-                <v-col cols="6">
-                  <v-btn
-                    block
-                    outlined
-                    color="purple"
-                    large
-                    tile
-                    @click="showAddToDialog(true); setAddMovie(item)"
-                    dark
-                    id="add-to-btn"
-                    >
-                    <span class="white--text">Add to My Movies</span>
-                  </v-btn>
-                </v-col>
-              </v-row>
-              </v-container>
+                </v-container>
             </v-col>
           </v-row>
         </v-col>
@@ -473,7 +477,7 @@ export default {
     bottom: -1em;
     padding-block: 0.5em;
     padding-inline: 2em;
-    background: #151515ce;
+    background: $gradient_blur2;
     height: 3em;
     width: 600px;
     color: white;
@@ -510,8 +514,9 @@ export default {
     left: 0;
     width: 100%;
     backdrop-filter: blur(5px);
-    background: #15151569;
+    background: $gradient_blur2;
     color: white;
+    text-shadow: 2px 2px 3px black;
   }
 
   .movieOfTheWeek-img {

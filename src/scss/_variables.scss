@@ -42,6 +42,20 @@ $gradient_btn4: linear-gradient(
   rgb(94, 27, 86)
 );
 
+$gradient_blur1: linear-gradient(30deg,
+rgba(181, 211, 207, 0.459),
+rgba(255, 133, 51, 0.562),
+rgba(156, 33, 218, 0.459),
+rgba(252, 80, 109, 0.529)
+);
+
+$gradient_blur2: linear-gradient(120deg,
+rgba(169, 255, 244, 0.459),
+rgba(170, 141, 67, 0.377),
+rgba(83, 130, 216, 0.459),
+rgba(255, 150, 229, 0.529)
+);
+
 $gradient_success: linear-gradient(42deg, rgb(98, 209, 98), rgb(9, 121, 97));
 $gradient_warning: linear-gradient(42deg, rgb(228, 163, 24), rgb(194, 83, 32));
 $gradient_danger: linear-gradient(42deg, rgb(209, 62, 62), rgb(130, 30, 30));

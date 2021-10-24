@@ -323,7 +323,7 @@ export default {
       showContent: false,
       trailerDialog: false,
       input: "",
-      no_overview: "We are sorry. This movie have not available overview.",
+      no_overview: "No overview available.",
       searchedMovie: [],
       searchedPerson: [],
       personMoviesList: [],
@@ -406,13 +406,11 @@ export default {
           // GET WATCH PROVIDERS (NETFLIX, GOOGLE PLAY, HBO, ETC)
         let providers;
           for (let data of this.searchedMovie) {
-            console.log(data)
             providers = `https://api.themoviedb.org/3/movie/${data.id}/watch/providers?api_key=${this.apikey}`;
 
             axios
               .get(providers)
               .then((res) => {
-                console.log(res)
                 let spain = res.data.results['ES'];
 
                 if (spain !== undefined) {

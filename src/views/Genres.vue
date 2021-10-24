@@ -2,6 +2,101 @@
   <div>
     <SectionTitle :sectionSubtitle="subtitle" />
 
+    <!-- TRAILER DIALOG -->
+    <TrailerDialog
+      v-if="trailerDialog"
+      :video="trailerVideo"
+      @close-dialog="trailerDialog = false"
+    />
+
+    <!-- ADD TO MY MOVIES DIALOG -->
+    <AddToDialog
+      v-if="addToDialog"
+    />
+
+    <!--********************************** DIALOG MOVIES ********************************** -->
+          <v-dialog
+            overlay-opacity="0.2"
+            width="60%"
+            height="auto"
+            translate="250px"
+            v-model="genreDialog"
+            elevation-4
+          >
+              <v-toolbar id="genre-dialog-toolbar" tile elevation="5" dark color="secondary">
+                <v-btn
+                  icon
+                  dark
+                  @click="closeDialog"
+                  class="close-dialog-btn"
+                >
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-toolbar-title class="card-genre-title">
+                  {{ formatGenreTitle(selectedGenre) }}
+                </v-toolbar-title>
+              </v-toolbar>
+           <div v-for="(item, i) in moviesByGenre" :key="i">
+            <v-card tile id="genre-dialog-card">
+              <v-row no-gutters class="text-center">
+                  <v-col lg="12" xs="12" >
+                    <v-img
+                      class="mx-auto"
+                      max-width="100%"
+                      position="top"
+                      max-height="350px"
+                      :src="imageURL + item.backdrop_path">
+                      <div id="movie-img-text">
+                        <div>
+                          <h1 class="text-h5 white--text">{{ item.title }}</h1>
+                        </div>
+                        <div>
+                          <h1 class="text-h5 white--text">{{ formatDate(item.release_date) }}</h1>
+                        </div>
+                      </div>
+                    </v-img>
+                  <v-row>
+                    <v-col>
+                    <p id="genre-overview">
+                      {{ item.overview }}
+                      <br />
+                      <span id="no-overview" v-if="item.overview.length <= 0">{{
+                        no_overview
+                      }}</span>
+                    </p>
+                    </v-col>
+                    <v-col>
+                      <v-btn
+                        class="d-block mx-auto my-10"
+                        width="350px"
+                        color="red"
+                        large
+                        tile
+                        @click="getTrailer(item)"
+                        dark
+                        >
+                        <span class="white--text">View trailer</span>
+                      </v-btn>
+                      <v-btn
+                        class="d-block mx-auto my-5"
+                        width="350px"
+                        color="purple"
+                        large
+                        tile
+                        @click="showAddToDialog(true); setAddMovie(item)"
+                        dark
+                        >
+                          <span class="white--text">Add to My Movies</span>
+                        </v-btn>
+                    </v-col>
+                  </v-row>
+                  </v-col>
+              </v-row>
+            </v-card>
+           </div>
+          </v-dialog>
+
     <div id="genres-container" class="mt-5">
       <v-row no-gutters>
         <v-col cols="12">
@@ -191,62 +286,6 @@
           >
         </a>
       </v-row>
-
-      <!--********************************** DIALOG MOVIES ********************************** -->
-        <v-row>
-          <v-dialog
-            overlay-opacity="0.2"
-            max-width="100%"
-            v-model="genreDialog"
-            elevation-4
-          >
-              <v-toolbar id="genre-dialog-toolbar" tile elevation="5" dark color="secondary">
-                <v-btn
-                  icon
-                  dark
-                  @click="closeDialog"
-                  class="close-dialog-btn"
-                >
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="card-genre-title">
-                  {{ formatGenreTitle(selectedGenre) }}
-                </v-toolbar-title>
-              </v-toolbar>
-           <div v-for="(item, i) in moviesByGenre" :key="i">
-            <v-card id="genre-dialog-card">
-              <v-row no-gutters class="text-center">
-                  <v-col lg="12" xs="12" class="d-flex">
-                    <v-sheet width="80%" id="genre-sheet">
-                      <v-card-title id="genre-title"
-                        >{{ item.title }}
-                        <span id="genre-date">{{
-                          item.release_date
-                        }}</span></v-card-title
-                      >
-                    </v-sheet>
-                  </v-col>
-                  <v-col lg="12" xs="12">
-                    <img
-                      :src="imageURL + item.backdrop_path"
-                      class="movie-img-dialog"
-                    />
-
-                    <p class="lead" id="genre-overview">
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
-                    </p>
-                  </v-col>
-                  <hr class="error" />
-              </v-row>
-            </v-card>
-           </div>
-          </v-dialog>
-        </v-row>
     </div>
     <div v-if="snackbarObject.snackbar">
       <Snackbar
@@ -262,6 +301,9 @@
 import SectionTitle from "../components/SectionTitle";
 import Snackbar from "../components/Snackbar";
 import LoadingData from "../components/LoadingData";
+import TrailerDialog from "../components/TrailerDialog";
+import AddToDialog from "../components/AddToDialog";
+
 import { mapActions, mapState } from 'vuex';
 
 export default {
@@ -269,21 +311,24 @@ export default {
   components: {
     SectionTitle,
     Snackbar,
-    LoadingData
+    LoadingData,
+    TrailerDialog,
+    AddToDialog
   },
   data() {
     return {
+      trailerDialog: false,
       subtitle: "Movies by genre",
-      no_overview: "We sorry. This movie have not overview available.",
+      no_overview: "No overview available.",
       movieTitle: "",
       page: 1
     };
   },
   computed: {
-    ...mapState(['snackbarObject', 'imageURL', 'moviesByGenre', 'selectedGenre', 'genreDialog', 'loadingData']),
+    ...mapState(['snackbarObject', 'imageURL', 'moviesByGenre', 'selectedGenre', 'genreDialog', 'loadingData', 'trailerVideo', 'addToDialog']),
   },
   methods: {
-    ...mapActions(['getMoviesByGenre']),
+    ...mapActions(['getMoviesByGenre','getMovieTrailer', 'showAddToDialog', 'setAddMovie']),
     formatGenreTitle (genre) {
       let genres = {
         ['28']: "Action",
@@ -314,6 +359,15 @@ export default {
     go_up() {
       window.scrollTo(0, 0);
     },
+    formatDate(date) {
+      const [year, month, day] = date.split('-')
+
+      return `${day}/${month}/${year}`
+    },
+    getTrailer(item) {
+      this.trailerDialog = true
+      this.getMovieTrailer({ type: 'other', id: item.id })
+    },
   },
 };
 </script>
@@ -322,15 +376,33 @@ export default {
 @import "src/scss/variables";
 
 #genre-dialog-toolbar {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  width: 100%;
+  left: auto;
+  width: auto;
   z-index: 9999;
 }
 
 #genre-dialog-card {
   padding-top: 5em !important;
+  padding-inline: 5em;
+}
+
+#movie-img-text {
+  backdrop-filter: blur(5px);
+  background: $gradient_blur2;
+  padding: 10px;
+  position: absolute;
+  top: 0em;
+  left: 0;
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  background: gradient_blur1;
+}
+
+.no-border-radius {
+  border-radius: 0 !important;
 }
 
 // ******* MOBILE RESPONSIVE ******* //
@@ -466,7 +538,6 @@ export default {
   }
 
   #genre-overview {
-    padding: 30px;
     font-size: 20px;
     text-align: justify;
   }
@@ -544,8 +615,7 @@ export default {
   }
 
   #genre-overview {
-    padding: 50px;
-    font-size: 2em;
+    font-size: 1.2em;
     text-align: justify;
   }
 

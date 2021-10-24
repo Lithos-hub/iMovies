@@ -107,7 +107,7 @@ export default {
       releaseDate: "",
       average: "",
       trailerDialog: false,
-      no_overview: "We are sorry. This movie have not available overview.",
+      no_overview: "No overview available.",
     };
   },
   computed: {

@@ -2,7 +2,6 @@
   <div id="popular-view">
     <SectionTitle :sectionSubtitle="subtitle" />
 
-    
     <!-- ADD TO MY MOVIES DIALOG -->
     <AddToDialog
       v-if="addToDialog"
@@ -52,41 +51,6 @@
                       class="mb-5 mx-auto elevation-10"
                       @click="showDetails(item)"
                     >
-                      <!-- <div
-                        v-for="(id_watched, i) in arrWatchedIDS"
-                        :key="'C' + i"
-                      >
-                        <v-icon
-                          v-if="id_watched === item.id"
-                          class="eye-icon-img"
-                          >mdi-eye</v-icon
-                        >
-                      </div>
-                      <div
-                        v-for="(id_favourite, i) in arrFavoriteIDS"
-                        :key="'D' + i"
-                      >
-                        <v-icon
-                          v-if="id_favourite === item.id"
-                          class="heart-icon-img"
-                          >mdi-heart</v-icon
-                        >
-                      </div>
-                      <div
-                        v-for="(id_toWatch, i) in arrToWatchIDS"
-                        :key="'E' + i"
-                      >
-                        <v-icon
-                          v-if="id_toWatch === item.id"
-                          class="plus-icon-img"
-                          >mdi-star-shooting</v-icon
-                        >
-                      </div>
-                      <div v-for="(rated, i) in arrRatedIDS" :key="'F' + i">
-                        <div class="rate-img" v-if="rated.id === item.id">
-                          {{ rated.rate }}
-                        </div>
-                      </div> -->
                       <div id="showDetails-text">
                         <p>Show details</p>
                       </div>
@@ -148,7 +112,9 @@ export default {
   mounted() {
     this.getSavedYear()
     this.getMoviesByYear({ year: this.year, page: this.page });
-    this.infiniteScroll();
+    if (this.$route.path === '/popular') { 
+      this.infiniteScroll();
+    }
   },
   computed: {
     ...mapState(['moviesByYear', 'moviesID', 'no_image', 'imageURL', 'loadingData', 'loadingIMG', 'addToDialog'])
@@ -176,17 +142,16 @@ export default {
       }
     },
     infiniteScroll () {
-      if (this.$route.path === '/popular') { 
-        window.onscroll = () => {
-          let sum = window.innerHeight + window.pageYOffset
-          if (sum >= document.body.offsetHeight) {
-            document.body.scrollTop = window.pageYOffset * 0.75
-            document.documentElement.scrollTop = window.pageYOffset * 0.75
-            setTimeout(() => {
-              this.page++
-              this.getMoviesByYear({ year: this.year, page: this.page })
-            }, 500)
-          }
+      console.log('Scrolling')
+      window.onscroll = () => {
+        let sum = window.innerHeight + window.pageYOffset
+        if (sum >= document.body.offsetHeight) {
+          document.body.scrollTop = window.pageYOffset * 0.75
+          document.documentElement.scrollTop = window.pageYOffset * 0.75
+          setTimeout(() => {
+            this.page++
+            this.getMoviesByYear({ year: this.year, page: this.page })
+          }, 500)
         }
       }
     },
