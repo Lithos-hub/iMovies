@@ -29,7 +29,7 @@
       </div>
 
       <div class="closeDialog-btn">
-        <v-btn color="error" block @click="closeDialog()" tile> Close </v-btn>
+        <v-btn color="error" block @click="closeDialog()" tile>{{ $t('app-buttons.close') }}</v-btn>
       </div>
     </v-card>
   </v-dialog>

@@ -58,7 +58,7 @@
                 @click="comeBack()"
                 dark
                 id="trailer-btn"
-                ><span class="white--text">Come back</span></v-btn>
+                ><span class="white--text">{{ $t('app-buttons.comeback') }}</span></v-btn>
             </v-col>
             <v-col class="text-center">
               <v-btn
@@ -71,7 +71,7 @@
                 @click="getTrailer(movieDetails)"
                 dark
                 id="trailer-btn"
-                ><span class="white--text">View trailer</span></v-btn>
+                ><span class="white--text">{{ $t('app-buttons.view') }}</span></v-btn>
             </v-col>
             <v-col class="text-center">
               <v-btn
@@ -84,7 +84,7 @@
                 @click="showAddToDialog(true); setAddMovie(movieDetails)"
                 dark
                 id="add-to-btn"
-                ><span class="white--text">Add to My Movies</span></v-btn>
+                ><span class="white--text">{{ $t('app-buttons.add') }}</span></v-btn>
               </v-col>
            </v-row>
         </v-container>

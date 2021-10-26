@@ -12,10 +12,10 @@
 
     <v-card
       color="error"
-      class="white--text pa-2 m-5 empty-error-message"
-      v-if="arrayMovies.length === 0"
-      >There are no movies in this category yet.</v-card
-    >
+      class="white--text pa-2 empty-error-message"
+      v-if="arrayMovies.length === 0">
+      {{ $t('view-myMovies.noMovies') }}
+      </v-card>
 
       <v-row no-gutters>
         <v-col
@@ -44,9 +44,8 @@
                       </p>
                       <v-divider class="white"></v-divider>
                       <div class="myrate-section" v-if="category === 'byrate'">
-                        <small
-                          class="white--text text-center"
-                          >My rate:
+                        <small class="white--text text-center">
+                          {{ $t('view-myMovies.myRate') }}
                           <span class="rate-number">
                           {{
                             item.myrate

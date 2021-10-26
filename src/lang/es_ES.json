@@ -1,4 +1,50 @@
 {
+  "navbar": {
+    "user": "Usuario: ",
+    "lang": "Idioma: ",
+    "esp": "ESP",
+    "eng": "ING",
+    "logout": "Cerrar Sesión",
+    "home": "Principal",
+    "account": "Mi cuenta",
+    "search": "Buscar",
+    "mymovies": "Mis películas",
+    "trending": "Trending",
+    "trailers": "Trailers",
+    "genres": "Géneros",
+    "ranking": "Populares",
+    "changelog": "Changelog",
+    "about": "Acerca de...",
+    "developed": "Desarrollado por ",
+    "goTo": "Ir a mi web"
+  },
+  "genres": {
+    "action": "Acción",
+    "adventure": "Aventuras",
+    "animation": "Animación",
+    "comedy": "Comedia",
+    "crime": "Crimen",
+    "documentary": "Documental",
+    "drama": "Drama",
+    "family": "Familia",
+    "fantasy": "Fantasía",
+    "history": "Historia",
+    "horror": "Terror",
+    "music": "Musical",
+    "mystery": "Misterio",
+    "romance": "Romance",
+    "sci-fi": "Ciencia Ficción",
+    "tv": "TV",
+    "thriller": "Suspense",
+    "war": "Bélico",
+    "western": "Western"
+  },
+  "app-buttons": {
+    "view": "Ver trailer",
+    "add": "Añadir a mis películas",
+    "close": "Cerrar",
+    "comeback": "Regresar"
+  },
   "view-access": {
     "welcome": "Bienvenido a iMovies",
     "access1": "Accede con ",
@@ -21,6 +67,7 @@
     "comeback": "Volver",
     "create": "Crear una cuenta",
     "choose": "Elegir un avatar",
+    "close": "Cerrar",
     "username": "Nombre de usuario",
     "email": "E-mail",
     "password": "Contraseña",
@@ -36,22 +83,40 @@
     "success": "¡Genial! ¡Tu cuenta ha sido creada con éxito!",
     "comingback": "Regresando..."
   },
-  "navbar": {
-    "user": "Usuario: ",
-    "logout": "Cerrar Sesión",
-    "about": "Acerca de...",
-    "home": "Principal",
-    "search": "Buscar",
-    "mymovies": "Mis películas",
-    "trending": "Popular",
-    "trailers": "Trailers",
-    "genres": "Géneros",
-    "ranking": "Ranking",
-    "changelog": "Changelog",
-    "developed": "Desarrollado por "
-  },
   "view-home": {
-    "latest": "Últimos",
-    "releases": "lanzamientos"
+    "text1": "Trailer de la semana",
+    "text2": "Película de la semana",
+    "ratings": " puntuaciones"
+  },
+  "view-search": {
+    "byTitle": "Buscar por título de película",
+    "byPerson": "Buscar por nombre de artista",
+    "search": "Buscar",
+    "ratings": " puntuaciones",
+    "buy": "Comprar",
+    "streaming": "Streaming",
+    "rent": "Alquilar",
+    "no-data": "Sin datos",
+    "age": "Edad: ",
+    "birth": "Lugar de nacimiento: ",
+    "homepage": "Sitio web: ",
+    "no-homepage": "Sin sitio web",
+    "gender": "Género: ",
+    "releaseDate": "Fecha de lanzamiento: ",
+    "male": "Hombre",
+    "female": "Mujer"
+  },
+  "view-myMovies": {
+    "row1": "Películas en lista de deseos: ",
+    "row2": "Películas favoritas: ",
+    "row3": "Películas vistas: ",
+    "row4": "Películas puntuadas: ",
+    "summary": "Resumen",
+    "favourite": "Favoritas",
+    "wishList": "Lista de deseos",
+    "watched": "Vistas",
+    "byRate": "Por puntuación",
+    "myRate": "Mi nota:",
+    "noMovies": "Todavía no hay películas en esta categoría."
   }
 }

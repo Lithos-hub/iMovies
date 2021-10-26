@@ -53,7 +53,7 @@
               :label="$t('view-register.repeat')"
             ></v-text-field>
 
-            <v-avatarDialog v-model="avatarDialog" width="800" persistent>
+            <v-dialog v-model="avatarDialog" width="800" persistent>
               <template v-slot:activator="{ on, attrs }">
                 <div class="text-center">
                 <v-btn
@@ -70,7 +70,7 @@
               </template>
 
               <v-card>
-                <v-card-title class="headline primary darken-2 white--text">
+                <v-card-title class="headline green white--text">
                   {{ $t("view-register.choose") }}
                 </v-card-title>
                 <v-container fluid class="pa-5">
@@ -86,8 +86,11 @@
                     </v-col>
                   </v-row>
                 </v-container>
+                <v-card-actions>
+                  <v-btn tile block color="secondary" @click="avatarDialog = false">{{ $t("view-register.close") }}</v-btn>
+                </v-card-actions>
               </v-card>
-            </v-avatarDialog>
+            </v-dialog>
 
             <div class="text-center">
               <v-btn

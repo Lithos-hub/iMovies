@@ -41,7 +41,7 @@
                       : 'text-justify error--text'
                   "
                 >
-                  {{ item.overview.length > 0 ? item.overview : no_overview }}
+                  {{ item.overview.length ? item.overview : $t('generic-messages.no-overview') }}
                 </p>
             </v-col>
             <v-col cols="4">
@@ -65,7 +65,7 @@
                 @click="getTrailer(item)"
                 dark
                 >
-                <span class="white--text">View trailer</span>
+                <span class="white--text">{{ $t('app-buttons.view') }}</span>
               </v-btn>
               <v-btn
                 class="d-block my-1 ml-auto"
@@ -77,7 +77,7 @@
                 @click="showAddToDialog(true); setAddMovie(item)"
                 dark
                 >
-                  <span class="white--text">Add to My Movies</span>
+                  <span class="white--text">{{ $t('app-buttons.add') }}</span>
                 </v-btn>
               </v-col>
             </v-row>
@@ -107,7 +107,6 @@ export default {
       releaseDate: "",
       average: "",
       trailerDialog: false,
-      no_overview: "No overview available.",
     };
   },
   computed: {

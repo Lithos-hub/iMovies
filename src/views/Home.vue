@@ -30,10 +30,10 @@
       </v-row>
       <v-row>
         <v-col>
-      <h5 class="info--text ml-13">Trailer of the week</h5>
+      <h5 class="info--text ml-13">{{ $t('view-home.text1') }}</h5>
         </v-col>
         <v-col>
-      <h5 class="info--text">Movie of the week</h5>
+      <h5 class="info--text">{{ $t('view-home.text2') }}</h5>
         </v-col>
       </v-row>
       <v-row>
@@ -61,7 +61,7 @@
                 <p class="movieOfTheWeek-date pa-2">{{
                   movieOfTheWeek.release_date !== undefined
                     ? formatDate(movieOfTheWeek.release_date)
-                    : "Release date no availble"
+                    : $t('generic-messages.no-release')
                 }}</p>
             </v-img>
             </v-col>
@@ -90,7 +90,7 @@
                     >
                       {{ movieOfTheWeek.vote_count }}
                     </h5>
-                    <span class="font-weight-light d-inline">ratings</span>
+                    <span class="font-weight-light d-inline">{{ $t('view-home.ratings') }}</span>
                   </div>
                   </v-col>
                   <v-col>
@@ -105,7 +105,7 @@
                           @click="getTrailer(movieOfTheWeek)"
                           dark
                           id="trailer-btn">
-                          <span class="white--text">View trailer</span>
+                          <span class="white--text">{{ $t('app-buttons.view') }}</span>
                         </v-btn>
                       </v-col>
                       <v-col>
@@ -119,7 +119,7 @@
                           dark
                           id="add-to-btn"
                           >
-                          <span class="white--text">Add to My Movies</span>
+                          <span class="white--text">{{ $t('app-buttons.add') }}</span>
                         </v-btn>
                       </v-col>
                     </v-row>
@@ -192,25 +192,25 @@ export default {
     },
     formatGenre (genre) {
       let genres = {
-        ['28']: "Action",
-        ['12']: "Adventure",
-        ['16']: "Animation",
-        ['35']: "Comedy",
-        ['80']: "Crime",
-        ['99']: "Documentary",
-        ['18']: "Drama",
-        ['10751']: "Family",
-        ['14']: "Fantasy",
-        ['36']: "History",
-        ['27']: "Horror",
-        ['10402']: "Music",
-        ['9648']: "Mystery",
-        ['10749']: "Romance",
-        ['878']: "Science Fiction",
-        ['10770']: "TV Movie",
-        ['53']: "Thriller",
-        ['10752']: "War",
-        ['37']: "Western"
+        ['28']: this.$t('genres.action'), 
+        ['12']: this.$t('genres.adventure'), 
+        ['16']: this.$t('genres.animation'), 
+        ['35']: this.$t('genres.comedy'), 
+        ['80']: this.$t('genres.crime'), 
+        ['99']: this.$t('genres.documentary'), 
+        ['18']: this.$t('genres.drama'), 
+        ['10751']: this.$t('genres.family'), 
+        ['14']: this.$t('genres.fantasy'), 
+        ['36']: this.$t('genres.history'), 
+        ['27']: this.$t('genres.horror'), 
+        ['10402']: this.$t('genres.music'), 
+        ['9648']: this.$t('genres.mystery'), 
+        ['10749']: this.$t('genres.romance'), 
+        ['878']: this.$t('genres.sci-fi'), 
+        ['10770']: this.$t('genres.tv'), 
+        ['53']: this.$t('genres.thriller'), 
+        ['10752']: this.$t('genres.war'), 
+        ['37']: this.$t('genres.western'), 
       }
       return genres[genre]
     },

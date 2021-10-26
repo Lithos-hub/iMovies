@@ -11,7 +11,7 @@
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
       <div id="username-toolbar">
-        User: <span class="cyan--text">@{{ user.userName }}</span>
+        {{$t('navbar.user') }} <span class="cyan--text">@{{ user.userName }}</span>
       </div>
 
       <v-toolbar-title class="mx-auto">
@@ -24,7 +24,7 @@
       </v-toolbar-title>
 
 
-        <small class="white--text mr-3">Lang: <span class="cyan--text">{{ i18Lang }}</span></small>
+        <small class="white--text mr-3">{{ $t('navbar.lang') }} <span class="cyan--text">{{ i18Lang }}</span></small>
           <v-menu bottom offset-y v-model="langMenu">
             <template v-slot:activator="{ on, attrs }">
             <v-btn color="pink lighten-3" fab icon outlined width="100ox" small class="mr-2" v-bind="attrs" v-on="on" @click="langMenu = true">
@@ -37,22 +37,22 @@
               <v-col>
               <v-list class="lang-list pa-0">
                 <v-list-item class="ma-0 pa-0" @click="changeLanguage('es-ES'); refresh()">
-                  <v-list-item-title class="px-5 language-menu-item"><span class="white--text">ESP</span></v-list-item-title>
+                  <v-list-item-title class="px-5 language-menu-item"><span class="white--text">{{$t('navbar.esp') }}</span></v-list-item-title>
                 </v-list-item>
               </v-list>
               </v-col>
               <v-col>
               <v-list class="lang-list pa-0">
                 <v-list-item class="ma-0 pa-0" @click="changeLanguage('en-EN'); refresh()">
-                  <v-list-item-title class="px-5 language-menu-item"><span class="white--text">ENG</span></v-list-item-title>
+                  <v-list-item-title class="px-5 language-menu-item"><span class="white--text">{{$t('navbar.eng') }}</span></v-list-item-title>
                 </v-list-item>
               </v-list>
               </v-col>
             </v-row>
           </v-menu>
 
-      <v-btn outlined tile width="120px" small color="red darken-1" class="mr-2" @click="logout()">
-        {{ displayText ? "logout" : "" }}
+      <v-btn outlined tile width="auto" max-width="150px" small color="red darken-1" class="mr-2" @click="logout()">
+        {{ displayText ? $t('navbar.logout') : "" }}
         <v-icon>mdi-account-cancel</v-icon>
       </v-btn>
       <div>
@@ -89,7 +89,7 @@
           <v-list-item to="/home">
             <v-list-item-icon>
               <v-icon class="nav-icons">mdi-home</v-icon>
-              <v-list-item-title class="nav-links">Home</v-list-item-title>
+              <v-list-item-title class="nav-links">{{ $t('navbar.home') }}</v-list-item-title>
             </v-list-item-icon>
           </v-list-item>
 
@@ -115,12 +115,12 @@
       <div id="drawer-below-section">
       <v-divider></v-divider>
         <p id="developedBy">
-          {{ date }} <v-icon size="17">mdi-copyright</v-icon> Developed by<br />
+          {{ date }} <v-icon size="17">mdi-copyright</v-icon> {{$t('navbar.developed') }}<br />
           <a
             href="https://carlosseguragarciaweb.com"
             style="text-decoration: none">
               <small id="developerName">Carlos Segura García</small>
-              <p id="visit-my-website">Go to my website</p>
+              <p id="visit-my-website">{{$t('navbar.goTo') }}</p>
           </a>
         </p>
       </div>
@@ -147,15 +147,15 @@ export default {
       drawer: false,
       langMenu: false,
       navbarItems: [ 
-        { visibleToDefaultUser: false, to: "/account", text: "My Account", icon: "mdi-account" },
-        { visibleToDefaultUser: false, to: "/search", text: "Search", icon: "mdi-magnify" },
-        { visibleToDefaultUser: false, to: "/myMovies", text: "My movies", icon: "mdi-star" },
-        { visibleToDefaultUser: false, to: "/trending", text: "Trending", icon: "mdi-table" },
-        { visibleToDefaultUser: true, to: "/trailers", text: "Trailers", icon: "mdi-video-vintage" },
-        { visibleToDefaultUser: true, to: "/genres", text: "Genres", icon: "mdi-shape" },
-        { visibleToDefaultUser: false, to: "/popular", text: "Popular", icon: "mdi-format-list-numbered" },
-        { visibleToDefaultUser: true, to: "/changelog", text: "Changelog", icon: "mdi-lead-pencil" },
-        { visibleToDefaultUser: true, to: "/about", text: "About", icon: "mdi-information-variant" },
+        { visibleToDefaultUser: false, to: "/account", text: this.$t('navbar.account'), icon: "mdi-account" },
+        { visibleToDefaultUser: false, to: "/search", text: this.$t('navbar.search'), icon: "mdi-magnify" },
+        { visibleToDefaultUser: false, to: "/myMovies", text: this.$t('navbar.mymovies'), icon: "mdi-star" },
+        { visibleToDefaultUser: false, to: "/trending", text: this.$t('navbar.trending'), icon: "mdi-table" },
+        { visibleToDefaultUser: true, to: "/trailers", text: this.$t('navbar.trailers'), icon: "mdi-video-vintage" },
+        { visibleToDefaultUser: true, to: "/genres", text: this.$t('navbar.genres'), icon: "mdi-shape" },
+        { visibleToDefaultUser: false, to: "/popular", text: this.$t('navbar.ranking'), icon: "mdi-format-list-numbered" },
+        { visibleToDefaultUser: true, to: "/changelog", text: this.$t('navbar.changelog'), icon: "mdi-lead-pencil" },
+        { visibleToDefaultUser: true, to: "/about", text: this.$t('navbar.about'), icon: "mdi-information-variant" },
       ]
     };
   },

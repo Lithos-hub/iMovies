@@ -59,11 +59,7 @@
                   <v-row>
                     <v-col>
                     <p id="genre-overview">
-                      {{ item.overview }}
-                      <br />
-                      <span id="no-overview" v-if="item.overview.length <= 0">{{
-                        no_overview
-                      }}</span>
+                      {{ item.overview.length ? item.overview : $t('generic-messages.no-overview') }}
                     </p>
                     </v-col>
                     <v-col>
@@ -76,7 +72,7 @@
                         @click="getTrailer(item)"
                         dark
                         >
-                        <span class="white--text">View trailer</span>
+                        <span class="white--text">{{ $t('app-buttons.view') }}</span>
                       </v-btn>
                       <v-btn
                         class="d-block mx-auto my-5"
@@ -87,7 +83,7 @@
                         @click="showAddToDialog(true); setAddMovie(item)"
                         dark
                         >
-                          <span class="white--text">Add to My Movies</span>
+                          <span class="white--text">{{ $t('app-buttons.add') }}</span>
                         </v-btn>
                     </v-col>
                   </v-row>
@@ -319,7 +315,6 @@ export default {
     return {
       trailerDialog: false,
       subtitle: "Movies by genre",
-      no_overview: "No overview available.",
       movieTitle: "",
       page: 1
     };

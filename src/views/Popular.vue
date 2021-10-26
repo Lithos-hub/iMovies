@@ -67,7 +67,7 @@
                       dark
                       id="add-to-btn"
                       >
-                      <span class="white--text">Add to My Movies</span>
+                      <span class="white--text">{{ $t('app-buttons.add') }}</span>
                   </v-btn>
             </div>
           </v-col>
@@ -106,10 +106,8 @@ export default {
       page: 1
     };
   },
-  created(){
-    this.getRandomYear()
-  },
   mounted() {
+    this.getRandomYear()
     this.getSavedYear()
     this.getMoviesByYear({ year: this.year, page: this.page });
     if (this.$route.path === '/popular') { 
@@ -132,6 +130,7 @@ export default {
         let max = new Date().getFullYear();
         let min = 1878;
         let random = Math.floor(Math.random() * (max - min + 1) + min);
+        console.log(random)
         this.year = random
     },
     checkAndSave () {

@@ -13,7 +13,7 @@
                 filled
                 dark
                 rounded
-                label="Search"
+                :label="$t('view-search.search')"
                 :background-color="isSearchingMovie ? 'primary' : 'green'"
                 append-icon="mdi-magnify"
                 full-width
@@ -34,12 +34,12 @@
     <v-row class="options-buttons" v-if="showContent">
       <v-col cols="12" lg="6" md="12">
         <v-btn dark color="primary" large width="350px" @click="isSearchingMovie = true">
-          Search by movie title
+          {{ $t('view-search.byTitle') }}
         </v-btn>
       </v-col>
       <v-col cols="12" lg="6" md="12">
         <v-btn dark color="green" large width="350px" @click="isSearchingMovie = false">
-          Search by actor/actress name
+          {{ $t('view-search.byPerson') }}
         </v-btn>
       </v-col>
     </v-row>
@@ -47,12 +47,12 @@
       <v-row no-gutters id="btn-row" v-if="!showContent">
         <v-col cols="12" lg="6" md="12">
           <v-img id="byMovie-btn" :src="randomMovieIMG" @click="isSearchingMovie = true; showContent = true">
-            <h1 id="byMovie-text" class="text-h4">Search by movie title</h1>
+            <h1 id="byMovie-text" class="text-h4">{{ $t('view-search.byTitle') }}</h1>
           </v-img>
         </v-col>
         <v-col cols="12" lg="6" md="12">
           <v-img id="byPerson-btn" :src="randomPersonIMG"  @click="isSearchingMovie = false; showContent = true">
-            <h1 id="byPerson-text" class="text-h4">Search by actor/actress name</h1>
+            <h1 id="byPerson-text" class="text-h4">{{ $t('view-search.byPerson') }}</h1>
           </v-img>
         </v-col>
       </v-row>
@@ -88,19 +88,19 @@
           </v-img>
           <v-list dark dense>
             <v-list-item>
-              Age: <span class="ml-2 cyan--text"> {{ person.info.age }}</span>
+              {{ $t('view-search.age') }} <span class="ml-2 cyan--text"> {{ person.info.age }}</span>
             </v-list-item>
             <v-list-item>
-              Place of birth: <span class="ml-2 cyan--text"> {{ person.info.place_of_birth }}</span>
+              {{ $t('view-search.birth') }} <span class="ml-2 cyan--text"> {{ person.info.place_of_birth }}</span>
             </v-list-item>
             <v-list-item>
-              Homepage:<span class="ml-2 cyan--text"> 
+              {{ $t('view-search.homepage') }}<span class="ml-2 cyan--text"> 
                 <a v-if="person.info.homepage" :href="person.info.homepage">{{ person.info.homepage }}</a>
-                <div v-else class="red--text">No homepage</div>
+                <div v-else class="red--text">{{ $t('view-search.no-homepage') }}</div>
                 </span>
             </v-list-item>
             <v-list-item>
-              Gender: <span class="ml-2 cyan--text"> {{ person.info.gender }}</span>
+              {{ $t('view-search.gender') }} <span class="ml-2 cyan--text"> {{ person.info.gender }}</span>
             </v-list-item>
           </v-list>
         </v-col>
@@ -117,7 +117,7 @@
               class="mr-5 elevation-5"
               :src="movie.poster_path != null ? imageURL + movie.poster_path : no_image" />
                 <p class="text-h5 mr-10 cyan--text">{{ movie.title }}</p>
-                <p class="text-h6 ml-auto">{{ movie.release_date }}</p>
+                <p class="text-h6 ml-auto">{{ formatDate(movie.release_date) }}</p>
               </v-list-item>
           </v-list>
         </v-col>
@@ -141,11 +141,11 @@
               item.release_date !== undefined ? 'cyan--text' : 'red--text'
             "
           >
-            <span class="white--text">Release date:</span>
+            <span class="white--text">{{ $t('view-search.releaseDate') }}</span>
             {{
               item.release_date !== undefined
                 ? item.release_date
-                : "Release date no availble"
+                : $t('generic-messages.no-release')
             }}</small
           >
           <!-- MOVIE GENRES -->
@@ -170,7 +170,7 @@
             >
               {{ item.vote_count }}
             </h5>
-            <span class="font-weight-light d-inline">ratings</span>
+            <span class="font-weight-light d-inline">{{ $t('view-search.ratings') }}</span>
           </div>
           <!-- MOVIE OVERVIEW -->
           <p id="movie-overview">
@@ -188,7 +188,7 @@
             @click="getTrailer(item)"
             dark
             >
-            <span class="white--text">View trailer</span>
+            <span class="white--text">{{ $t('app-buttons.view') }}</span>
           </v-btn>
         </v-col>
 
@@ -197,12 +197,12 @@
           <v-expand-transition>
             <v-row no-gutters class="mt-2">
               <v-col lg="4">
-                <h3 class="text-center blue--text">Buy</h3>
+                <h3 class="text-center blue--text">{{ $t('view-search.buy') }}</h3>
                 <h2
                   class="error--text text-center"
                   v-if="!item.providers_buy.length"
                 >
-                  No data
+                  {{ $t('view-search.no-data') }}
                 </h2>
                 <li
                   style="list-style: none"
@@ -228,12 +228,12 @@
                 </li>
               </v-col>
               <v-col lg="4">
-                <h3 class="text-center orange--text">Streaming</h3>
+                <h3 class="text-center orange--text">{{ $t('view-search.streaming') }}</h3>
                 <h2
                   class="error--text text-center"
                   v-if="!item.providers_flatrate.length"
                 >
-                  No data
+                  {{ $t('view-search.no-data') }}
                 </h2>
                 <li
                   style="list-style: none"
@@ -259,12 +259,12 @@
                 </li>
               </v-col>
               <v-col lg="4">
-                <h3 class="text-center green--text">Rent</h3>
+                <h3 class="text-center green--text">{{ $t('view-search.rent') }}</h3>
                 <h2
                   class="error--text text-center"
                   v-if="!item.providers_rent.length"
                 >
-                  No data
+                  {{ $t('view-search.no-data') }}
                 </h2>
                 <li
                   style="list-style: none"
@@ -323,7 +323,6 @@ export default {
       showContent: false,
       trailerDialog: false,
       input: "",
-      no_overview: "No overview available.",
       searchedMovie: [],
       searchedPerson: [],
       personMoviesList: [],
@@ -351,25 +350,25 @@ export default {
     ...mapActions(['showError', 'getMovieTrailer']),
       formatGenre (genre) {
       let genres = {
-        ['28']: "Action",
-        ['12']: "Adventure",
-        ['16']: "Animation",
-        ['35']: "Comedy",
-        ['80']: "Crime",
-        ['99']: "Documentary",
-        ['18']: "Drama",
-        ['10751']: "Family",
-        ['14']: "Fantasy",
-        ['36']: "History",
-        ['27']: "Horror",
-        ['10402']: "Music",
-        ['9648']: "Mystery",
-        ['10749']: "Romance",
-        ['878']: "Science Fiction",
-        ['10770']: "TV Movie",
-        ['53']: "Thriller",
-        ['10752']: "War",
-        ['37']: "Western"
+        ['28']: this.$t('genres.action'), 
+        ['12']: this.$t('genres.adventure'), 
+        ['16']: this.$t('genres.animation'), 
+        ['35']: this.$t('genres.comedy'), 
+        ['80']: this.$t('genres.crime'), 
+        ['99']: this.$t('genres.documentary'), 
+        ['18']: this.$t('genres.drama'), 
+        ['10751']: this.$t('genres.family'), 
+        ['14']: this.$t('genres.fantasy'), 
+        ['36']: this.$t('genres.history'), 
+        ['27']: this.$t('genres.horror'), 
+        ['10402']: this.$t('genres.music'), 
+        ['9648']: this.$t('genres.mystery'), 
+        ['10749']: this.$t('genres.romance'), 
+        ['878']: this.$t('genres.sci-fi'), 
+        ['10770']: this.$t('genres.tv'), 
+        ['53']: this.$t('genres.thriller'), 
+        ['10752']: this.$t('genres.war'), 
+        ['37']: this.$t('genres.western'), 
       }
       return genres[genre]
     },
@@ -521,7 +520,7 @@ export default {
               id: data.id,
               poster_path: data.poster_path,
               title: data.title,
-              release_date: data.release_date,
+              release_date: this.formatDate(data.release_date),
               genre_ids: data.genre_ids,
               vote_average: data.vote_average,
               vote_count: data.vote_count,
@@ -617,7 +616,7 @@ export default {
             person.info = {
               place_of_birth: res.data.place_of_birth,
               homepage: res.data.homepage,
-              gender: res.data.gender === 2 ? 'Male' : 'Female',
+              gender: res.data.gender === 2 ? this.$t('view-search.male') : this.$t('view-search.female'),
               age: res.data.birthday ? this.getPersonAge(res.data.birthday) : ""
             }
             

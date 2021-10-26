@@ -10,31 +10,31 @@
         active-class="cyan--text"
         class="cyan--text tab"
         @click="category = 'summary'"
-        >Summary</v-tab
+        >{{ $t('view-myMovies.summary') }}</v-tab
       >
       <v-tab
         active-class="error--text"
         class="white--text tab"
         @click="category = 'favourite'"
-        >Favorite</v-tab
+        >{{ $t('view-myMovies.favourite') }}</v-tab
       >
       <v-tab
         active-class="error--text"
         class="white--text tab"
         @click="category = 'towatch'"
-        >To watch</v-tab
+        >{{ $t('view-myMovies.wishList') }}</v-tab
       >
       <v-tab
         active-class="error--text"
         class="white--text tab"
         @click="category = 'watched'"
-        >Watched</v-tab
+        >{{ $t('view-myMovies.watched') }}</v-tab
       >
       <v-tab
         active-class="error--text"
         class="white--text tab"
         @click="category = 'byrate'"
-        >By rate</v-tab
+        >{{ $t('view-myMovies.byRate') }}</v-tab
       >
     </v-tabs>
 
@@ -50,7 +50,7 @@
       <v-container>
         <v-row id="categories-menu" v-if="expand" no-gutters>
           <div class="category-col ma-auto" @click="category = 'summary'">
-            <v-btn block class="category-btn"> Summary </v-btn>
+            <v-btn block class="category-btn">{{ $t('view-myMovies.summary') }}</v-btn>
           </div>
           <div
             class="category-col ma-auto"
@@ -59,7 +59,7 @@
               expand = !expand;
             "
           >
-            <v-btn block class="category-btn">To watch </v-btn>
+            <v-btn block class="category-btn">{{ $t('view-myMovies.favourite') }}</v-btn>
           </div>
           <div
             class="category-col ma-auto"
@@ -68,7 +68,7 @@
               expand = !expand;
             "
           >
-            <v-btn block class="category-btn"> Favorite </v-btn>
+            <v-btn block class="category-btn">{{ $t('view-myMovies.wishList') }}</v-btn>
           </div>
           <div
             class="category-col ma-auto"
@@ -84,7 +84,7 @@
               expand = !expand;
             "
           >
-            <v-btn block class="category-btn"> By Rate </v-btn>
+            <v-btn block class="category-btn">{{ $t('view-myMovies.byRate') }}</v-btn>
           </div>
         </v-row>
       </v-container>
@@ -96,7 +96,7 @@
       <v-container>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div>Movies I want to watch:</div>
+            <div>{{ $t('view-myMovies.row1') }}</div>
           </v-col>
           <v-col>
             <div class="data-list-number" :style="{ color: color1 }">
@@ -106,7 +106,7 @@
         </v-row>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div>Favorite movies:</div>
+            <div>{{ $t('view-myMovies.row2') }}</div>
           </v-col>
           <v-col>
             <div class="data-list-number" :style="{ color: color2 }">
@@ -116,7 +116,7 @@
         </v-row>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div>Watched movies:</div>
+            <div>{{ $t('view-myMovies.row3') }}</div>
           </v-col>
           <v-col>
             <div class="data-list-number" :style="{ color: color3 }">
@@ -126,7 +126,7 @@
         </v-row>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div>Rated movies:</div>
+            <div>{{ $t('view-myMovies.row4') }}</div>
           </v-col>
           <v-col>
             <div class="data-list-number" :style="{ color: color4 }">

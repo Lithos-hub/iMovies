@@ -154,7 +154,7 @@ export default {
             "Added internationalization (ENG / SPA) in all the app.",
             "Improved and expanded the search system. Now, is posible to search by movie title or actor/actress name.",
             "Added globally design improvements.",
-            "Added a new 'Add to My Movies' globally system.",
+            "Added a new '{{ $t('app-buttons.add') }}' globally system.",
             "Added infinite scroll in Popular view (old Ranking view).",
             "Now the user can search by year in Popular view.",
             "Refactoring and improvements with Vuex.",
