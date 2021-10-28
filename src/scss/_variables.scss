@@ -14,32 +14,32 @@ $dark2: rgb(21, 21, 21);
 
 // Buttons
 
-$gradient_btn1: linear-gradient(
+$gradient_1: linear-gradient(
   30deg,
   rgb(181, 211, 207),
   rgb(255, 133, 51),
   rgb(156, 33, 218),
   rgb(252, 80, 109)
 );
-$gradient_btn2: linear-gradient(
+$gradient_2: linear-gradient(
   30deg,
   rgb(83, 199, 183),
   rgb(51, 122, 255),
   rgb(68, 58, 250),
   rgb(29, 4, 68)
 );
-$gradient_btn3: linear-gradient(
+$gradient_3: linear-gradient(
   30deg,
   aqua,
   rgb(54, 130, 151),
   rgb(27, 0, 114)
 );
-$gradient_btn4: linear-gradient(
-  30deg,
-  rgb(21, 21, 53),
-  rgb(53, 27, 72),
-  rgb(106, 19, 88),
-  rgb(94, 27, 86)
+$gradient_4: linear-gradient(
+  120deg,
+  transparent,
+  rgb(66, 54, 75),
+  rgb(55, 106, 109),
+  rgb(68, 92, 170)
 );
 
 $gradient_blur1: linear-gradient(30deg,

@@ -13,40 +13,45 @@
     />
 
     <!-- ************** MOVIE CARD CONTENT ************** -->
-      <v-card tile class="pa-5 d-flex" height="75%" width="100%" id="card">
-    <v-container class="d-flex">
+  <v-sheet id="sheet" color="transparent" tile class="pa-5">
+    <v-container fluid class="d-flex ma-5">
         <v-img :src="imageURL + movieDetails.poster_path" id="movie-img"></v-img>
 
-        <v-card-title id="movie-title" class="text-h2 blue--text"
-          >{{ movieDetails.title }}
-          <p id="movie-date">
-            Release date:
-            <span style="color: cyan">{{ movieDetails.release_date }}</span>
-          </p></v-card-title
-        >
-
-        <v-container id="movie-text">
-          <v-card-title class="error white--text rounded pa-2"
-            >Overview</v-card-title
+        <v-card-title id="movie-title" class="text-h2 blue--text d-flex justify-space-between"
           >
-          <p id="movie-overview">
+          <div>
+            {{ movieDetails.title }}
+          </div>
+          <div>
+            <p id="movie-date">
+            {{ $t('view-movie-id.releaseDate') }}
+              <span style="color: cyan">{{ movieDetails.release_date }}</span>
+          </p>
+          </div>
+          </v-card-title>
+
+        <v-container id="main-content">
+          <v-card-title class="gradient-background-4 white--text rounded pa-2 my-5"
+            >{{ $t('view-movie-id.overview') }}</v-card-title
+          >
+          <p class="cyan--text" id="movie-overview">
             {{ movieDetails.overview }}
           </p>
-          <v-card-title class="green white--text rounded pa-2"
-            >Vote average</v-card-title
+          <v-card-title class="gradient-background-4 white--text rounded pa-2 my-5"
+            >{{ $t('view-movie-id.average') }}</v-card-title
           >
-          <p id="movie-note">{{ movieDetails.vote_average }}</p>
-          <v-card-title class="blue white--text rounded pa-2"
-            >Vote count</v-card-title
+          <p class="cyan--text" id="movie-note">{{ movieDetails.vote_average }}</p>
+          <v-card-title class="gradient-background-4 white--text rounded pa-2 my-5"
+            >{{ $t('view-movie-id.votes') }}</v-card-title
           >
-          <p id="movie-count">{{ movieDetails.vote_count }}</p>
-          <v-card-title class="orange white--text rounded pa-2"
-            >Original language</v-card-title
+          <p class="cyan--text" id="movie-count">{{ movieDetails.vote_count }}</p>
+          <v-card-title class="gradient-background-4 white--text rounded pa-2 my-5"
+            >{{ $t('view-movie-id.language') }}</v-card-title
           >
-          <p id="movie-language">
+          <p class="cyan--text" id="movie-language">
             {{ movieDetails.spoken_languages[0].english_name }}
           </p>
-            <v-row>
+          <v-row id="buttons-row" class="d-flex justify-space-between">
             <v-col class="text-center">
               <v-btn
                 block
@@ -54,6 +59,7 @@
                 width="auto"
                 color="secondary"
                 large
+                outlined
                 tile
                 @click="comeBack()"
                 dark
@@ -67,6 +73,7 @@
                 width="auto"
                 color="red"
                 large
+                outlined
                 tile
                 @click="getTrailer(movieDetails)"
                 dark
@@ -80,16 +87,17 @@
                 width="auto"
                 color="purple"
                 large
+                outlined
                 tile
                 @click="showAddToDialog(true); setAddMovie(movieDetails)"
                 dark
                 id="add-to-btn"
                 ><span class="white--text">{{ $t('app-buttons.add') }}</span></v-btn>
               </v-col>
-           </v-row>
+            </v-row>
         </v-container>
       </v-container>
-    </v-card>
+    </v-sheet>
   </div>
 </template>
 
@@ -133,6 +141,11 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/scss/variables";
+@import "src/scss/app";
+
+#buttons-row { 
+  margin-top: auto;
+}
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
@@ -153,7 +166,7 @@ export default {
     position: absolute;
   }
 
-  #movie-text {
+  #main-content {
     font-size: 15px;
     color: white;
     position: relative;
@@ -202,7 +215,7 @@ export default {
     position: relative;
   }
 
-  #movie-text {
+  #main-content {
     top: 60px;
     padding-bottom: 100px;
     color: $dark2;
@@ -239,7 +252,7 @@ export default {
     position: absolute;
     top: 15px;
     background: $dark2;
-    padding: 30px;
+    padding-block: 30px;
     color: $secondary;
     width: 100%;
   }
@@ -252,7 +265,7 @@ export default {
     position: relative;
   }
 
-  #movie-text {
+  #main-content {
     font-size: 1.5em;
     top: 70px;
     color: $dark2;
@@ -274,11 +287,12 @@ export default {
   #movie-note,
   #movie-count,
   #movie-language {
-    margin: 20px;
+    margin: 5px;
   }
 
   #card {
-    padding: 50px !important;
+    height: 1000px !important;
+    max-height: 100%;
   }
 }
 </style>

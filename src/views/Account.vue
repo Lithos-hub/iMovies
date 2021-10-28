@@ -7,31 +7,31 @@
           <v-icon color="cyan" left>
             mdi-account
           </v-icon>
-          Profile
+          {{ $t('view-account.profile') }}
         </v-tab>
         <v-tab active-class="secondary" class="cyan--text justify-start">
           <v-icon color="cyan" left>
             mdi-lock
           </v-icon>
-          Security (soon)
+          {{ $t('view-account.security') }} (soon)
         </v-tab>
         <v-tab active-class="secondary" class="cyan--text justify-start">
           <v-icon color="cyan" left>
             mdi-palette
           </v-icon>
-          Appearance (soon)
+          {{ $t('view-account.appearance') }} (soon)
         </v-tab>
         <v-tab active-class="secondary" class="cyan--text justify-start">
           <v-icon color="cyan" left>
             mdi-bell-badge
           </v-icon>
-          Notifications (soon)
+          {{ $t('view-account.notifications') }} (soon)
         </v-tab>
       </div>
       <v-tab-item>
         <v-card flat tile dark>
           <v-card-title class="tabs-card-title">
-            <h1 class="text-h2 mb-0 pt-5">Profile</h1>
+            <h1 class="text-h2 mb-0 pt-5">{{ $t('view-account.profile') }}</h1>
           </v-card-title>
           <v-card-text>
             <div class="option-1-section">
@@ -39,19 +39,19 @@
                 <v-col>
                   <ul style="list-style: none">
                     <li class="account-item-list d-flex">
-                        <v-icon color="primary" class="mr-5" size="30px">mdi-account</v-icon><span class="text-h6 mr-2">Username:</span><span class="my-auto">@{{ user.userName }}</span>
-                        <v-btn tile small class="ml-auto">Change</v-btn>
+                        <v-icon color="primary" class="mr-5" size="30px">mdi-account</v-icon><span class="text-h6 mr-2">{{ $t('view-account.username') }}</span><span class="my-auto">@{{ user.userName }}</span>
+                        <v-btn tile small class="ml-auto">{{ $t('view-account.change') }}</v-btn>
                     </li>
                     <li class="account-item-list d-flex">
-                        <v-icon color="primary" class="mr-5" size="30px">mdi-key</v-icon><span class="text-h6 mr-2">Password:</span><span class="font-italic my-auto">{{ computePass(user.userPassword, showPassword) }}</span>
+                        <v-icon color="primary" class="mr-5" size="30px">mdi-key</v-icon><span class="text-h6 mr-2">{{ $t('view-account.password') }}</span><span class="font-italic my-auto">{{ computePass(user.userPassword, showPassword) }}</span>
                         <v-btn dark icon tile class="ml-5" @click="showPassword = !showPassword">
                         <v-icon color="cyan">mdi-eye</v-icon>
                         </v-btn>
-                        <v-btn tile small class="ml-auto">Change</v-btn>
+                        <v-btn tile small class="ml-auto">{{ $t('view-account.change') }}</v-btn>
                     </li>
                     <li class="account-item-list d-flex">
-                        <v-icon color="primary" class="mr-5" size="30px">mdi-email</v-icon><span class="text-h6 mr-2">E-mail:</span><span class="my-auto">{{ user.userEmail }}</span>
-                        <v-btn tile small class="ml-auto">Change</v-btn>
+                        <v-icon color="primary" class="mr-5" size="30px">mdi-email</v-icon><span class="text-h6 mr-2">{{ $t('view-account.email') }}</span><span class="my-auto">{{ user.userEmail }}</span>
+                        <v-btn tile small class="ml-auto">{{ $t('view-account.change') }}</v-btn>
                     </li>
                   </ul>
                 </v-col>
@@ -66,7 +66,7 @@
                       max-width="250px"
                       class="avatar ma-5 ma-auto" />
                       <v-btn width="auto" max-width="250px" class="mt-2" tile color="primary">
-                        Change avatar
+                        {{ $t('view-account.changeAvatar') }}
                       </v-btn>
                 </v-col>
               </v-row>

@@ -8,8 +8,8 @@
       class="no-overflow-x"
     >
       <v-card width="auto" class="no-overflow-x">
-        <v-card-title class="gradient-background-4 text-h5 white--text">
-          Add movie to...
+        <v-card-title class="gradient-background-1 text-h5 white--text">
+          {{ $t('comp-addTo.add') }}
         </v-card-title>
 
         <v-row no-gutters>
@@ -24,7 +24,7 @@
           >
             <v-icon size="50px">{{ !addedFavourite ? 'mdi-heart-outline' : 'mdi-heart' }}</v-icon>
           </v-btn>
-          <p :class="!addedFavourite ? 'black--text' : 'red--text'">Favourite</p>
+          <p :class="!addedFavourite ? 'black--text' : 'red--text'">{{ $t('comp-addTo.favourite') }}</p>
           </v-col>
           <v-col class="text-center">
           <v-btn
@@ -37,7 +37,7 @@
           >
             <v-icon size="50px">{{ !addedWatched ? 'mdi-eye-outline' : 'mdi-eye' }}</v-icon>
           </v-btn>
-          <p :class="!addedWatched ? 'black--text' : 'primary--text'">Watched</p>
+          <p :class="!addedWatched ? 'black--text' : 'primary--text'">{{ $t('comp-addTo.watched') }}</p>
           </v-col>
         </v-row>
         <v-row>
@@ -52,7 +52,7 @@
           >
             <v-icon size="50px">{{ !addedWishlist ? 'mdi-star-shooting-outline' : 'mdi-star-shooting' }}</v-icon>
           </v-btn>
-          <p :class="!addedWishlist ? 'black--text' : 'amber--text'">Wish List</p>
+          <p :class="!addedWishlist ? 'black--text' : 'amber--text'">{{ $t('comp-addTo.wishlist') }} List</p>
           </v-col>
           <v-col class="text-center">
           <v-btn
@@ -65,14 +65,14 @@
           >
             <v-icon size="50px">{{ !addedRate ? 'mdi-sort-numeric-variant' : 'mdi-numeric' }}</v-icon>
           </v-btn>
-          <p :class="!addedRate ? 'black--text' : 'green--text'">{{ !addedRate ? 'Rate' : `Rated with ${rate} points` }}</p>
+          <p :class="!addedRate ? 'black--text' : 'green--text'">{{ !addedRate ? $t('comp-addTo.rated') : `${$t('comp-addTo.rate1')} ${rate} ${$t('comp-addTo.rate2')}` }}</p>
           </v-col>
         </v-row>
 
         <v-dialog v-model="rateMenu" overlay-opacity="0.5">
         <v-card id="rate-card" class="pa-1 fadeIn">
           <v-card-title class="green white--text">
-            Rate the movie
+            {{ $t('comp-addTo.rate-dialog-title') }}
             <v-btn depressed dark class="transparent ml-auto" icon @click="rateMenu = false">
               <v-icon>mdi-close</v-icon>
               </v-btn>
@@ -89,7 +89,7 @@
             ></v-slider>
           </div>
           <v-btn :disabled="!validRate" tile block color="secondary" @click="addToRateMovies">
-            <span class="white--text">{{ !addedRate ? 'Save rate' : 'Update rate' }}</span>
+            <span class="white--text">{{ !addedRate ? $t('comp-addTo.rate-dialog-btn1') : $t('comp-addTo.rate-dialog-btn2') }}</span>
           </v-btn>
         </v-card>
         </v-dialog>
@@ -103,7 +103,7 @@
             outlined
             @click="showAddToDialog(false, null)"
           >
-            Done
+            {{ $t('comp-addTo.done') }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -133,10 +133,6 @@ export default {
             dialog: true,
             slider: 0,
             rate: 0,
-            inputRules: [
-              v => v <= 10 || 'The rate must be less or equal to 10',
-              v => v >= 0 || 'The rate must be greater than or equal to 0'
-            ],
             auxFavourite: [],
             auxWatched: [],
             auxWishlist: [],
@@ -260,11 +256,11 @@ export default {
           if (this.addedFavourite) {
             settedArray.splice(settedArray.indexOf(movieToAdd), 1)
             this.auxFavourite.splice(this.auxFavourite.indexOf(movieToAdd), 1)
-            this.showSnackbar({text: "Removed from FAVOURITE category", color: "secondary"});
+            this.showSnackbar({text: this.$t('comp-snackbar.favourite-removed'), color: "secondary"});
             storage[this.userID].myMovies.favourite = settedArray;
             localStorage.setItem("storageUserDATA", JSON.stringify(storage));
           } else {
-            this.showSnackbar({text: "Added to FAVOURITE category", color: "red darken-4"});
+            this.showSnackbar({text: this.$t('comp-snackbar.favourite-added'), color: "red darken-4"});
             storage[this.userID].myMovies.favourite = settedArray;
             localStorage.setItem("storageUserDATA", JSON.stringify(storage));
           }
@@ -277,11 +273,11 @@ export default {
           if (this.addedWatched) {
             settedArray.splice(settedArray.indexOf(movieToAdd), 1)
             this.auxWatched.splice(this.auxWatched.indexOf(movieToAdd), 1)
-            this.showSnackbar({text: "Removed from WATCHED category", color: "secondary"});
+            this.showSnackbar({text: this.$t('comp-snackbar.watched-removed'), color: "secondary"});
             storage[this.userID].myMovies.watched = settedArray;
             localStorage.setItem("storageUserDATA", JSON.stringify(storage));
             } else {
-              this.showSnackbar({text: "Added to WATCHED category", color: "blue"});
+              this.showSnackbar({text: this.$t('comp-snackbar.watched-added'), color: "blue"});
               storage[this.userID].myMovies.watched = settedArray;
               localStorage.setItem("storageUserDATA", JSON.stringify(storage));
             }
@@ -294,11 +290,11 @@ export default {
           if (this.addedWishlist) {
             settedArray.splice(settedArray.indexOf(movieToAdd), 1)
             this.auxWishlist.splice(this.auxWishlist.indexOf(movieToAdd), 1)
-            this.showSnackbar({text: "Removed from WISHLIST category", color: "secondary"});
+            this.showSnackbar({text: this.$t('comp-snackbar.wishlist-removed'), color: "secondary"});
             storage[this.userID].myMovies.wishlist = settedArray;
             localStorage.setItem("storageUserDATA", JSON.stringify(storage));
           } else {
-            this.showSnackbar({text: "Added to WISHLIST category", color: "orange darken-4"});
+            this.showSnackbar({text: this.$t('comp-snackbar.wishlist-added'), color: "orange darken-4"});
             storage[this.userID].myMovies.wishlist = settedArray;
             localStorage.setItem("storageUserDATA", JSON.stringify(storage));
           }
@@ -313,11 +309,11 @@ export default {
             arr.push(movieToAdd)
             this.auxRated.push(movieToAdd)
 
-            this.showSnackbar({text: "Rate updated", color: "secondary"});
+            this.showSnackbar({text: this.$t('comp-snackbar.rate-updated'), color: "secondary"});
             storage[this.userID].myMovies.rated = arr;
             localStorage.setItem("storageUserDATA", JSON.stringify(storage));
           } else {
-            this.showSnackbar({text: "Added to RATED category", color: "green darken-4"});
+            this.showSnackbar({text: this.$t('comp-snackbar.rate-added'), color: "green darken-4"});
             storage[this.userID].myMovies.rated.push(movieToAdd);
             localStorage.setItem("storageUserDATA", JSON.stringify(storage));
           }

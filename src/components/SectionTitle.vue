@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-sheet class="section-subtitle" color="transparent">{{
-      sectionSubtitle
+      title
     }}</v-sheet>
   </div>
 </template>
@@ -9,7 +9,7 @@
 <script>
 export default {
   name: "SectionTitle",
-  props: ["sectionName", "sectionSubtitle"],
+  props: ["sectionName", "title"],
 };
 </script>
 

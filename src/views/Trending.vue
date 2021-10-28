@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SectionTitle :sectionSubtitle="subtitle" />
+    <SectionTitle :title="sectionTitle" />
 
     <!-- TRAILER DIALOG -->
     <TrailerDialog
@@ -32,7 +32,7 @@
               <v-img :src="imageURL + item.poster_path" width="100%" class="movie-img" />
             </v-col>
             <v-col cols="3">
-              <h4>Overview</h4>
+              <h4>{{ $t('view-trending.overview') }}</h4>
               <v-divider class="ma-0 mb-2"></v-divider>
                 <p
                   :class="
@@ -45,12 +45,12 @@
                 </p>
             </v-col>
             <v-col cols="4">
-              <h4 class="info--text">Casting</h4>
+              <h4 class="info--text">{{ $t('view-trending.casting') }}</h4>
               <v-divider class="ma-0 mb-2"></v-divider>
               <p v-for="(cast, j) in item.cast.slice(0, 11)" :key="'A' + j">
                   <v-icon color="info" size="10" class="mr-2">mdi-circle</v-icon>
                   <span class="font-weight-bold mr-3">{{ cast.name }}</span>
-                  <span class="info--text mr-2" v-if="cast.character">as</span>
+                  <span class="info--text mr-2" v-if="cast.character">{{ $t('view-trending.as') }}</span>
                   <span class="white--text">{{ cast.character }}</span>
               </p>
             </v-col>
@@ -101,7 +101,7 @@ export default {
   },
   data() {
     return {
-      subtitle: "Current popular movies",
+      sectionTitle: this.$t('comp-sectionTitle.trending'),
       title: "",
       overview: "",
       releaseDate: "",

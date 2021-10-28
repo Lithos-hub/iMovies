@@ -1,8 +1,17 @@
 @import "src/scss/variables";
 
 
+.gradient-background-1 {
+    background: $gradient_1;
+}
+.gradient-background-2 {
+    background: $gradient_2;
+}
+.gradient-background-3 {
+    background: $gradient_3;
+}
 .gradient-background-4 {
-    background: $gradient_btn4;
+    background: $gradient_4;
 }
 
 .fadeIn {

@@ -1,4 +1,10 @@
 {
+  "error-404": {
+    "soundDisabled": "Sound is ON",
+    "soundActivated": "Sound is OFF",
+    "badFeeling": "This isn't the page you're looking for...",
+    "comeback": "Come back"
+  },
   "navbar": {
     "user": "User: ",
     "lang": "Lang: ",
@@ -122,5 +128,135 @@
     "byRate": "By rate",
     "myRate": "My rate:",
     "noMovies": "There are no movies in this category yet."
+  },
+  "view-trending": {
+    "overview": "Overview",
+    "casting": "Cast",
+    "as": " as "
+  },
+  "view-popular": {
+    "writeYear": "Write a year",
+    "showDetails": "Show details",
+    "message1": "The first 'movie' was made in 1878 and it's called ",
+    "message2": "The Horse in Motion ",
+    "message3": "or",
+    "message4": "  Sallie Gardner at a Gallop",
+    "message5": "  So, try with another year!"
+  },
+  "view-changelog": {
+    "1_1_0": "Added dynamic routes on main page when you click over a movie image to get details about that movie.",
+    "1_2_0-1": "Added dynamic trailers dialogs in /movie/id page.",
+    "1_2_0-2": "Added some aesthetic changes in /trailers page.",
+    "1_3_0-1": "Optimized code in the Genres section using v-bind and @click to use a single function to return movies of different genres.",
+    "1_3_0-2": "Some aesthetic changes in general.",
+    "1_4_0-1": "New features in Trending section.",
+    "1_4_0-2": "Optimized code in Ranking section.",
+    "1_4_0-3": "New responsive features in Ranking section and some aesthetic changes.",
+    "1_5_0-1": "Added My Movies section.",
+    "1_5_0-2": "Added new features (Watched, Favourite, Rate and To-Watch) in Ranking section using LocalStorage.",
+    "1_6_0-1": "Optimized code in Trailers section.",
+    "1_6_0-2": "General aesthetic improvements.",
+    "1_6_0-3": "Info button available in My Movies section.",
+    "1_6_0-4": "Now is possible to save the user rates for each movie in My Movies.",
+    "1_6_1-1": "Dynamic changelog.",
+    "1_6_1-2": "New logo.",
+    "1_6_1-3": "Fixed some api issues.",
+    "1_7_0-1": "New section 'Search' added.",
+    "1_7_0-2": "Now you can search for movies and see information such as the platforms where those movies are available for streaming, buying or renting.",
+    "1_7_2-1": "More info is shown in Search section: dynamic movie genres (the API returns an ID for each movie genre and you have to 'translate' it in the specific genre); movie overview.",
+    "1_7_2-2": "Some aesthetic improvements in that section have been added.",
+    "1_7_5-1": "New info displayed in Search section: vote average and vote ratings.",
+    "1_7_5-2": "The 'View Trailer' button is now a component anywhere in the app.",
+    "1_7_6": "Fixed some issues with regard to the display of the trailer component.",
+    "1_7_7": "Error 404 page added.",
+    "1_7_9-1": "Fixed an issue with the API call in the trending section.",
+    "1_7_9-2": "Added an initial (non functional at this moment) page for user login and register.",
+    "1_8_0-1": "Fixed an issue with the API call in the trailers section.",
+    "1_8_0-2": "Aesthetic changes and improvements in the trailers section.",
+    "1_8_0-3": "Responsive improvements in the navbar component.",
+    "1_9_0": "Added a login/register system without backend using LocalStorage. Added avatar option. The user is now be able to save movies in some categories with each account. On the other hand, the default account has now some hidden features.",
+    "1_9_1": "Improved the protected router system.",
+    "1_9_2": "Added permanent icons in the Ranking section. Now the icons will remain over each corresponding movie even if the user exits the view or logs out.",
+    "1_9_5-1": "Added reset statistics function in My Movies view.",
+    "1_9_5-2": "In the ranking section, if the movie has been previously selected, it will be deleted. Now you can remove the rate or overwrite it.",
+    "1_9_5-3": "Added 'show details' function when clicking in a movie in Ranking section.",
+    "2_0_0-1": "Added internationalization (ENG / SPA) in all the app.",
+    "2_0_0-2": "Improved and expanded the search system. Now, is posible to search by movie title or actor/actress name.",
+    "2_0_0-3": "Added globally design improvements.",
+    "2_0_0-4": "Added a new to adding system.",
+    "2_0_0-5": "Added infinite scroll in Popular view (old Ranking view).",
+    "2_0_0-6": "Now the user can search by year in Popular view.",
+    "2_0_0-7": "Refactoring and improvements with Vuex.",
+    "2_0_0-8": "New components: Snackbar to success/error/info messages; loading data bar; 'Add to my Movies' dialog.",
+    "2_0_0-9": "New landing page in /home.",
+   "2_0_0-10":  "New account settings view."
+  },
+  "view-about": {
+    "title": "Acerca de iMovies",
+    "text1": "iMovies is an app to show information about movies using The Movie Database API.",
+    "text2": "Since the 1.9.0 version, it is possible to save movies in some categories such as 'Favourite', 'Wish List', 'Watched' and 'Rated'.",
+    "text3": "In November 2021 was released the 2.0.0 version with a lot of improvements and some new features. The storage system was improved and setted in a globally way, so the user is able to save and rate movies all around the app using LocalStorage.",
+    "text4": "In the other hand, the landing page was changed in a 'Netflix style'. Ranking view was renamed as Popular, and it was added a symple way to search movies by year. The Search view was modified and it was included a dual search system: by movie, and by actor/actress name.",
+    "text5": "Last but not least, it was added internationalization using i18n. So, both the app and the movies info is available in English and Spanish.",
+    "text6": "This app is under constant development, and it will be new content in the future."
+  },
+  "view-movie-id": {
+    "releaseDate":"Release date: ",
+    "overview": "Overview",
+    "average": "Vote average",
+    "votes": "Vote count",
+    "language": "Original language"
+  },
+  "view-account": {
+    "profile": "Profile",
+    "security": "Security",
+    "appearance": "Appearance",
+    "notifications": "Notifications",
+    "username": "Username: ",
+    "password": "Password: ",
+    "email": "E-mail: ",
+    "change": "Change",
+    "avatar": "Avatar",
+    "changeAvatar": "Change avatar"
+  },
+  "comp-addTo": {
+    "add": "Add movie to...",
+    "favourite": "Favourite",
+    "wishlist": "Wish list",
+    "watched": "Watched",
+    "rated": "Rated",
+    "rate1": "Rated with ",
+    "rate2": " points",
+    "rate-dialog-title": "Rate the movie",
+    "rate-dialog-btn1": "Save rate",
+    "rate-dialog-btn2": "Update rate",
+    "done": "Done"
+  },
+  "comp-loading": {
+    "loading": "Loading"
+  },
+  "comp-sectionTitle": {
+    "search1": "Search by movie title",
+    "search2": "Search by artist name",
+    "mymovies": "Saved movies",
+    "trending": "Current trending movies",
+    "trailers": "Latest released trailers",
+    "genres": "Movies by genre",
+    "popular": "Popular movies by year",
+    "changelog": "Changelog"
+  },
+  "comp-snackbar": {
+    "favourite-added": "Film added to the FAVOURITES category",
+    "favourite-removed": "Film removed from the FAVOURITES category",
+    "watched-added": "Film added to the WATCHED category",
+    "watched-removed": "Film removed from the WATCHED category",
+    "wishlist-added": "Movie added to the WISHLIST",
+    "wishlist-removed": "Movie removed from the WISHLIST",
+    "rate-added": "Film added to the rated category",
+    "rate-removed": "Film removed from the SCORED category",
+    "rate-updated": "Film score updated"
+  },
+  "comp-trailerDialog": {
+    "noAvailable": "Video no available"
   }
 }

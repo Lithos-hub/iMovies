@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SectionTitle :sectionSubtitle="subtitle" />
+    <SectionTitle :title="sectionTitle" />
 
     <!-- SUPERIOR TABS MENU -->
 
@@ -174,7 +174,7 @@ export default {
   },
   data() {
     return {
-      subtitle: "Saved movies",
+      sectionTitle: this.$t('comp-sectionTitle.mymovies'),
       category: "summary",
       watched: "watched",
       wishListMovies: [],

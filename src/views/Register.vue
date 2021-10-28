@@ -262,7 +262,7 @@ export default {
 }
 
 .btn-gradient1 {
-  background: $gradient_btn1;
+  background: $gradient_1;
   color: white !important;
   padding-left: 10px;
   padding-top: 5px;
@@ -274,7 +274,7 @@ export default {
 }
 
 .btn-gradient2 {
-  background: $gradient_btn2;
+  background: $gradient_2;
   color: white !important;
 }
 

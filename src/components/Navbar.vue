@@ -59,7 +59,7 @@
           <v-btn icon tile width="100%" class="px-5" href="https://github.com/Lithos-hub/VUEJS-iMovies" target="_blank">
             <v-icon class="mr-2"> mdi-github </v-icon>
               <div id="version-info" class="ml-2">
-                <p>v.{{ major }}.{{ minor }}.{{ patch }}</p>
+                <p>v{{ major }}.{{ minor }}.{{ patch }}</p>
               </div>
           </v-btn>
       </div>
@@ -224,7 +224,7 @@ export default {
 }
 
 .language-icon {
-  background: $gradient_btn1;
+  background: $gradient_1;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -238,7 +238,7 @@ export default {
 }
 
 .username-drawer {
-  background: $gradient_btn1;
+  background: $gradient_1;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -454,7 +454,7 @@ export default {
 
   .lang-list {
     border: 1px solid pink !important;
-    background: $gradient_btn4 !important;
+    background: $gradient_4 !important;
   }
 
 .language-menu-item {

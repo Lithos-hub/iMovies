@@ -1,10 +1,12 @@
 <template>
   <v-container fluid>
+    <v-img class="error-404-background" src="../assets/img/404-background.png"></v-img>
     <v-row>
       <v-col lg="4"></v-col>
       <v-col lg="4" cols="12" class="text-center mx-auto">
         <v-btn
-          color="transparent"
+          color="secondary"
+          tile
           @click="sound = !sound"
           id="sound-btn"
           elevation="10"
@@ -26,15 +28,18 @@
             >4
           </h1>
         </div>
-        <div id="img-text-btn-wrappper">
+        <div class="centered-wrapper">
           <v-img
             src="../assets/img/obiwan.png"
             id="error404-img"
-            class="mx-auto"
           ></v-img>
+          <div class="saber-wrapper">
+            <div class="saber"></div>
+          </div>
+        </div>
+
           <h1 id="error404-img-text" class="text-center">
-            I have a very bad feeling about this... <br />
-            You should come back!
+            {{ $t('error-404.text1') }} <br />
           </h1>
 
           <v-btn
@@ -51,7 +56,6 @@
             preload="preload"
             v-if="sound"
           ></audio>
-        </div>
       </v-col>
       <v-col lg="4"></v-col>
     </v-row>
@@ -89,13 +93,26 @@ export default {
 
 // COMMON
 
+.error-404-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+#content-row {
+  z-index: 999;
+}
+
 #sound-btn:focus {
   outline: none;
 }
 
 #tittle-wrapper {
   display: flexbox;
-  margin-top: 100px;
+  margin: 0;
 }
 
 #deathstar {
@@ -104,6 +121,48 @@ export default {
   right: 0px;
   bottom: 0px;
   animation: move 3s linear infinite;
+}
+
+.saber-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.saber {
+  width: 110px;
+  background: white;
+  position: relative;
+  height: 14px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px white, 0px 0px 15px blue, 0px 0px 25px cyan;
+  transform: rotate(45deg);
+  animation: neon 100ms linear infinite alternate-reverse;
+  z-index: 99;
+}
+
+.centered-wrapper {
+  width: auto;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+}
+
+// neon animation
+
+@keyframes neon {
+  0% {
+    box-shadow: 0px 0px 10px white, 0px 0px 15px blue, 0px 0px 25px cyan;
+  }
+  50% {
+    box-shadow: 0px 0px 10px white, 0px 0px 15px cyan, 0px 0px 25px white;
+  }
+  100% {
+    box-shadow: 0px 0px 10px white, 0px 0px 15px blue, 0px 0px 25px cyan;
+  }
 }
 
 @-webkit-keyframes move {
@@ -142,108 +201,29 @@ export default {
   }
 }
 
-// ******* MOBILE RESPONSIVE ******* //
-@media only screen and (min-width: 360px) {
-  #error404-img {
-    width: 100px;
-  }
-
-  #error404-img-text {
-    color: white;
-    text-shadow: 0px 0px 10px aqua, 0px 0px 5px white;
-  }
-
-  #error404-title {
-    font-size: 5em;
-    display: flex;
-    font-family: $style4;
-    letter-spacing: 4px;
-    color: white;
-    text-shadow: 0px 0px 20px red, 0px 0px 10px white;
-  }
-  #deathstar {
-    max-width: 60px;
-    max-height: 60px;
-  }
-
-  #img-text-btn-wrappper {
-    position: absolute;
-    bottom: 200px;
-  }
-
-  #go-back-btn {
-    margin-top: 50px;
-    box-shadow: 0px 0px 20px greenyellow;
-    transition: 0.3s;
-    width: 80%;
-    color: $dark;
-    background: white;
-    font-size: auto;
-  }
-}
-// ******* LAPTOP RESPONSIVE ******* //
-@media only screen and (min-width: 767px) {
-  #error404-img {
-    width: 150px;
-  }
-
-  #error404-img-text {
-    color: white;
-    text-shadow: 0px 0px 10px aqua, 0px 0px 5px white;
-  }
-
-  #error404-title {
-    font-size: 6em;
-    display: flex;
-    font-family: $style4;
-    letter-spacing: 2px;
-    color: white;
-    text-shadow: 0px 0px 20px red, 0px 0px 10px white;
-  }
-
-  #deathstar {
-    max-width: 90px;
-    max-height: 90px;
-  }
-
-  #img-text-btn-wrappper {
-    position: relative;
-    bottom: 0px;
-  }
-
-  #go-back-btn {
-    margin-top: 20px;
-    box-shadow: none;
-    transition: 0.3s;
-    width: auto;
-    color: white;
-    background: $dark;
-    font-size: auto;
-
-    &:hover {
-      box-shadow: 0px 0px 30px greenyellow, 0px 0px 10px white;
-      width: 100%;
-      color: $dark;
-      letter-spacing: 10px;
-      font-size: 18px;
-      background: white;
-    }
-  }
-}
-
-// ******* DESKTOP RESPONSIVE ******* //
-@media only screen and (min-width: 1370px) {
   #error404-img {
     width: 200px;
+    position: relative;
+    left: 30%;
+
   }
 
   #error404-img-text {
     color: white;
     text-shadow: 0px 0px 10px aqua, 0px 0px 5px white;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   #error404-title {
-    font-size: 9em;
+    width: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -150%);
+    font-size: 12em;
     display: flex;
     font-family: $style4;
     letter-spacing: 15px;
@@ -252,17 +232,15 @@ export default {
   }
 
   #deathstar {
-    max-width: 100px;
-    max-height: 100px;
-  }
-
-  #img-text-btn-wrappper {
-    position: absolute;
-    bottom: 200px;
+    max-width: 180px;
+    max-height: 180px;
   }
 
   #go-back-btn {
-    margin-top: 50px;
+    bottom: 10%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    position: absolute;
     box-shadow: none;
     transition: 0.3s;
     width: auto;
@@ -272,12 +250,12 @@ export default {
 
     &:hover {
       box-shadow: 0px 0px 30px greenyellow, 0px 0px 10px white;
-      width: 100%;
+      width: 50%;
       color: $dark;
       letter-spacing: 10px;
       font-size: 18px;
       background: white;
     }
-  }
+
 }
 </style>

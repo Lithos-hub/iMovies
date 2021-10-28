@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <SectionTitle :sectionSubtitle="subtitle" />
+    <SectionTitle :title="sectionTitle" />
 
     <div class="list-group">
       <div class="list" v-for="(item, i) in changes" :key="i">
@@ -24,144 +24,148 @@ export default {
   },
   data() {
     return {
-      subtitle: "Changelog",
+      sectionTitle: this.$t('comp-sectionTitle.changelog'),
       changes: [
         {
-          version: "Version 1.1.0",
+          version: "v1.1.0",
           changes: [
-            "Added dynamic routes on main page when you click over a movie image to get details about that movie.",
+            this.$t('view-changelog.1_1_0')
           ],
         },
         {
-          version: "Version 1.2.0",
+          version: "v1.2.0",
           changes: [
-            "Added dynamic trailers dialogs in /movie/id page.",
-            "Added some aesthetic changes in /trailers page.",
+            this.$t('view-changelog.1_2_0-1'),
+            this.$t('view-changelog.1_2_0-2')
           ],
         },
         {
-          version: "Version 1.3.0",
+          version: "v1.3.0",
           changes: [
-            "Optimized code in the Genres section using v-bind and @click to use a single function to return movies of different genres.",
-            "Some aesthetic changes in general.",
+            this.$t('view-changelog.1_3_0-1'),
+            this.$t('view-changelog.1_3_0-2')
           ],
         },
         {
-          version: "Version 1.4.0",
+          version: "v1.4.0",
           changes: [
-            "New features in Trending section.",
-            "Optimized code in Ranking section.",
-            "New responsive features in Ranking section and some aesthetic changes.",
+            this.$t('view-changelog.1_4_0-1'),
+            this.$t('view-changelog.1_4_0-2'),
+            this.$t('view-changelog.1_4_0-3')
           ],
         },
         {
-          version: "Version 1.5.0",
+          version: "v1.5.0",
           changes: [
-            "Added My Movies section.",
-            "Added new features (Watched, Favourite, Rate and To-Watch) in Ranking section using LocalStorage.",
+            this.$t('view-changelog.1_5_0-1'),
+            this.$t('view-changelog.1_5_0-2')
           ],
         },
         {
-          version: "Version 1.6.0",
+          version: "v1.6.0",
           changes: [
-            "Optimized code in Trailers section.",
-            "General aesthetic improvements.",
-            "Info button available in My Movies section.",
-            "Now is possible to save the user rates for each movie in My Movies.",
+            this.$t('view-changelog.1_6_0-1'),
+            this.$t('view-changelog.1_6_0-2'),
+            this.$t('view-changelog.1_6_0-3'),
+            this.$t('view-changelog.1_6_0-4')
           ],
         },
         {
-          version: "Version 1.6.1",
+          version: "v1.6.1",
           changes: [
-            "Dynamic changelog.",
-            "New logo.",
-            "Fixed some api issues.",
+            this.$t('view-changelog.1_6_1-1'),
+            this.$t('view-changelog.1_6_1-2'),
+            this.$t('view-changelog.1_6_1-3')
           ],
         },
         {
-          version: "Version 1.7.0",
+          version: "v1.7.0",
           changes: [
-            "New section 'Search' added.",
-            "Now you can search for movies and see information such as the platforms where those movies are available for streaming, buying or renting.",
+            this.$t('view-changelog.1_7_0-1'),
+            this.$t('view-changelog.1_7_0-2')
           ],
         },
         {
-          version: "Version 1.7.2",
+          version: "v1.7.2",
           changes: [
-            "More info is shown in Search section: dynamic movie genres (the API returns an ID for each movie genre and you have to 'translate' it in the specific genre); movie overview.",
-            "Some aesthetic improvements in that section have been added.",
+            this.$t('view-changelog.1_7_2-1'),
+            this.$t('view-changelog.1_7_2-2')
           ],
         },
         {
-          version: "Version 1.7.5",
+          version: "v1.7.5",
           changes: [
-            "New info displayed in Search section: vote average and vote ratings.",
-            "The 'View Trailer' button is now a component anywhere in the app.",
+            this.$t('view-changelog.1_7_5-1'),
+            this.$t('view-changelog.1_7_5-2')
           ],
         },
         {
-          version: "Version 1.7.6",
+          version: "v1.7.6",
           changes: [
-            "Fixed some issues with regard to the display of the trailer component.",
+            this.$t('view-changelog.1_7_6')
           ],
         },
         {
-          version: "Version 1.7.7",
-          changes: ["Error 404 page added."],
-        },
-        {
-          version: "Version 1.7.9",
+          version: "v1.7.7",
           changes: [
-            "Fixed an issue with the API call in the trending section.",
-            "Added an initial (non functional at this moment) page for user login and register.",
+            this.$t('view-changelog.1_7_7')
           ],
         },
         {
-          version: "Version 1.8.0",
+          version: "v1.7.9",
           changes: [
-            "Fixed an issue with the API call in the trailers section.",
-            "Aesthetic changes and improvements in the trailers section.",
-            "Responsive improvements in the navbar component.",
+            this.$t('view-changelog.1_7_9-1'),
+            this.$t('view-changelog.1_7_9-2')
           ],
         },
         {
-          version: "Version 1.9.0",
+          version: "v1.8.0",
           changes: [
-            "Added a login/register system without backend using LocalStorage. Added avatar option. The user is now be able to save movies in some categories with each account. On the other hand, the default account has now some hidden features.",
+            this.$t('view-changelog.1_8_0-1'),
+            this.$t('view-changelog.1_8_0-2'),
+            this.$t('view-changelog.1_8_0-3')
           ],
         },
         {
-          version: "Version 1.9.1",
-          changes: ["Improved the protected router system."],
-        },
-        {
-          version: "Version 1.9.2",
+          version: "v1.9.0",
           changes: [
-            "Added permanent icons in the Ranking section. Now the icons will remain over each corresponding movie even if the user exits the view or logs out.",
+            this.$t('view-changelog.1_9_0')
           ],
         },
         {
-          version: "Version 1.9.5",
+          version: "v1.9.1",
           changes: [
-            "Added reset statistics function in My Movies view.",
-            "In the ranking section, if the movie has been previously selected, it will be deleted. Now you can remove the rate or overwrite it.",
-            "Added 'show details' function when clicking in a movie in Ranking section.",
+            this.$t('view-changelog.1_9_1')
           ],
         },
         {
-          version: "Version 2.0.0",
+          version: "v1.9.2",
           changes: [
-            "Added internationalization (ENG / SPA) in all the app.",
-            "Improved and expanded the search system. Now, is posible to search by movie title or actor/actress name.",
-            "Added globally design improvements.",
-            "Added a new '{{ $t('app-buttons.add') }}' globally system.",
-            "Added infinite scroll in Popular view (old Ranking view).",
-            "Now the user can search by year in Popular view.",
-            "Refactoring and improvements with Vuex.",
-            "New components: Snackbar to success/error/info messages; loading data bar; 'Add to my Movies' dialog.",
-            "New landing page in /home.",
-            "New account settings view."
-            ],
+            this.$t('view-changelog.1_9_2')
+          ],
+        },
+        {
+          version: "v1.9.5",
+          changes: [
+            this.$t('view-changelog.1_9_5-1'),
+            this.$t('view-changelog.1_9_5-2'),
+            this.$t('view-changelog.1_9_5-3')
+          ],
+        },
+        {
+          version: "v2.0.0",
+          changes: [
+            this.$t('view-changelog.2_0_0-1'),
+            this.$t('view-changelog.2_0_0-2'),
+            this.$t('view-changelog.2_0_0-3'),
+            this.$t('view-changelog.2_0_0-4'),
+            this.$t('view-changelog.2_0_0-5'),
+            this.$t('view-changelog.2_0_0-6'),
+            this.$t('view-changelog.2_0_0-7'),
+            this.$t('view-changelog.2_0_0-8'),
+            this.$t('view-changelog.2_0_0-9'),
+            this.$t('view-changelog.2_0_0-10')
+          ],
         },
       ],
     };

@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       show: true,
-      messageError: "Video no available"
+      messageError: this.$t('comp-trailerDialog.noAvailable')
     };
   },
   computed: {

@@ -363,11 +363,11 @@ h5 {
 }
 
 .gradient-btn1 {
-  background: $gradient_btn3;
+  background: $gradient_3;
 }
 
 .gradient-btn2 {
-  background: $gradient_btn4;
+  background: $gradient_4;
 }
 
 .language-btn {

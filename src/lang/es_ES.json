@@ -1,4 +1,10 @@
 {
+  "error-404": {
+    "soundDisabled": "El sonido está desactivado",
+    "soundActivated": "El sonido está activado",
+    "text1": "Esta no es la página que estás buscando...",
+    "comeback": "Regresar"
+  },
   "navbar": {
     "user": "Usuario: ",
     "lang": "Idioma: ",
@@ -118,5 +124,135 @@
     "byRate": "Por puntuación",
     "myRate": "Mi nota:",
     "noMovies": "Todavía no hay películas en esta categoría."
+  },
+  "view-trending": {
+    "overview": "Sinopsis",
+    "casting": "Reparto",
+    "as": " como "
+  },
+  "view-popular": {
+    "writeYear": "Escribe un año",
+    "showDetails": "Ver detalles",
+    "message1": "La primera 'película' fue realizada em 1878 y se llama ",
+    "message2": "The Horse in Motion ",
+    "message3": "o",
+    "message4": "  Sallie Gardner at a Gallop",
+    "message5": "  Así que, ¡inténtalo con otro año!"
+  },
+  "view-changelog": {
+    "1_1_0": "Añadidas rutas dinámicas en la vista principal cuando se pulsa sobre la imagen de una película para obtener detalles sobre la misma",
+    "1_2_0-1": "Añadidos diálogos de trailers dinámicos en la vista /película/id",
+    "1_2_0-2": "Añadidos algunos cambios estéticos en la vista /trailers",
+    "1_3_0-1": "Optimizado el código en la sección de Géneros usando v-bind y @click para usar una sola función para devolver películas de diferentes géneros",
+    "1_3_0-2": "Algunos cambios estéticos en general",
+    "1_4_0-1": "Nuevas funciones en la sección Trending",
+    "1_4_0-2": "Código optimizado en la sección de Ranking",
+    "1_4_0-3": "Nuevas funcionalidades responsive en la sección de Ranking y algunos cambios estéticos",
+    "1_5_0-1": "Añadida la sección Mis películas",
+    "1_5_0-2": "Añadidas nuevas funcionalidades (Visto, Favorito, Calificación y Por Ver) en la sección Ranking usando LocalStorage",
+    "1_6_0-1": "Código optimizado en la sección Trailers",
+    "1_6_0-2": "Mejoras estéticas generales",
+    "1_6_0-3": "Botón de información disponible en la sección Mis películas",
+    "1_6_0-4": "Ahora es posible guardar las puntuaciones del usuario para cada película en Mis Películas",
+    "1_6_1-1": "Registro dinámico de cambios",
+    "1_6_1-2": "Nuevo logotipo",
+    "1_6_1-3": "Corregidos algunos problemas con la API",
+    "1_7_0-1": "Nueva sección 'Buscar' añadida",
+    "1_7_0-2": "Ahora se pueden buscar películas y ver información como las plataformas en las que esas películas están disponibles para streaming, compra o alquiler",
+    "1_7_2-1": "Se muestra más información en la sección de búsqueda: géneros de películas dinámicos (la API devuelve un ID para cada género de película y hay que 'traducirlo' en el género específico); resumen de películas.",
+    "1_7_2-2": "Se han añadido algunas mejoras estéticas en esa sección",
+    "1_7_5-1": "Nueva información mostrada en la sección de Búsqueda: media de votos y valoraciones de votos",
+    "1_7_5-2": "El botón 'Ver Tráiler' es ahora un componente en cualquier parte de la app",
+    "1_7_6": "Se han solucionado algunos problemas con respecto a la visualización del componente del trailer",
+    "1_7_7": "Se ha añadido la vista de Error 404",
+    "1_7_9-1": "Corregido un problema con la llamada a la API en la sección de Trending",
+    "1_7_9-2": "Añadida una vista inicial (no funcional en este momento) para el inicio de sesión y registro de usuarios",
+    "1_8_0-1": "Corregido un problema con la llamada a la API en la sección de trailers",
+    "1_8_0-2": "Cambios estéticos y mejoras en la sección de trailers",
+    "1_8_0-3": "Mejoras de respuesta en el componente navbar",
+    "1_9_0": "Añadido un sistema de login/registro sin backend usando LocalStorage. Añadida la opción de avatar. El usuario puede ahora guardar películas en algunas categorías con cada cuenta. Por otro lado, la cuenta por defecto tiene ahora algunas características ocultas",
+    "1_9_1": "Mejorado el sistema de router protegido",
+    "1_9_2": "Añadidos iconos permanentes en la sección de Ranking. Ahora los iconos permanecerán sobre cada película correspondiente aunque el usuario salga de la vista o cierre la sesión.",
+    "1_9_5-1": "Añadida la función de reinicio de estadísticas en la vista de Mis Películas",
+    "1_9_5-2": "En la sección de clasificación, si la película ha sido seleccionada previamente, se eliminará. Ahora se puede eliminar la clasificación o sobrescribirla",
+    "1_9_5-3": "Añadida la función 'mostrar detalles' al hacer clic en una película en la sección de clasificación",
+    "2_0_0-1": "Añadida la internacionalización (ENG / SPA) en toda la app",
+    "2_0_0-2": "Mejorado y ampliado el sistema de búsqueda. Ahora es posible buscar por el título de la película o por el nombre del actor/actriz",
+    "2_0_0-3": "Añadidas mejoras globales de diseño",
+    "2_0_0-4": "Añadido un nuevo sistema para añadir películas a nivel global",
+    "2_0_0-5": "Añadido el scroll infinito en la vista Popular (antigua vista Ranking)",
+    "2_0_0-6": "Ahora el usuario puede buscar por año en la vista Popular",
+    "2_0_0-7": "Refactorización y mejoras con Vuex",
+    "2_0_0-8": "Nuevos componentes: Snackbar para mensajes de éxito/error/información; barra de datos de carga; diálogo 'Añadir a mis películas'",
+    "2_0_0-9": "Nueva landing page en /home",
+  "2_0_0-10":  "Nueva vista de configuración de la cuenta"
+  },
+  "view-about": {
+    "title": "Acerca de iMovies",
+    "text1": "iMovies es una aplicación que muestra información sobre películas utilizando la API de The Movie Database",
+    "text2": "Desde la versión 1.9.0, es posible guardar películas en algunas categorías como 'Favoritos', 'Lista de deseos', 'Vistos' y 'Puntuados'",
+    "text3": "En noviembre de 2021 se lanzó la versión 2.0.0 con muchas mejoras y algunas nuevas características. El sistema de almacenamiento fue mejorado y configurado de forma global, por lo que el usuario es capaz de guardar y calificar las películas en toda la aplicación utilizando LocalStorage.",
+    "text4": "Por otro lado, la landing page fue cambiada a un 'estilo Netflix'. La vista de clasificación fue renombrada como Popular, y se añadió una forma sencilla de buscar películas por año. La vista de Buscar fue modificada y se incluyó un sistema de búsqueda dual: por película, y por nombre de artista.",
+    "text5": "Por último, pero no menos importante, se agregó la internacionalización usando i18n. Así, tanto la app como la información de las películas está disponible en inglés y español.",
+    "text6": "Esta app está en constante desarrollo, y habrá nuevos contenidos en el futuro"
+  },
+  "view-movie-id": {
+    "releaseDate":"Fecha de lanzamiento: ",
+    "overview": "Sinopsis",
+    "average": "Nota media",
+    "votes": "Número de votos",
+    "language": "Idioma original"
+  },
+  "view-account": {
+    "profile": "Perfil",
+    "security": "Seguridad",
+    "appearance": "Apariencia",
+    "notifications": "Notificaciones",
+    "username": "Nombre de usuario: ",
+    "password": "Contraseña: ",
+    "email": "E-mail: ",
+    "change": "Modificar",
+    "avatar": "Avatar",
+    "changeAvatar": "Cambiar avatar"
+  },
+  "comp-addTo": {
+    "add": "Añadir película a...",
+    "favourite": "Favoritas",
+    "wishlist": "Lista de deseos",
+    "watched": "Vistas",
+    "rated": "Puntuadas",
+    "rate1": "Puntuada con ",
+    "rate2": " puntos",
+    "rate-dialog-title": "Puntua la película",
+    "rate-dialog-btn1": "Guardar la nota",
+    "rate-dialog-btn2": "Actualizar la nota",
+    "done": "Hecho"
+  },
+  "comp-loading": {
+    "loading": "Cargando"
+  },
+  "comp-sectionTitle": {
+    "search1": "Buscar por título de película",
+    "search2": "Buscar por nombre de artista",
+    "mymovies": "Películas guardadas",
+    "trending": "Películas populares actuales",
+    "trailers": "Trailers de los últimos lanzamientos",
+    "genres": "Películas por género",
+    "popular": "Películas populares por año",
+    "changelog": "Historial de cambios"
+  },
+  "comp-snackbar": {
+    "favourite-added": "Película añadida a la categoría de FAVORITAS",
+    "favourite-removed": "Película eliminada de la categoría FAVORITAS",
+    "watched-added": "Película añadida a la categoría de VISTAS",
+    "watched-removed": "Película eliminada de la categoría VISTAS",
+    "wishlist-added": "Película añadida a la LISTA DE DESEOS",
+    "wishlist-removed": "Película eliminada de la LISTA DE DESEOS",
+    "rate-added": "Película añadida a la categoría de PUNTUADAS",
+    "rate-removed": "Película eliminada de la categoría PUNTUADAS",
+    "rate-updated": "Puntuación de la película actualizada"
+  },
+  "comp-trailerDialog": {
+    "noAvailable": "Video no disponible"
   }
 }

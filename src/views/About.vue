@@ -7,13 +7,13 @@
     <v-row class="mt-10">
       <v-col></v-col>
       <v-col class="text-center">
-        <h2 class="text-h1 cyan--text text-center mb-10">About iMovies</h2>
-        <p>iMovies is an app to show information about movies using The Movie Database API.</p>
-        <p>Since the 1.9.0 version, it is possible to save movies in some categories such as 'Favourite', 'Wish List', 'Watched' and 'Rated'.</p>
-        <p>In November 2021 was released the 2.0.0 version with a lot of improvements and some new features. The storage system was improved and setted in a globally way, so the user is able to save and rate movies all around the app using LocalStorage.</p>
-        <p>In the other hand, the landing page was changed in a 'Netflix style'. Ranking view was renamed as Popular, and it was added a symple way to search movies by year. The Search view was modified and it was included a dual search system: by movie, and by actor/actress name.</p>
-        <p>Last but not least, it was added internationalization using i18n. So, both the app and the movies info is available in English and Spanish.</p>
-        <p>This app is under constant development, and it will be new content in the future.</p>
+        <h2 class="text-h1 cyan--text text-center mb-10">{{ $t('view-about.title') }}</h2>
+        <p>{{ $t('view-about.text1') }}</p> 
+        <p>{{ $t('view-about.text2') }}</p>
+        <p>{{ $t('view-about.text3') }}</p>
+        <p>{{ $t('view-about.text4') }}</p>
+        <p>{{ $t('view-about.text5') }}</p>
+        <p>{{ $t('view-about.text6') }}</p> 
       </v-col>
       <v-col></v-col>
     </v-row>

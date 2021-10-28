@@ -1,6 +1,6 @@
 <template>
   <div id="popular-view">
-    <SectionTitle :sectionSubtitle="subtitle" />
+    <SectionTitle :title="sectionTitle" />
 
     <!-- ADD TO MY MOVIES DIALOG -->
     <AddToDialog
@@ -18,7 +18,7 @@
         dark
         color="cyan"
         width="auto"
-        label="Write a year"
+        :label="$t('view-popular.writeYear')"
         class="rounded-0"
         @change="getMoviesByYear({year, page}); checkAndSave()">
         </v-text-field>
@@ -26,7 +26,15 @@
       <v-col />
     </v-row>
 
-    <h3 class="error--text text-center" v-if="incorrectYear">The first 'movie' was made in 1878 and it's called <i class="cyan--text">The Horse in Motion </i>or<i class="cyan--text"> Sallie Gardner at a Gallop</i>. <br> So, try with another year!</h3>
+    <h3 class="error--text text-center" v-if="incorrectYear">
+      {{ $t('view-popular.message1') }}
+      <i class="cyan--text">{{ $t('view-popular.message2') }}</i>
+      {{ $t('view-popular.message3') }}
+      <i class="cyan--text">{{ $t('view-popular.message4') }}</i>
+      <br> 
+      <br> 
+      {{ $t('view-popular.message5') }}
+    </h3>
     
     <v-container>
         <v-row no-gutters>
@@ -52,7 +60,7 @@
                       @click="showDetails(item)"
                     >
                       <div id="showDetails-text">
-                        <p>Show details</p>
+                        <p>{{ $t('view-popular.showDetails') }}</p>
                       </div>
                     </v-img>
                     <v-btn
@@ -94,7 +102,7 @@ export default {
   },
   data() {
     return {
-      subtitle: "Popular movies by year",
+      sectionTitle: this.$t('comp-sectionTitle.popular'),
       userID: null,
       year: '',
       incorrectYear: false,

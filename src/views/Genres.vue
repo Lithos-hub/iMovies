@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SectionTitle :sectionSubtitle="subtitle" />
+    <SectionTitle :title="sectionTitle" />
 
     <!-- TRAILER DIALOG -->
     <TrailerDialog
@@ -276,11 +276,11 @@
           </v-btn>
         </v-col>
         <!-- ********************* GO UP BUTTON ********************* -->
-        <a href="#" class="go_up_trigger">
+        <!-- <a href="#" class="go_up_trigger">
           <v-btn color="secondary" class="go-up-btn" @click="go_up()"
             >Go up!</v-btn
           >
-        </a>
+        </a> -->
       </v-row>
     </div>
     <div v-if="snackbarObject.snackbar">
@@ -313,8 +313,8 @@ export default {
   },
   data() {
     return {
+      sectionTitle: this.$t('comp-sectionTitle.genres'),
       trailerDialog: false,
-      subtitle: "Movies by genre",
       movieTitle: "",
       page: 1
     };
@@ -326,25 +326,25 @@ export default {
     ...mapActions(['getMoviesByGenre','getMovieTrailer', 'showAddToDialog', 'setAddMovie']),
     formatGenreTitle (genre) {
       let genres = {
-        ['28']: "Action",
-        ['12']: "Adventure",
-        ['16']: "Animation",
-        ['35']: "Comedy",
-        ['80']: "Crime",
-        ['99']: "Documentary",
-        ['18']: "Drama",
-        ['10751']: "Family",
-        ['14']: "Fantasy",
-        ['36']: "History",
-        ['27']: "Horror",
-        ['10402']: "Music",
-        ['9648']: "Mystery",
-        ['10749']: "Romance",
-        ['878']: "Science Fiction",
-        ['10770']: "TV Movie",
-        ['53']: "Thriller",
-        ['10752']: "War",
-        ['37']: "Western"
+        ['28']: this.$t('genres.action'), 
+        ['12']: this.$t('genres.adventure'), 
+        ['16']: this.$t('genres.animation'), 
+        ['35']: this.$t('genres.comedy'), 
+        ['80']: this.$t('genres.crime'), 
+        ['99']: this.$t('genres.documentary'), 
+        ['18']: this.$t('genres.drama'), 
+        ['10751']: this.$t('genres.family'), 
+        ['14']: this.$t('genres.fantasy'), 
+        ['36']: this.$t('genres.history'), 
+        ['27']: this.$t('genres.horror'), 
+        ['10402']: this.$t('genres.music'), 
+        ['9648']: this.$t('genres.mystery'), 
+        ['10749']: this.$t('genres.romance'), 
+        ['878']: this.$t('genres.sci-fi'), 
+        ['10770']: this.$t('genres.tv'), 
+        ['53']: this.$t('genres.thriller'), 
+        ['10752']: this.$t('genres.war'), 
+        ['37']: this.$t('genres.western'), 
       }
       return genres[genre]
     },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SectionTitle :sectionSubtitle="isSearchingMovie ? 'Search by movie title' : 'Search by actor/actress name'" v-if="showContent" />
+    <SectionTitle :title="isSearchingMovie ? $t('comp-sectionTitle.search1') : this.$t('comp-sectionTitle.search2')" v-if="showContent" />
 
     <!-- SEARCH BAR -->
     <v-container v-if="showContent" id="search-bar">
@@ -64,6 +64,11 @@
       v-if="trailerDialog"
       :video="trailerVideo"
       @close-dialog="trailerDialog = false"
+    />
+
+    <!-- ADD TO MY MOVIES DIALOG -->
+    <AddToDialog
+      v-if="addToDialog"
     />
     
     <v-progress-circular
@@ -178,18 +183,36 @@
           </p>
 
           <!-- MOVIE ACTIONS -->
-          <v-btn
-            class="d-block my-1 mr-auto"
-            block
-            outlined
-            color="red"
-            large
-            tile
-            @click="getTrailer(item)"
-            dark
-            >
-            <span class="white--text">{{ $t('app-buttons.view') }}</span>
-          </v-btn>
+          <v-row>
+            <v-col>
+              <v-btn
+                class="d-block my-1 mr-auto"
+                block
+                outlined
+                color="red"
+                large
+                tile
+                @click="getTrailer(item)"
+                dark
+                >
+                <span class="white--text">{{ $t('app-buttons.view') }}</span>
+              </v-btn>
+            </v-col>
+            <v-col>
+              <v-btn
+                class="d-block my-1 ml-auto"
+                width="350px"
+                outlined
+                color="purple"
+                large
+                tile
+                @click="showAddToDialog(true); setAddMovie(item)"
+                dark
+                >
+                  <span class="white--text">{{ $t('app-buttons.add') }}</span>
+                </v-btn>
+            </v-col>
+          </v-row>
         </v-col>
 
         <!-- WHERE TO WATCH INFO -->
@@ -308,11 +331,13 @@ import axios from "axios";
 import Snackbar from "../components/Snackbar";
 import { mapActions, mapState } from 'vuex';
 import TrailerDialog from "../components/TrailerDialog";
+import AddToDialog from "../components/AddToDialog";
 
 export default {
   components: {
     SectionTitle,
     TrailerDialog,
+    AddToDialog,
     Snackbar
   },
   data() {
@@ -331,7 +356,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['snackbarObject', "language", "apikey", "no_image", "imageURL", "trailerVideo"]),
+    ...mapState(['snackbarObject', "language", "apikey", "no_image", "imageURL", "trailerVideo", "addToDialog",]),
     randomMovieIMG () {
       let random = Math.floor(Math.random() * 11) + 1
       return require(`../assets/img/random-movie-${random}.jpg`);
@@ -347,7 +372,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['showError', 'getMovieTrailer']),
+    ...mapActions(['showError', 'getMovieTrailer', 'showAddToDialog', 'setAddMovie']),
       formatGenre (genre) {
       let genres = {
         ['28']: this.$t('genres.action'), 

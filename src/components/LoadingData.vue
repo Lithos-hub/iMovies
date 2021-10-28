@@ -6,7 +6,9 @@
       color="#00ffff"
       indeterminate
     ></v-progress-circular>
-    <p class="centered cyan--text">Loading</p>
+    <p class="centered cyan--text">
+      {{ $t('comp-loading.loading') }}
+    </p>
     </v-container>
 </template>
 

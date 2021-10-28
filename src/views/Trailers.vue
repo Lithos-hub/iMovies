@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SectionTitle :sectionSubtitle="subtitle" />
+    <SectionTitle :title="sectionTitle" />
 
     <!-- TRAILER DIALOG -->
     <TrailerDialog
@@ -48,7 +48,7 @@ export default {
   },
   data() {
     return {
-      subtitle: "Latest released trailers",
+      sectionTitle: this.$t('comp-sectionTitle.trailers'),
       trailerDialog: false,
       moviesIDs: [],
       moviesVideos: [],

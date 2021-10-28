@@ -50,10 +50,6 @@ export default {
 <style lang="scss">
 @import "src/scss/variables";
 
-body {
-  background: $dark2;
-}
-
 .main-content {
   background: $dark2 !important;
   color: white;
