@@ -17,8 +17,9 @@
     <!--********************************** DIALOG MOVIES ********************************** -->
           <v-dialog
             overlay-opacity="0.2"
-            width="60%"
+            width="70%"
             height="auto"
+            persistent
             translate="250px"
             v-model="genreDialog"
             elevation-4
@@ -38,21 +39,20 @@
                 </v-toolbar-title>
               </v-toolbar>
            <div v-for="(item, i) in moviesByGenre" :key="i">
-            <v-card tile id="genre-dialog-card">
+            <v-card color="#151515e7" tile id="genre-dialog-card" class="pb-10 white--text">
               <v-row no-gutters class="text-center">
-                  <v-col lg="12" xs="12" >
                     <v-img
                       class="mx-auto"
-                      max-width="100%"
+                      max-width="75%"
                       position="top"
-                      max-height="350px"
+                      max-height="50%"
                       :src="imageURL + item.backdrop_path">
                       <div id="movie-img-text">
                         <div>
-                          <h1 class="text-h5 white--text">{{ item.title }}</h1>
+                          <h1 class="text-h5 white--text shadow-text">{{ item.title }}</h1>
                         </div>
                         <div>
-                          <h1 class="text-h5 white--text">{{ formatDate(item.release_date) }}</h1>
+                          <h1 class="text-h5 white--text shadow-text">{{ formatDate(item.release_date) }}</h1>
                         </div>
                       </div>
                     </v-img>
@@ -62,11 +62,26 @@
                       {{ item.overview.length ? item.overview : $t('generic-messages.no-overview') }}
                     </p>
                     </v-col>
+                  </v-row>
+                  <v-row>
+                      <v-col>
+                        <v-btn
+                          width="100%"
+                          color="primary"
+                          outlined
+                          large
+                          tile
+                          @click="showInfo(item)"
+                          dark
+                          >
+                          <v-icon color="white">mdi-information</v-icon>
+                          </v-btn>
+                      </v-col>
                     <v-col>
                       <v-btn
-                        class="d-block mx-auto my-10"
-                        width="350px"
+                        width="100%"
                         color="red"
+                        outlined
                         large
                         tile
                         @click="getTrailer(item)"
@@ -74,22 +89,24 @@
                         >
                         <span class="white--text">{{ $t('app-buttons.view') }}</span>
                       </v-btn>
+                    </v-col>
+                    <v-col>
                       <v-btn
-                        class="d-block mx-auto my-5"
-                        width="350px"
+                        width="100%"
                         color="purple"
+                        outlined
                         large
                         tile
                         @click="showAddToDialog(true); setAddMovie(item)"
                         dark
                         >
-                          <span class="white--text">{{ $t('app-buttons.add') }}</span>
+                        <span class="white--text">{{ $t('app-buttons.add') }}</span>
                         </v-btn>
-                    </v-col>
+                      </v-col>
                   </v-row>
-                  </v-col>
               </v-row>
             </v-card>
+            <v-divider class="ma-0 pa-0 cyan"></v-divider>
            </div>
           </v-dialog>
 
@@ -275,12 +292,6 @@
             {{ formatGenreTitle('37') }}
           </v-btn>
         </v-col>
-        <!-- ********************* GO UP BUTTON ********************* -->
-        <!-- <a href="#" class="go_up_trigger">
-          <v-btn color="secondary" class="go-up-btn" @click="go_up()"
-            >Go up!</v-btn
-          >
-        </a> -->
       </v-row>
     </div>
     <div v-if="snackbarObject.snackbar">
@@ -322,8 +333,11 @@ export default {
   computed: {
     ...mapState(['snackbarObject', 'imageURL', 'moviesByGenre', 'selectedGenre', 'genreDialog', 'loadingData', 'trailerVideo', 'addToDialog']),
   },
+  created () {
+    window.scrollTo(0, 0)
+  },
   methods: {
-    ...mapActions(['getMoviesByGenre','getMovieTrailer', 'showAddToDialog', 'setAddMovie']),
+    ...mapActions(['getMoviesByGenre','getMovieTrailer', 'showAddToDialog', 'setAddMovie', 'showInfo']),
     formatGenreTitle (genre) {
       let genres = {
         ['28']: this.$t('genres.action'), 
@@ -350,9 +364,8 @@ export default {
     },
     closeDialog() {
       this.$store.commit('setGenreDialog', false)
-    },
-    go_up() {
-      window.scrollTo(0, 0);
+      let dialog = document.querySelector('.v-dialog')
+      dialog.scrollTo(0, 0)
     },
     formatDate(date) {
       const [year, month, day] = date.split('-')

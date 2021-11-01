@@ -14,7 +14,7 @@
       v-if="addToDialog"
     />
 
-    <v-container id="trendingMovies-container">
+    <v-container id="trendingMovies-container" class="mb-10">
       <!-- LIST OF MOVIES -->
         <div v-for="(item, i) in trendingMovies" :key="i" class="my-2">
           <v-row>
@@ -48,15 +48,15 @@
               <h4 class="info--text">{{ $t('view-trending.casting') }}</h4>
               <v-divider class="ma-0 mb-2"></v-divider>
               <p v-for="(cast, j) in item.cast.slice(0, 11)" :key="'A' + j">
-                  <v-icon color="info" size="10" class="mr-2">mdi-circle</v-icon>
+                  <v-icon color="primary" size="10" class="mr-2">mdi-circle</v-icon>
                   <span class="font-weight-bold mr-3">{{ cast.name }}</span>
                   <span class="info--text mr-2" v-if="cast.character">{{ $t('view-trending.as') }}</span>
                   <span class="white--text">{{ cast.character }}</span>
               </p>
             </v-col>
-            <v-col cols="3" class="text-right">
+            <v-col cols="3" class="text-right my-auto">
               <v-btn
-                class="d-block my-1 ml-auto"
+                class="d-block my-10 ml-auto"
                 width="350px"
                 outlined
                 color="red"
@@ -68,7 +68,7 @@
                 <span class="white--text">{{ $t('app-buttons.view') }}</span>
               </v-btn>
               <v-btn
-                class="d-block my-1 ml-auto"
+                class="d-block my-10 ml-auto"
                 width="350px"
                 outlined
                 color="purple"
@@ -79,6 +79,18 @@
                 >
                   <span class="white--text">{{ $t('app-buttons.add') }}</span>
                 </v-btn>
+                <v-btn
+                class="d-block my-10 ml-auto"
+                width="350px"
+                color="primary"
+                large
+                outlined
+                tile
+                @click="showInfo(item)"
+                dark
+                >
+                <v-icon color="white">mdi-information</v-icon>
+                 </v-btn>
               </v-col>
             </v-row>
       </div>
@@ -113,10 +125,11 @@ export default {
     ...mapState(["trendingMovies", "trailerVideo", "addToDialog", "imageURL"]),
   },
   mounted() {
+    window.scrollTo(0, 0);
     this.getTrending(true);
   },
   methods: {
-    ...mapActions(["getTrending", "getMovieTrailer", "showAddToDialog", "setAddMovie"]),
+    ...mapActions(['getTrending', 'getMovieTrailer', 'showAddToDialog', 'setAddMovie', 'showInfo']),
     getTrailer(item) {
       this.trailerDialog = true
       this.getMovieTrailer({ type: 'other', id: item.id })
@@ -134,9 +147,6 @@ export default {
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
-  body {
-    background: $dark2;
-  }
 
   #trendingMovies-sheet {
     background: linear-gradient(to right, $secondary, $dark2);
@@ -230,9 +240,6 @@ export default {
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
-  body {
-    background: $dark2;
-  }
 
   #trendingMovies-sheet {
     background: linear-gradient(to right, $secondary, $dark2);
@@ -317,9 +324,6 @@ export default {
 
 // ******* DESKTOP RESPONSIVE ******* //
 @media only screen and (min-width: 1370px) {
-  body {
-    background: $dark2;
-  }
 
   #trendingMovies-sheet {
     background: linear-gradient(to right, $secondary, $dark2);

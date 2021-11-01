@@ -87,12 +87,15 @@
     "passwordLength": "Introduce un mínimo de 8 caracteres",
     "passwordMatch": "Las contraseñas no coinciden",
     "success": "¡Genial! ¡Tu cuenta ha sido creada con éxito!",
-    "comingback": "Regresando..."
+    "comingback": "Regresando...",
+    "userExists": "¡Ese usuario ya existe!",
+    "formularioInvalido": "Formulario inválido"
   },
   "view-home": {
     "text1": "Trailer de la semana",
     "text2": "Película de la semana",
-    "ratings": " puntuaciones"
+    "ratings": " puntuaciones",
+    "noOverview": "No hay sinopsis disponible en tu idioma para esta película."
   },
   "view-search": {
     "byTitle": "Buscar por título de película",
@@ -110,7 +113,8 @@
     "gender": "Género: ",
     "releaseDate": "Fecha de lanzamiento: ",
     "male": "Hombre",
-    "female": "Mujer"
+    "female": "Mujer",
+    "noResults": "No se encontraron resultados"
   },
   "view-myMovies": {
     "row1": "Películas en lista de deseos: ",
@@ -137,7 +141,8 @@
     "message2": "The Horse in Motion ",
     "message3": "o",
     "message4": "  Sallie Gardner at a Gallop",
-    "message5": "  Así que, ¡inténtalo con otro año!"
+    "message5": "  Así que, ¡inténtalo con otro año!",
+    "noMovies": "¡Ups! No hay registros de películas para el año"
   },
   "view-changelog": {
     "1_1_0": "Añadidas rutas dinámicas en la vista principal cuando se pulsa sobre la imagen de una película para obtener detalles sobre la misma",
@@ -201,7 +206,7 @@
     "overview": "Sinopsis",
     "average": "Nota media",
     "votes": "Número de votos",
-    "language": "Idioma original"
+    "language": "Idioma/s"
   },
   "view-account": {
     "profile": "Perfil",

@@ -91,12 +91,15 @@
     "passwordLength": "Write at least 8 characters",
     "passwordMatch": "The passwords don't match",
     "success": "Great! Your account has been successfully created!",
-    "comingback": "Coming back..."
+    "comingback": "Coming back...",
+    "userExists": "That user already exists!",
+    "formularioInvalido": "Invalid form"
   },
   "view-home": {
     "text1": "Trailer of the week",
     "text2": "Movie of the week",
-    "ratings": " ratings"
+    "ratings": " ratings",
+    "noOverview": "This overview is not available in your language."
   },
   "view-search": {
     "byTitle": "Search by movie title",
@@ -114,7 +117,8 @@
     "gender": "Gender: ",
     "releaseDate": "Release date: ",
     "male": "Male",
-    "female": "Female"
+    "female": "Female",
+    "noResults": "No results found"
   },
   "view-myMovies": {
     "row1": "Wishlist movies: ",
@@ -141,7 +145,8 @@
     "message2": "The Horse in Motion ",
     "message3": "or",
     "message4": "  Sallie Gardner at a Gallop",
-    "message5": "  So, try with another year!"
+    "message5": "  So, try with another year!",
+    "noMovies": "Oops! There aren't movie regists for the year"
   },
   "view-changelog": {
     "1_1_0": "Added dynamic routes on main page when you click over a movie image to get details about that movie.",
@@ -192,7 +197,7 @@
    "2_0_0-10":  "New account settings view."
   },
   "view-about": {
-    "title": "Acerca de iMovies",
+    "title": "About iMovies",
     "text1": "iMovies is an app to show information about movies using The Movie Database API.",
     "text2": "Since the 1.9.0 version, it is possible to save movies in some categories such as 'Favourite', 'Wish List', 'Watched' and 'Rated'.",
     "text3": "In November 2021 was released the 2.0.0 version with a lot of improvements and some new features. The storage system was improved and setted in a globally way, so the user is able to save and rate movies all around the app using LocalStorage.",
@@ -205,7 +210,7 @@
     "overview": "Overview",
     "average": "Vote average",
     "votes": "Vote count",
-    "language": "Original language"
+    "language": "Language/s"
   },
   "view-account": {
     "profile": "Profile",

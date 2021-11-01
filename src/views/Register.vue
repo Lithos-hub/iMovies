@@ -190,7 +190,7 @@ export default {
     ...mapState(['snackbarObject', "user"]),
   },
   methods: {
-    ...mapActions(["showSnackbar", "showError"]),
+    ...mapActions(["showSnackbar"]),
     checkPasswords () {
       this.password === this.repassword ? '' : this.$t('view-register.passwordMatch')
     },
@@ -204,7 +204,7 @@ export default {
               user.userName === this.username
             ) {
               this.valid = false;
-              this.showError("That user already exists!");
+              this.showSnackbar({ text: this.$t('view-register.userExists'), color: "red" });
             } else {
               this.valid = true;
             }
@@ -240,7 +240,7 @@ export default {
 
 
       } else {
-        this.showError('Formulario inválido')
+        this.showSnackbar({ text: 'Formulario inválido', color: "red" })
       }
     },
     selectAvatar(item) {
@@ -251,7 +251,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "src/scss/variables";
 
 .register {

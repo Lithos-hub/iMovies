@@ -19,7 +19,8 @@
 
       <v-row no-gutters>
         <v-col
-         cols="3"
+          cols="3"
+          md="3"
           v-for="(item, i) in arrayMovies"
           :key="i"
           class="text-center mx-auto"
@@ -125,11 +126,17 @@ export default {
     ...mapState(['snackbarObject', 'user', 'imageURL', 'userID']),
   },
   methods: {
-    ...mapActions(['showSnackbar']),
+    ...mapActions(['showSnackbar', 'showInfo']),
     formatDate(date) {
       if (!date) return null
-      const [year, month, day] = date.split('-')
-      return `${day}/${month}/${year}`
+      if (date.includes('/')) {
+        const [day, month, year] = date.split('/')
+        return `${day}-${month}-${year}`
+      }
+      if (date.includes('-')) {
+        const [year, month, day] = date.split('-')
+        return `${day}-${month}-${year}`
+      }
     },
     removeMovie(item) {
       const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
@@ -142,36 +149,29 @@ export default {
 
         if (this.category === "favourite") {
           arrFavourite.splice(arrFavourite.indexOf(item), 1)
-          this.showSnackbar({text: "Removed from FAVOURITE category", color: "secondary"});
+          this.showSnackbar({text: this.$t('comp-snackbar.favourite-removed'), color: "secondary"});
           storage[this.userID].myMovies.favourite = arrFavourite;
           localStorage.setItem("storageUserDATA", JSON.stringify(storage));
         }
         if (this.category === "towatch") {
           arrWishlist.splice(arrWishlist.indexOf(item), 1)
-          this.showSnackbar({text: "Removed from WISH LIST category", color: "secondary"});
+          this.showSnackbar({text: this.$t('comp-snackbar.wishlist-removed'), color: "secondary"});
           storage[this.userID].myMovies.wishlist = arrWishlist;
           localStorage.setItem("storageUserDATA", JSON.stringify(storage));
         }
         if (this.category === "watched") {
           arrWatched.splice(arrWatched.indexOf(item), 1)
-          this.showSnackbar({text: "Removed from WATCHED category", color: "secondary"});
+          this.showSnackbar({text: this.$t('comp-snackbar.watched-removed'), color: "secondary"});
           storage[this.userID].myMovies.watched = arrWatched;
           localStorage.setItem("storageUserDATA", JSON.stringify(storage));
         }
         if (this.category === "byrate") {
           arrRated.splice(arrRated.indexOf(item), 1)
-          this.showSnackbar({text: "Removed from RATED category", color: "secondary"});
+          this.showSnackbar({text: this.$t('comp-snackbar.rate-removed'), color: "secondary"});
           storage[this.userID].myMovies.rated = arrRated;
           localStorage.setItem("storageUserDATA", JSON.stringify(storage));
         }
-    },
-    showInfo(item) {
-      // this.trailerDialog = true;
-      // this.title = item.title;
-      // this.overview = item.overview;
-      // this.release_date = item.release_date;
-      // this.img = item.backdrop_path;
-    },
+    }
   },
 };
 </script>

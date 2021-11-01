@@ -19,10 +19,10 @@
           <router-link :to="`/movie/${item.id}`">
             <v-img
               class="movie-img"
-              :src="imageURL + item.backdrop_path"
+              :src="item.backdrop_path !== undefined ? imageURL + item.backdrop_path : ''"
               @click="getMovieDetails(item.id)">
               </v-img>
-              <h3 class="movie-title">
+              <h3 class="movie-title shadow-text">
                 {{ item.title }}
               </h3>
           </router-link>
@@ -58,7 +58,7 @@
                 max-height="430px"
                 :src="movieOfTheWeek.poster_path !== null ? imageURL + movieOfTheWeek.poster_path : no_image"
                 class="movieOfTheWeek-img rounded">
-                <p class="movieOfTheWeek-date pa-2">{{
+                <p class="movieOfTheWeek-date pa-2 shadow-text">{{
                   movieOfTheWeek.release_date !== undefined
                     ? formatDate(movieOfTheWeek.release_date)
                     : $t('generic-messages.no-release')
@@ -97,6 +97,7 @@
                     <v-row>
                       <v-col>
                         <v-btn
+                          class="d-block my-5 ml-auto"
                           block
                           outlined
                           color="red"
@@ -107,9 +108,8 @@
                           id="trailer-btn">
                           <span class="white--text">{{ $t('app-buttons.view') }}</span>
                         </v-btn>
-                      </v-col>
-                      <v-col>
                         <v-btn
+                          class="d-block my-5 ml-auto"
                           block
                           outlined
                           color="purple"
@@ -121,14 +121,26 @@
                           >
                           <span class="white--text">{{ $t('app-buttons.add') }}</span>
                         </v-btn>
+                        <v-btn
+                        class="d-block my-5 ml-auto"
+                        block
+                        color="primary"
+                        large
+                        outlined
+                        tile
+                        @click="showInfo(movieOfTheWeek)"
+                        dark
+                        >
+                        <v-icon color="white">mdi-information</v-icon>
+                        </v-btn>
                       </v-col>
                     </v-row>
                   </v-col>
                 </v-row>
                 <v-container>
                   <!-- MOVIE OVERVIEW -->
-                  <p :class="!movieOfTheWeek.overview.length ? 'error--text mt-5 text-justify' : 'mt-5 text-justify'">
-                    {{ !movieOfTheWeek.overview.length ? 'Sorry. This overview is not available in your language.' : movieOfTheWeek.overview }}
+                  <p :class="movieOfTheWeek.overview === '' ? 'error--text mt-5 text-justify' : 'mt-5 text-justify'">
+                    {{ movieOfTheWeek.overview === '' ? $t('view-home.noOverview') : movieOfTheWeek.overview }}
                   </p>
                 </v-container>
             </v-col>
@@ -160,6 +172,8 @@ export default {
     this.getMovieOfTheWeek()
   },
   mounted () {
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
     setTimeout(() => {
       this.getMovieTrailer({type: 'ofTheWeek', id: this.trendingMovies[0].id })
       this.enableScrollX();
@@ -172,20 +186,26 @@ export default {
     computedRateColor () {
       let movieRate = this.movieOfTheWeek.vote_average
       let color = ''
-      if (movieRate < 10) {
-        color = 'green'
+      if (movieRate <= 10) {
+        color = 'purple'
       }
-      if (movieRate < 8) {
+      if (movieRate < 9) {
         color = 'info'
       }
+      if (movieRate < 7) {
+        color = 'green'
+      }
       if (movieRate < 5) {
+        color = 'orange'
+      }
+      if (movieRate < 3) {
         color = 'red'
       }
       return color
     }
   },
   methods: {
-    ...mapActions(['getLatestReleases', 'getMovieTrailer', 'getTrending', 'getMovieOfTheWeek', 'getMovieDetails', 'showAddToDialog']),
+    ...mapActions(['getLatestReleases', 'getMovieTrailer', 'getTrending', 'getMovieOfTheWeek', 'getMovieDetails', 'showAddToDialog', 'showInfo']),
     formatDate(date) {
       const [year, month, day] = date.split('-')
       return `${day}/${month}/${year}`
@@ -516,7 +536,6 @@ export default {
     backdrop-filter: blur(5px);
     background: $gradient_blur2;
     color: white;
-    text-shadow: 2px 2px 3px black;
   }
 
   .movieOfTheWeek-img {

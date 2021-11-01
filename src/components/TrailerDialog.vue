@@ -1,6 +1,7 @@
 <template>
   <v-dialog
     v-model="show"
+    persistent
     :overlay-opacity="0.8"
   >
     <v-card height="auto" width="auto" class="cardDialog pa-0 ma-0">

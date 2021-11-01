@@ -14,7 +14,7 @@
 
     <!-- ************** MOVIE CARD CONTENT ************** -->
   <v-sheet id="sheet" color="transparent" tile class="pa-5">
-    <v-container fluid class="d-flex ma-5">
+    <v-container fluid class="d-flex ma-5 mb-10">
         <v-img :src="imageURL + movieDetails.poster_path" id="movie-img"></v-img>
 
         <v-card-title id="movie-title" class="text-h2 blue--text d-flex justify-space-between"
@@ -31,25 +31,17 @@
           </v-card-title>
 
         <v-container id="main-content">
-          <v-card-title class="gradient-background-4 white--text rounded pa-2 my-5"
-            >{{ $t('view-movie-id.overview') }}</v-card-title
-          >
+          <v-card-title class="gradient-background-4 white--text rounded pa-2 my-5">{{ $t('view-movie-id.overview') }}</v-card-title>
           <p class="cyan--text" id="movie-overview">
             {{ movieDetails.overview }}
           </p>
-          <v-card-title class="gradient-background-4 white--text rounded pa-2 my-5"
-            >{{ $t('view-movie-id.average') }}</v-card-title
-          >
+          <v-card-title class="gradient-background-4 white--text rounded pa-2 my-5">{{ $t('view-movie-id.average') }}</v-card-title>
           <p class="cyan--text" id="movie-note">{{ movieDetails.vote_average }}</p>
-          <v-card-title class="gradient-background-4 white--text rounded pa-2 my-5"
-            >{{ $t('view-movie-id.votes') }}</v-card-title
-          >
+          <v-card-title class="gradient-background-4 white--text rounded pa-2 my-5">{{ $t('view-movie-id.votes') }}</v-card-title>
           <p class="cyan--text" id="movie-count">{{ movieDetails.vote_count }}</p>
-          <v-card-title class="gradient-background-4 white--text rounded pa-2 my-5"
-            >{{ $t('view-movie-id.language') }}</v-card-title
-          >
-          <p class="cyan--text" id="movie-language">
-            {{ movieDetails.spoken_languages[0].english_name }}
+          <v-card-title class="gradient-background-4 white--text rounded pa-2 my-5">{{ $t('view-movie-id.language') }}</v-card-title>
+          <p v-for="(lang, i) in movieDetails.spoken_languages" :key="i" class="cyan--text" id="movie-language">
+            {{ lang.english_name }}
           </p>
           <v-row id="buttons-row" class="d-flex justify-space-between">
             <v-col class="text-center">
@@ -120,8 +112,10 @@ export default {
   created() {
     this.getMovieDetails(this.$route.params.id);
   },
+  mounted() {
+  },
   destroyed() {
-    commit('setMovieDetails', {})
+    this.$store.commit('setMovieDetails', {})
   },
   computed: {
     ...mapState(['movieDetails', 'trailerVideo', 'addToDialog', 'imageURL'])
@@ -133,7 +127,10 @@ export default {
       this.getMovieTrailer({ type: 'other', id: movieDetails.id })
     },
     comeBack() {
-      this.$router.go(-1);
+      this.$store.commit("setComesFromDetails", true);
+      setTimeout(() => { 
+        this.$router.go(-1);
+      }, 500)
     },
   },
 };

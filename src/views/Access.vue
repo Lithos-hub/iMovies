@@ -72,7 +72,7 @@
 
                     <v-btn
                       :loading="loading"
-                      :disabled="email === '' || password === ''"
+                      :disabled="email === '' || password.length < 8"
                       type="submit"
                       block
                       class="gradient-btn1 mt-5"
@@ -130,10 +130,10 @@
         </template>
         <v-list dark width="200px">
           <v-list-item class="text-center">
-            <v-list-item-title class="language-menu-item" id="esp-option" @click="changeLanguage('es-ES')"><span>ESP</span></v-list-item-title>
+            <v-list-item-title class="language-menu-item" id="esp-option" @click="changeLanguage('es-ES'), refresh()"><span>ESP</span></v-list-item-title>
           </v-list-item>
           <v-list-item class="text-center">
-            <v-list-item-title class="language-menu-item" id="eng-option" @click="changeLanguage('en-EN')"><span>ENG</span></v-list-item-title>
+            <v-list-item-title class="language-menu-item" id="eng-option" @click="changeLanguage('en-EN'), refresh()"><span>ENG</span></v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -192,6 +192,9 @@ export default {
   },
   methods: {
     ...mapActions(["changeLanguage"]),
+    refresh () {
+      this.$router.go(0);
+    },
     login(email, password) {
       this.formAlert = true;
 

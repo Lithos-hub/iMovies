@@ -11,7 +11,7 @@
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
       <div id="username-toolbar">
-        {{$t('navbar.user') }} <span class="cyan--text">@{{ user.userName }}</span>
+        {{$t('navbar.user') }} <span class="cyan--text">@{{ userData.userName }}</span>
       </div>
 
       <v-toolbar-title class="mx-auto">
@@ -77,13 +77,13 @@
       <v-list dense nav>
         <v-list-item-group v-model="group" active-class="black">
           <v-img
-            v-if="user.userAvatar !== undefined"
-            :src="user.userAvatar"
+            v-if="userData.userAvatar !== undefined"
+            :src="userData.userAvatar"
             width="90"
             height="90"
             class="avatar ma-5 ma-auto" />
           <h5 class="username-drawer text-center my-2">
-            @{{ user.userName }}
+            @{{ userData.userName }}
           </h5>
 
           <v-list-item to="/home">
@@ -102,7 +102,7 @@
               <v-list-item-title class="nav-links"> {{ item.text }} </v-list-item-title>
             </v-list-item-icon>
           </v-list-item>
-          <v-list-item v-if="!isDefault" :to="item.to">
+          <v-list-item v-if="!isDefault" :to="item.to" @click="setComingFromDetails">
             <v-list-item-icon>
               <v-icon class="nav-icons"> {{ item.icon }} </v-icon>
               <v-list-item-title class="nav-links"> {{ item.text }} </v-list-item-title>
@@ -129,16 +129,16 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import i18n from "@/plugins/i18n";
 
 export default {
-  name: "Navbar",
+  props: [
+    'userData'
+  ],
   data() {
     return {
       date: new Date().getFullYear(),
-      isDefault: Boolean,
-      user: {},
       id: null,
       major: 2,
       minor: 0,
@@ -159,10 +159,8 @@ export default {
       ]
     };
   },
-  created() {
-    this.setUser();
-  },
   computed: {
+    ...mapState(['isDefault']),
     displayText() {
       switch (this.$vuetify.breakpoint.name) {
         case "xs":
@@ -183,18 +181,6 @@ export default {
   },
   methods: {
   ...mapActions(["changeLanguage"]),
-    setUser() {
-      this.isDefault = this.$store.getters.defaultUser;
-      if (!this.isDefault) {
-        const userStorageData =
-          JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-        const userid = JSON.parse(localStorage.getItem("USERID")) || {};
-
-        this.user = userStorageData[userid.id];
-      } else {
-        this.user.userName = "DefaultUser";
-      }
-    },
     logout() {
       this.$store.commit("setDefault", false);
       this.$store.commit("isLogged", false);
@@ -202,7 +188,10 @@ export default {
     },
     refresh() {
       this.$router.go(0);
-    }
+    },
+    setComingFromDetails() {
+      this.$store.commit("setComesFromDetails", false);
+    },
   },
 };
 </script>
@@ -238,11 +227,11 @@ export default {
 }
 
 .username-drawer {
-  background: $gradient_1;
+  background: $gradient_2;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: brightness(2);
+  filter: brightness(3);
 }
 
 #drawer-below-section {
@@ -454,18 +443,19 @@ export default {
 
   .lang-list {
     border: 1px solid pink !important;
-    background: $gradient_4 !important;
+    background: $gradient_1 !important;
   }
 
 .language-menu-item {
+    text-shadow: 2px 2px 2px black;
+    padding: 1em;
     cursor: pointer;
     padding-inline: 2em;
-    &:hover {
-        color: cyan !important;
+    transition: all 0.3s ease-out;
 
-        span {
-            opacity: 1;
-        }
+    &:hover {
+      background: $dark2 !important;
+      color: aqua !important;
     }
 }
 

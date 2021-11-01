@@ -1,61 +1,80 @@
 <template>
   <div>
-    <SectionTitle :title="isSearchingMovie ? $t('comp-sectionTitle.search1') : this.$t('comp-sectionTitle.search2')" v-if="showContent" />
+    <SectionTitle
+      :title="
+        isSearchingMovie
+          ? $t('comp-sectionTitle.search1')
+          : this.$t('comp-sectionTitle.search2')
+      "
+      v-if="showContent"
+    />
 
     <!-- SEARCH BAR -->
     <v-container v-if="showContent" id="search-bar">
       <v-row no-gutters>
         <v-col md="12">
-            <div class="input-container">
-              <v-text-field
-                v-model="input"
-                class="input-text-field"
-                filled
-                dark
-                rounded
-                :label="$t('view-search.search')"
-                :background-color="isSearchingMovie ? 'primary' : 'green'"
-                append-icon="mdi-magnify"
-                full-width
-                @input="fillItemsList"
-                @keyup.enter="searchByInput(input)"
-                />
-                <v-list dark v-if="inputItemsList.length" id="items-list">
-                    <v-list-item v-for="(item, i) in inputItemsList" :key="i" @click="searchByInput(item)">
-                      <p class="white--text" v-if="!isSearchingMovie">{{ item.name }}</p>
-                      <p class="white--text" v-if="isSearchingMovie">{{ item.title }}</p>
-                    </v-list-item>
-                </v-list>
-            </div>
+          <div class="input-container">
+            <v-text-field
+              v-model="input"
+              class="input-text-field"
+              filled
+              dark
+              rounded
+              :label="$t('view-search.search')"
+              :background-color="isSearchingMovie ? 'primary' : 'green'"
+              append-icon="mdi-magnify"
+              full-width
+              @input="fillItemsList"
+              @keyup.enter="searchByInput(input)"
+            />
+            <v-list dark v-if="inputItemsList.length" id="items-list">
+              <v-list-item
+                v-for="(item, i) in inputItemsList"
+                :key="i"
+                @click="searchByInput(item)"
+              >
+                <p class="white--text" v-if="!isSearchingMovie">
+                  {{ item.name }}
+                </p>
+                <p class="white--text" v-if="isSearchingMovie">
+                  {{ item.title }}
+                </p>
+              </v-list-item>
+            </v-list>
+          </div>
         </v-col>
       </v-row>
     </v-container>
 
     <v-row class="options-buttons" v-if="showContent">
       <v-col cols="12" lg="6" md="12">
-        <v-btn dark color="primary" large width="350px" @click="isSearchingMovie = true">
-          {{ $t('view-search.byTitle') }}
+        <v-btn dark color="primary" large width="350px" @click="searchMovie()">
+          {{ $t("view-search.byTitle") }}
         </v-btn>
       </v-col>
       <v-col cols="12" lg="6" md="12">
-        <v-btn dark color="green" large width="350px" @click="isSearchingMovie = false">
-          {{ $t('view-search.byPerson') }}
+        <v-btn dark color="green" large width="350px" @click="searchPerson()">
+          {{ $t("view-search.byPerson") }}
         </v-btn>
       </v-col>
     </v-row>
 
-      <v-row no-gutters id="btn-row" v-if="!showContent">
-        <v-col cols="12" lg="6" md="12">
-          <v-img id="byMovie-btn" :src="randomMovieIMG" @click="isSearchingMovie = true; showContent = true">
-            <h1 id="byMovie-text" class="text-h4">{{ $t('view-search.byTitle') }}</h1>
-          </v-img>
-        </v-col>
-        <v-col cols="12" lg="6" md="12">
-          <v-img id="byPerson-btn" :src="randomPersonIMG"  @click="isSearchingMovie = false; showContent = true">
-            <h1 id="byPerson-text" class="text-h4">{{ $t('view-search.byPerson') }}</h1>
-          </v-img>
-        </v-col>
-      </v-row>
+    <v-row no-gutters id="btn-row" v-if="!showContent">
+      <v-col cols="12" lg="6" md="12">
+        <v-img id="byMovie-btn" :src="randomMovieIMG" @click="searchMovie()">
+          <h1 id="byMovie-text" class="text-h4">
+            {{ $t("view-search.byTitle") }}
+          </h1>
+        </v-img>
+      </v-col>
+      <v-col cols="12" lg="6" md="12">
+        <v-img id="byPerson-btn" :src="randomPersonIMG" @click="searchPerson()">
+          <h1 id="byPerson-text" class="text-h4">
+            {{ $t("view-search.byPerson") }}
+          </h1>
+        </v-img>
+      </v-col>
+    </v-row>
 
     <v-divider v-if="showContent"></v-divider>
 
@@ -67,15 +86,12 @@
     />
 
     <!-- ADD TO MY MOVIES DIALOG -->
-    <AddToDialog
-      v-if="addToDialog"
-    />
-    
+    <AddToDialog v-if="addToDialog" />
+
     <v-progress-circular
       v-if="loading"
       class="progressSpinner"
       :size="100"
-      :width="10"
       color="cyan"
       indeterminate
     ></v-progress-circular>
@@ -83,57 +99,90 @@
     <!-- RESULTS SEARCHING BY PERSON -->
 
     <v-container v-if="!loading">
-      <v-row v-for="(person, i) in searchedPerson" :key="'A' + i" class="pb-10 mt-10">
+      <v-row
+        v-for="(person, i) in searchedPerson"
+        :key="'A' + i"
+        class="pb-10 mt-10"
+      >
         <v-col md="3" class="mt-15">
           <v-img
-            :src="person.profile_path !== null ? imageURL + person.profile_path : no_image"
+            :src="
+              person.profile_path !== null
+                ? imageURL + person.profile_path
+                : no_image
+            "
             id="person-img"
             width="100%"
-            class="rounded elevation-10">
+            class="rounded elevation-10"
+          >
           </v-img>
           <v-list dark dense>
             <v-list-item>
-              {{ $t('view-search.age') }} <span class="ml-2 cyan--text"> {{ person.info.age }}</span>
+              {{ $t("view-search.age") }}
+              <span class="ml-2 cyan--text"> {{ person.info.age }}</span>
             </v-list-item>
             <v-list-item>
-              {{ $t('view-search.birth') }} <span class="ml-2 cyan--text"> {{ person.info.place_of_birth }}</span>
+              {{ $t("view-search.birth") }}
+              <span class="ml-2 cyan--text">
+                {{ person.info.place_of_birth }}</span
+              >
             </v-list-item>
             <v-list-item>
-              {{ $t('view-search.homepage') }}<span class="ml-2 cyan--text"> 
-                <a v-if="person.info.homepage" :href="person.info.homepage">{{ person.info.homepage }}</a>
-                <div v-else class="red--text">{{ $t('view-search.no-homepage') }}</div>
-                </span>
+              {{ $t("view-search.homepage")
+              }}<span class="ml-2 cyan--text">
+                <a v-if="person.info.homepage" :href="person.info.homepage">{{
+                  person.info.homepage
+                }}</a>
+                <div v-else class="red--text">
+                  {{ $t("view-search.no-homepage") }}
+                </div>
+              </span>
             </v-list-item>
             <v-list-item>
-              {{ $t('view-search.gender') }} <span class="ml-2 cyan--text"> {{ person.info.gender }}</span>
+              {{ $t("view-search.gender") }}
+              <span class="ml-2 cyan--text"> {{ person.info.gender }}</span>
             </v-list-item>
           </v-list>
         </v-col>
         <v-col>
           <h1>
-          {{ person.name}}
+            {{ person.name }}
           </h1>
           <v-divider></v-divider>
-          <v-list dark dense>
-              <v-list-item v-for="(movie, j) in personMoviesList" :key="'B' + j" :to="'/movie/' + movie.id" class="my-1">
-            <v-img
-              max-width="100px"
-              max-height="100%"
-              class="mr-5 elevation-5"
-              :src="movie.poster_path != null ? imageURL + movie.poster_path : no_image" />
-                <p class="text-h5 mr-10 cyan--text">{{ movie.title }}</p>
-                <p class="text-h6 ml-auto">{{ formatDate(movie.release_date) }}</p>
-              </v-list-item>
+          <v-list dark dense v-if="!loading">
+            <v-list-item
+              v-for="(movie, j) in personMoviesList"
+              :key="'B' + j"
+              :to="'/movie/' + movie.id"
+              class="my-1"
+            >
+              <v-img
+                max-width="100px"
+                max-height="100%"
+                class="mr-5 elevation-5"
+                :src="
+                  movie.poster_path != null
+                    ? imageURL + movie.poster_path
+                    : no_image
+                "
+              />
+              <p class="text-h5 mr-10 cyan--text">{{ movie.title }}</p>
+              <p class="text-h6 ml-auto">
+                {{ formatDate(movie.release_date) }}
+              </p>
+            </v-list-item>
           </v-list>
         </v-col>
       </v-row>
     </v-container>
-    <v-container fluid>
+    <v-container fluid v-if="!loading">
       <v-row v-for="(item, i) in searchedMovie" :key="i" class="pb-10 mt-10">
         <v-col cols="12" lg="3" md="12">
           <!-- MOVIE IMG -->
           <v-img
-            :src="item.poster_path != null ? imageURL + item.poster_path : no_image"
+            :src="
+              item.poster_path != null ? imageURL + item.poster_path : no_image
+            "
             id="movie-img"
             class="rounded"
           ></v-img>
@@ -146,11 +195,11 @@
               item.release_date !== undefined ? 'cyan--text' : 'red--text'
             "
           >
-            <span class="white--text">{{ $t('view-search.releaseDate') }}</span>
+            <span class="white--text">{{ $t("view-search.releaseDate") }}</span>
             {{
               item.release_date !== undefined
-                ? item.release_date
-                : $t('generic-messages.no-release')
+                ? formatDate(item.release_date)
+                : $t("generic-messages.no-release")
             }}</small
           >
           <!-- MOVIE GENRES -->
@@ -160,7 +209,7 @@
               :key="'A' + z"
               id="movie-genres"
             >
-            {{ formatGenre(genre) }}
+              {{ formatGenre(genre) }}
             </span>
           </small>
 
@@ -175,7 +224,9 @@
             >
               {{ item.vote_count }}
             </h5>
-            <span class="font-weight-light d-inline">{{ $t('view-search.ratings') }}</span>
+            <span class="font-weight-light d-inline">{{
+              $t("view-search.ratings")
+            }}</span>
           </div>
           <!-- MOVIE OVERVIEW -->
           <p id="movie-overview">
@@ -186,7 +237,7 @@
           <v-row>
             <v-col>
               <v-btn
-                class="d-block my-1 mr-auto"
+                class="my-1 mr-auto"
                 block
                 outlined
                 color="red"
@@ -194,23 +245,40 @@
                 tile
                 @click="getTrailer(item)"
                 dark
-                >
-                <span class="white--text">{{ $t('app-buttons.view') }}</span>
+              >
+                <span class="white--text">{{ $t("app-buttons.view") }}</span>
               </v-btn>
             </v-col>
             <v-col>
               <v-btn
-                class="d-block my-1 ml-auto"
-                width="350px"
+                class="my-1 ml-auto"
+                block
                 outlined
                 color="purple"
                 large
                 tile
-                @click="showAddToDialog(true); setAddMovie(item)"
+                @click="
+                  showAddToDialog(true);
+                  setAddMovie(item);
+                "
                 dark
-                >
-                  <span class="white--text">{{ $t('app-buttons.add') }}</span>
-                </v-btn>
+              >
+                <span class="white--text">{{ $t("app-buttons.add") }}</span>
+              </v-btn>
+            </v-col>
+            <v-col>
+              <v-btn
+                class="my-1 ml-auto"
+                block
+                color="primary"
+                large
+                outlined
+                tile
+                @click="showInfo(item)"
+                dark
+              >
+                <v-icon color="white">mdi-information</v-icon>
+              </v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -220,12 +288,14 @@
           <v-expand-transition>
             <v-row no-gutters class="mt-2">
               <v-col lg="4">
-                <h3 class="text-center blue--text">{{ $t('view-search.buy') }}</h3>
+                <h3 class="text-center blue--text">
+                  {{ $t("view-search.buy") }}
+                </h3>
                 <h2
                   class="error--text text-center"
                   v-if="!item.providers_buy.length"
                 >
-                  {{ $t('view-search.no-data') }}
+                  {{ $t("view-search.no-data") }}
                 </h2>
                 <li
                   style="list-style: none"
@@ -236,7 +306,9 @@
                   <v-divider></v-divider>
                   <p>
                     {{
-                        buy_provider !== undefined ? buy_provider.provider_name : ""
+                      buy_provider !== undefined
+                        ? buy_provider.provider_name
+                        : ""
                     }}
                   </p>
 
@@ -251,12 +323,14 @@
                 </li>
               </v-col>
               <v-col lg="4">
-                <h3 class="text-center orange--text">{{ $t('view-search.streaming') }}</h3>
+                <h3 class="text-center orange--text">
+                  {{ $t("view-search.streaming") }}
+                </h3>
                 <h2
                   class="error--text text-center"
                   v-if="!item.providers_flatrate.length"
                 >
-                  {{ $t('view-search.no-data') }}
+                  {{ $t("view-search.no-data") }}
                 </h2>
                 <li
                   style="list-style: none"
@@ -267,7 +341,9 @@
                   <v-divider></v-divider>
                   <p>
                     {{
-                      flatrate_provider !== undefined ? flatrate_provider.provider_name : ""
+                      flatrate_provider !== undefined
+                        ? flatrate_provider.provider_name
+                        : ""
                     }}
                   </p>
                   <img
@@ -282,12 +358,14 @@
                 </li>
               </v-col>
               <v-col lg="4">
-                <h3 class="text-center green--text">{{ $t('view-search.rent') }}</h3>
+                <h3 class="text-center green--text">
+                  {{ $t("view-search.rent") }}
+                </h3>
                 <h2
                   class="error--text text-center"
                   v-if="!item.providers_rent.length"
                 >
-                  {{ $t('view-search.no-data') }}
+                  {{ $t("view-search.no-data") }}
                 </h2>
                 <li
                   style="list-style: none"
@@ -298,7 +376,9 @@
                   <v-divider></v-divider>
                   <p>
                     {{
-                      rent_provider !== undefined ? rent_provider.provider_name : ""
+                      rent_provider !== undefined
+                        ? rent_provider.provider_name
+                        : ""
                     }}
                   </p>
                   <img
@@ -315,12 +395,22 @@
           </v-expand-transition>
         </v-col>
       </v-row>
+      <v-sheet
+        id="no-results"
+        color="transparent"
+        v-if="noResults"
+        width="350px"
+        class="mx-auto"
+      >
+        <p class="text-h4 error--text">{{ $t("view-search.noResults") }}</p>
+      </v-sheet>
     </v-container>
     <!-- SNACKBAR -->
     <div v-if="snackbarObject.snackbar">
       <Snackbar
         :snackbar-color="snackbarObject.snackbarColor"
-        :snackbar-text="snackbarObject.snackbarText" />
+        :snackbar-text="snackbarObject.snackbarText"
+      />
     </div>
   </div>
 </template>
@@ -329,22 +419,22 @@
 import SectionTitle from "../components/SectionTitle";
 import axios from "axios";
 import Snackbar from "../components/Snackbar";
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState } from "vuex";
 import TrailerDialog from "../components/TrailerDialog";
 import AddToDialog from "../components/AddToDialog";
+import i18n from "@/plugins/i18n";
 
 export default {
   components: {
     SectionTitle,
     TrailerDialog,
     AddToDialog,
-    Snackbar
+    Snackbar,
   },
   data() {
     return {
       isNotSelected: false,
       loading: false,
-      isSearchingMovie: false,
       showContent: false,
       trailerDialog: false,
       input: "",
@@ -353,251 +443,337 @@ export default {
       personMoviesList: [],
       inputItemsList: [],
       wheretowatch: false,
+      noResults: false,
     };
   },
   computed: {
-    ...mapState(['snackbarObject', "language", "apikey", "no_image", "imageURL", "trailerVideo", "addToDialog",]),
-    randomMovieIMG () {
-      let random = Math.floor(Math.random() * 11) + 1
+    ...mapState([
+      "snackbarObject",
+      "language",
+      "apikey",
+      "no_image",
+      "imageURL",
+      "trailerVideo",
+      "addToDialog",
+      "comesFromDetails",
+      "isSearchingMovie",
+      "searchInput",
+      "searchItem",
+    ]),
+    randomMovieIMG() {
+      let random = Math.floor(Math.random() * 11) + 1;
       return require(`../assets/img/random-movie-${random}.jpg`);
     },
-    randomPersonIMG () {
-      let random = Math.floor(Math.random() * 11) + 1
+    randomPersonIMG() {
+      let random = Math.floor(Math.random() * 11) + 1;
       return require(`../assets/img/random-person-${random}.jpg`);
-    }
+    },
   },
-  mounted () {
+  mounted() {
+    window.scrollTo(0, 0);
     if (this.input.length > 1) {
-      this.fillItemsList()
+      this.fillItemsList();
+    }
+    if (this.comesFromDetails) {
+      this.loading = true;
+      this.showContent = true;
+      this.input = this.searchInput;
+      setTimeout(() => {
+        this.searchByInput(this.searchItem);
+      }, 1000);
     }
   },
   methods: {
-    ...mapActions(['showError', 'getMovieTrailer', 'showAddToDialog', 'setAddMovie']),
-      formatGenre (genre) {
+    ...mapActions([
+      "showSnackbar",
+      "getMovieTrailer",
+      "showAddToDialog",
+      "setAddMovie",
+      "showInfo",
+    ]),
+    formatGenre(genre) {
       let genres = {
-        ['28']: this.$t('genres.action'), 
-        ['12']: this.$t('genres.adventure'), 
-        ['16']: this.$t('genres.animation'), 
-        ['35']: this.$t('genres.comedy'), 
-        ['80']: this.$t('genres.crime'), 
-        ['99']: this.$t('genres.documentary'), 
-        ['18']: this.$t('genres.drama'), 
-        ['10751']: this.$t('genres.family'), 
-        ['14']: this.$t('genres.fantasy'), 
-        ['36']: this.$t('genres.history'), 
-        ['27']: this.$t('genres.horror'), 
-        ['10402']: this.$t('genres.music'), 
-        ['9648']: this.$t('genres.mystery'), 
-        ['10749']: this.$t('genres.romance'), 
-        ['878']: this.$t('genres.sci-fi'), 
-        ['10770']: this.$t('genres.tv'), 
-        ['53']: this.$t('genres.thriller'), 
-        ['10752']: this.$t('genres.war'), 
-        ['37']: this.$t('genres.western'), 
+        ["28"]: this.$t("genres.action"),
+        ["12"]: this.$t("genres.adventure"),
+        ["16"]: this.$t("genres.animation"),
+        ["35"]: this.$t("genres.comedy"),
+        ["80"]: this.$t("genres.crime"),
+        ["99"]: this.$t("genres.documentary"),
+        ["18"]: this.$t("genres.drama"),
+        ["10751"]: this.$t("genres.family"),
+        ["14"]: this.$t("genres.fantasy"),
+        ["36"]: this.$t("genres.history"),
+        ["27"]: this.$t("genres.horror"),
+        ["10402"]: this.$t("genres.music"),
+        ["9648"]: this.$t("genres.mystery"),
+        ["10749"]: this.$t("genres.romance"),
+        ["878"]: this.$t("genres.sci-fi"),
+        ["10770"]: this.$t("genres.tv"),
+        ["53"]: this.$t("genres.thriller"),
+        ["10752"]: this.$t("genres.war"),
+        ["37"]: this.$t("genres.western"),
+      };
+      return genres[genre];
+    },
+    formatDate(date) {
+      if (!date) return null;
+      if (date.includes("/")) {
+        const [day, month, year] = date.split("/");
+        return `${day}-${month}-${year}`;
       }
-      return genres[genre]
+      if (date.includes("-")) {
+        const [year, month, day] = date.split("-");
+        return `${day}-${month}-${year}`;
+      }
     },
-    formatDate (date) {
-      if (!date) return null
+    getPersonAge(birthday) {
+      let birthYear = birthday.split("-")[0];
+      let birthMonth = birthday.split("-")[1];
+      let birthDay = birthday.split("-")[2];
 
-      const [year, month, day] = date.split('-')
-      return `${day}/${month}/${year}`
-    },
-    getPersonAge (birthday) {
-        let birthYear = birthday.split('-')[0]
-        let birthMonth = birthday.split('-')[1]
-        let birthDay = birthday.split('-')[2]
-  
-        let currentYear = new Date().getFullYear();
-        let currentMonth = new Date().getMonth() + 1;
-        let currentDay = new Date().getDate();
+      let currentYear = new Date().getFullYear();
+      let currentMonth = new Date().getMonth() + 1;
+      let currentDay = new Date().getDate();
 
-        let age = currentYear - birthYear;
+      let age = currentYear - birthYear;
 
-        if (currentMonth < (birthMonth - 1)) {
-          age--;
-        }
-        if (((birthMonth - 1) == currentMonth) && (currentDay < birthDay)) {
-          age--;
-        }
-        return age;
+      if (currentMonth < birthMonth - 1) {
+        age--;
+      }
+      if (birthMonth - 1 == currentMonth && currentDay < birthDay) {
+        age--;
+      }
+      return age;
     },
     getTrailer(item) {
-      this.trailerDialog = true
-      this.getMovieTrailer({ type: 'other', id: item.id })
+      this.trailerDialog = true;
+      this.getMovieTrailer({ type: "other", id: item.id });
+    },
+    searchMovie() {
+      this.$store.commit("setSearchingMovie", true);
+      this.showContent = true;
+      this.noResults = false;
+    },
+    searchPerson() {
+      this.$store.commit("setSearchingMovie", false);
+      this.showContent = true;
+      this.noResults = false;
     },
     getProviders() {
-          // GET WATCH PROVIDERS (NETFLIX, GOOGLE PLAY, HBO, ETC)
-        let providers;
-          for (let data of this.searchedMovie) {
-            providers = `https://api.themoviedb.org/3/movie/${data.id}/watch/providers?api_key=${this.apikey}`;
+      // GET WATCH PROVIDERS (NETFLIX, GOOGLE PLAY, HBO, ETC)
+      let providers;
+      for (let data of this.searchedMovie) {
+        providers = `https://api.themoviedb.org/3/movie/${data.id}/watch/providers?api_key=${this.apikey}`;
 
-            axios
-              .get(providers)
-              .then((res) => {
-                let spain = res.data.results['ES'];
+        axios
+          .get(providers)
+          .then((res) => {
+            let spain = res.data.results["ES"];
 
-                if (spain !== undefined) {
-                  let buy_providers = spain.buy
-                  let flat_providers = spain.flatrate
-                  let rent_providers = spain.rent
-                  if (buy_providers !== undefined) {
-                      for (let buyProv of spain.buy) {
-                        if (buyProv !== undefined || buyProv !== null) {
-                          data.providers_buy.push(buyProv);
-                      }
-                    }
-                  } else {
-                    data.providers_buy = []
+            if (spain !== undefined) {
+              let buy_providers = spain.buy;
+              let flat_providers = spain.flatrate;
+              let rent_providers = spain.rent;
+              if (buy_providers !== undefined) {
+                for (let buyProv of spain.buy) {
+                  if (buyProv !== undefined || buyProv !== null) {
+                    data.providers_buy.push(buyProv);
                   }
+                }
+              } else {
+                data.providers_buy = [];
+              }
 
-                  if (flat_providers !== undefined) {
-                    for (let flatProv of spain.flatrate) {
-                      if (flatProv !== undefined || flatProv !== null) {
-                        data.providers_flatrate.push(flatProv);
-                      }
-                    }
-                  } else {
-                    data.providers_flatrate = []
+              if (flat_providers !== undefined) {
+                for (let flatProv of spain.flatrate) {
+                  if (flatProv !== undefined || flatProv !== null) {
+                    data.providers_flatrate.push(flatProv);
                   }
-                  
-                  if (rent_providers !== undefined) {
-                    for (let rentProv of spain.rent) {
-                      if (rentProv !== undefined || rentProv !== null) {
-                        data.providers_rent.push(rentProv);
-                      }
-                    }
-                  } else {
-                    data.providers_flatrate = []
-                  }
-                } 
+                }
+              } else {
+                data.providers_flatrate = [];
+              }
 
-              })
-              .catch((e) => {
-                console.log(e);
-                this.showError('Database connection error')
-              });
-          }
-          this.input = "";
-          this.wheretowatch = false;
+              if (rent_providers !== undefined) {
+                for (let rentProv of spain.rent) {
+                  if (rentProv !== undefined || rentProv !== null) {
+                    data.providers_rent.push(rentProv);
+                  }
+                }
+              } else {
+                data.providers_flatrate = [];
+              }
+            }
+          })
+          .catch((e) => {
+            console.log(e);
+            this.showSnackbar({
+              text: "Database connection error",
+              color: "red",
+            });
+          });
+      }
+      this.input = "";
+      this.wheretowatch = false;
     },
     fillItemsList() {
-      let url
+      let url;
       let arrNames = [];
       let arrTitles = [];
-      if (this.isSearchingMovie) {
-        url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${this.language}&query=${this.input}&sorty_by=popularity.desc`;
-        axios
-        .get(url)
-        .then((res) => {
-          for (let data of res.data.results) {
-            arrTitles.push({
-              id: data.id,
-              title: data.title
-            })
-          }
+      this.noResults = false;
+      if (this.input.length > 1) {
+        if (this.isSearchingMovie) {
+          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${i18n.locale}&query=${this.input}&sorty_by=popularity.desc&page=1`;
+          axios
+            .get(url)
+            .then((res) => {
+              for (let data of res.data.results) {
+                arrTitles.push({
+                  id: data.id,
+                  title: data.title,
+                });
+              }
 
-          this.inputItemsList = arrTitles;
-        })
-        .catch((e) => {
-          this.showError('Database connection error')
-          console.log(e);
-        })
+              this.inputItemsList = arrTitles;
+            })
+            .catch((e) => {
+              this.showSnackbar({
+                text: "Database connection error",
+                color: "red",
+              });
+              console.log(e);
+            });
+        } else {
+          url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&${i18n.locale}&query=${this.input}&sorty_by=popularity.desc&page=1`;
+          axios
+            .get(url)
+            .then((res) => {
+              for (let data of res.data.results) {
+                arrNames.push({
+                  id: data.id,
+                  name: data.name,
+                });
+              }
+
+              this.inputItemsList = arrNames;
+            })
+            .catch((e) => {
+              this.showSnackbar({
+                text: "Database connection error",
+                color: "red",
+              });
+              console.log(e);
+            });
+        }
       } else {
-        url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&${this.language}&query=${this.input}&sorty_by=popularity.desc`
-        axios
-        .get(url)
-        .then((res) => {
-          for (let data of res.data.results) {
-            arrNames.push({
-              id: data.id,
-              name: data.name
-            })
-          }
-
-          this.inputItemsList = arrNames;
-        })
-        .catch((e) => {
-          this.showError('Database connection error')
-          console.log(e);
-        });
+        this.inputItemsList = [];
       }
     },
     searchByInput(item) {
-      let query = this.input
+      let query = this.input;
       this.searchedMovie = [];
       this.searchedPerson = [];
       this.personMoviesList = [];
       this.inputItemsList = [];
+      this.loading = true;
+      this.noResults = false;
       let url;
 
       if (this.isSearchingMovie) {
-        if (item !== this.input) {
-          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${this.language}&query=${item.title}`;
+        if (item.id) {
+          this.$store.commit("setSearchItem", item);
+          this.$store.commit("setSearchInput", "");
+          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${i18n.locale}&query=${item.title}&page=1`;
         } else {
-          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${this.language}&query=${query}`;
+          this.$store.commit("setSearchInput", query);
+          this.$store.commit("setSearchItem", {});
+          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${i18n.locale}&query=${query}&page=1`;
         }
-      axios
-        .get(url)
-        .then((res) => {
-          for (let data of res.data.results) {
-            this.searchedMovie.push({
-              id: data.id,
-              poster_path: data.poster_path,
-              title: data.title,
-              release_date: this.formatDate(data.release_date),
-              genre_ids: data.genre_ids,
-              vote_average: data.vote_average,
-              vote_count: data.vote_count,
-              overview: data.overview,
-              genre_ids: data.genre_ids,
-              providers_buy: [],
-              providers_flatrate: [],
-              providers_rent: []
-            })
-          }
-          this.getProviders();
-        })
-        .catch((e) => {
-          this.showError('Database connection error')
-          console.log(e);
-        });
-
-      } else {
-        url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&${this.language}&query=${item.name}&page=1`
         axios
-        .get(url)
-        .then((res) => {
-          for (let data of res.data.results) {
-            this.searchedPerson.push({
-              id: data.id,
-              known_for: data.known_for,
-              name: data.name,
-              profile_path: data.profile_path,
-              info: {}
-            })
-            this.getMoviesByPerson(data.id)
-          }
+          .get(url)
+          .then((res) => {
+            if (res.data.results.length) {
+              for (let data of res.data.results) {
+                this.searchedMovie.push({
+                  id: data.id,
+                  poster_path: data.poster_path,
+                  title: data.title,
+                  release_date: data.release_date,
+                  genre_ids: data.genre_ids,
+                  vote_average: data.vote_average,
+                  vote_count: data.vote_count,
+                  overview: data.overview,
+                  genre_ids: data.genre_ids,
+                  providers_buy: [],
+                  providers_flatrate: [],
+                  providers_rent: [],
+                });
+              }
+              this.getProviders();
+              this.loading = false;
+            } else {
+              this.noResults = true;
+              this.loading = false;
+            }
+          })
+          .catch((e) => {
+            this.showSnackbar({
+              text: "Database connection error",
+              color: "red",
+            });
+            console.log(e);
+            this.loading = false;
+          });
+      } else {
+        if (item.id) {
+          this.$store.commit("setSearchItem", item);
+          this.$store.commit("setSearchInput", "");
+          url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&language=${i18n.locale}&query=${item.name}&page=1`;
+        } else {
+          this.$store.commit("setSearchInput", query);
+          this.$store.commit("setSearchItem", {});
+          url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&language=${i18n.locale}&query=${query}&page=1`;
+        }
 
-          this.getPersonInfo();
+        axios
+          .get(url)
+          .then((res) => {
+            if (res.data.results.length) {
+              for (let data of res.data.results.slice(0, 20)) {
+                this.searchedPerson.push({
+                  id: data.id,
+                  known_for: data.known_for,
+                  name: data.name,
+                  profile_path: data.profile_path,
+                  info: {},
+                });
+                this.getMoviesByPerson(data.id);
+              }
 
-        })
-        .catch((e) => {
-          this.showError('Database connection error')
-          console.log(e);
-        });
-
+              this.getPersonInfo();
+            } else {
+              this.noResults = true;
+              this.loading = false;
+            }
+          })
+          .catch((e) => {
+            this.showSnackbar({
+              text: "Database connection error",
+              color: "red",
+            });
+            console.log(e);
+            this.loading = false;
+          });
       }
     },
-    getMoviesByPerson(id) {
-      this.inputItemsList = []
-      this.loading = true;
-      let url = `https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${this.apikey}&language=${this.language}`
-      let arr = []
-      axios
-      .get(url)
-      .then((res) => {
-        if (res.data.cast !== []) {
+    async getMoviesByPerson(id) {
+      this.inputItemsList = [];
+      let url = `https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${this.apikey}&language=${i18n.locale}&page=1`;
+      let arr = [];
+      await axios
+        .get(url)
+        .then((res) => {
+          if (res.data.cast !== []) {
             for (let data of res.data.cast) {
               if (data !== undefined) {
                 arr.push({
@@ -606,59 +782,78 @@ export default {
                   character: data.character,
                   release_date: data.release_date,
                   poster_path: data.poster_path,
-                  year: ""
-              })
+                  year: "",
+                });
+              }
             }
           }
-        }
 
-        arr.forEach(movie => {
-          if (movie.release_date) {
-            movie.release_date = this.formatDate(movie.release_date)
-            movie.year = movie.release_date.split("/")[2]
-          }
+          arr.forEach((movie) => {
+            if (movie.release_date) {
+              movie.release_date = movie.release_date;
+              movie.year = movie.release_date.split("-")[0];
+            }
+          });
+
+          arr = arr.sort((a, b) => {
+            return b.year - a.year;
+          });
+
+          setTimeout(() => {
+            for (let movie of arr) {
+              this.personMoviesList.push(movie);
+            }
+            this.loading = false;
+          }, 2000);
         })
-
-        arr = arr.sort((a, b) => {
-          return b.year - a.year
-        })
-
-        for (let movie of arr) {
-          this.personMoviesList.push(movie)
-        }
-      })
-      .catch((e) => {
-        this.showError('Database connection error')
-        console.log(e);
-      });
+        .catch((e) => {
+          this.showSnackbar({
+            text: "Database connection error",
+            color: "red",
+          });
+          console.log(e);
+          this.loading = false;
+        });
     },
-    async getPersonInfo () {
+    async getPersonInfo() {
       for (let person of this.searchedPerson) {
-        let url = `https://api.themoviedb.org/3/person/${person.id}?api_key=${this.apikey}&sort_by=popularity.desc`
+        let url = `https://api.themoviedb.org/3/person/${person.id}?api_key=${this.apikey}&sort_by=popularity.desc&language=${i18n.locale}`;
         await axios
-        .get(url)
-        .then((res) => {
+          .get(url)
+          .then((res) => {
             person.info = {
               place_of_birth: res.data.place_of_birth,
               homepage: res.data.homepage,
-              gender: res.data.gender === 2 ? this.$t('view-search.male') : this.$t('view-search.female'),
-              age: res.data.birthday ? this.getPersonAge(res.data.birthday) : ""
-            }
-            
-
-        })
-        .catch((e) => {
-          console.log(e)
-        })
+              gender:
+                res.data.gender === 2
+                  ? this.$t("view-search.male")
+                  : this.$t("view-search.female"),
+              age: res.data.birthday
+                ? this.getPersonAge(res.data.birthday)
+                : "",
+            };
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       }
-      this.loading = false;
-    }
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "src/scss/variables";
+
+#no-results {
+  margin: 0;
+  padding: 2em;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 #movie-vote-average {
   border-radius: 5px;
@@ -672,7 +867,7 @@ export default {
 
 .progressSpinner {
   position: fixed;
-  top: 50%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
@@ -707,20 +902,22 @@ export default {
   clip-path: polygon(100% 0, 85% 100%, 0 100%, 15% 0);
 }
 
-#byMovie-btn, #byPerson-btn {
+#byMovie-btn,
+#byPerson-btn {
   border-radius: 50px;
   cursor: pointer;
   width: 100%;
   max-width: 800px;
   height: 350px;
   transition: all 0.3s ease-out;
-  filter: grayscale(2); 
+  filter: grayscale(2);
   &:hover {
     filter: grayscale(0);
   }
 }
 
-#byMovie-text, #byPerson-text {
+#byMovie-text,
+#byPerson-text {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -790,14 +987,13 @@ export default {
     width: 100%;
   }
 
-    .options-buttons-start {
+  .options-buttons-start {
     transition: all 1s ease-out;
     position: absolute;
     inset: 0;
     justify-content: center;
     align-content: center;
     text-align: center;
-
   }
 
   .options-buttons {
@@ -806,7 +1002,6 @@ export default {
     animation: fadeIn 1s ease-in;
     text-align: center;
   }
-  
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {

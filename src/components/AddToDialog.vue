@@ -52,7 +52,7 @@
           >
             <v-icon size="50px">{{ !addedWishlist ? 'mdi-star-shooting-outline' : 'mdi-star-shooting' }}</v-icon>
           </v-btn>
-          <p :class="!addedWishlist ? 'black--text' : 'amber--text'">{{ $t('comp-addTo.wishlist') }} List</p>
+          <p :class="!addedWishlist ? 'black--text' : 'amber--text'">{{ $t('comp-addTo.wishlist') }}</p>
           </v-col>
           <v-col class="text-center">
           <v-btn
@@ -101,7 +101,7 @@
             color="purple"
             tile
             outlined
-            @click="showAddToDialog(false, null)"
+            @click="showAddToDialog(false, null); emitForceUpdate()"
           >
             {{ $t('comp-addTo.done') }}
           </v-btn>
@@ -151,29 +151,28 @@ export default {
         computedRateColor() {
           let colorClass
           if (this.rate <= 10) {
-            colorClass = 'green--text text-center'
-          }
-          if (this.rate <= 9) {
-            colorClass = 'info--text text-center'
-          }
-          if (this.rate <= 7) {
             colorClass = 'purple--text text-center'
           }
-          if (this.rate <= 5) {
-            colorClass = 'warning--text text-center'
+          if (this.rate < 9) {
+            colorClass = 'info--text text-center'
           }
-          if (this.rate <= 3) {
+          if (this.rate < 7) {
+            colorClass = 'green--text text-center'
+          }
+          if (this.rate < 5) {
+            colorClass = 'orange--text text-center'
+          }
+          if (this.rate < 3) {
             colorClass = 'red--text text-center'
           }
           return colorClass
         }
     },
     created () {
-      this.getStoragedMovies()
       this.getAddedMovies()
     },
     methods: {
-        ...mapActions(['showSnackbar', 'showError', 'showAddToDialog', 'storageMovie']),
+        ...mapActions(['showSnackbar', 'showAddToDialog']),
         getStoragedMovies() {
           const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
           let movies = storage[this.userID].myMovies
@@ -181,21 +180,18 @@ export default {
           this.auxWatched = movies.watched
           this.auxWishlist = movies.wishlist
           this.auxRated = movies.rated
+          console.log(movies)
         },
         getAddedMovies() {
           this.getStoragedMovies()
           this.auxFavourite.find(movie => movie.id === this.movieToAdd.id) !== undefined ? this.addedFavourite = true : this.addedFavourite = false
           this.auxWatched.find(movie => movie.id === this.movieToAdd.id) !== undefined ? this.addedWatched = true : this.addedWatched = false
           this.auxWishlist.find(movie => movie.id === this.movieToAdd.id) !== undefined ? this.addedWishlist = true : this.addedWishlist = false
-
+          this.auxRated.find(movie => movie.id === this.movieToAdd.id) !== undefined ? this.addedRate = true : this.addedRate = false
           let matchRated = this.auxRated.find(movie => movie.id === this.movieToAdd.id)
-
-          if (matchRated) {
-            this.addedRate = true
+          if (this.addedRate) {
             this.rate = matchRated.myrate
             this.slider = matchRated.myrate * 10
-          } else {
-            this.addedRate = false
           }
         },
         toDecimal(rate) {
@@ -203,78 +199,107 @@ export default {
           this.rate = dec;
         },
         addToFavourites() {
+          let movieToAdd = this.movieToAdd
           let data = {
             category: 'favourite',
-            movie: this.movieToAdd
+            movie: {
+              id: movieToAdd.id,
+              title: movieToAdd.title,
+              poster_path: movieToAdd.poster_path,
+              release_date: movieToAdd.release_date
+            }
           }
-          this.storageMovie(data)
+          // this.storageMovie(data)
           let { category, movie } = data
-          this.getAddedMovies()
+          this.auxFavourite.push(data.movie)
           this.writeMovieData(category, movie)
+          this.$forceUpdate()
+          this.getAddedMovies()
         },
         addToWatched() {
+          let movieToAdd = this.movieToAdd
           let data = {
             category: 'watched',
-            movie: this.movieToAdd
+            movie: {
+              id: movieToAdd.id,
+              title: movieToAdd.title,
+              poster_path: movieToAdd.poster_path,
+              release_date: movieToAdd.release_date
+            }
           }
-          this.storageMovie(data)
           let { category, movie } = data
-          this.getAddedMovies()
+          this.auxWatched.push(data.movie)
           this.writeMovieData(category, movie)
+          this.$forceUpdate()
+          this.getAddedMovies()
         },
         addToWishList() {
+          let movieToAdd = this.movieToAdd
           let data = {
             category: 'wishlist',
-            movie: this.movieToAdd
+            movie: {
+              id: movieToAdd.id,
+              title: movieToAdd.title,
+              poster_path: movieToAdd.poster_path,
+              release_date: movieToAdd.release_date
+            }
           }
-          this.storageMovie(data)
           let { category, movie } = data
-          this.getAddedMovies()
+          this.auxWishlist.push(data.movie)
           this.writeMovieData(category, movie)
+          this.$forceUpdate()
+          this.getAddedMovies()
         },
         rateMovie() {
           this.rateMenu = true;
         },
         addToRateMovies() {
-            let data = {
+          let movieToAdd = this.movieToAdd
+          let data = {
             category: 'rated',
-            movie: { myrate: this.rate, ...this.movieToAdd }
+            movie: {
+                id: movieToAdd.id,
+                title: movieToAdd.title,
+                poster_path: movieToAdd.poster_path,
+                release_date: movieToAdd.release_date,
+                myrate: this.rate
+            }
           }
-          this.storageMovie(data)
           let { category, movie } = data
-          this.getAddedMovies()
+          this.auxRated.push(data.movie)
           this.writeMovieData(category, movie)
+          this.$forceUpdate()
+          this.getAddedMovies()
           this.rateMenu = false
         },
         writeMovieData(category, movieToAdd) {
-        const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-
+          let favouriteArray = this.auxFavourite
+          let watchedArray = this.auxWatched
+          let wishlistArray = this.auxWishlist
+          let ratedArray = this.auxRated
+          const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
         if (category === "favourite") {
-          let settedArray = [...new Set(this.storagedMovies.favourite)]
-
           // If the movie is already in the array, we'll remove it
           if (this.addedFavourite) {
-            settedArray.splice(settedArray.indexOf(movieToAdd), 1)
-            this.auxFavourite.splice(this.auxFavourite.indexOf(movieToAdd), 1)
+            this.auxFavourite = favouriteArray.filter(movie => movie.id !== movieToAdd.id)
             this.showSnackbar({text: this.$t('comp-snackbar.favourite-removed'), color: "secondary"});
-            storage[this.userID].myMovies.favourite = settedArray;
+            storage[this.userID].myMovies.favourite = this.auxFavourite;
             localStorage.setItem("storageUserDATA", JSON.stringify(storage));
           } else {
             this.showSnackbar({text: this.$t('comp-snackbar.favourite-added'), color: "red darken-4"});
-            storage[this.userID].myMovies.favourite = settedArray;
+            storage[this.userID].myMovies.favourite = this.auxFavourite;
             localStorage.setItem("storageUserDATA", JSON.stringify(storage));
           }
         }
 
         if (category === "watched") {
-          let settedArray = [...new Set(this.storagedMovies.watched)]
+          let settedArray = this.auxWatched
 
           // If the movie is already in the array, we'll remove it
           if (this.addedWatched) {
-            settedArray.splice(settedArray.indexOf(movieToAdd), 1)
-            this.auxWatched.splice(this.auxWatched.indexOf(movieToAdd), 1)
+            this.auxWatched = watchedArray.filter(movie => movie.id !== movieToAdd.id)
             this.showSnackbar({text: this.$t('comp-snackbar.watched-removed'), color: "secondary"});
-            storage[this.userID].myMovies.watched = settedArray;
+            storage[this.userID].myMovies.watched = this.auxWatched;
             localStorage.setItem("storageUserDATA", JSON.stringify(storage));
             } else {
               this.showSnackbar({text: this.$t('comp-snackbar.watched-added'), color: "blue"});
@@ -284,14 +309,13 @@ export default {
         }
 
         if (category === "wishlist") {
-          let settedArray = [...new Set(this.storagedMovies.wishlist)]
+          let settedArray = this.auxWishlist
 
           // If the movie is already in the array, we'll remove it
           if (this.addedWishlist) {
-            settedArray.splice(settedArray.indexOf(movieToAdd), 1)
-            this.auxWishlist.splice(this.auxWishlist.indexOf(movieToAdd), 1)
+            this.auxWishlist = wishlistArray.filter(movie => movie.id !== movieToAdd.id)
             this.showSnackbar({text: this.$t('comp-snackbar.wishlist-removed'), color: "secondary"});
-            storage[this.userID].myMovies.wishlist = settedArray;
+            storage[this.userID].myMovies.wishlist = this.auxWishlist;
             localStorage.setItem("storageUserDATA", JSON.stringify(storage));
           } else {
             this.showSnackbar({text: this.$t('comp-snackbar.wishlist-added'), color: "orange darken-4"});
@@ -301,24 +325,25 @@ export default {
         }
 
         if (category === "rated") {
-          let arr = []
+          let settedArray = this.auxRated
           // If the movie is already in the array, we'll update it
           if (this.addedRate) {
-            this.auxRated.splice(this.auxRated.indexOf(movieToAdd), 1)
-
-            arr.push(movieToAdd)
+            this.auxRated = ratedArray.filter(movie => movie.id !== movieToAdd.id)
             this.auxRated.push(movieToAdd)
 
             this.showSnackbar({text: this.$t('comp-snackbar.rate-updated'), color: "secondary"});
-            storage[this.userID].myMovies.rated = arr;
+            storage[this.userID].myMovies.rated = this.auxRated;
             localStorage.setItem("storageUserDATA", JSON.stringify(storage));
           } else {
             this.showSnackbar({text: this.$t('comp-snackbar.rate-added'), color: "green darken-4"});
-            storage[this.userID].myMovies.rated.push(movieToAdd);
+            storage[this.userID].myMovies.rated = settedArray;
             localStorage.setItem("storageUserDATA", JSON.stringify(storage));
           }
         }
         this.getAddedMovies()
+      },
+      emitForceUpdate () {
+        this.$emit('force-update')
       }
     }
 }
@@ -341,4 +366,5 @@ export default {
   transform: translate(-50%, -50%);
 
 }
+
 </style>

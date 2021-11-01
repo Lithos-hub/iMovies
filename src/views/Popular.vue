@@ -5,6 +5,7 @@
     <!-- ADD TO MY MOVIES DIALOG -->
     <AddToDialog
       v-if="addToDialog"
+      @force-update="refreshStoragedMovies()"
     />
 
     <v-row>
@@ -20,7 +21,7 @@
         width="auto"
         :label="$t('view-popular.writeYear')"
         class="rounded-0"
-        @change="getMoviesByYear({year, page}); checkAndSave()">
+        @change="checkAndSave(); getMoviesByYear({year, page})">
         </v-text-field>
       </v-col>
       <v-col />
@@ -34,6 +35,9 @@
       <br> 
       <br> 
       {{ $t('view-popular.message5') }}
+    </h3>
+    <h3 class="error--text text-center" v-if="tooBigYear">
+      {{ $t('view-popular.noMovies')}} {{ parseInt(capturedYear).toLocaleString('es-ES') }} 
     </h3>
     
     <v-container>
@@ -53,12 +57,26 @@
                       id="movie-img"
                       max-width="300px"
                       height="100%"
+                      min-height="400px"
                       max-height="400px"
                       :src="item.poster_path !== null ? `${imageURL + item.poster_path}` : no_image"
                       :lazy-src="loadingIMG"
                       class="mb-5 mx-auto elevation-10"
-                      @click="showDetails(item)"
-                    >
+                      @click="showDetails(item)">
+                      <div class="favourite-badge">
+                        <div v-if="auxFavourite.some(el => el.id === item.id)">
+                          <v-icon id="favourite-badge" color="red" class="movie-badge">mdi-heart</v-icon>
+                        </div>
+                        <div v-if="auxWatched.some(el => el.id === item.id)">
+                          <v-icon id="watched-badge" color="primary" class="movie-badge">mdi-eye</v-icon>
+                        </div>
+                        <div v-if="auxWishlist.some(el => el.id === item.id)">
+                          <v-icon id="wishlist-badge" color="amber" class="movie-badge">mdi-star-shooting</v-icon>
+                        </div>
+                        <div v-if="auxRated.some(el => el.id === item.id)">
+                          <v-icon id="rated-badge" color="green" class="movie-badge">mdi-numeric</v-icon>
+                        </div>
+                      </div>
                       <div id="showDetails-text">
                         <p>{{ $t('view-popular.showDetails') }}</p>
                       </div>
@@ -103,30 +121,37 @@ export default {
   data() {
     return {
       sectionTitle: this.$t('comp-sectionTitle.popular'),
-      userID: null,
       year: '',
       incorrectYear: false,
-      category: "",
-      rateDialog: false,
-      expand: false,
+      tooBigYear: false,
       value: 0,
-      userData: [],
-      page: 1
+      page: 1,
+      auxFavourite: [],
+      auxWatched: [],
+      auxWishlist: [],
+      auxRated: [],
+      capturedYear: ''
     };
   },
+  created () {
+    window.scrollTo(0, 0);
+    this.comesFromDetails ? this.getSavedYear() : this.getRandomYear()
+  },
   mounted() {
-    this.getRandomYear()
-    this.getSavedYear()
+    this.getStoragedMovies()
     this.getMoviesByYear({ year: this.year, page: this.page });
     if (this.$route.path === '/popular') { 
-      this.infiniteScroll();
+        this.infiniteScroll();
     }
   },
   computed: {
-    ...mapState(['moviesByYear', 'moviesID', 'no_image', 'imageURL', 'loadingData', 'loadingIMG', 'addToDialog'])
+    ...mapState(['moviesByYear', 'userID', 'moviesID', 'no_image', 'imageURL', 'loadingData', 'loadingIMG', 'addToDialog', 'storagedMovies', 'comesFromDetails'])
   },
   methods: {
     ...mapActions(['getMoviesByYear', 'showAddToDialog', 'setAddMovie']),
+    refreshStoragedMovies () {
+      this.getStoragedMovies()
+    },
     getSavedYear() {
       let storagedYear = localStorage.getItem('popularYear');
       this.year = storagedYear
@@ -134,31 +159,37 @@ export default {
     showDetails(item) {
       this.$router.push(`/movie/${item.id}`);
     },
+    getStoragedMovies() {
+      const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+      let movies = storage[this.userID].myMovies
+      this.auxFavourite = movies.favourite
+      this.auxWatched = movies.watched
+      this.auxWishlist = movies.wishlist
+      this.auxRated = movies.rated
+      console.log({ ...movies })
+    },
     getRandomYear() {
         let max = new Date().getFullYear();
         let min = 1878;
         let random = Math.floor(Math.random() * (max - min + 1) + min);
-        console.log(random)
         this.year = random
+        localStorage.setItem('popularYear', this.year)
     },
     checkAndSave () {
       this.year < 1878 ? this.incorrectYear = true : this.incorrectYear = false
-
+      this.year > 2030 ? this.tooBigYear = true : this.tooBigYear = false
+      this.capturedYear = this.year
       if (this.year !== '') {
         localStorage.setItem('popularYear', this.year)
       }
     },
     infiniteScroll () {
-      console.log('Scrolling')
+      window.scrollTo(0, 0);
       window.onscroll = () => {
-        let sum = window.innerHeight + window.pageYOffset
-        if (sum >= document.body.offsetHeight) {
-          document.body.scrollTop = window.pageYOffset * 0.75
-          document.documentElement.scrollTop = window.pageYOffset * 0.75
-          setTimeout(() => {
-            this.page++
-            this.getMoviesByYear({ year: this.year, page: this.page })
-          }, 500)
+        let view = document.querySelector('#popular-view')
+        if (window.innerHeight + window.pageYOffset >= view.offsetHeight) {
+          this.page++
+          this.getMoviesByYear({ year: this.year, page: this.page })
         }
       }
     },
@@ -280,4 +311,30 @@ export default {
     outline: none;
   }
 }
+
+#favourite-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 0px 0px 10px 0px;
+}
+#watched-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 0px 0px 0px 10px;
+}
+#wishlist-badge {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-radius: 0px 10px 0px 0px;
+}
+#rated-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border-radius: 10px 0px 0px 0px;
+}
+
 </style>

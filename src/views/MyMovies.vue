@@ -4,36 +4,41 @@
 
     <!-- SUPERIOR TABS MENU -->
 
-    <v-tabs id="bar-tabs" centered background-color="transparent">
+    <v-tabs id="bar-tabs" centered background-color="transparent" v-model="selectedTab">
       <v-tabs-slider color="error"></v-tabs-slider>
       <v-tab
+        :key="0"
         active-class="cyan--text"
         class="cyan--text tab"
-        @click="category = 'summary'"
+        @click="category = 'summary'; rememberClickedTab(0)"
         >{{ $t('view-myMovies.summary') }}</v-tab
       >
       <v-tab
+        :key="1"
         active-class="error--text"
         class="white--text tab"
-        @click="category = 'favourite'"
+        @click="category = 'favourite'; rememberClickedTab(1)"
         >{{ $t('view-myMovies.favourite') }}</v-tab
       >
       <v-tab
+        :key="2"
         active-class="error--text"
         class="white--text tab"
-        @click="category = 'towatch'"
+        @click="category = 'wishlist'; rememberClickedTab(2)"
         >{{ $t('view-myMovies.wishList') }}</v-tab
       >
       <v-tab
+        :key="3"
         active-class="error--text"
         class="white--text tab"
-        @click="category = 'watched'"
+        @click="category = 'watched'; rememberClickedTab(3)"
         >{{ $t('view-myMovies.watched') }}</v-tab
       >
       <v-tab
+        :key="4"
         active-class="error--text"
         class="white--text tab"
-        @click="category = 'byrate'"
+        @click="category = 'byrate'; rememberClickedTab(4)"
         >{{ $t('view-myMovies.byRate') }}</v-tab
       >
     </v-tabs>
@@ -55,7 +60,7 @@
           <div
             class="category-col ma-auto"
             @click="
-              category = 'towatch';
+              category = 'wishlist';
               expand = !expand;
             "
           >
@@ -148,9 +153,9 @@
       :category="watched"
     />
     <MyMoviesCategory
-      v-if="category === 'towatch'"
+      v-if="category === 'wishlist'"
       :array-movies="wishListMovies"
-      :category="towatch"
+      :category="wishlist"
     />
     <MyMoviesCategory
       v-if="category === 'byrate'"
@@ -175,20 +180,21 @@ export default {
   data() {
     return {
       sectionTitle: this.$t('comp-sectionTitle.mymovies'),
+      selectedTab: 0,
       category: "summary",
       watched: "watched",
       wishListMovies: [],
       watchedMovies: [],
       favouriteMovies: [],
       ratedMovies: [],
-      towatch: "towatch",
+      wishlist: "wishlist",
       favourite: "favourite",
       byrate: "byrate",
       expand: false,
     };
   },
   computed: {
-    ...mapState(['userID']),
+    ...mapState(['userID', 'clickedTab']),
     color1() {
       if (!this.wishListMovies.length) {
         return "#F44336";
@@ -220,8 +226,22 @@ export default {
   },
   mounted () {
     this.getStoragedMovies()
+    this.selectedTab = this.clickedTab
+    this.setCategory(this.clickedTab)
   },
   methods: {
+    rememberClickedTab (key) {
+      this.$store.commit('setClickedTab', key)
+    },
+    setCategory (key) {
+      this.category = {
+          0: "summary",
+          1: "favourite",
+          2: "wishlist",
+          3: "watched",
+          4: "byrate",
+      }[key]
+    },
     getUserID() {
       const userID = JSON.parse(localStorage.getItem("USERID")) || {};
       const id = userID.id;

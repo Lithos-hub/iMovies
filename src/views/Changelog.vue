@@ -170,13 +170,13 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.showReverse();
+  },
   methods: {
     showReverse() {
       this.changes.reverse();
     },
-  },
-  mounted() {
-    this.showReverse();
   },
 };
 </script>

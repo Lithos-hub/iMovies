@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import i18n from "@/plugins/i18n";
+import router from "@/router/index";
 
 Vue.use(Vuex);
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
   state: {
     imageURL: "https://image.tmdb.org/t/p/original",
     user: [],
+    userData: {},
     userID: null,
     isLogged: false,
     isDefault: false,
@@ -27,9 +29,13 @@ export default new Vuex.Store({
     loadingIMG: require("@/assets/img/loadingIMG.gif"),
     snackbarObject: {
       snackbar: false,
-      snackbarColor: "",
-      snackbarText: ""
+      snackbarColor: '',
+      snackbarText: ''
     },
+    comesFromDetails: false,
+    isSearchingMovie: false,
+    searchItem: {},
+    searchInput: '',
     addToDialog: false,
     genreDialog: false,
     loadingData: false,
@@ -42,20 +48,18 @@ export default new Vuex.Store({
     movieCasting: [],
     movieOfTheWeek: {},
     movieDetails: {},
-    selectedGenre: "",
-    trailerOfTheWeekVideo: "",
-    trailerVideo: "",
+    selectedGenre: '',
+    trailerOfTheWeekVideo: '',
+    trailerVideo: '',
     videoNoAvailable: false,
-    storagedMovies: {
-      favourite: [],
-      watched: [],
-      wishlist: [],
-      rated: []
-    }
+    clickedTab: 0,
   },
   mutations: {
     setUser(state, payload) {
       state.user.push(payload);
+    },
+    saveUserData(state, payload) {
+      state.userData = payload;
     },
     setUserID(state, payload) {
       state.userID = payload
@@ -109,30 +113,13 @@ export default new Vuex.Store({
         snackbarColor: color,
         snackbarText: text,
       }
-      setTimeout(() => { state.snackbarObject.snackbar = false }, 3000);
+      setTimeout(() => { state.snackbarObject.snackbar = false }, 1500);
     },
     setAddDialog (state, payload) {
       state.addToDialog = payload
     },
     setAddToMovie (state, payload) {
       state.movieToAdd = payload
-    },
-    setStoragedMovies(state, payload) {
-      state.storagedMovies = payload
-    },
-    setMovieInCategory (state, {category, movie}) {
-      if (category === 'favourite') {
-        state.storagedMovies.favourite.push(movie);
-      }
-      if (category === 'watched') {
-        state.storagedMovies.watched.push(movie);
-      }
-      if (category === 'wishlist') {
-        state.storagedMovies.wishlist.push(movie);
-      }
-      if (category === 'rated') {
-        state.storagedMovies.rated.push(movie);
-      }
     },
     setMoviesByGenre (state, payload) {
       state.moviesByGenre = payload
@@ -145,7 +132,22 @@ export default new Vuex.Store({
     },
     setSelectedGenre (state, payload) {
       state.selectedGenre = payload
-    }
+    },
+    setComesFromDetails (state, payload) {
+      state.comesFromDetails = payload
+    },
+    setClickedTab (state, key) {
+      state.clickedTab = key
+    },
+    setSearchingMovie (state, payload) {
+      state.isSearchingMovie = payload
+    },
+    setSearchItem (state, payload) {
+      state.searchItem = payload
+    },
+    setSearchInput (state, payload) {
+      state.searchInput = payload
+    },
   },
   actions: {
     getUserID({ commit }) {
@@ -153,11 +155,11 @@ export default new Vuex.Store({
       let id = userID.id;
       commit('setUserID', id)
     },
+    showInfo({ commit }, item) {
+      router.push({ path: `movie/${item.id}` })
+    },
     showSnackbar({ commit }, payload) {
       commit("showSnackbar", payload);
-    },
-    showError({ commit }, payload) {
-      commit("showError", payload);
     },
     setAddMovie({commit}, item) {
       commit('setAddToMovie', item)
@@ -170,7 +172,9 @@ export default new Vuex.Store({
     },
     changeLanguage({ commit }, payload) {
       commit("setLanguage", payload);
-      i18n.locale = payload.split('-')[0];
+      setTimeout(() => {
+        i18n.locale = payload.split('-')[0];
+      }, 1000)
     },
     storageMovie({ commit}, payload) {
       commit("setMovieInCategory", payload)
@@ -188,9 +192,9 @@ export default new Vuex.Store({
 
       for (let page of pages) {
         if (byPopularity) {
-          CALL_URL = `${URL}/discover/movie?year=${CURRENT_YEAR}&api_key=${APIKEY}&page=${page}&vote_average.gte=7&sort_by=popularity.desc&include_adult=false`;
+          CALL_URL = `${URL}/discover/movie?year=${CURRENT_YEAR}&api_key=${APIKEY}&page=${page}&vote_average.gte=7&language=${LANGUAGE}&sort_by=popularity.desc&include_adult=false`;
         } else {
-          CALL_URL = `${URL}/discover/movie?year=${CURRENT_YEAR}&api_key=${APIKEY}&page=${page}&include_adult=false`;
+          CALL_URL = `${URL}/discover/movie?year=${CURRENT_YEAR}&api_key=${APIKEY}&page=${page}&include_adult=false&language=${LANGUAGE}`;
         }
         await axios
         .get(CALL_URL)
@@ -198,11 +202,11 @@ export default new Vuex.Store({
           for (let data of resp.data.results) {
             arr.push(data)
           }
-          commit("setLatestReleases", arr);
+          commit("setLatestReleases", arr.slice(0, -4));
         })
         .catch((e) => {
           console.log(e);
-          commit("showError", "Database error connection")
+          commit("showSnackbar", { text: "Database error connection", color: "red" })
           });
         }
     },
@@ -230,7 +234,7 @@ export default new Vuex.Store({
           })
           .catch((e) => {
             console.log(e);
-            commit("showError", "Database error connection")
+            commit("showSnackbar", { text: "Database error connection", color: "red" })
           });
 
           
@@ -275,7 +279,7 @@ export default new Vuex.Store({
           })
           .catch((e) => {
             console.log(e);
-            commit("showError", "Database error connection")
+            commit("showSnackbar", { text: "Database error connection", color: "red" })
           });
     },
     async getMovieOfTheWeek({ commit }) {
@@ -290,14 +294,14 @@ export default new Vuex.Store({
           })
           .catch((e) => {
             console.log(e);
-            commit("showError", "Database error connection")
+            commit("showSnackbar", { text: "Database error connection", color: "red" })
           });
     },
     async getMoviesByYear({ commit }, {year, page}) {
       commit('setLoadingData', true)
       let arrMovies = []
       let arrMoviesID = []
-      if (year >= 1878) {
+      if (year >= 1878 && year <= 2030) {
       for (let i = 1; i <= page; i++) {
         const CALL_URL = `${URL}/discover/movie?year=${year}&api_key=${APIKEY}&language=${LANGUAGE}&sort_by=popularity.desc&page=${i}&include_adult=false`;
             await axios
@@ -317,7 +321,7 @@ export default new Vuex.Store({
           })
           .catch((e) => {
             console.info(e);
-            commit("showError", "Database error connection")
+            commit("showSnackbar", { text: "Database error connection", color: "red" })
             commit('setLoadingData', false)
           });
         }
@@ -337,7 +341,7 @@ export default new Vuex.Store({
         })
         .catch((e) => {
           console.log(e);
-          commit("showError", "Database error connection")
+          commit("showSnackbar", { text: "Database error connection", color: "red" })
         });
       },
     async getMoviesByGenre({ commit }, {genre, page}) {  
@@ -359,7 +363,7 @@ export default new Vuex.Store({
           })
           .catch((e) => {
             console.info(e);
-            commit("showError", "Database error connection")
+            commit("showSnackbar", { text: "Database error connection", color: "red" })
             commit('setLoadingData', false)
           });
     }

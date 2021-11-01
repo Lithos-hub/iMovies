@@ -12,22 +12,40 @@
     <!-- END OF DIALOGS -->
 
     <div id="trailers-container">
-      <v-row>
+      <v-row class="py-auto">
         <v-col cols="2" v-for="(item, i) in latestReleases" :key="i">
-          <div class="white">
-            <v-img
-              id="movie-img"
-              max-height="100%"
-              width="auto"
-              :lazy-src="loadingIMG"
-              :src="item.poster_path != null ? imageURL + item.poster_path : no_image"
-              @click="getTrailer(item)"
-            />
+          <div @mouseover="showInfoBtn(i)" @mouseleave="hideInfoBtn(i)">
+            <div class="white">
+              <v-img
+                id="movie-img"
+                min-height="100%"
+                max-height="100%"
+                width="auto"
+                :lazy-src="loadingIMG"
+                :src="
+                  item.poster_path != null
+                    ? imageURL + item.poster_path
+                    : no_image
+                "
+                @click="getTrailer(item)"
+              />
+            </div>
+            <v-btn
+              class="d-none info-btn mt-5"
+              block
+              color="primary"
+              large
+              outlined
+              tile
+              @click="showInfo(item)"
+              dark
+            >
+              <v-icon color="white">mdi-information</v-icon>
+            </v-btn>
+          <h5 class="movie-title mt-5 pa-auto red--text">
+            {{ item.title }}
+          </h5>
           </div>
-
-            <h5 class="mt-2 red--text">
-              {{ item.original_title }}
-            </h5>
         </v-col>
       </v-row>
     </div>
@@ -38,7 +56,7 @@
 import SectionTitle from "../components/SectionTitle";
 import TrailerDialog from "../components/TrailerDialog";
 
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Trailers",
@@ -48,24 +66,61 @@ export default {
   },
   data() {
     return {
-      sectionTitle: this.$t('comp-sectionTitle.trailers'),
+      sectionTitle: this.$t("comp-sectionTitle.trailers"),
       trailerDialog: false,
       moviesIDs: [],
       moviesVideos: [],
       videoError: "",
     };
   },
-  mounted () {
-    this.getLatestReleases()
+  created() {
+    this.getLatestReleases();
+  },
+  mounted() {
+    window.scrollTo(0, 0);
+    this.hideButtons();
   },
   computed: {
-    ...mapState(['latestReleases', 'trailerVideo', 'no_image', 'imageURL', 'loadingIMG'])
+    ...mapState([
+      "latestReleases",
+      "trailerVideo",
+      "no_image",
+      "imageURL",
+      "loadingIMG",
+    ]),
   },
   methods: {
-    ...mapActions(['getLatestReleases', 'getMovieTrailer']),
+    ...mapActions(["getLatestReleases", "getMovieTrailer", "showInfo"]),
     getTrailer(item) {
-      this.trailerDialog = true
-      this.getMovieTrailer({ type: 'other', id: item.id })
+      this.trailerDialog = true;
+      this.getMovieTrailer({ type: "other", id: item.id });
+    },
+    hideButtons() {
+      let btn = document.querySelectorAll(".info-btn");
+      btn.forEach((btn) => {
+        btn.classList.add("hidden-btn");
+      });
+    },
+    showInfoBtn(i) {
+      let btn = document.querySelectorAll(".info-btn");
+      let title = document.querySelectorAll(".movie-title")
+      btn[i].classList.remove("d-none");
+      btn[i].style.opacity = 0;
+      title[i].style.opacity = 0;
+      setTimeout(() => {
+        btn[i].style.transition = "all 0.3s ease-out";
+        btn[i].style.opacity = 1;
+      }, 50);
+    },
+    hideInfoBtn(i) {
+      let btn = document.querySelectorAll(".info-btn");
+      let title = document.querySelectorAll(".movie-title")
+      btn[i].style.transition = "all 0.3s ease-out";
+      btn[i].style.opacity = 0;
+      setTimeout(() => {
+        title[i].style.opacity = 1;
+        btn[i].classList.add("d-none");
+      }, 150);
     },
   },
 };
