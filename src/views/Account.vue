@@ -125,12 +125,12 @@
           ></v-text-field>
           <v-row no-gutters class="pa-0">
           <v-col>
-              <v-btn :disabled="!valid" dark block tile color="cyan" v-if="isEditingAlias" @click="changeAUsername">Done</v-btn>
-              <v-btn :disabled="!valid" dark block tile color="cyan" v-if="isEditingPass" @click="changePassword">Done</v-btn>
-              <v-btn :disabled="!valid" dark block tile color="cyan" v-if="isEditingEmail" @click="changeEmail">Done</v-btn>
+              <v-btn :disabled="!valid" dark block tile color="cyan" v-if="isEditingAlias" @click="changeAUsername">{{ $t('view-account.done') }}</v-btn>
+              <v-btn :disabled="!valid" dark block tile color="cyan" v-if="isEditingPass" @click="changePassword">{{ $t('view-account.done') }}</v-btn>
+              <v-btn :disabled="!valid" dark block tile color="cyan" v-if="isEditingEmail" @click="changeEmail">{{ $t('view-account.done') }}</v-btn>
           </v-col>
           <v-col>
-              <v-btn dark block tile color="red" @click="closeDialog">Cancel</v-btn>
+              <v-btn dark block tile color="red" @click="closeDialog">{{ $t('view-account.cancel') }}</v-btn>
           </v-col>
       </v-row>
       </v-form>
@@ -156,13 +156,22 @@
         </v-container>
       </v-card>
     </v-dialog>
+    <div v-if="snackbarObject.snackbar">
+      <Snackbar
+        :snackbar-color="snackbarObject.snackbarColor"
+        :snackbar-text="snackbarObject.snackbarText" />
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
+import Snackbar from '@/components/Snackbar.vue';
 
 export default {
+  components: {
+    Snackbar,
+  },
   data() {
     return {
       valid: true,
@@ -215,9 +224,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(['userID', 'userData'])
+    ...mapState(['userID', 'userData', 'snackbarObject'])
   },
   methods: {
+    ...mapActions(['showSnackbar']),
     computePass(pass, show) {
       let string = ''
       if (!show) {
@@ -238,7 +248,11 @@ export default {
     changeAUsername () {
       this.$refs.form.validate()
 
+      let storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+      let existedUser = storage.filter(user => user.userName === this.newName);
+
       if (this.valid) {
+        if (!existedUser.length) { 
         this.loadingName = true
           setTimeout(() => {
             let userData = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
@@ -247,7 +261,10 @@ export default {
             this.$store.commit("saveUserData", userData[this.userID]);
             this.closeDialog()
           }, 500)
+        } else {
+          this.showSnackbar({ text: this.$t('view-account.usernameExist'), color: "error" })
         }
+      }
     },
     changePassword () {
       this.$refs.form.validate()
@@ -266,7 +283,11 @@ export default {
     changeEmail () {
       this.$refs.form.validate()
 
+      let storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+      let existedEmail = storage.filter(user => user.userEmail === this.newEmail);
+
       if (this.valid) {
+        if (!existedEmail.length) { 
         this.loadingEmail = true
           setTimeout(() => {
             let userData = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
@@ -275,7 +296,10 @@ export default {
             this.$store.commit("saveUserData", userData[this.userID]);
             this.closeDialog()
           }, 500)
+        } else {
+          this.showSnackbar({ text: this.$t('view-account.emailExist'), color: "error" })
         }
+      }
     },
     selectAvatar (item) {
       this.newAvatar = item

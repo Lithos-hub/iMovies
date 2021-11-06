@@ -5,6 +5,64 @@
     "text1": "Esta no es la página que estás buscando...",
     "comeback": "Regresar"
   },
+  "languages": {
+    "english": "inglés",
+    "french": "francés",
+    "german": "alemán",
+    "spanish": "español",
+    "italian": "italiano",
+    "portuguese": "portugués",
+    "russian": "ruso",
+    "turkish": "turco",
+    "polish": "polaco",
+    "dutch": "holandés",
+    "japanese": "japonés",
+    "chinese": "chino",
+    "korean": "coreano",
+    "swedish": "sueco",
+    "norwegian": "noruego",
+    "finnish": "finlandés",
+    "danish": "danés",
+    "romanian": "rumano",
+    "hungarian": "húngaro",
+    "czech": "checo",
+    "greek": "griego",
+    "hebrew": "hebreo",
+    "arabic": "árabe",
+    "bulgarian": "búlgaro",
+    "croatian": "croata",
+    "serbian": "serbio",
+    "slovak": "eslovaco",
+    "ukrainian": "ucraniano",
+    "thai": "tailandés",
+    "persian": "Persa",
+    "vietnamese": "vietnamita",
+    "urdu": "Urdu",
+    "telugu": "Telugu",
+    "tamil": "Tamil",
+    "tatar": "Tatar",
+    "turkmen": "turcomano",
+    "tagalog": "Tagalog",
+    "tahitian": "Tahitiano",
+    "tajik": "Tajik",
+    "sutu": "Sutu",
+    "sunda": "Sunda",
+    "swahili": "Swahili",
+    "sundanese": "Sundanese",
+    "somali": "Somalí",
+    "somali-árabe": "Somalí (árabe)",
+    "slovenian": "esloveno",
+    "slovakian": "eslovaco",
+    "sindhi": "Sindhi",
+    "sinhala": "Sinhala",
+    "singhalese": "Singhalese",
+    "shona": "Shona",
+    "serbo": "Serbocroata",
+    "shelven": "Shelven",
+    "mandarin": "mandarín",
+    "basque": "Vasco",
+    "malay": "Malayo"
+  },
   "navbar": {
     "user": "Usuario: ",
     "lang": "Idioma: ",
@@ -51,6 +109,10 @@
     "close": "Cerrar",
     "comeback": "Regresar"
   },
+  "generic-messages": {
+    "no-release": "Release date no available",
+    "no-overview": "Overview no available"
+  },
   "view-access": {
     "welcome": "Bienvenido a iMovies",
     "access1": "Accede con ",
@@ -61,7 +123,7 @@
     "email": "E-mail",
     "password": "Contraseña",
     "accessSuccess": "¡Datos correctos! Cargando la aplicacion...",
-    "accessError": "El E-mail o la contraseña son incorrectos. Por favor, inténtalo de nuevo.",
+    "accessError": "El E-mail o la contraseña no son incorrectos. Por favor, inténtalo de nuevo.",
     "enter": "Acceder",
     "register": "Quiero registrarme",
     "access3": "Accede con una ",
@@ -80,6 +142,8 @@
     "repeat": "Repite la contraseña",
     "register": "Registrar",
     "maximum": "10 caracteres como máximo",
+    "emailExists": "Ese E-mail ya se encuentra registrado",
+    "userExists": "Ese usuario ya se encuentra registrado",
     "nameRequired": "El nombre es obligatorio",
     "emailRequired": "El E-mail es obligatorio",
     "emailInvalid": "El formato del E-mail no es correcto",
@@ -88,7 +152,6 @@
     "passwordMatch": "Las contraseñas no coinciden",
     "success": "¡Genial! ¡Tu cuenta ha sido creada con éxito!",
     "comingback": "Regresando...",
-    "userExists": "¡Ese usuario ya existe!",
     "formularioInvalido": "Formulario inválido"
   },
   "view-home": {
@@ -114,7 +177,9 @@
     "releaseDate": "Fecha de lanzamiento: ",
     "male": "Hombre",
     "female": "Mujer",
-    "noResults": "No se encontraron resultados"
+    "noResults": "No se encontraron resultados",
+    "noOverview":"No hay sinopsis disponible en tu idioma para esta película.",
+    "errorDatabase": "Error de conexión con la base de datos"
   },
   "view-myMovies": {
     "row1": "Películas en lista de deseos: ",
@@ -137,7 +202,7 @@
   "view-popular": {
     "writeYear": "Escribe un año",
     "showDetails": "Ver detalles",
-    "message1": "La primera 'película' fue realizada em 1878 y se llama ",
+    "message1": "La primera 'película' fue realizada en 1878 y se llama ",
     "message2": "The Horse in Motion ",
     "message3": "o",
     "message4": "  Sallie Gardner at a Gallop",
@@ -181,7 +246,7 @@
     "1_9_5-1": "Añadida la función de reinicio de estadísticas en la vista de Mis Películas",
     "1_9_5-2": "En la sección de clasificación, si la película ha sido seleccionada previamente, se eliminará. Ahora se puede eliminar la clasificación o sobrescribirla",
     "1_9_5-3": "Añadida la función 'mostrar detalles' al hacer clic en una película en la sección de clasificación",
-    "2_0_0-1": "Añadida la internacionalización (ENG / SPA) en toda la app",
+    "2_0_0-1": "Añadida la internacionalización (ING / ESP) en toda la app",
     "2_0_0-2": "Mejorado y ampliado el sistema de búsqueda. Ahora es posible buscar por el título de la película o por el nombre del actor/actriz",
     "2_0_0-3": "Añadidas mejoras globales de diseño",
     "2_0_0-4": "Añadido un nuevo sistema para añadir películas a nivel global",
@@ -218,7 +283,11 @@
     "email": "E-mail: ",
     "change": "Modificar",
     "avatar": "Avatar",
-    "changeAvatar": "Cambiar avatar"
+    "changeAvatar": "Cambiar avatar",
+    "done": "Hecho",
+    "cancel": "Cancelar",
+    "usernameExist": "Ese usuario ya existe.",
+    "emailExist": "Ese E-mail ya se encuentra registrado"
   },
   "comp-addTo": {
     "add": "Añadir película a...",
@@ -258,6 +327,8 @@
     "rate-updated": "Puntuación de la película actualizada"
   },
   "comp-trailerDialog": {
-    "noAvailable": "Video no disponible"
+    "noAvailable": "Este vídeo no se encuentra disponible en tu idioma.",
+    "show": "Ver en inglés",
+    "noAvailable2": "Video no disponible"
   }
 }

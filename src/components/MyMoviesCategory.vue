@@ -19,8 +19,7 @@
 
       <v-row no-gutters>
         <v-col
-          cols="3"
-          md="3"
+          :cols="isUsingMobile ? '12' : '3'"
           v-for="(item, i) in arrayMovies"
           :key="i"
           class="text-center mx-auto"
@@ -47,7 +46,7 @@
                       <div class="myrate-section" v-if="category === 'byrate'">
                         <small class="white--text text-center">
                           {{ $t('view-myMovies.myRate') }}
-                          <span class="rate-number">
+                          <span :class="isUsingMobile ? 'text-h4 d-block' : 'rate-number'">
                           {{
                             item.myrate
                           }}
@@ -57,8 +56,9 @@
                 </v-col>
                 <v-col cols="6">
                   <v-img
-                    :src="imageURL + item.poster_path"
+                    :src="item.poster_path !== undefined ? imageURL + item.poster_path : ''"
                     max-height="325px"
+                    :height="item.poster_path === undefined ? '350px' : 'auto'"
                     class="movie-img"
                   ></v-img>
                 </v-col>
@@ -124,6 +124,9 @@ export default {
   },
   computed: {
     ...mapState(['snackbarObject', 'user', 'imageURL', 'userID']),
+    isUsingMobile() {
+      return this.$vuetify.breakpoint.xs;
+    },
   },
   methods: {
     ...mapActions(['showSnackbar', 'showInfo']),
@@ -153,7 +156,7 @@ export default {
           storage[this.userID].myMovies.favourite = arrFavourite;
           localStorage.setItem("storageUserDATA", JSON.stringify(storage));
         }
-        if (this.category === "towatch") {
+        if (this.category === "wishlist") {
           arrWishlist.splice(arrWishlist.indexOf(item), 1)
           this.showSnackbar({text: this.$t('comp-snackbar.wishlist-removed'), color: "secondary"});
           storage[this.userID].myMovies.wishlist = arrWishlist;

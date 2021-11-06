@@ -12,12 +12,25 @@
           width="100%"
           height="100%"
           dark
-          class="pa-5"
+          class="pa-5 text-center"
         >
           <h1 class="video-error">{{ messageError }}</h1>
+          <v-btn tile class="mx-auto" :width="isUsingMobile ? 'auto' : '350px'" @click="showSecondaryTrailer">
+            {{ $t('comp-trailerDialog.show')}}
+          </v-btn>
+        </v-sheet>
+        <v-sheet
+          v-if="secondaryVideoNoAvailable"
+          color="error darken-2"
+          width="100%"
+          height="100%"
+          dark
+          class="pa-5 text-center"
+        >
+          <h1 class="video-error">{{ secondaryMessageError }}</h1>
         </v-sheet>
 
-        <div v-if="!videoNoAvailable">
+        <div v-if="!videoNoAvailable && !secondaryVideoNoAvailable">
         <iframe
           class="video"
           :src="video"
@@ -43,18 +56,27 @@ export default {
   data() {
     return {
       show: true,
-      messageError: this.$t('comp-trailerDialog.noAvailable')
+      messageError: this.$t('comp-trailerDialog.noAvailable'),
+      secondaryMessageError: this.$t('comp-trailerDialog.noAvailable2'),
     };
   },
   computed: {
-    ...mapState(['videoNoAvailable'])
+    ...mapState(['videoNoAvailable', 'secondaryVideoNoAvailable']),
+    isUsingMobile() {
+      return this.$vuetify.breakpoint.xs;
+    },
   },
   methods: {
     closeDialog() {
       this.$emit("close-dialog");
       this.$store.commit('setTrailerVideo', "")
-      this.$store.commit('setVideoAvailable', false)
+      this.$store.commit('setVideoNoAvailable', false)
+      this.$store.commit('setSecondaryVideoNoAvailable', false)
     },
+    showSecondaryTrailer() {
+      this.$store.commit('setVideoNoAvailable', false)
+      this.$store.commit('setSecondaryVideoNoAvailable', false)
+    }
   },
 };
 </script>
@@ -77,7 +99,7 @@ export default {
 
   .video {
     margin: 0 auto;
-    height: 200px;
+    height: 400px;
     width: 100%;
   }
 
@@ -89,7 +111,7 @@ export default {
   }
 
   .video-error {
-    font-size: 2em;
+    font-size: 1em;
     text-align: center;
   }
 }

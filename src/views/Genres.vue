@@ -16,15 +16,16 @@
 
     <!--********************************** DIALOG MOVIES ********************************** -->
           <v-dialog
+            :fullscreen="isUsingMobile"
             overlay-opacity="0.2"
-            width="70%"
+            :width="isUsingMobile ? '100%' : '70%'"
             height="auto"
             persistent
             translate="250px"
             v-model="genreDialog"
             elevation-4
           >
-              <v-toolbar id="genre-dialog-toolbar" tile elevation="5" dark color="secondary">
+              <v-toolbar id="genre-dialog-toolbar" tile elevation="5" dark color="gradient-background-1">
                 <v-btn
                   icon
                   dark
@@ -39,34 +40,34 @@
                 </v-toolbar-title>
               </v-toolbar>
            <div v-for="(item, i) in moviesByGenre" :key="i">
-            <v-card color="#151515e7" tile id="genre-dialog-card" class="pb-10 white--text">
+            <v-card :color="isUsingMobile ? '#202020' : '#151515e7'" tile id="genre-dialog-card" :class="isUsingMobile ? 'pa-0 pb-10 white--text' : 'pb-10 white--text'">
               <v-row no-gutters class="text-center">
                     <v-img
                       class="mx-auto"
-                      max-width="75%"
+                      :max-width="isUsingMobile ? '100%' : '75%'"
                       position="top"
-                      max-height="50%"
+                      :max-height="isUsingMobile ? '100%' : '50%'"
                       :src="imageURL + item.backdrop_path">
                       <div id="movie-img-text">
                         <div>
-                          <h1 class="text-h5 white--text shadow-text">{{ item.title }}</h1>
+                          <h1 :class="isUsingMobile ? 'white--text shadow--text' : 'text-h5 white--text shadow-text'">{{ item.title }}</h1>
                         </div>
                         <div>
-                          <h1 class="text-h5 white--text shadow-text">{{ formatDate(item.release_date) }}</h1>
+                          <h1 :class="isUsingMobile ? 'white--text shadow--text' : 'text-h5 white--text shadow-text'">{{ formatDate(item.release_date) }}</h1>
                         </div>
                       </div>
                     </v-img>
-                  <v-row>
+                  <v-row :no-gutters="isUsingMobile">
                     <v-col>
                     <p id="genre-overview">
                       {{ item.overview.length ? item.overview : $t('generic-messages.no-overview') }}
                     </p>
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row :no-gutters="isUsingMobile">
                       <v-col>
                         <v-btn
-                          width="100%"
+                          :width="isUsingMobile ? 'auto' : '100%'"
                           color="primary"
                           outlined
                           large
@@ -79,7 +80,7 @@
                       </v-col>
                     <v-col>
                       <v-btn
-                        width="100%"
+                        :width="isUsingMobile ? 'auto' : '100%'"
                         color="red"
                         outlined
                         large
@@ -87,12 +88,13 @@
                         @click="getTrailer(item)"
                         dark
                         >
-                        <span class="white--text">{{ $t('app-buttons.view') }}</span>
+                        <span class="white--text" v-if="!isUsingMobile">{{ $t('app-buttons.view') }}</span>
+                        <v-icon class="white--text" v-else>mdi-youtube</v-icon>
                       </v-btn>
                     </v-col>
-                    <v-col>
+                    <v-col v-if="!isDefault">
                       <v-btn
-                        width="100%"
+                        :width="isUsingMobile ? 'auto' : '100%'"
                         color="purple"
                         outlined
                         large
@@ -100,13 +102,14 @@
                         @click="showAddToDialog(true); setAddMovie(item)"
                         dark
                         >
-                        <span class="white--text">{{ $t('app-buttons.add') }}</span>
+                        <span class="white--text" v-if="!isUsingMobile">{{ $t('app-buttons.add') }}</span>
+                        <v-icon class="white--text" v-else>mdi-plus</v-icon>
                         </v-btn>
                       </v-col>
                   </v-row>
               </v-row>
             </v-card>
-            <v-divider class="ma-0 pa-0 cyan"></v-divider>
+            <v-divider v-if="!isUsingMobile" class="ma-0 pa-0 cyan"></v-divider>
            </div>
           </v-dialog>
 
@@ -331,7 +334,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(['snackbarObject', 'imageURL', 'moviesByGenre', 'selectedGenre', 'genreDialog', 'loadingData', 'trailerVideo', 'addToDialog']),
+    ...mapState(['snackbarObject', 'imageURL', 'moviesByGenre', 'selectedGenre', 'genreDialog', 'loadingData', 'trailerVideo', 'addToDialog', 'isDefault']),
+    isUsingMobile() {
+      return this.$vuetify.breakpoint.xs;
+    },
   },
   created () {
     window.scrollTo(0, 0)
@@ -396,19 +402,6 @@ export default {
   padding-inline: 5em;
 }
 
-#movie-img-text {
-  backdrop-filter: blur(5px);
-  background: $gradient_blur2;
-  padding: 10px;
-  position: absolute;
-  top: 0em;
-  left: 0;
-  width: 100%;
-  display: inline-flex;
-  justify-content: space-between;
-  background: gradient_blur1;
-}
-
 .no-border-radius {
   border-radius: 0 !important;
 }
@@ -417,7 +410,7 @@ export default {
 @media only screen and (min-width: 360px) {
   .genre-btn {
     letter-spacing: 0px;
-    height: 350px !important;
+    height: 250px !important;
     font-size: 3em;
     text-shadow: 0px 0px 10px black;
     margin-bottom: 20px;
@@ -439,22 +432,6 @@ export default {
     font-family: $style3;
   }
 
-  .go-up-btn {
-    position: relative;
-    margin: 0;
-    width: 100%;
-    bottom: 0px;
-    height: 100px !important;
-    font-size: 5em;
-    &:focus {
-      outline: none;
-    }
-  }
-
-  .go_up_trigger {
-    text-decoration: none;
-  }
-
   #genre-title {
     font-size: 18px;
     font-family: $style3;
@@ -467,19 +444,33 @@ export default {
 
   #genre-overview {
     padding: 0px;
-    font-size: 20px;
+    font-size: 14px;
     text-align: justify;
     display: block;
     width: 100%;
     margin-top: 20px;
   }
 
-  .movie-img-dialog {
-    border-radius: 15px;
-    display: inline;
-    margin-top: 50px;
-    width: 100%;
+  #movie-img-text {
+  backdrop-filter: blur(5px);
+  background: $gradient_blur2;
+  padding: 5px;
+  padding-bottom: 0;
+  position: absolute;
+  top: 0em;
+  left: 0;
+  width: 100%;
+  text-align: left;
+  display: inline-flex;
+  justify-content: space-between;
+  background: gradient_blur1;
+
+  h1 {
+    font-size: 12px;
+    font-weight: 400;
+    text-shadow: 2px 1px 2px black;
   }
+}
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
@@ -556,6 +547,19 @@ export default {
     margin-top: 0px;
     width: 40%;
   }
+
+  #movie-img-text {
+  backdrop-filter: blur(5px);
+  background: $gradient_blur2;
+  padding: 10px;
+  position: absolute;
+  top: 0em;
+  left: 0;
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  background: gradient_blur1;
+}
 }
 
 // ******* DESKTOP RESPONSIVE ******* //
@@ -633,6 +637,19 @@ export default {
     border-radius: 15px;
     margin-top: 0px;
   }
+
+  #movie-img-text {
+  backdrop-filter: blur(5px);
+  background: $gradient_blur2;
+  padding: 10px;
+  position: absolute;
+  top: 0em;
+  left: 0;
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  background: gradient_blur1;
+}
 }
 
 // ******** COMMON STYLES ******** //

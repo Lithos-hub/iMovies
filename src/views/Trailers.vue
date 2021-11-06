@@ -11,9 +11,9 @@
 
     <!-- END OF DIALOGS -->
 
-    <div id="trailers-container">
+    <v-container fluid id="trailers-container">
       <v-row class="py-auto">
-        <v-col cols="2" v-for="(item, i) in latestReleases" :key="i">
+        <v-col :cols="isUsingMobile ? '6' : '2'" v-for="(item, i) in latestReleases" :key="i">
           <div @mouseover="showInfoBtn(i)" @mouseleave="hideInfoBtn(i)">
             <div class="white">
               <v-img
@@ -42,13 +42,25 @@
             >
               <v-icon color="white">mdi-information</v-icon>
             </v-btn>
+            <v-btn
+              v-if="isUsingMobile"
+              class="info-btn mt-5"
+              color="primary"
+              large
+              outlined
+              tile
+              @click="showInfo(item)"
+              dark
+            >
+              <v-icon color="white">mdi-information</v-icon>
+            </v-btn>
           <h5 class="movie-title mt-5 pa-auto red--text">
             {{ item.title }}
           </h5>
           </div>
         </v-col>
       </v-row>
-    </div>
+    </v-container>
   </div>
 </template>
 
@@ -88,6 +100,9 @@ export default {
       "imageURL",
       "loadingIMG",
     ]),
+    isUsingMobile() {
+      return this.$vuetify.breakpoint.xs;
+    },
   },
   methods: {
     ...mapActions(["getLatestReleases", "getMovieTrailer", "showInfo"]),
@@ -143,7 +158,7 @@ export default {
 @media only screen and (min-width: 360px) {
   #trailers-container {
     position: relative;
-    margin: 0px;
+    margin: 0;
     width: 100%;
     margin-bottom: 50px;
     height: 100%;

@@ -5,11 +5,12 @@
       <v-col lg="8" md="10" cols="10">
         <v-card class="pa-5" dark>
           <div class="text-center">
-          <v-btn to="/" class="btn-gradient2 mb-5" width="250px">
-          {{ $t("view-register.comeback") }}</v-btn>
-          <h5 class="text-center">
-            {{ $t("view-register.create") }}
-          </h5>
+            <v-btn to="/" class="btn-gradient2 mb-5" width="250px">
+              {{ $t("view-register.comeback") }}</v-btn
+            >
+            <h5 class="text-center">
+              {{ $t("view-register.create") }}
+            </h5>
           </div>
           <v-divider></v-divider>
 
@@ -56,26 +57,33 @@
             <v-dialog v-model="avatarDialog" width="800" persistent>
               <template v-slot:activator="{ on, attrs }">
                 <div class="text-center">
-                <v-btn
-                  color="green"
-                  rounded
-                  width="250px"
-                  class="my-5"
-                  v-bind="attrs"
-                  v-on="on"
+                  <v-btn
+                    color="green"
+                    rounded
+                    width="250px"
+                    class="my-5"
+                    v-bind="attrs"
+                    v-on="on"
                   >
-                  {{ $t("view-register.choose") }}
+                    {{ $t("view-register.choose") }}
                   </v-btn>
                 </div>
               </template>
 
               <v-card>
-                <v-card-title class="headline green white--text">
+                <v-card-title
+                  class="headline gradient-background-1 white--text shadow-text"
+                >
                   {{ $t("view-register.choose") }}
                 </v-card-title>
                 <v-container fluid class="pa-5">
                   <v-row>
-                    <v-col lg="2" v-for="(item, i) in avatar_imgs" :key="i">
+                    <v-col
+                      lg="2"
+                      cols="4"
+                      v-for="(item, i) in avatar_imgs"
+                      :key="i"
+                    >
                       <v-avatar
                         size="100"
                         id="avatar-img"
@@ -87,31 +95,30 @@
                   </v-row>
                 </v-container>
                 <v-card-actions>
-                  <v-btn tile block color="secondary" @click="avatarDialog = false">{{ $t("view-register.close") }}</v-btn>
+                  <v-btn
+                    tile
+                    block
+                    color="secondary"
+                    @click="avatarDialog = false"
+                    >{{ $t("view-register.close") }}</v-btn
+                  >
                 </v-card-actions>
               </v-card>
             </v-dialog>
 
             <div class="text-center">
-              <v-btn
-                color="darken-1"
-                class="btn-gradient1"
-                @click="validate"
-                >
-                {{ $t('view-register.register') }}
-               </v-btn
-              >
+              <v-btn color="darken-1" class="btn-gradient1" @click="validate">
+                {{ $t("view-register.register") }}
+              </v-btn>
             </div>
-
           </v-form>
         </v-card>
         <div v-if="registered">
-          <v-alert class="mt-5 text-center success-alert"
-            >
-            {{ $t('view-register.success') }}</v-alert
+          <v-alert class="mt-5 text-center success-alert">
+            {{ $t("view-register.success") }}</v-alert
           >
           <h4 class="cyan--text mt-5 text-center">
-            {{ $t('view-register.comingback') }}
+            {{ $t("view-register.comingback") }}
             <v-progress-circular
               :size="50"
               color="cyan"
@@ -126,18 +133,19 @@
     <div v-if="snackbarObject.snackbar">
       <Snackbar
         :snackbar-color="snackbarObject.snackbarColor"
-        :snackbar-text="snackbarObject.snackbarText" />
+        :snackbar-text="snackbarObject.snackbarText"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import Snackbar from "../components/Snackbar";
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState } from "vuex";
 
 export default {
   components: {
-    Snackbar
+    Snackbar,
   },
   data() {
     return {
@@ -150,17 +158,18 @@ export default {
       avatar: "",
       registered: false,
       nameRules: [
-        (v) => !!v || this.$t('view-register.nameRequired'),
-        (v) => v.length < 15 || this.$t('view-register.maximum')
+        (v) => !!v || this.$t("view-register.nameRequired"),
+        (v) => v.length < 15 || this.$t("view-register.maximum"),
       ],
       emailRules: [
-        (v) => !!v || this.$t('view-register.emailRequired'),
-        (v) => /.+@.+\..+/.test(v) || this.$t('view-register.emailInvalid'),
+        (v) => !!v || this.$t("view-register.emailRequired"),
+        (v) => /.+@.+\..+/.test(v) || this.$t("view-register.emailInvalid"),
       ],
       passwordRules: {
-        required: (v) => !!v || this.$t('view-register.passwordRequired'),
-        length: (v) => v.length >= 8 || this.$t('view-register.passwordLength'),
-        match: (v) => v === this.password || this.$t('view-register.passwordMatch')
+        required: (v) => !!v || this.$t("view-register.passwordRequired"),
+        length: (v) => v.length >= 8 || this.$t("view-register.passwordLength"),
+        match: (v) =>
+          v === this.password || this.$t("view-register.passwordMatch"),
       },
       avatar_imgs: [
         require("../assets/avatars/godfather1.jpg"),
@@ -187,60 +196,66 @@ export default {
     };
   },
   computed: {
-    ...mapState(['snackbarObject', "user"]),
+    ...mapState(["snackbarObject", "user"]),
   },
   methods: {
     ...mapActions(["showSnackbar"]),
-    checkPasswords () {
-      this.password === this.repassword ? '' : this.$t('view-register.passwordMatch')
+    checkPasswords() {
+      this.password === this.repassword
+        ? ""
+        : this.$t("view-register.passwordMatch");
     },
     validate() {
-      // First, we check if the user already exists
-      let storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-        if (storage) {
-          for (let user of storage) {
-            if (
-              user.userEmail === this.email ||
-              user.userName === this.username
-            ) {
-              this.valid = false;
-              this.showSnackbar({ text: this.$t('view-register.userExists'), color: "red" });
-            } else {
-              this.valid = true;
-            }
-          }
-        }
-      
-      this.valid = this.$refs.form.validate()
+      this.valid = this.$refs.form.validate();
+
       if (this.valid) {
+        // First, we'll check if the user already exists
+        let storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+        let existedUser = storage.filter(
+          (user) =>
+            user.userName === this.username
+        );
+        let existedEmail = storage.filter(
+          (user) =>
+            user.userEmail === this.email
+        );
+        if (existedUser.length) {
+          this.showSnackbar({
+            text: this.$t("view-register.userExists"),
+            color: "red",
+          });
+        } else if (existedEmail.length) {
+          this.showSnackbar({
+            text: this.$t("view-register.emailExists"),
+            color: "red",
+          });
+        } else {
+          let userData = {
+            id: storage.length,
+            userName: this.username,
+            userEmail: this.email,
+            userPassword: this.password,
+            userAvatar: this.avatar,
+            myMovies: {
+              favourite: [],
+              watched: [],
+              wishlist: [],
+              rated: [],
+            },
+          };
 
-        let userData = {
-          id: storage.length,
-          userName: this.username,
-          userEmail: this.email,
-          userPassword: this.password,
-          userAvatar: this.avatar,
-          myMovies: {
-            favourite: [],
-            watched: [],
-            wishlist: [],
-            rated: []
-          }
-        };
+          storage.push(userData);
+          localStorage.setItem("storageUserDATA", JSON.stringify(storage));
 
-        storage.push(userData);
-        localStorage.setItem("storageUserDATA", JSON.stringify(storage));
+          this.$store.commit("setUser", userData);
 
-        this.$store.commit("setUser", userData);
-
-        this.registered = !this.registered;
+          this.registered = !this.registered;
           setTimeout(() => {
             this.$router.push("/");
           }, 3000);
-
-
+      }
       } else {
-        this.showSnackbar({ text: 'Formulario inválido', color: "red" })
+        this.showSnackbar({ text: this.$t('view-register.formularioInvalido'), color: "red" });
       }
     },
     selectAvatar(item) {
@@ -253,9 +268,11 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/scss/variables";
+@import "src/scss/app";
 
 .register {
-  position: absolute;
+  position: relative;
+  padding-block: 5em;
   inset: 0;
   justify-content: center;
   align-items: center;

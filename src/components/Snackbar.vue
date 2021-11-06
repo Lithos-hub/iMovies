@@ -53,6 +53,7 @@ export default {
 .snackbar-text {
     text-align: center;
     font-size: 18px;
+    font-weight: 300;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -60,7 +61,20 @@ export default {
     justify-content: center;
     align-self: center;
     font-family: 'Roboto', sans-serif;
-    text-shadow: 2px 2px 4px black;
+}
+
+// ******* MOBILE RESPONSIVE ******* //
+@media only screen and (min-width: 360px) {
+  .snackbar-text {
+    font-size: 12px;
+  }
+}
+
+// ******* LAPTOP AND DESKTOP RESPONSIVE ******* //
+@media only screen and (min-width: 767px) {
+  .snackbar-text {
+    font-size: 18px;
+  }
 }
 
 </style>

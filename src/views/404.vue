@@ -2,8 +2,8 @@
   <v-container fluid>
     <v-img class="error-404-background" src="../assets/img/404-background.png"></v-img>
     <v-row>
-      <v-col lg="4"></v-col>
-      <v-col lg="4" cols="12" class="text-center mx-auto">
+      <v-col v-if="!isUsingMobile"></v-col>
+      <v-col :cols="isUsingMobile ? '12' : '4'" class="text-center mx-auto">
         <v-btn
           color="secondary"
           tile
@@ -21,8 +21,9 @@
         <div id="tittle-wrapper">
           <h1 id="error404-title">
             Error 4<v-img
+              :max-width="isUsingMobile ? '100' : '180'"
               src="../assets/img/deathstar.png"
-              class="ma-auto"
+              class="ma-0"
               id="deathstar"
             ></v-img
             >4
@@ -57,7 +58,7 @@
             v-if="sound"
           ></audio>
       </v-col>
-      <v-col lg="4"></v-col>
+      <v-col v-if="!isUsingMobile"></v-col>
     </v-row>
   </v-container>
 </template>
@@ -70,6 +71,11 @@ export default {
       soundon: "mdi-volume-high",
       soundoff: "mdi-volume-low",
     };
+  },
+  computed: {
+    isUsingMobile() {
+      return this.$vuetify.breakpoint.xs;
+    },
   },
   methods: {
     playAudio() {
@@ -113,14 +119,6 @@ export default {
 #tittle-wrapper {
   display: flexbox;
   margin: 0;
-}
-
-#deathstar {
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  animation: move 3s linear infinite;
 }
 
 .saber-wrapper {
@@ -201,6 +199,17 @@ export default {
   }
 }
 
+// ******* MOBILE RESPONSIVE ******* //
+@media only screen and (min-width: 360px) {
+
+  #deathstar {
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  animation: move 3s linear infinite;
+}
+
   #error404-img {
     width: 200px;
     position: relative;
@@ -212,7 +221,69 @@ export default {
     color: white;
     text-shadow: 0px 0px 10px aqua, 0px 0px 5px white;
     position: absolute;
-    top: 70%;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  #error404-title {
+    width: auto;
+    position: relative;
+    font-size: 4em;
+    top: 1em;
+    display: flex;
+    font-family: $style4;
+    letter-spacing: 10px;
+    color: white;
+    text-shadow: 0px 0px 20px red, 0px 0px 10px white;
+  }
+
+  #go-back-btn {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    box-shadow: none;
+    transition: 0.3s;
+    width: 100%;
+    color: white;
+    background: $dark;
+    font-size: auto;
+
+    &:hover {
+      box-shadow: 0px 0px 30px greenyellow, 0px 0px 10px white;
+      width: 50%;
+      color: $dark;
+      letter-spacing: 10px;
+      font-size: 18px;
+      background: white;
+    }
+
+}
+
+}
+
+// ******* LAPTOP AND DESKTOP RESPONSIVE ******* //
+@media only screen and (min-width: 767px) {
+  #deathstar {
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  animation: move 3s linear infinite;
+}
+
+  #error404-img {
+    width: 200px;
+    position: relative;
+    left: 30%;
+
+  }
+
+  #error404-img-text {
+    color: white;
+    text-shadow: 0px 0px 10px aqua, 0px 0px 5px white;
+    position: absolute;
+    top: 80%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
@@ -220,26 +291,19 @@ export default {
   #error404-title {
     width: auto;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -150%);
-    font-size: 12em;
+    font-size: 8em;
     display: flex;
+    top: 20%;
     font-family: $style4;
-    letter-spacing: 15px;
+    letter-spacing: 20px;
     color: white;
     text-shadow: 0px 0px 20px red, 0px 0px 10px white;
   }
 
-  #deathstar {
-    max-width: 180px;
-    max-height: 180px;
-  }
-
   #go-back-btn {
-    bottom: 10%;
+    bottom: 5%;
     left: 50%;
-    transform: translate(-50%, 0);
+    transform: translate(-50%, -50%);
     position: absolute;
     box-shadow: none;
     transition: 0.3s;
@@ -258,4 +322,9 @@ export default {
     }
 
 }
+}
+
+
+
+
 </style>

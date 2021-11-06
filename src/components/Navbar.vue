@@ -14,17 +14,17 @@
         {{$t('navbar.user') }} <span class="cyan--text">@{{ userData.userName }}</span>
       </div>
 
-      <v-toolbar-title class="mx-auto">
+      <div class="mx-auto">
         <router-link
           to="/home"
           class="router-link-default"
           >
           <div class="brand-title">iMovies</div>
           </router-link>
-      </v-toolbar-title>
+      </div>
 
 
-        <small class="white--text mr-3">{{ $t('navbar.lang') }} <span class="cyan--text">{{ i18Lang }}</span></small>
+        <small v-if="!isUsingMobile" class="white--text mr-3">{{ $t('navbar.lang') }} <span class="cyan--text">{{ i18Lang }}</span></small>
           <v-menu bottom offset-y v-model="langMenu">
             <template v-slot:activator="{ on, attrs }">
             <v-btn color="pink lighten-3" fab icon outlined width="100ox" small class="mr-2" v-bind="attrs" v-on="on" @click="langMenu = true">
@@ -51,14 +51,14 @@
             </v-row>
           </v-menu>
 
-      <v-btn outlined tile width="auto" max-width="150px" small color="red darken-1" class="mr-2" @click="logout()">
+      <v-btn outlined :tile="!isUsingMobile" :fab="isUsingMobile" max-width="150px" small color="red darken-1" class="mr-2" @click="logout()">
         {{ displayText ? $t('navbar.logout') : "" }}
         <v-icon>mdi-account-cancel</v-icon>
       </v-btn>
       <div>
-          <v-btn icon tile width="100%" class="px-5" href="https://github.com/Lithos-hub/VUEJS-iMovies" target="_blank">
-            <v-icon class="mr-2"> mdi-github </v-icon>
-              <div id="version-info" class="ml-2">
+          <v-btn icon :small="isUsingMobile" :outlined="isUsingMobile" :tile="!isUsingMobile" :fab="isUsingMobile" :width="isUsingMobile ? '' : '100%'" :class="isUsingMobile ? 'px-0' : 'px-5'" href="https://github.com/Lithos-hub/VUEJS-iMovies" target="_blank">
+            <v-icon :class="isUsingMobile ? 'ma-0' : 'mr-2'"> mdi-github </v-icon>
+              <div v-if="!isUsingMobile" id="version-info" class="ml-2">
                 <p>v{{ major }}.{{ minor }}.{{ patch }}</p>
               </div>
           </v-btn>
@@ -113,7 +113,7 @@
       </v-list>
 
       <div id="drawer-below-section">
-      <v-divider></v-divider>
+      <v-divider v-if="!isUsingMobile"></v-divider>
         <p id="developedBy">
           {{ date }} <v-icon size="17">mdi-copyright</v-icon> {{$t('navbar.developed') }}<br />
           <a
@@ -177,7 +177,13 @@ export default {
     },
     i18Lang() {
       return i18n.locale.split('-')[0].toUpperCase()
-    }
+    },
+    isUsingMobile () {
+      return this.$vuetify.breakpoint.xs
+    },
+  },
+  mounted () {
+    this.getData()
   },
   methods: {
   ...mapActions(["changeLanguage"]),
@@ -185,12 +191,28 @@ export default {
       this.$store.commit("setDefault", false);
       this.$store.commit("isLogged", false);
       this.$router.push("/");
+
+      const isDefault = JSON.parse(localStorage.getItem("isDefault")) || {};
+      isDefault.isDefault = false;
+      localStorage.setItem("isDefault", JSON.stringify(isDefault));
     },
     refresh() {
       this.$router.go(0);
     },
     setComingFromDetails() {
       this.$store.commit("setComesFromDetails", false);
+    },
+    getData() {
+      const isDefault = JSON.parse(localStorage.getItem("isDefault")) || {};
+      this.$store.commit("setDefault", isDefault.isDefault);
+
+      if (!this.isDefault) {
+        const userData =
+        JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+        const userID = JSON.parse(localStorage.getItem("USERID"));
+        this.$store.commit("setUser", userData[userID.id])
+        this.$store.commit("saveUserData", userData[userID.id]);
+      }
     },
   },
 };
@@ -203,13 +225,6 @@ export default {
 * {
   color: $primary;
   font-family: $style2;
-}
-
-.brand-title {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .language-icon {
@@ -284,10 +299,6 @@ export default {
     font-size: 12px;
   }
 
-  .brand-title {
-    margin: 0 auto;
-  }
-
   .nav-icons {
     font-size: 1em !important;
     padding-block: 5px;
@@ -323,6 +334,25 @@ export default {
     padding-top: 15px;
     right: 0px;
   }
+
+  .lang-list {
+    border: 1px solid pink !important;
+    background: $gradient_1 !important;
+  }
+
+.language-menu-item {
+    text-shadow: 2px 2px 2px black;
+    padding: 1em;
+    cursor: pointer;
+    padding-inline: 2em;
+    transition: all 0.3s ease-out;
+
+    &:hover {
+      background: $dark2 !important;
+      color: aqua !important;
+    }
+}
+
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
@@ -331,7 +361,11 @@ export default {
   }
 
   .brand-title {
-    letter-spacing: 5px;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .nav-icons {
@@ -378,6 +412,24 @@ export default {
       transform: scale(1.1);
     }
   }
+
+  .lang-list {
+    border: 1px solid pink !important;
+    background: $gradient_1 !important;
+  }
+
+.language-menu-item {
+    text-shadow: 2px 2px 2px black;
+    padding: 1em;
+    cursor: pointer;
+    padding-inline: 2em;
+    transition: all 0.3s ease-out;
+
+    &:hover {
+      background: $dark2 !important;
+      color: aqua !important;
+    }
+}
 }
 
 // ******* DESKTOP RESPONSIVE ******* //
@@ -391,7 +443,11 @@ export default {
   }
 
   .brand-title {
-    letter-spacing: 5px;
+    font-size: 25px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .nav-icons {

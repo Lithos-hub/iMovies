@@ -105,7 +105,7 @@
                 <v-divider class="my-5" dark></v-divider>
                 <v-card
                   rounded="2"
-                  width="140"
+                  width="auto"
                   class="mx-auto justify-content-center"
                   elevation="5"
                   id="card-default"
@@ -214,6 +214,10 @@ export default {
 
             localStorage.setItem("USERID", JSON.stringify(storage));
 
+            const isDefault = JSON.parse(localStorage.getItem("isDefault")) || {};
+            isDefault.isDefault = false;
+            localStorage.setItem("isDefault", JSON.stringify(isDefault));
+
             this.loader = "loading";
 
             setTimeout(() => {
@@ -228,18 +232,22 @@ export default {
     },
     setDefault() {
       this.$store.commit("isLogged", true);
-      const userData = {};
-
-      userData.userName = "defaultUser";
-      userData.userEmail = "";
-      userData.userPassword = "";
-      userData.wishListMovies = [];
-      userData.watchedMovies = [];
-      userData.favouriteMovies = [];
-      userData.ratedMovies = [];
+      const userData = {
+        userName: 'defaultUser',
+        userEmail: 'example@example.com',
+        userPassword: 'defaultUser',
+        wishListMovies: null,
+        watchedMovies: null,
+        favouriteMovies: null,
+        ratedMovies: null,
+      };
 
       this.$store.commit("setUser", userData);
       this.$store.commit("setDefault", true);
+
+      const isDefault = JSON.parse(localStorage.getItem("isDefault")) || {};
+      isDefault.isDefault = true;
+      localStorage.setItem("isDefault", JSON.stringify(isDefault));
 
       setTimeout(() => {
         this.$router.push("/home");
@@ -251,19 +259,21 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/scss/variables";
+@import "src/scss/app";
+
+// ** COMMON
 
 #background {
-  position: fixed;
+  position: absolute;
   height: 100%;
   width: 100%;
-  top: 0px;
-  left: 0px;
-  bottom: 0px;
+  top: 0;
+  left: 0;
 }
 
 .access {
   position: relative;
-  margin-top: 5%;
+  margin-block: 5%;
 }
 
 .info-icon {
@@ -279,22 +289,6 @@ export default {
   -webkit-text-fill-color: transparent;
   cursor: pointer;
   font-size: 30px;
-}
-
-.v-tooltip__content {
-  background: linear-gradient(
-    25deg,
-    rgb(255, 199, 126),
-    rgb(206, 130, 30),
-    rgb(214, 52, 52),
-    rgb(196, 17, 213)
-  );
-  color: white;
-  padding: 10px;
-  max-width: 150px;
-  opacity: 1 !important;
-  box-shadow: 0px 0px 20px $dark;
-  text-align: center;
 }
 
 #card-title {
@@ -382,8 +376,31 @@ h5 {
     );
 }
 
+// ******* MOBILE RESPONSIVE ******* //
+@media only screen and (min-width: 360px) {
 .language-selector {
   position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+#card-default-icon {
+  font-size: 5em;
+  color: white;
+}
+
+#card-default {
+  margin-bottom: 3em;
+}
+
+}
+
+// ******* LAPTOP AND DESKTOP RESPONSIVE ******* //
+@media only screen and (min-width: 767px) {
+
+.language-selector {
+  position: absolute;
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 0);
@@ -426,4 +443,7 @@ h5 {
     background-size: contain;
     background-position: center;
 }
+
+}
+
 </style>

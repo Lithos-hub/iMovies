@@ -1,5 +1,5 @@
 <template>
-  <div id="popular-view">
+  <div class="popular-view">
     <SectionTitle :title="sectionTitle" />
 
     <!-- ADD TO MY MOVIES DIALOG -->
@@ -10,7 +10,7 @@
 
     <v-row>
       <v-col />
-      <v-col cols="1">
+      <v-col :cols="isUsingMobile ? '8' : '1'">
         <v-text-field
         elevation-10
         v-model="year"
@@ -134,7 +134,6 @@ export default {
     };
   },
   created () {
-    window.scrollTo(0, 0);
     this.comesFromDetails ? this.getSavedYear() : this.getRandomYear()
   },
   mounted() {
@@ -145,7 +144,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(['moviesByYear', 'userID', 'moviesID', 'no_image', 'imageURL', 'loadingData', 'loadingIMG', 'addToDialog', 'storagedMovies', 'comesFromDetails'])
+    ...mapState(['moviesByYear', 'userID', 'moviesID', 'no_image', 'imageURL', 'loadingData', 'loadingIMG', 'addToDialog', 'storagedMovies', 'comesFromDetails']),
+    isUsingMobile() {
+      return this.$vuetify.breakpoint.xs;
+    },
   },
   methods: {
     ...mapActions(['getMoviesByYear', 'showAddToDialog', 'setAddMovie']),
@@ -184,9 +186,8 @@ export default {
       }
     },
     infiniteScroll () {
-      window.scrollTo(0, 0);
       window.onscroll = () => {
-        let view = document.querySelector('#popular-view')
+        let view = document.querySelector('.popular-view')
         if (window.innerHeight + window.pageYOffset >= view.offsetHeight) {
           this.page++
           this.getMoviesByYear({ year: this.year, page: this.page })

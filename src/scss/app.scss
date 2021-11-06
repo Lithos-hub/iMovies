@@ -41,3 +41,19 @@ body {
   .shadow-text {
     text-shadow: 2px 1px 2px black;
   }
+
+  .v-tooltip__content {
+    background: linear-gradient(
+      25deg,
+      rgb(255, 199, 126),
+      rgb(206, 130, 30),
+      rgb(214, 52, 52),
+      rgb(196, 17, 213)
+    );
+    color: white;
+    padding: 10px;
+    max-width: 150px;
+    opacity: 1 !important;
+    box-shadow: 0px 0px 20px $dark;
+    text-align: center;
+  }

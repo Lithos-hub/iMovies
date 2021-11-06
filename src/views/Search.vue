@@ -60,16 +60,16 @@
     </v-row>
 
     <v-row no-gutters id="btn-row" v-if="!showContent">
-      <v-col cols="12" lg="6" md="12">
+      <v-col :cols="isUsingMobile ? '12' : '6'">
         <v-img id="byMovie-btn" :src="randomMovieIMG" @click="searchMovie()">
-          <h1 id="byMovie-text" class="text-h4">
+          <h1 id="byMovie-text" :class="isUsingMobile ? 'text-h6' : 'text-h4'">
             {{ $t("view-search.byTitle") }}
           </h1>
         </v-img>
       </v-col>
-      <v-col cols="12" lg="6" md="12">
+      <v-col :cols="isUsingMobile ? '12' : '6'">
         <v-img id="byPerson-btn" :src="randomPersonIMG" @click="searchPerson()">
-          <h1 id="byPerson-text" class="text-h4">
+          <h1 id="byPerson-text" :class="isUsingMobile ? 'text-h6' : 'text-h4'">
             {{ $t("view-search.byPerson") }}
           </h1>
         </v-img>
@@ -104,7 +104,10 @@
         :key="'A' + i"
         class="pb-10 mt-10"
       >
-        <v-col md="3" class="mt-15">
+        <v-col md="3" :class="isUsingMobile ? '' : 'mt-15'">
+          <h1 v-if="isUsingMobile" class="text-center text-h2 cyan--text">
+            {{ person.name }}
+          </h1>
           <v-img
             :src="
               person.profile_path !== null
@@ -145,7 +148,7 @@
           </v-list>
         </v-col>
         <v-col>
-          <h1>
+          <h1 v-if="!isUsingMobile">
             {{ person.name }}
           </h1>
           <v-divider></v-divider>
@@ -157,7 +160,7 @@
               class="my-1"
             >
               <v-img
-                max-width="100px"
+                :max-width="isUsingMobile ? '75px' : '100px'"
                 max-height="100%"
                 class="mr-5 elevation-5"
                 :src="
@@ -166,8 +169,8 @@
                     : no_image
                 "
               />
-              <p class="text-h5 mr-10 cyan--text">{{ movie.title }}</p>
-              <p class="text-h6 ml-auto">
+              <p :class="isUsingMobile ? 'cyan--text' : 'text-h5 mr-10 cyan--text'">{{ movie.title }}</p>
+              <p :class="isUsingMobile ? 'ml-auto' : 'text-h6 ml-auto'">
                 {{ formatDate(movie.release_date) }}
               </p>
             </v-list-item>
@@ -212,25 +215,39 @@
               {{ formatGenre(genre) }}
             </span>
           </small>
-
           <!-- VOTE AVERAGE -->
-          <div class="mt-5">
-            <h4 id="movie-vote-average" class="indigo d-inline px-5">
-              {{ item.vote_average }}
-            </h4>
-            <h5
-              id="movie-vote-ratings"
-              class="font-weight-bold d-inline primary--text ml-2"
+          <div class="d-flex">
+            <v-sheet
+              elevation="5"
+              height="50px"
+              width="100%"
+              max-width="50px"
+              :class="`${formatRateColor(item.vote_average)} pa-2`"
             >
+              <h4 class="white--text align-center text-center">
+                {{ item.vote_average }}
+              </h4>
+            </v-sheet>
+            <h5 class="font-weight-bold primary--text mx-2">
               {{ item.vote_count }}
             </h5>
-            <span class="font-weight-light d-inline">{{
+            <span class="font-weight-light">{{
               $t("view-search.ratings")
             }}</span>
           </div>
           <!-- MOVIE OVERVIEW -->
-          <p id="movie-overview">
-            {{ item.overview }}
+          <p
+            :class="
+              item.overview === ''
+                ? 'error--text mt-5 text-justify'
+                : 'mt-5 text-justify'
+            "
+          >
+            {{
+              item.overview === ""
+                ? $t("view-search.noOverview")
+                : item.overview
+            }}
           </p>
 
           <!-- MOVIE ACTIONS -->
@@ -468,6 +485,9 @@ export default {
       let random = Math.floor(Math.random() * 11) + 1;
       return require(`../assets/img/random-person-${random}.jpg`);
     },
+    isUsingMobile() {
+      return this.$vuetify.breakpoint.xs;
+    },
   },
   mounted() {
     window.scrollTo(0, 0);
@@ -491,6 +511,25 @@ export default {
       "setAddMovie",
       "showInfo",
     ]),
+    formatRateColor(movieRate) {
+      let color = "";
+      if (movieRate <= 10) {
+        color = "purple";
+      }
+      if (movieRate < 9) {
+        color = "info";
+      }
+      if (movieRate < 7) {
+        color = "green";
+      }
+      if (movieRate < 5) {
+        color = "orange";
+      }
+      if (movieRate < 3) {
+        color = "red";
+      }
+      return color;
+    },
     formatGenre(genre) {
       let genres = {
         ["28"]: this.$t("genres.action"),
@@ -608,7 +647,7 @@ export default {
           .catch((e) => {
             console.log(e);
             this.showSnackbar({
-              text: "Database connection error",
+              text: $t("view-search.ErrorDatabase"),
               color: "red",
             });
           });
@@ -623,7 +662,7 @@ export default {
       this.noResults = false;
       if (this.input.length > 1) {
         if (this.isSearchingMovie) {
-          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${i18n.locale}&query=${this.input}&sorty_by=popularity.desc&page=1`;
+          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${i18n.locale}&query=${this.input}&sort_by=popularity.desc&page=1&include_adult=false`;
           axios
             .get(url)
             .then((res) => {
@@ -638,13 +677,13 @@ export default {
             })
             .catch((e) => {
               this.showSnackbar({
-                text: "Database connection error",
+                text: $t("view-search.ErrorDatabase"),
                 color: "red",
               });
               console.log(e);
             });
         } else {
-          url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&${i18n.locale}&query=${this.input}&sorty_by=popularity.desc&page=1`;
+          url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&${i18n.locale}&query=${this.input}&sort_by=popularity.desc&page=1&include_adult=false`;
           axios
             .get(url)
             .then((res) => {
@@ -659,7 +698,7 @@ export default {
             })
             .catch((e) => {
               this.showSnackbar({
-                text: "Database connection error",
+                text: $t("view-search.ErrorDatabase"),
                 color: "red",
               });
               console.log(e);
@@ -669,7 +708,7 @@ export default {
         this.inputItemsList = [];
       }
     },
-    searchByInput(item) {
+    async searchByInput(item) {
       let query = this.input;
       this.searchedMovie = [];
       this.searchedPerson = [];
@@ -683,13 +722,13 @@ export default {
         if (item.id) {
           this.$store.commit("setSearchItem", item);
           this.$store.commit("setSearchInput", "");
-          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${i18n.locale}&query=${item.title}&page=1`;
+          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${i18n.locale}&query=${item.title}&page=1&sort_by=popularity.desc&include_adult=false`;
         } else {
           this.$store.commit("setSearchInput", query);
           this.$store.commit("setSearchItem", {});
-          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${i18n.locale}&query=${query}&page=1`;
+          url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&language=${i18n.locale}&query=${query}&page=1&sort_by=popularity.desc&include_adult=false`;
         }
-        axios
+        await axios
           .get(url)
           .then((res) => {
             if (res.data.results.length) {
@@ -718,7 +757,7 @@ export default {
           })
           .catch((e) => {
             this.showSnackbar({
-              text: "Database connection error",
+              text: $t("view-search.ErrorDatabase"),
               color: "red",
             });
             console.log(e);
@@ -728,18 +767,18 @@ export default {
         if (item.id) {
           this.$store.commit("setSearchItem", item);
           this.$store.commit("setSearchInput", "");
-          url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&language=${i18n.locale}&query=${item.name}&page=1`;
+          url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&language=${i18n.locale}&query=${item.name}&page=1&include_adult=false`;
         } else {
           this.$store.commit("setSearchInput", query);
           this.$store.commit("setSearchItem", {});
-          url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&language=${i18n.locale}&query=${query}&page=1`;
+          url = `https://api.themoviedb.org/3/search/person?api_key=${this.apikey}&language=${i18n.locale}&query=${query}&page=1&include_adult=false`;
         }
 
-        axios
+        await axios
           .get(url)
           .then((res) => {
             if (res.data.results.length) {
-              for (let data of res.data.results.slice(0, 20)) {
+              for (let data of res.data.results.slice(0, 10)) {
                 this.searchedPerson.push({
                   id: data.id,
                   known_for: data.known_for,
@@ -758,7 +797,7 @@ export default {
           })
           .catch((e) => {
             this.showSnackbar({
-              text: "Database connection error",
+              text: $t("view-search.ErrorDatabase"),
               color: "red",
             });
             console.log(e);
@@ -767,24 +806,23 @@ export default {
       }
     },
     async getMoviesByPerson(id) {
+      this.loading = true;
       this.inputItemsList = [];
-      let url = `https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${this.apikey}&language=${i18n.locale}&page=1`;
+      let url = `https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${this.apikey}&language=${i18n.locale}&page=1&include_adult=false`;
       let arr = [];
       await axios
         .get(url)
         .then((res) => {
-          if (res.data.cast !== []) {
+          if (res.data.cast !== [] && res.data.cast !== undefined) {
             for (let data of res.data.cast) {
-              if (data !== undefined) {
-                arr.push({
-                  id: data.id,
-                  title: data.title,
-                  character: data.character,
-                  release_date: data.release_date,
-                  poster_path: data.poster_path,
-                  year: "",
-                });
-              }
+              arr.push({
+                id: data.id,
+                title: data.title,
+                character: data.character,
+                release_date: data.release_date,
+                poster_path: data.poster_path,
+                year: "",
+              });
             }
           }
 
@@ -799,16 +837,16 @@ export default {
             return b.year - a.year;
           });
 
+          for (let movie of arr) {
+            this.personMoviesList.push(movie);
+          }
           setTimeout(() => {
-            for (let movie of arr) {
-              this.personMoviesList.push(movie);
-            }
             this.loading = false;
-          }, 2000);
+          }, 2500);
         })
         .catch((e) => {
           this.showSnackbar({
-            text: "Database connection error",
+            text: $t("view-search.ErrorDatabase"),
             color: "red",
           });
           console.log(e);
@@ -817,7 +855,7 @@ export default {
     },
     async getPersonInfo() {
       for (let person of this.searchedPerson) {
-        let url = `https://api.themoviedb.org/3/person/${person.id}?api_key=${this.apikey}&sort_by=popularity.desc&language=${i18n.locale}`;
+        let url = `https://api.themoviedb.org/3/person/${person.id}?api_key=${this.apikey}&sort_by=popularity.desc&language=${i18n.locale}&include_adult=false`;
         await axios
           .get(url)
           .then((res) => {
@@ -845,32 +883,13 @@ export default {
 <style lang="scss" scoped>
 @import "src/scss/variables";
 
-#no-results {
-  margin: 0;
-  padding: 2em;
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 #movie-vote-average {
   border-radius: 5px;
   text-align: center;
-  font-size: 30px;
 }
 
 #search-bar {
   animation: fadeIn 1s ease-in;
-}
-
-.progressSpinner {
-  position: fixed;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
 }
 
 #items-list {
@@ -880,57 +899,27 @@ export default {
   max-height: 300px;
 }
 
-#btn-row {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-#byMovie-btn {
-  margin-left: auto;
-  border: 5px solid rgb(31, 153, 220);
-  clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
-}
-
-#byPerson-btn {
-  margin-right: auto;
-  border: 5px solid rgb(63, 202, 63);
-  clip-path: polygon(100% 0, 85% 100%, 0 100%, 15% 0);
-}
-
-#byMovie-btn,
-#byPerson-btn {
-  border-radius: 50px;
-  cursor: pointer;
-  width: 100%;
-  max-width: 800px;
-  height: 350px;
-  transition: all 0.3s ease-out;
-  filter: grayscale(2);
-  &:hover {
-    filter: grayscale(0);
-  }
-}
-
-#byMovie-text,
-#byPerson-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  width: 100%;
-  color: white;
-  text-shadow: 0px 2px 5px black;
-  transition: all 0.3s ease-out;
-}
-
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
+
+  #no-results {
+  margin: 0;
+  padding: 2em;
+  text-align: center;
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+  .progressSpinner {
+  position: fixed;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
   #show-where-btn {
     position: relative;
     top: auto;
@@ -1002,9 +991,77 @@ export default {
     animation: fadeIn 1s ease-in;
     text-align: center;
   }
+
+  #btn-row {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  #byMovie-btn {
+    margin-left: auto;
+    border: 5px solid rgb(31, 153, 220);
+    clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+  }
+
+  #byPerson-btn {
+    margin-right: auto;
+    border: 5px solid rgb(63, 202, 63);
+    clip-path: polygon(100% 0, 85% 100%, 0 100%, 15% 0);
+  }
+
+  #byMovie-btn,
+  #byPerson-btn {
+    border-radius: 50px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 100%;
+    height: 200px;
+    margin-block: 2em;
+    transition: all 0.3s ease-out;
+    filter: grayscale(2);
+    &:hover {
+      filter: grayscale(0);
+    }
+  }
+
+  #byMovie-text,
+  #byPerson-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+    color: white;
+    text-shadow: 0px 2px 5px black;
+    transition: all 0.3s ease-out;
+  }
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
+  #no-results {
+  margin: 0;
+  padding: 2em;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+  .progressSpinner {
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
   #show-where-btn {
     position: fixed;
     top: 80;
@@ -1061,10 +1118,77 @@ export default {
   #trailer-btn {
     width: auto;
   }
+
+  #btn-row {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  #byMovie-btn {
+    margin-left: auto;
+    border: 5px solid rgb(31, 153, 220);
+    clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+  }
+
+  #byPerson-btn {
+    margin-right: auto;
+    border: 5px solid rgb(63, 202, 63);
+    clip-path: polygon(100% 0, 85% 100%, 0 100%, 15% 0);
+  }
+
+  #byMovie-btn,
+  #byPerson-btn {
+    border-radius: 50px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 800px;
+    height: 350px;
+    transition: all 0.3s ease-out;
+    filter: grayscale(2);
+    &:hover {
+      filter: grayscale(0);
+    }
+  }
+
+  #byMovie-text,
+  #byPerson-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+    color: white;
+    text-shadow: 0px 2px 5px black;
+    transition: all 0.3s ease-out;
+  }
 }
 
 // ******* DESKTOP RESPONSIVE ******* //
 @media only screen and (min-width: 1370px) {
+  #no-results {
+  margin: 0;
+  padding: 2em;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+  .progressSpinner {
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
   #show-where-btn {
     position: fixed;
     top: 80;
@@ -1137,6 +1261,55 @@ export default {
     top: 0;
     transform: translate(-50%, 0);
     animation: fadeIn 1s ease-in;
+  }
+
+  #btn-row {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  #byMovie-btn {
+    margin-left: auto;
+    border: 5px solid rgb(31, 153, 220);
+    clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+  }
+
+  #byPerson-btn {
+    margin-right: auto;
+    border: 5px solid rgb(63, 202, 63);
+    clip-path: polygon(100% 0, 85% 100%, 0 100%, 15% 0);
+  }
+
+  #byMovie-btn,
+  #byPerson-btn {
+    border-radius: 50px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 800px;
+    height: 350px;
+    transition: all 0.3s ease-out;
+    filter: grayscale(2);
+    &:hover {
+      filter: grayscale(0);
+    }
+  }
+
+  #byMovie-text,
+  #byPerson-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+    color: white;
+    text-shadow: 0px 2px 5px black;
+    transition: all 0.3s ease-out;
   }
 }
 </style>

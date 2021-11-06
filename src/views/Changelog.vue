@@ -202,9 +202,11 @@ export default {
   }
   .list-group {
     background: white;
-    padding: 20px;
+    padding: 10px;
+    text-align: justify;
     color: black;
   }
+
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {

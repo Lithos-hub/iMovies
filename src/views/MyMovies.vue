@@ -4,42 +4,62 @@
 
     <!-- SUPERIOR TABS MENU -->
 
-    <v-tabs id="bar-tabs" centered background-color="transparent" v-model="selectedTab">
+    <v-tabs
+      id="bar-tabs"
+      centered
+      background-color="transparent"
+      v-model="selectedTab"
+    >
       <v-tabs-slider color="error"></v-tabs-slider>
       <v-tab
         :key="0"
         active-class="cyan--text"
         class="cyan--text tab"
-        @click="category = 'summary'; rememberClickedTab(0)"
-        >{{ $t('view-myMovies.summary') }}</v-tab
+        @click="
+          category = 'summary';
+          rememberClickedTab(0);
+        "
+        >{{ $t("view-myMovies.summary") }}</v-tab
       >
       <v-tab
         :key="1"
         active-class="error--text"
         class="white--text tab"
-        @click="category = 'favourite'; rememberClickedTab(1)"
-        >{{ $t('view-myMovies.favourite') }}</v-tab
+        @click="
+          category = 'favourite';
+          rememberClickedTab(1);
+        "
+        >{{ $t("view-myMovies.favourite") }}</v-tab
       >
       <v-tab
         :key="2"
         active-class="error--text"
         class="white--text tab"
-        @click="category = 'wishlist'; rememberClickedTab(2)"
-        >{{ $t('view-myMovies.wishList') }}</v-tab
+        @click="
+          category = 'wishlist';
+          rememberClickedTab(2);
+        "
+        >{{ $t("view-myMovies.wishList") }}</v-tab
       >
       <v-tab
         :key="3"
         active-class="error--text"
         class="white--text tab"
-        @click="category = 'watched'; rememberClickedTab(3)"
-        >{{ $t('view-myMovies.watched') }}</v-tab
+        @click="
+          category = 'watched';
+          rememberClickedTab(3);
+        "
+        >{{ $t("view-myMovies.watched") }}</v-tab
       >
       <v-tab
         :key="4"
         active-class="error--text"
         class="white--text tab"
-        @click="category = 'byrate'; rememberClickedTab(4)"
-        >{{ $t('view-myMovies.byRate') }}</v-tab
+        @click="
+          category = 'byrate';
+          rememberClickedTab(4);
+        "
+        >{{ $t("view-myMovies.byRate") }}</v-tab
       >
     </v-tabs>
 
@@ -55,16 +75,16 @@
       <v-container>
         <v-row id="categories-menu" v-if="expand" no-gutters>
           <div class="category-col ma-auto" @click="category = 'summary'">
-            <v-btn block class="category-btn">{{ $t('view-myMovies.summary') }}</v-btn>
-          </div>
-          <div
-            class="category-col ma-auto"
-            @click="
-              category = 'wishlist';
-              expand = !expand;
-            "
-          >
-            <v-btn block class="category-btn">{{ $t('view-myMovies.favourite') }}</v-btn>
+            <v-btn
+              tile
+              block
+              class="my-3 cyan"
+              @click="
+                category = 'summary';
+                expand = !expand;
+              "
+              >{{ $t("view-myMovies.summary") }}</v-btn
+            >
           </div>
           <div
             class="category-col ma-auto"
@@ -73,7 +93,20 @@
               expand = !expand;
             "
           >
-            <v-btn block class="category-btn">{{ $t('view-myMovies.wishList') }}</v-btn>
+            <v-btn tile block dark class="my-3 gradient-background-1">{{
+              $t("view-myMovies.favourite")
+            }}</v-btn>
+          </div>
+          <div
+            class="category-col ma-auto"
+            @click="
+              category = 'wishlist';
+              expand = !expand;
+            "
+          >
+            <v-btn tile block dark class="my-3 gradient-background-1">
+              {{ $t("view-myMovies.wishList") }}
+            </v-btn>
           </div>
           <div
             class="category-col ma-auto"
@@ -81,7 +114,11 @@
               category = 'watched';
               expand = !expand;
             "
-          ></div>
+          >
+          <v-btn tile block dark class="my-3 gradient-background-1">
+            {{ $t("view-myMovies.watched") }}
+          </v-btn>
+          </div>
           <div
             class="category-col ma-auto"
             @click="
@@ -89,7 +126,9 @@
               expand = !expand;
             "
           >
-            <v-btn block class="category-btn">{{ $t('view-myMovies.byRate') }}</v-btn>
+            <v-btn tile block dark class="my-3 gradient-background-1">{{
+              $t("view-myMovies.byRate")
+            }}</v-btn>
           </div>
         </v-row>
       </v-container>
@@ -101,7 +140,7 @@
       <v-container>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div>{{ $t('view-myMovies.row1') }}</div>
+            <div class="text-h5 cyan--text">{{ $t("view-myMovies.row1") }}</div>
           </v-col>
           <v-col>
             <div class="data-list-number" :style="{ color: color1 }">
@@ -111,7 +150,7 @@
         </v-row>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div>{{ $t('view-myMovies.row2') }}</div>
+            <div class="text-h5 cyan--text">{{ $t("view-myMovies.row2") }}</div>
           </v-col>
           <v-col>
             <div class="data-list-number" :style="{ color: color2 }">
@@ -121,7 +160,7 @@
         </v-row>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div>{{ $t('view-myMovies.row3') }}</div>
+            <div class="text-h5 cyan--text">{{ $t("view-myMovies.row3") }}</div>
           </v-col>
           <v-col>
             <div class="data-list-number" :style="{ color: color3 }">
@@ -131,7 +170,7 @@
         </v-row>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div>{{ $t('view-myMovies.row4') }}</div>
+            <div class="text-h5 cyan--text">{{ $t("view-myMovies.row4") }}</div>
           </v-col>
           <v-col>
             <div class="data-list-number" :style="{ color: color4 }">
@@ -169,7 +208,7 @@
 import SectionTitle from "../components/SectionTitle";
 import MyMoviesCategory from "../components/MyMoviesCategory";
 
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 export default {
   name: "MyMovies",
@@ -179,7 +218,7 @@ export default {
   },
   data() {
     return {
-      sectionTitle: this.$t('comp-sectionTitle.mymovies'),
+      sectionTitle: this.$t("comp-sectionTitle.mymovies"),
       selectedTab: 0,
       category: "summary",
       watched: "watched",
@@ -194,7 +233,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['userID', 'clickedTab']),
+    ...mapState(["userID", "clickedTab"]),
     color1() {
       if (!this.wishListMovies.length) {
         return "#F44336";
@@ -224,23 +263,23 @@ export default {
       }
     },
   },
-  mounted () {
-    this.getStoragedMovies()
-    this.selectedTab = this.clickedTab
-    this.setCategory(this.clickedTab)
+  mounted() {
+    this.getStoragedMovies();
+    this.selectedTab = this.clickedTab;
+    this.setCategory(this.clickedTab);
   },
   methods: {
-    rememberClickedTab (key) {
-      this.$store.commit('setClickedTab', key)
+    rememberClickedTab(key) {
+      this.$store.commit("setClickedTab", key);
     },
-    setCategory (key) {
+    setCategory(key) {
       this.category = {
-          0: "summary",
-          1: "favourite",
-          2: "wishlist",
-          3: "watched",
-          4: "byrate",
-      }[key]
+        0: "summary",
+        1: "favourite",
+        2: "wishlist",
+        3: "watched",
+        4: "byrate",
+      }[key];
     },
     getUserID() {
       const userID = JSON.parse(localStorage.getItem("USERID")) || {};
@@ -249,11 +288,11 @@ export default {
     },
     getStoragedMovies() {
       const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-      let movies = storage[this.userID].myMovies
-      this.favouriteMovies = movies.favourite
-      this.watchedMovies = movies.watched
-      this.wishListMovies = movies.wishlist
-      this.ratedMovies = movies.rated
+      let movies = storage[this.userID].myMovies;
+      this.favouriteMovies = movies.favourite;
+      this.watchedMovies = movies.watched;
+      this.wishListMovies = movies.wishlist;
+      this.ratedMovies = movies.rated;
     },
   },
 };
@@ -280,12 +319,6 @@ export default {
   .category-col {
     text-align: center;
     font-size: 15px;
-  }
-
-  .category-btn {
-    background: linear-gradient(to right, $dark2, $primary);
-    color: white;
-    margin-top: 20px;
   }
 
   .data-list {

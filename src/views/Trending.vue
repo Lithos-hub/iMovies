@@ -28,10 +28,10 @@
               </v-sheet>
             </v-row>
           <v-row>
-            <v-col cols="2">
-              <v-img :src="imageURL + item.poster_path" width="100%" class="movie-img" />
+            <v-col :cols="isUsingMobile ? '12' : '2'">
+              <v-img :src="imageURL + item.poster_path" width="100%" height="auto" class="movie-img" />
             </v-col>
-            <v-col cols="3">
+            <v-col :cols="isUsingMobile ? '12' : '3'">
               <h4>{{ $t('view-trending.overview') }}</h4>
               <v-divider class="ma-0 mb-2"></v-divider>
                 <p
@@ -44,7 +44,7 @@
                   {{ item.overview.length ? item.overview : $t('generic-messages.no-overview') }}
                 </p>
             </v-col>
-            <v-col cols="4">
+            <v-col :cols="isUsingMobile ? '12' : '4'">
               <h4 class="info--text">{{ $t('view-trending.casting') }}</h4>
               <v-divider class="ma-0 mb-2"></v-divider>
               <p v-for="(cast, j) in item.cast.slice(0, 11)" :key="'A' + j">
@@ -54,23 +54,24 @@
                   <span class="white--text">{{ cast.character }}</span>
               </p>
             </v-col>
-            <v-col cols="3" class="text-right my-auto">
+            <v-col :cols="isUsingMobile ? '12' : '3'" class="text-right my-auto">
               <v-btn
-                class="d-block my-10 ml-auto"
-                width="350px"
+                class="my-2"
                 outlined
+                block
                 color="red"
                 large
                 tile
                 @click="getTrailer(item)"
                 dark
                 >
-                <span class="white--text">{{ $t('app-buttons.view') }}</span>
+                <span class="white--text" v-if="!isUsingMobile">{{ $t('app-buttons.view') }}</span>
+                <v-icon class="white--text" v-else>mdi-youtube</v-icon>
               </v-btn>
               <v-btn
-                class="d-block my-10 ml-auto"
-                width="350px"
+                class="my-2"
                 outlined
+                block
                 color="purple"
                 large
                 tile
@@ -80,11 +81,11 @@
                   <span class="white--text">{{ $t('app-buttons.add') }}</span>
                 </v-btn>
                 <v-btn
-                class="d-block my-10 ml-auto"
-                width="350px"
+                class="my-2"
+                outlined
+                block
                 color="primary"
                 large
-                outlined
                 tile
                 @click="showInfo(item)"
                 dark
@@ -123,6 +124,9 @@ export default {
   },
   computed: {
     ...mapState(["trendingMovies", "trailerVideo", "addToDialog", "imageURL"]),
+    isUsingMobile() {
+      return this.$vuetify.breakpoint.xs;
+    },
   },
   mounted() {
     window.scrollTo(0, 0);

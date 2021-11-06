@@ -5,9 +5,9 @@
     </v-row>
 
     <v-row class="mt-10">
-      <v-col></v-col>
-      <v-col class="text-center">
-        <h2 class="text-h1 cyan--text text-center mb-10">{{ $t('view-about.title') }}</h2>
+      <v-col v-if="!isUsingMobile"></v-col>
+      <v-col :cols="isUsingMobile ? '12' : '6'" class="text-center">
+        <h2 :class="isUsingMobile ? 'text-h5 cyan--text text-center mb-10' : 'text-h1 cyan--text text-center mb-10'">{{ $t('view-about.title') }}</h2>
         <p>{{ $t('view-about.text1') }}</p> 
         <p>{{ $t('view-about.text2') }}</p>
         <p>{{ $t('view-about.text3') }}</p>
@@ -15,7 +15,7 @@
         <p>{{ $t('view-about.text5') }}</p>
         <p>{{ $t('view-about.text6') }}</p> 
       </v-col>
-      <v-col></v-col>
+      <v-col v-if="!isUsingMobile"></v-col>
     </v-row>
   </div>
 </template>
@@ -32,6 +32,11 @@ export default {
     return {
       name: "About",
     };
+  },
+  computed: {
+    isUsingMobile() {
+      return this.$vuetify.breakpoint.xs;
+    },
   },
   mounted () {
     document.body.scrollTop = 0
@@ -61,54 +66,23 @@ export default {
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
-  .about-text {
-    padding: 10px;
-    margin-top: 20px;
-    text-align: justify;
-    color: white !important;
-    font-size: 20px;
-    font-family: $style3;
-    line-height: 30px;
-  }
-
-  .list {
-    margin-left: 20px;
-    color: $secondary;
+  p {
+    font-size: 13px;
   }
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
-  .about-text {
-    padding: 20px;
-    margin-top: 20px;
-    text-align: justify;
-    color: white !important;
-    font-size: 1.5em;
-    font-family: $style3;
-    line-height: 40px;
-  }
 
-  .list {
-    margin-left: 20px;
-    color: $secondary;
+  p {
+    font-size: 15px;
   }
 }
 
 // ******* DESKTOP RESPONSIVE ******* //
 @media only screen and (min-width: 1370px) {
-  .about-text {
-    padding: 50px;
-    margin-top: 0px;
-    text-align: justify;
-    color: white !important;
-    font-size: 2em;
-    font-family: $style3;
-    line-height: 40px;
-  }
 
-  .list {
-    margin-left: 20px;
-    color: $secondary;
+  p {
+    font-size: 18px;
   }
 }
 </style>

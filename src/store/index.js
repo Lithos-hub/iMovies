@@ -52,6 +52,7 @@ export default new Vuex.Store({
     trailerOfTheWeekVideo: '',
     trailerVideo: '',
     videoNoAvailable: false,
+    secondaryVideoNoAvailable: false,
     clickedTab: 0,
   },
   mutations: {
@@ -85,8 +86,14 @@ export default new Vuex.Store({
     setTrailerVideo(state, payload) {
       state.trailerVideo = payload
     },
-    setVideoAvailable(state, payload) {
+    setSecondaryTrailerVideo(state, payload) {
+      state.trailerVideo = payload
+    },
+    setVideoNoAvailable(state, payload) {
       state.videoNoAvailable = payload
+    },
+    setSecondaryVideoNoAvailable(state, payload) {
+      state.secondaryVideoNoAvailable = payload
     },
     setMovieCasting(state, payload) {
       state.movieCasting = payload
@@ -263,6 +270,7 @@ export default new Vuex.Store({
       .get(CALL_URL)
       .then((resp) => {
         if (resp.data.results.length) {
+          commit('setSecondaryVideoNoAvailable', false)
           const KEY = resp.data.results[0].key;
           const VIDEO_YOUTUBE = "https://www.youtube.com/embed/" + KEY;
             if (type === 'ofTheWeek') {
@@ -272,10 +280,26 @@ export default new Vuex.Store({
               commit('setTrailerVideo', VIDEO_YOUTUBE)
             }
           } else {
-            // If the video doesn't have trailer video available:
-            commit('setVideoAvailable', true)
-          }
-
+              commit('setVideoNoAvailable', true)
+              // We will provide the trailer in case of not to be available, so the user can watch it in english
+              const SECONDARY_URL = `${URL}/movie/${id}/videos?api_key=${APIKEY}&language=en-EN&include_adult=false`;
+              axios
+              .get(SECONDARY_URL)
+              .then((resp) => {
+                if (resp.data.results.length) {
+                  const KEY = resp.data.results[0].key;
+                  const VIDEO_YOUTUBE = "https://www.youtube.com/embed/" + KEY;
+                  commit('setSecondaryTrailerVideo', VIDEO_YOUTUBE)
+                } else {
+                  commit('setVideoNoAvailable', false)
+                  commit('setSecondaryVideoNoAvailable', true)
+                }
+              })
+              .catch((e) => {
+                console.log(e)
+                commit("showSnackbar", { text: "Database error connection", color: "red" })
+              });
+            }
           })
           .catch((e) => {
             console.log(e);

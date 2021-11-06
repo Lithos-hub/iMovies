@@ -8,7 +8,7 @@
       class="no-overflow-x"
     >
       <v-card width="auto" class="no-overflow-x">
-        <v-card-title class="gradient-background-1 text-h5 white--text">
+        <v-card-title class="gradient-background-1 text-h5 white--text shadow-text">
           {{ $t('comp-addTo.add') }}
         </v-card-title>
 
