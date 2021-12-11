@@ -11,7 +11,7 @@
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
       <div id="username-toolbar">
-        {{$t('navbar.user') }} <span class="cyan--text">@{{ userData.userName }}</span>
+        {{$t('navbar.user') }} <span class="cyan--text">@{{ user.userName }}</span>
       </div>
 
       <div class="mx-auto">
@@ -77,13 +77,13 @@
       <v-list dense nav>
         <v-list-item-group v-model="group" active-class="black">
           <v-img
-            v-if="userData.userAvatar !== undefined"
-            :src="userData.userAvatar"
+            v-if="user.avatar !== undefined"
+            :src="user.avatar"
             width="90"
             height="90"
             class="avatar ma-5 ma-auto" />
           <h5 class="username-drawer text-center my-2">
-            @{{ userData.userName }}
+            @{{ user.userName }}
           </h5>
 
           <v-list-item to="/home">
@@ -131,10 +131,11 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import i18n from "@/plugins/i18n";
+import { auth, db } from "../../firebase.js";
 
 export default {
   props: [
-    'userData'
+    'user'
   ],
   data() {
     return {
@@ -182,38 +183,24 @@ export default {
       return this.$vuetify.breakpoint.xs
     },
   },
-  mounted () {
-    this.getData()
-  },
   methods: {
   ...mapActions(["changeLanguage"]),
     logout() {
-      this.$store.commit("setDefault", false);
-      this.$store.commit("isLogged", false);
-      this.$router.push("/");
-
-      const isDefault = JSON.parse(localStorage.getItem("isDefault")) || {};
-      isDefault.isDefault = false;
-      localStorage.setItem("isDefault", JSON.stringify(isDefault));
+      auth
+      .signOut()
+      .then(() => {
+        this.$router.push('/')
+      })
+      .catch(error => {
+        console.log(error)
+      })
     },
     refresh() {
       this.$router.go(0);
     },
     setComingFromDetails() {
       this.$store.commit("setComesFromDetails", false);
-    },
-    getData() {
-      const isDefault = JSON.parse(localStorage.getItem("isDefault")) || {};
-      this.$store.commit("setDefault", isDefault.isDefault);
-
-      if (!this.isDefault) {
-        const userData =
-        JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-        const userID = JSON.parse(localStorage.getItem("USERID"));
-        this.$store.commit("setUser", userData[userID.id])
-        this.$store.commit("saveUserData", userData[userID.id]);
-      }
-    },
+    }
   },
 };
 </script>

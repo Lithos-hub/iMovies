@@ -130,25 +130,29 @@ const router = new VueRouter({
 //   const isLogged = store.getters.isLogged;
 //   const registeredUsersOnly = to.meta.registeredUsersOnly;
 
-//   if (restrictedRoute) {
-//     if (store.getters.signedUser !== {} && isLogged) {
-//       next();
-//     } else {
-//       next("/");
-//     }
-//   } else {
-//     next();
-//   }
+//   if (to.fullPath !== "/") {
+//       if (restrictedRoute) {
+//         if (isLogged) {
+//           next();
+//         } else {
+//           next("/");
+//         }
+//       } else {
+//         next();
+//       }
 
-//   if (registeredUsersOnly) {
-//     if (!store.getters.defaultUser && isLogged) {
-//       next();
-//     } else {
-//       next("/home");
-//     }
+//       if (registeredUsersOnly) {
+//         if (!store.getters.defaultUser && isLogged) {
+//           next();
+//         } else {
+//           next("/home");
+//         }
+//       } else {
+//         next();
+//       }
 //   } else {
 //     next();
-//   }
+// }
 // });
 
 export default router;

@@ -123,6 +123,7 @@
     "email": "E-mail",
     "password": "Password",
     "userExists": "That user already exists",
+    "accessSuccess": "Correct data! Entering the app...",
     "accessError": "The E-mail or the password are incorrect. Please, try again.",
     "enter": "Login",
     "register": "I want to register",
@@ -151,7 +152,7 @@
     "passwordLength": "Write at least 8 characters",
     "passwordMatch": "The passwords don't match",
     "success": "Great! Your account has been successfully created!",
-    "comingback": "Coming back...",
+    "comingback": "Entering the app...",
     "userExists": "That user already exists!",
     "formularioInvalido": "Invalid form"
   },

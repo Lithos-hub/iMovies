@@ -124,16 +124,33 @@
     <div class="language-selector">
       <v-menu open-on-hover offset-y top class="language-menu">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn tile width="200px" large class="language-btn" v-bind="attrs" v-on="on">
+          <v-btn
+            tile
+            width="200px"
+            large
+            class="language-btn"
+            v-bind="attrs"
+            v-on="on"
+          >
             <v-icon>mdi-earth</v-icon>
           </v-btn>
         </template>
         <v-list dark width="200px">
           <v-list-item class="text-center">
-            <v-list-item-title class="language-menu-item" id="esp-option" @click="changeLanguage('es-ES'), refresh()"><span>ESP</span></v-list-item-title>
+            <v-list-item-title
+              class="language-menu-item"
+              id="esp-option"
+              @click="changeLanguage('es-ES'), refresh()"
+              ><span>ESP</span></v-list-item-title
+            >
           </v-list-item>
           <v-list-item class="text-center">
-            <v-list-item-title class="language-menu-item" id="eng-option" @click="changeLanguage('en-EN'), refresh()"><span>ENG</span></v-list-item-title>
+            <v-list-item-title
+              class="language-menu-item"
+              id="eng-option"
+              @click="changeLanguage('en-EN'), refresh()"
+              ><span>ENG</span></v-list-item-title
+            >
           </v-list-item>
         </v-list>
       </v-menu>
@@ -142,8 +159,8 @@
 </template>
 
 <script>
-// import axios from "axios";
 import { mapActions, mapState } from "vuex";
+import { auth, db } from "../../firebase.js";
 
 export default {
   data() {
@@ -161,7 +178,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["snackbarObject", "user"]),
     displayCols() {
       switch (this.$vuetify.breakpoint.name) {
         case "xs":
@@ -191,63 +208,58 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["changeLanguage"]),
-    refresh () {
+    ...mapActions(["showSnackbar", "changeLanguage"]),
+    refresh() {
       this.$router.go(0);
     },
     login(email, password) {
-      this.formAlert = true;
-
-      if (localStorage.getItem("storageUserDATA")) {
-        const user = JSON.parse(localStorage.getItem("storageUserDATA"));
-
-        for (let item of user) {
-          if (item.userEmail === email && item.userPassword === password) {
-            this.validUser = true;
-
-            this.$store.commit("setUser", item);
-            this.$store.commit("setID", item.id);
-            this.$store.commit("isLogged", true);
-
-            const storage = JSON.parse(localStorage.getItem("USERID")) || {};
-            storage.id = item.id;
-
-            localStorage.setItem("USERID", JSON.stringify(storage));
-
-            const isDefault = JSON.parse(localStorage.getItem("isDefault")) || {};
-            isDefault.isDefault = false;
-            localStorage.setItem("isDefault", JSON.stringify(isDefault));
-
-            this.loader = "loading";
-
-            setTimeout(() => {
-              this.$router.push("/home");
-            }, 2000);
-          }
-        }
-      } else {
-        this.validUser = false;
-        this.$store.commit("isLogged", false);
-      }
+      auth
+        .signInWithEmailAndPassword(email, password)
+        .then((res) => {
+          // We'll search the user in the database
+          db
+          .collection("userData")
+          .get()
+          .then((snapshot) => {
+            snapshot.docs.forEach(user => {
+              // If the user exists, we'll store the user data in the store and
+              // in the localStorage
+              if (user.data().userEmail === email) {
+                this.$store.commit("setUser", user.data());
+                localStorage.setItem("user", JSON.stringify(user.data()));
+              }
+            });
+            })
+          .catch(err => {
+              this.showSnackbar({
+                text: `${err.code} | ${err.message}`,
+                color: "red",
+              });
+          });
+          this.validUser = true;
+          this.formAlert = true;
+          this.loader = "loading";
+          this.$store.commit("setLogin", true);
+          setTimeout(() => {
+            this.$router.push("/home");
+          }, 2500);
+        })
+        .catch((error) => {
+          this.validUser = false;
+          this.formAlert = true;
+          this.loader = null;
+        });
     },
     setDefault() {
-      this.$store.commit("isLogged", true);
+      this.$store.commit("setLogin", false);
+      this.$store.commit("setDefault", true);
+
       const userData = {
-        userName: 'defaultUser',
-        userEmail: 'example@example.com',
-        userPassword: 'defaultUser',
-        wishListMovies: null,
-        watchedMovies: null,
-        favouriteMovies: null,
-        ratedMovies: null,
+        userName: "defaultUser",
       };
 
       this.$store.commit("setUser", userData);
-      this.$store.commit("setDefault", true);
-
-      const isDefault = JSON.parse(localStorage.getItem("isDefault")) || {};
-      isDefault.isDefault = true;
-      localStorage.setItem("isDefault", JSON.stringify(isDefault));
+      localStorage.setItem("user", JSON.stringify(userData));
 
       setTimeout(() => {
         this.$router.push("/home");
@@ -368,64 +380,62 @@ h5 {
 }
 
 .language-btn {
-    background: linear-gradient(
+  background: linear-gradient(
     25deg,
     rgb(0, 118, 208),
     rgb(81, 175, 213),
-    rgb(46, 163, 162),
-    );
+    rgb(46, 163, 162)
+  );
 }
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
-.language-selector {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
+  .language-selector {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
 
-#card-default-icon {
-  font-size: 5em;
-  color: white;
-}
+  #card-default-icon {
+    font-size: 5em;
+    color: white;
+  }
 
-#card-default {
-  margin-bottom: 3em;
-}
-
+  #card-default {
+    margin-bottom: 3em;
+  }
 }
 
 // ******* LAPTOP AND DESKTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
+  .language-selector {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
 
-.language-selector {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
-
-.language-menu-item {
+  .language-menu-item {
     cursor: pointer;
     margin: 0 auto;
     padding-inline: 2em;
 
     span {
-        opacity: 0;
+      opacity: 0;
     }
 
     &:hover {
-        background: transparent !important;
-        color: cyan !important;
+      background: transparent !important;
+      color: cyan !important;
 
-        span {
-            opacity: 1;
-        }
+      span {
+        opacity: 1;
+      }
     }
-}
+  }
 
-#esp-option {
+  #esp-option {
     transition: all 0.3s ease-out;
     margin: 0 auto;
     padding: 1em;
@@ -433,8 +443,8 @@ h5 {
     background: url("../assets/img/spanish-icon.jpg") no-repeat;
     background-size: contain;
     background-position: center;
-}
-#eng-option {
+  }
+  #eng-option {
     transition: all 0.3s ease-out;
     margin: 0 auto;
     padding: 1em;
@@ -442,8 +452,6 @@ h5 {
     background: url("../assets/img/english-icon.jpg") no-repeat;
     background-size: contain;
     background-position: center;
+  }
 }
-
-}
-
 </style>

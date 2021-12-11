@@ -40,20 +40,20 @@
                   <ul style="list-style: none">
                     <li class="account-item-list d-flex">
                         <v-icon color="primary" class="mr-5" size="30px">mdi-account</v-icon><span class="text-h6 mr-2">{{ $t('view-account.username') }}</span>
-                        <span class="my-auto">@{{ userData.userName }}</span>
+                        <span class="my-auto">@{{ user.userName }}</span>
                         <v-btn tile small class="ml-auto" @click="openDialog(); isEditingAlias = true;">{{ $t('view-account.change') }}</v-btn>
                     </li>
-                    <li class="account-item-list d-flex">
+                    <!-- <li class="account-item-list d-flex">
                         <v-icon color="primary" class="mr-5" size="30px">mdi-key</v-icon><span class="text-h6 mr-2">{{ $t('view-account.password') }}</span>
-                        <span class="font-italic my-auto">{{ computePass(userData.userPassword, showPassword) }}</span>
+                        <span class="font-italic my-auto">{{ computePass(user.userPassword, showPassword) }}</span>
                         <v-btn dark icon tile class="ml-5" @click="showPassword = !showPassword">
                         <v-icon color="cyan">mdi-eye</v-icon>
                         </v-btn>
                         <v-btn tile small class="ml-auto" @click="openDialog(); isEditingPass = true">{{ $t('view-account.change') }}</v-btn>
-                    </li>
+                    </li> -->
                     <li class="account-item-list d-flex">
                         <v-icon color="primary" class="mr-5" size="30px">mdi-email</v-icon><span class="text-h6 mr-2">{{ $t('view-account.email') }}</span>
-                        <span class="my-auto">{{ userData.userEmail }}</span>
+                        <span class="my-auto">{{ user.userEmail }}</span>
                         <v-btn tile small class="ml-auto" @click="openDialog(); isEditingEmail = true">{{ $t('view-account.change') }}</v-btn>
                     </li>
                   </ul>
@@ -62,8 +62,8 @@
                      <v-img
                       id="account-avatar"
                       aspect-ratio="1"
-                      v-if="userData.userAvatar !== undefined"
-                      :src="userData.userAvatar"
+                      v-if="user.avatar !== undefined"
+                      :src="user.avatar"
                       width="auto"
                       height="auto"
                       max-width="200px"
@@ -99,7 +99,7 @@
           :label="$t('view-account.username')"
           ></v-text-field>
           <div class="d-flex" v-if="isEditingPass">
-          <v-text-field
+          <!-- <v-text-field
           class="account-input"
           v-model="newPassword"
           dark
@@ -110,7 +110,7 @@
           color="cyan"
           :label="$t('view-account.password')"
           ></v-text-field>
-          <v-btn height="100%" depressed tile color="transparent" class="pa-5" @click="show = !show"><v-icon color="cyan">mdi-eye</v-icon></v-btn>
+          <v-btn height="100%" depressed tile color="transparent" class="pa-5" @click="show = !show"><v-icon color="cyan">mdi-eye</v-icon></v-btn> -->
           </div>
           <v-text-field
           class="account-input"
@@ -224,7 +224,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(['userID', 'userData', 'snackbarObject'])
+    ...mapState(['snackbarObject'])
+  },
+  mounted () {
+    this.getUserData()
   },
   methods: {
     ...mapActions(['showSnackbar']),
@@ -241,24 +244,23 @@ export default {
     },
     openDialog () {
       this.changesDialog = true
-      this.newName = this.userData.userName
-      this.newPassword = this.userData.userPassword
-      this.newEmail = this.userData.userEmail
+      this.newName = this.user.userName
+      this.newPassword = this.user.userPassword
+      this.newEmail = this.user.userEmail
     },
     changeAUsername () {
       this.$refs.form.validate()
 
-      let storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+      let storage = JSON.parse(localStorage.getItem("user")) || [];
       let existedUser = storage.filter(user => user.userName === this.newName);
 
       if (this.valid) {
         if (!existedUser.length) { 
         this.loadingName = true
           setTimeout(() => {
-            let userData = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-            userData[this.userID].userName = this.newName
-            localStorage.setItem("storageUserDATA", JSON.stringify(userData));
-            this.$store.commit("saveUserData", userData[this.userID]);
+            let user = JSON.parse(localStorage.getItem("user")) || [];
+            user.userName = this.newName
+            localStorage.setItem("user", JSON.stringify(user));
             this.closeDialog()
           }, 500)
         } else {
@@ -272,10 +274,9 @@ export default {
       if (this.valid) {
         this.loadingPass = true
           setTimeout(() => {
-            let userData = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-            userData[this.userID].userPassword = this.newPassword
-            localStorage.setItem("storageUserDATA", JSON.stringify(userData));
-            this.$store.commit("saveUserData", userData[this.userID]);
+            let user = JSON.parse(localStorage.getItem("user")) || [];
+            user.userPassword = this.newPassword
+            localStorage.setItem("user", JSON.stringify(user));
             this.closeDialog()
           }, 500)
         }
@@ -283,17 +284,16 @@ export default {
     changeEmail () {
       this.$refs.form.validate()
 
-      let storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+      let storage = JSON.parse(localStorage.getItem("user")) || [];
       let existedEmail = storage.filter(user => user.userEmail === this.newEmail);
 
       if (this.valid) {
         if (!existedEmail.length) { 
         this.loadingEmail = true
           setTimeout(() => {
-            let userData = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-            userData[this.userID].userEmail = this.newEmail
-            localStorage.setItem("storageUserDATA", JSON.stringify(userData));
-            this.$store.commit("saveUserData", userData[this.userID]);
+            let user = JSON.parse(localStorage.getItem("user")) || [];
+            user.userEmail = this.newEmail
+            localStorage.setItem("user", JSON.stringify(user));
             this.closeDialog()
           }, 500)
         } else {
@@ -303,10 +303,9 @@ export default {
     },
     selectAvatar (item) {
       this.newAvatar = item
-      let userData = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-      userData[this.userID].userAvatar = this.newAvatar
-      localStorage.setItem("storageUserDATA", JSON.stringify(userData));
-      this.$store.commit("saveUserData", userData[this.userID]);
+      let user = JSON.parse(localStorage.getItem("user")) || [];
+      user.avatar = this.newAvatar
+      localStorage.setItem("user", JSON.stringify(user));
       this.avatarDialog = false
       this.$emit('refresh')
     },
@@ -320,6 +319,10 @@ export default {
       this.newEmail = ''
       this.newAvatar = ''
       this.$emit('refresh')
+    },
+    getUserData () {
+      this.user = this.$store.getters.userData
+      console.log(this.user)
     }
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <v-app class="app">
     <Navbar
-      :user-data="user"
+      :user="user"
       id="navbar"
       v-if="
         this.$route.path !== '/404' &&
@@ -11,7 +11,7 @@
     />
 
     <v-main class="main-content">
-      <router-view @refresh="refreshData" class="routerview"></router-view>
+      <router-view @refresh="getUserData" class="routerview"></router-view>
     </v-main>
   </v-app>
 </template>
@@ -19,6 +19,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import Navbar from "./components/Navbar";
+import router from "./router/index";
 
 export default {
   components: {
@@ -29,13 +30,9 @@ export default {
       user: {},
     };
   },
-  created() {
-    this.getData();
-    this.getUserID();
-  },
   mounted() {
-    if (this.$router.path === '/home') {
-      this.getData()
+    if (router.path !== '/') {
+      this.getUserData()
     }
   },
   watch: {
@@ -51,35 +48,10 @@ export default {
   },
   methods: {
     ...mapActions(["changeLanguage", "getUserID"]),
-    getData() {
-      const isDefault = JSON.parse(localStorage.getItem("isDefault")) || {};
-      this.$store.commit("setDefault", isDefault.isDefault);
-      if (!this.isDefault) {
-        const userData =
-          JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-        const userID = JSON.parse(localStorage.getItem("USERID"));
-        this.user = userData[userID.id];
-        this.$store.commit("setUser", userData[userID.id])
-        this.$store.commit("saveUserData", userData[userID.id]);
-      } else {
-        const userData = {
-        userName: 'defaultUser',
-        userEmail: 'example@example.com',
-        userAvatar: require('@/assets/img/background0.jpg'),
-        userPassword: 'defaultUser',
-        wishListMovies: null,
-        watchedMovies: null,
-        favouriteMovies: null,
-        ratedMovies: null,
-      };
-      this.user = userData;
-      this.$store.commit("setUser", userData);
-      this.$store.commit("setDefault", true);
-      }
-    },
-    refreshData() {
-      this.getData();
-    },
+    getUserData() {
+        let userLocalStorage = JSON.parse(localStorage.getItem('user'))
+        userLocalStorage ? this.user = userLocalStorage : null
+    }
   },
 };
 </script>

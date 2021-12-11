@@ -18,7 +18,7 @@ import {
 export default new Vuex.Store({
   state: {
     imageURL: "https://image.tmdb.org/t/p/original",
-    user: [],
+    user: {},
     userData: {},
     userID: null,
     isLogged: false,
@@ -57,13 +57,7 @@ export default new Vuex.Store({
   },
   mutations: {
     setUser(state, payload) {
-      state.user.push(payload);
-    },
-    saveUserData(state, payload) {
-      state.userData = payload;
-    },
-    setUserID(state, payload) {
-      state.userID = payload
+      state.user = payload;
     },
     setDefault(state, payload) {
       state.isDefault = payload;
@@ -107,7 +101,7 @@ export default new Vuex.Store({
     setID(state, payload) {
       state.userID = payload;
     },
-    isLogged(state, payload) {
+    setLogin(state, payload) {
       state.isLogged = payload;
     },
     setLanguage(state, payload) {
@@ -120,7 +114,7 @@ export default new Vuex.Store({
         snackbarColor: color,
         snackbarText: text,
       }
-      setTimeout(() => { state.snackbarObject.snackbar = false }, 1500);
+      setTimeout(() => { state.snackbarObject.snackbar = false }, 2000);
     },
     setAddDialog (state, payload) {
       state.addToDialog = payload
@@ -393,14 +387,8 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    signedUser(state) {
-      return !!state.user;
-    },
-    defaultUser(state) {
-      return state.isDefault;
-    },
-    isLogged(state) {
-      return state.isLogged;
-    },
+    userData: state => state.user,
+    defaultUser: state => state.isDefault,
+    isLogged: state => state.isLogged
   },
 });

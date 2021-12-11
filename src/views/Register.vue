@@ -142,6 +142,7 @@
 <script>
 import Snackbar from "../components/Snackbar";
 import { mapActions, mapState } from "vuex";
+import { auth, db } from "../../firebase.js";
 
 export default {
   components: {
@@ -151,6 +152,7 @@ export default {
     return {
       avatarDialog: false,
       valid: false,
+      fb_user: null,
       username: "",
       email: "",
       password: "",
@@ -206,56 +208,79 @@ export default {
         : this.$t("view-register.passwordMatch");
     },
     validate() {
+      const USERNAME = this.username;
+      const EMAIL = this.email;
+      const PASSWORD = this.password;
+      const AVATAR = this.avatar;
+
       this.valid = this.$refs.form.validate();
 
-      if (this.valid) {
-        // First, we'll check if the user already exists
-        let storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-        let existedUser = storage.filter(
-          (user) =>
-            user.userName === this.username
-        );
-        let existedEmail = storage.filter(
-          (user) =>
-            user.userEmail === this.email
-        );
-        if (existedUser.length) {
-          this.showSnackbar({
-            text: this.$t("view-register.userExists"),
-            color: "red",
-          });
-        } else if (existedEmail.length) {
-          this.showSnackbar({
-            text: this.$t("view-register.emailExists"),
-            color: "red",
-          });
-        } else {
-          let userData = {
-            id: storage.length,
-            userName: this.username,
-            userEmail: this.email,
-            userPassword: this.password,
-            userAvatar: this.avatar,
-            myMovies: {
-              favourite: [],
-              watched: [],
-              wishlist: [],
-              rated: [],
-            },
-          };
-
-          storage.push(userData);
-          localStorage.setItem("storageUserDATA", JSON.stringify(storage));
-
-          this.$store.commit("setUser", userData);
-
-          this.registered = !this.registered;
-          setTimeout(() => {
-            this.$router.push("/");
-          }, 3000);
-      }
+      if (!this.valid) {
+        this.showSnackbar({
+          text: this.$t("view-register.formularioInvalido"),
+          color: "red",
+        });
       } else {
-        this.showSnackbar({ text: this.$t('view-register.formularioInvalido'), color: "red" });
+        let users = [];
+
+        db.collection("userData")
+          .get()
+          .then((snapshot) => {
+            for (let user of snapshot.docs) {
+              users.push({
+                username: user.data().userName,
+                email: user.data().userEmail,
+              });
+            }
+            let userExists = users.find((user) => user.username === USERNAME);
+            if (userExists) {
+              this.showSnackbar({
+                text: this.$t("view-register.userExists"),
+                color: "red",
+              });
+            } else {
+              // Firebase auth service
+                auth
+                .createUserWithEmailAndPassword(EMAIL, PASSWORD)
+                .then((userCredential) => {
+                  let user = userCredential.user;
+                  // When signed in, we store the user with its ID, userName, and avatar in Firestore
+                  const addUser = async () => {
+                    try {
+                      await db.collection("userData").add({
+                        userID: user.uid,
+                        userName: USERNAME,
+                        userEmail: EMAIL,
+                        avatar: AVATAR,
+                        myMovies: {
+                          favourite: [],
+                          watched: [],
+                          wishlist: [],
+                          rated: [],
+                        },
+                      });
+
+                      this.registered = !this.registered;
+                      setTimeout(() => {
+                        this.$router.push("/home");
+                      }, 3000);
+                    } catch (e) {
+                      console.error(e);
+                    }
+                  };
+                  addUser();
+                })
+                .catch((error) => {
+                  // let errorCode = error.code;
+                  // let errorMessage = error.message;
+                  console.log("Catched!", error);
+                  this.showSnackbar({
+                    text: this.$t("view-register.userExists"),
+                    color: "red",
+                  });
+                });
+            }
+          });
       }
     },
     selectAvatar(item) {

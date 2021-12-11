@@ -122,7 +122,7 @@
     "notAccount": "¿No tienes cuenta?",
     "email": "E-mail",
     "password": "Contraseña",
-    "accessSuccess": "¡Datos correctos! Cargando la aplicacion...",
+    "accessSuccess": "¡Datos correctos! Accediendo a la aplicacion...",
     "accessError": "El E-mail o la contraseña no son incorrectos. Por favor, inténtalo de nuevo.",
     "enter": "Acceder",
     "register": "Quiero registrarme",
@@ -151,7 +151,7 @@
     "passwordLength": "Introduce un mínimo de 8 caracteres",
     "passwordMatch": "Las contraseñas no coinciden",
     "success": "¡Genial! ¡Tu cuenta ha sido creada con éxito!",
-    "comingback": "Regresando...",
+    "comingback": "Entrando en la app...",
     "formularioInvalido": "Formulario inválido"
   },
   "view-home": {
