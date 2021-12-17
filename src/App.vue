@@ -1,16 +1,22 @@
 <template>
   <v-app class="app">
     <Navbar
-      :user="user"
       id="navbar"
       v-if="
+        !isLoading &&
         this.$route.path !== '/404' &&
         this.$route.path !== '/' &&
         this.$route.path !== '/register'
       "
     />
-
-    <v-main class="main-content">
+      <v-progress-circular
+      v-if="loadingUserAuthStatus"
+      class="centered"
+      :size="100"
+      color="#303030"
+      indeterminate
+    ></v-progress-circular>
+    <v-main class="main-content" v-else>
       <router-view @refresh="getUserData" class="routerview"></router-view>
     </v-main>
   </v-app>
@@ -19,39 +25,69 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import Navbar from "./components/Navbar";
+import LoadingData from "./components/LoadingData";
 import router from "./router/index";
+import { auth } from "./../firebase.js";
 
 export default {
   components: {
     Navbar,
+    LoadingData
   },
   data() {
     return {
-      user: {},
+      isLoading: true,
     };
   },
   mounted() {
-    if (router.path !== '/') {
-      this.getUserData()
+    if (router.path !== "/") {
+      this.getUserData();
     }
   },
   watch: {
-    $route (to) {
-      if (to.path === '/home') {
-        this.getData()
+    $route(to) {
+      if (to.path !== "/") {
+        this.getUserData();
+        this.$store.dispatch("checkAuth");
+      }
+      let userData = JSON.parse(localStorage.getItem("user"));
+      userData.userName === "defaultUser"
+        ? this.$store.commit("setDefault", true)
+        : this.$store.commit("setDefault", false);
+      if (to.path !== "/" && !userData) {
+        router.push("/");
       }
       window.scrollTo(0, 0);
-    }
+    },
   },
   computed: {
-    ...mapState(['isDefault'])
+    ...mapState(['loadingUserAuthStatus'])
   },
   methods: {
     ...mapActions(["changeLanguage", "getUserID"]),
     getUserData() {
-        let userLocalStorage = JSON.parse(localStorage.getItem('user'))
-        userLocalStorage ? this.user = userLocalStorage : null
-    }
+      auth
+      .onAuthStateChanged(user => {
+        if (user) {
+          this.$store.commit("setUser", user);
+        }
+      })
+      // let userData = JSON.parse(localStorage.getItem("user"));
+      // if (userData.userName === "defaultUser") {
+      //   this.user = userData
+      // } else {
+      //   const user = auth.currentUser;
+      //   db.collection("userData")
+      //     .get((snapshot) => {
+      //       const MATCH = snapshot.find((doc) => doc.data().uid === user.uid);
+      //       console.log(MATCH);
+      //     })
+      //     .catch((e) => console.log(e));
+      // }
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1500);
+    },
   },
 };
 </script>
@@ -181,5 +217,4 @@ body {
 //     margin: 0 auto;
 //   }
 // }
-
 </style>

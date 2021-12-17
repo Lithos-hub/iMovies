@@ -161,7 +161,7 @@
                           tile
                           @click="
                             showAddToDialog(true);
-                            setAddMovie(item);
+                            setAddMovie(movieOfTheWeek);
                           "
                           dark
                           id="add-to-btn"
@@ -287,6 +287,7 @@ export default {
       "getLatestReleases",
       "getMovieTrailer",
       "getTrending",
+      "setAddMovie",
       "getMovieOfTheWeek",
       "getMovieDetails",
       "showAddToDialog",

@@ -23,8 +23,7 @@ const routes = [
     name: "Home",
     component: () => import("../views/Home.vue"),
     meta: {
-      restrictedRoute: true,
-      registeredUsersOnly: false,
+      requiresAuth: true
     },
   },
   {
@@ -32,8 +31,7 @@ const routes = [
     name: "Movie",
     component: () => import("../views/Movie.vue"),
     meta: {
-      restrictedRoute: true,
-      registeredUsersOnly: false,
+      requiresAuth: true
     },
   },
   {
@@ -41,8 +39,7 @@ const routes = [
     name: "About",
     component: () => import("../views/About.vue"),
     meta: {
-      restrictedRoute: true,
-      registeredUsersOnly: false,
+      requiresAuth: true
     },
   },
   {
@@ -50,8 +47,7 @@ const routes = [
     name: "Account",
     component: () => import("../views/Account.vue"),
     meta: {
-      restrictedRoute: true,
-      registeredUsersOnly: true,
+      requiresAuth: true
     },
   },
   {
@@ -59,8 +55,7 @@ const routes = [
     name: "Trending",
     component: () => import("../views/Trending.vue"),
     meta: {
-      restrictedRoute: true,
-      registeredUsersOnly: false,
+      requiresAuth: true
     },
   },
   {
@@ -68,8 +63,7 @@ const routes = [
     name: "Trailers",
     component: () => import("../views/Trailers.vue"),
     meta: {
-      restrictedRoute: true,
-      registeredUsersOnly: false,
+      requiresAuth: true
     },
   },
   {
@@ -77,8 +71,7 @@ const routes = [
     name: "Genres",
     component: () => import("../views/Genres.vue"),
     meta: {
-      restrictedRoute: true,
-      registeredUsersOnly: false,
+      requiresAuth: true
     },
   },
   {
@@ -86,8 +79,7 @@ const routes = [
     name: "Ranking",
     component: () => import("../views/Popular.vue"),
     meta: {
-      restrictedRoute: true,
-      registeredUsersOnly: true,
+      requiresAuth: true
     },
   },
   {
@@ -95,8 +87,7 @@ const routes = [
     name: "Change Log",
     component: () => import("../views/Changelog.vue"),
     meta: {
-      restrictedRoute: true,
-      registeredUsersOnly: false,
+      requiresAuth: true
     },
   },
   {
@@ -104,8 +95,7 @@ const routes = [
     name: "My Movies",
     component: () => import("../views/MyMovies.vue"),
     meta: {
-      restrictedRoute: true,
-      registeredUsersOnly: true,
+      requiresAuth: true
     },
   },
   {
@@ -113,8 +103,7 @@ const routes = [
     name: "Search",
     component: () => import("../views/Search.vue"),
     meta: {
-      restrictedRoute: true,
-      registeredUsersOnly: true,
+      requiresAuth: true
     },
   },
 ];
@@ -125,34 +114,19 @@ const router = new VueRouter({
   routes,
 });
 
-// router.beforeEach((to, next) => {
-//   const restrictedRoute = to.meta.restrictedRoute;
-//   const isLogged = store.getters.isLogged;
-//   const registeredUsersOnly = to.meta.registeredUsersOnly;
+router.beforeEach(async (to, from, next) => {
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-//   if (to.fullPath !== "/") {
-//       if (restrictedRoute) {
-//         if (isLogged) {
-//           next();
-//         } else {
-//           next("/");
-//         }
-//       } else {
-//         next();
-//       }
-
-//       if (registeredUsersOnly) {
-//         if (!store.getters.defaultUser && isLogged) {
-//           next();
-//         } else {
-//           next("/home");
-//         }
-//       } else {
-//         next();
-//       }
-//   } else {
-//     next();
-// }
-// });
+  // Requires auth BUT user is not logged in
+  if (requiresAuth && !(await store.dispatch("getCurrentUser"))) {
+    next({ path: "/"})
+    // If not requires auth and user is logged in
+  } else if (!requiresAuth && (await store.dispatch("getCurrentUser"))) {
+    next({ path: "/home"})
+  } else {
+    // Anything else
+    next();
+  }
+})
 
 export default router;

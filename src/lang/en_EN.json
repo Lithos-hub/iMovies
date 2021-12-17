@@ -289,7 +289,9 @@
     "done": "Done",
     "cancel": "Cancel",
     "usernameExist": "That user already exists",
-    "emailExist": "That E-mail already exists"
+    "emailExist": "That E-mail already exists",
+    "errorOnUpdating": "Error when updating the profile",
+    "successOnUpdating": "Profile updated successfully"
   },
   "comp-addTo": {
     "add": "Add movie to...",

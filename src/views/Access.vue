@@ -160,7 +160,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { auth, db } from "../../firebase.js";
+import { auth } from "../../firebase.js";
 
 export default {
   data() {
@@ -212,48 +212,27 @@ export default {
     refresh() {
       this.$router.go(0);
     },
-    login(email, password) {
-      auth
+    async login(email, password) {
+      await auth
         .signInWithEmailAndPassword(email, password)
-        .then((res) => {
-          // We'll search the user in the database
-          db
-          .collection("userData")
-          .get()
-          .then((snapshot) => {
-            snapshot.docs.forEach(user => {
-              // If the user exists, we'll store the user data in the store and
-              // in the localStorage
-              if (user.data().userEmail === email) {
-                this.$store.commit("setUser", user.data());
-                localStorage.setItem("user", JSON.stringify(user.data()));
-              }
-            });
-            })
-          .catch(err => {
-              this.showSnackbar({
-                text: `${err.code} | ${err.message}`,
-                color: "red",
-              });
-          });
-          this.validUser = true;
+        .then(() => {
           this.formAlert = true;
+          this.validUser = true;
           this.loader = "loading";
-          this.$store.commit("setLogin", true);
+          localStorage.setItem("user", JSON.stringify(auth.currentUser));
+          this.$store.commit("setAuthStatus", true);
+          this.$store.commit("setUser", auth.currentUser);
           setTimeout(() => {
             this.$router.push("/home");
           }, 2500);
         })
-        .catch((error) => {
-          this.validUser = false;
+        .catch(() => {
           this.formAlert = true;
+          this.validUser = false;
           this.loader = null;
         });
     },
     setDefault() {
-      this.$store.commit("setLogin", false);
-      this.$store.commit("setDefault", true);
-
       const userData = {
         userName: "defaultUser",
       };
@@ -261,9 +240,10 @@ export default {
       this.$store.commit("setUser", userData);
       localStorage.setItem("user", JSON.stringify(userData));
 
-      setTimeout(() => {
-        this.$router.push("/home");
-      }, 500);
+      this.$store.commit("setAuthStatus", false);
+      this.$store.commit("setDefault", true);
+
+      this.$router.push("/home");
     },
   },
 };

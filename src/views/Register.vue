@@ -142,7 +142,7 @@
 <script>
 import Snackbar from "../components/Snackbar";
 import { mapActions, mapState } from "vuex";
-import { auth, db } from "../../firebase.js";
+import { auth, db, storage } from "../../firebase.js";
 
 export default {
   components: {
@@ -173,32 +173,14 @@ export default {
         match: (v) =>
           v === this.password || this.$t("view-register.passwordMatch"),
       },
-      avatar_imgs: [
-        require("../assets/avatars/godfather1.jpg"),
-        require("../assets/avatars/godfather2.jpg"),
-        require("../assets/avatars/interstellar1.jpg"),
-        require("../assets/avatars/interstellar2.jpg"),
-        require("../assets/avatars/jurassicpark1.jpg"),
-        require("../assets/avatars/jurassicpark2.jpg"),
-        require("../assets/avatars/lotr1.jpg"),
-        require("../assets/avatars/lotr2.jpg"),
-        require("../assets/avatars/matrix1.jpg"),
-        require("../assets/avatars/matrix2.png"),
-        require("../assets/avatars/potter1.jpg"),
-        require("../assets/avatars/potter2.jpg"),
-        require("../assets/avatars/runner1.jpg"),
-        require("../assets/avatars/runner2.jpeg"),
-        require("../assets/avatars/spiderman1.png"),
-        require("../assets/avatars/spiderman2.jpeg"),
-        require("../assets/avatars/starwars1.jpg"),
-        require("../assets/avatars/starwars2.jpg"),
-        require("../assets/avatars/wick1.jpg"),
-        require("../assets/avatars/wick2.jpg"),
-      ],
+      avatar_imgs: [],
     };
   },
   computed: {
     ...mapState(["snackbarObject", "user"]),
+  },
+  mounted () {
+    this.getAvatarsImages()
   },
   methods: {
     ...mapActions(["showSnackbar"]),
@@ -247,6 +229,7 @@ export default {
                   // When signed in, we store the user with its ID, userName, and avatar in Firestore
                   const addUser = async () => {
                     try {
+                      // First, we will save the user in the "userData" collection
                       await db.collection("userData").add({
                         userID: user.uid,
                         userName: USERNAME,
@@ -259,6 +242,9 @@ export default {
                           rated: [],
                         },
                       });
+                      await this.$store.dispatch('updateProfile', {
+                        userName: USERNAME
+                      })
 
                       this.registered = !this.registered;
                       setTimeout(() => {
@@ -271,8 +257,6 @@ export default {
                   addUser();
                 })
                 .catch((error) => {
-                  // let errorCode = error.code;
-                  // let errorMessage = error.message;
                   console.log("Catched!", error);
                   this.showSnackbar({
                     text: this.$t("view-register.userExists"),
@@ -282,6 +266,23 @@ export default {
             }
           });
       }
+    },
+    async getAvatarsImages () {
+      let pathReference = storage.ref("avatars");
+      let arr = []
+      await pathReference
+      .listAll()
+      .then((res) => {
+        res.items.forEach((item) => {
+          item.getDownloadURL().then(async (url) => {
+            arr.push(url)
+          })
+        })
+        this.avatar_imgs = arr
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     },
     selectAvatar(item) {
       this.avatar = item;

@@ -119,6 +119,7 @@
 <script>
 import Snackbar from "./Snackbar";
 import { mapActions, mapState } from 'vuex'
+
 export default {
     components: {
       Snackbar
@@ -137,6 +138,7 @@ export default {
             auxWatched: [],
             auxWishlist: [],
             auxRated: [],
+            userData: JSON.parse(localStorage.getItem('user'))
         }
     },
     computed: {
@@ -169,10 +171,11 @@ export default {
         }
     },
     created () {
-      this.getAddedMovies()
+      // this.getAddedMovies()
     },
     methods: {
         ...mapActions(['showSnackbar', 'showAddToDialog']),
+        // TODO: Funciones CRUD
         getStoragedMovies() {
           const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
           let movies = storage[this.userID].myMovies

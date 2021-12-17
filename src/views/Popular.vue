@@ -162,13 +162,13 @@ export default {
       this.$router.push(`/movie/${item.id}`);
     },
     getStoragedMovies() {
-      const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-      let movies = storage[this.userID].myMovies
-      this.auxFavourite = movies.favourite
-      this.auxWatched = movies.watched
-      this.auxWishlist = movies.wishlist
-      this.auxRated = movies.rated
-      console.log({ ...movies })
+      // const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
+      // let movies = storage[this.userID].myMovies
+      // this.auxFavourite = movies.favourite
+      // this.auxWatched = movies.watched
+      // this.auxWishlist = movies.wishlist
+      // this.auxRated = movies.rated
+      // console.log({ ...movies })
     },
     getRandomYear() {
         let max = new Date().getFullYear();

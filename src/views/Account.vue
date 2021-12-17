@@ -40,8 +40,8 @@
                   <ul style="list-style: none">
                     <li class="account-item-list d-flex">
                         <v-icon color="primary" class="mr-5" size="30px">mdi-account</v-icon><span class="text-h6 mr-2">{{ $t('view-account.username') }}</span>
-                        <span class="my-auto">@{{ user.userName }}</span>
-                        <v-btn tile small class="ml-auto" @click="openDialog(); isEditingAlias = true;">{{ $t('view-account.change') }}</v-btn>
+                        <span class="my-auto">@{{ user.displayName }}</span>
+                        <v-btn tile small class="ml-auto" @click="openDialog(); isEditingName = true;">{{ $t('view-account.change') }}</v-btn>
                     </li>
                     <!-- <li class="account-item-list d-flex">
                         <v-icon color="primary" class="mr-5" size="30px">mdi-key</v-icon><span class="text-h6 mr-2">{{ $t('view-account.password') }}</span>
@@ -53,7 +53,7 @@
                     </li> -->
                     <li class="account-item-list d-flex">
                         <v-icon color="primary" class="mr-5" size="30px">mdi-email</v-icon><span class="text-h6 mr-2">{{ $t('view-account.email') }}</span>
-                        <span class="my-auto">{{ user.userEmail }}</span>
+                        <span class="my-auto">{{ user.email }}</span>
                         <v-btn tile small class="ml-auto" @click="openDialog(); isEditingEmail = true">{{ $t('view-account.change') }}</v-btn>
                     </li>
                   </ul>
@@ -88,7 +88,7 @@
       <v-form ref="form" lazy-validation v-model="valid">
           <v-text-field
           class="account-input"
-          v-if="isEditingAlias"
+          v-if="isEditingName"
           v-model="newName"
           dark
           filled
@@ -125,9 +125,7 @@
           ></v-text-field>
           <v-row no-gutters class="pa-0">
           <v-col>
-              <v-btn :disabled="!valid" dark block tile color="cyan" v-if="isEditingAlias" @click="changeAUsername">{{ $t('view-account.done') }}</v-btn>
-              <v-btn :disabled="!valid" dark block tile color="cyan" v-if="isEditingPass" @click="changePassword">{{ $t('view-account.done') }}</v-btn>
-              <v-btn :disabled="!valid" dark block tile color="cyan" v-if="isEditingEmail" @click="changeEmail">{{ $t('view-account.done') }}</v-btn>
+              <v-btn :loading="isLoading" dark block tile color="cyan" @click="updateProfile">{{ $t('view-account.done') }}</v-btn>
           </v-col>
           <v-col>
               <v-btn dark block tile color="red" @click="closeDialog">{{ $t('view-account.cancel') }}</v-btn>
@@ -167,6 +165,7 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import Snackbar from '@/components/Snackbar.vue';
+import { storage } from '../firebase.js';
 
 export default {
   components: {
@@ -175,20 +174,21 @@ export default {
   data() {
     return {
       valid: true,
+      isLoading: false,
+      loader: null,
       loadingName: false,
       loadingPass: false,
       loadingEmail: false,
       showPassword: false,
       changesDialog: false,
-      isEditingAlias: false,
+      isEditingName: false,
       isEditingPass: false,
       isEditingEmail: false,
       avatarDialog: false,
       show: false,
-      user: {},
       newName: '',
-      newPassword: '',
       newEmail: '',
+      newPassword: '',
       newAvatar: '',
       nameRules: [
         (v) => v.length < 15 || this.$t('view-register.maximum')
@@ -224,10 +224,14 @@ export default {
     };
   },
   computed: {
-    ...mapState(['snackbarObject'])
-  },
-  mounted () {
-    this.getUserData()
+    ...mapState(['snackbarObject', 'user']),
+    hasDataChanged () {
+      return (
+        (this.user.newName && this.user.newName !== this.user.name) ||
+        (this.user.newEmail && this.user.newEmail !== this.user.email) ||
+        (this.user.newPassword && this.user.newPassword !== this.user.password)
+      )
+    }
   },
   methods: {
     ...mapActions(['showSnackbar']),
@@ -244,62 +248,101 @@ export default {
     },
     openDialog () {
       this.changesDialog = true
-      this.newName = this.user.userName
-      this.newPassword = this.user.userPassword
-      this.newEmail = this.user.userEmail
+      this.newName = this.user.displayName
+      this.newPassword = this.user.password
+      this.newEmail = this.user.email
     },
-    changeAUsername () {
-      this.$refs.form.validate()
+    async updateProfile () {
+      this.isLoading = true
 
-      let storage = JSON.parse(localStorage.getItem("user")) || [];
-      let existedUser = storage.filter(user => user.userName === this.newName);
-
-      if (this.valid) {
-        if (!existedUser.length) { 
-        this.loadingName = true
-          setTimeout(() => {
-            let user = JSON.parse(localStorage.getItem("user")) || [];
-            user.userName = this.newName
-            localStorage.setItem("user", JSON.stringify(user));
-            this.closeDialog()
-          }, 500)
-        } else {
-          this.showSnackbar({ text: this.$t('view-account.usernameExist'), color: "error" })
-        }
+      try {
+        await this.$store.dispatch('updateProfile', {
+          userName: this.newName,
+          userEmail: this.newEmail,
+          userPassword: this.newPassword
+        })
+        this.showSnackbar({ text: this.$t('view-account.successOnUpdating'), color: "success" })
+        this.newName = ''
+        this.newEmail = ''
+        this.newPassword = ''
+        this.closeDialog()
+        this.$forceUpdate()
+      } catch (error) {
+        this.closeDialog()
+          this.showSnackbar({ text: this.$t('view-account.errorOnUpdating'), color: "error" })
       }
     },
-    changePassword () {
-      this.$refs.form.validate()
+    // changeAUsername () {
+    //   this.$refs.form.validate()
 
-      if (this.valid) {
-        this.loadingPass = true
-          setTimeout(() => {
-            let user = JSON.parse(localStorage.getItem("user")) || [];
-            user.userPassword = this.newPassword
-            localStorage.setItem("user", JSON.stringify(user));
-            this.closeDialog()
-          }, 500)
-        }
-    },
-    changeEmail () {
-      this.$refs.form.validate()
+    //   let storage = JSON.parse(localStorage.getItem("user")) || [];
+    //   let existedUser = storage.filter(user => user.userName === this.newName);
 
-      let storage = JSON.parse(localStorage.getItem("user")) || [];
-      let existedEmail = storage.filter(user => user.userEmail === this.newEmail);
+    //   if (this.valid) {
+    //     if (!existedUser.length) { 
+    //     this.loadingName = true
+    //       setTimeout(() => {
+    //         let user = JSON.parse(localStorage.getItem("user")) || [];
+    //         user.userName = this.newName
+    //         localStorage.setItem("user", JSON.stringify(user));
+    //         this.closeDialog()
+    //       }, 500)
+    //     } else {
+    //       this.showSnackbar({ text: this.$t('view-account.usernameExist'), color: "error" })
+    //     }
+    //   }
+    // },
+    // changePassword () {
+    //   this.$refs.form.validate()
 
-      if (this.valid) {
-        if (!existedEmail.length) { 
-        this.loadingEmail = true
-          setTimeout(() => {
-            let user = JSON.parse(localStorage.getItem("user")) || [];
-            user.userEmail = this.newEmail
-            localStorage.setItem("user", JSON.stringify(user));
-            this.closeDialog()
-          }, 500)
-        } else {
-          this.showSnackbar({ text: this.$t('view-account.emailExist'), color: "error" })
-        }
-      }
+    //   if (this.valid) {
+    //     this.loadingPass = true
+    //       setTimeout(() => {
+    //         let user = JSON.parse(localStorage.getItem("user")) || [];
+    //         user.userPassword = this.newPassword
+    //         localStorage.setItem("user", JSON.stringify(user));
+    //         this.closeDialog()
+    //       }, 500)
+    //     }
+    // },
+    // changeEmail () {
+    //   this.$refs.form.validate()
+
+    //   let storage = JSON.parse(localStorage.getItem("user")) || [];
+    //   let existedEmail = storage.filter(user => user.userEmail === this.newEmail);
+
+    //   if (this.valid) {
+    //     if (!existedEmail.length) { 
+    //     this.loadingEmail = true
+    //       setTimeout(() => {
+    //         let user = JSON.parse(localStorage.getItem("user")) || [];
+    //         user.userEmail = this.newEmail
+    //         localStorage.setItem("user", JSON.stringify(user));
+    //         this.closeDialog()
+    //       }, 500)
+    //     } else {
+    //       this.showSnackbar({ text: this.$t('view-account.emailExist'), color: "error" })
+    //     }
+    //   }
+    // },
+    async getAvatarsImages () {
+      // TODO: Conseguir avatares "free"
+      // TODO: Escuchar un campo del usuario con su puntuación y, si tiene más de X puntos, cargar más carpetas de avatares
+      let pathReference = storage.ref("avatars");
+      let arr = []
+      await pathReference
+      .listAll()
+      .then((res) => {
+        res.items.forEach((item) => {
+          item.getDownloadURL().then(async (url) => {
+            arr.push(url)
+          })
+        })
+        this.avatar_imgs = arr
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     },
     selectAvatar (item) {
       this.newAvatar = item
@@ -310,7 +353,8 @@ export default {
       this.$emit('refresh')
     },
     closeDialog () {
-      this.isEditingAlias = false
+      this.isLoading = false
+      this.isEditingName = false
       this.isEditingPass = false
       this.isEditingEmail = false
       this.changesDialog = false
@@ -319,10 +363,6 @@ export default {
       this.newEmail = ''
       this.newAvatar = ''
       this.$emit('refresh')
-    },
-    getUserData () {
-      this.user = this.$store.getters.userData
-      console.log(this.user)
     }
   },
 };
