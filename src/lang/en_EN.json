@@ -291,6 +291,7 @@
     "usernameExist": "That user already exists",
     "emailExist": "That E-mail already exists",
     "errorOnUpdating": "Error when updating the profile",
+    "errorOldLogin": "You must logout and login again to make the changes",
     "successOnUpdating": "Profile updated successfully"
   },
   "comp-addTo": {

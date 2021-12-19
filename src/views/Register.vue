@@ -81,15 +81,15 @@
                     <v-col
                       lg="2"
                       cols="4"
-                      v-for="(item, i) in avatar_imgs"
+                      v-for="(url, i) in avatar_imgs"
                       :key="i"
                     >
                       <v-avatar
                         size="100"
                         id="avatar-img"
-                        @click="selectAvatar(item)"
+                        @click="selectAvatar(url)"
                       >
-                        <v-img :src="item" aspect-ratio="1"></v-img>
+                        <v-img :src="url" aspect-ratio="1"></v-img>
                       </v-avatar>
                     </v-col>
                   </v-row>
@@ -243,7 +243,10 @@ export default {
                         },
                       });
                       await this.$store.dispatch('updateProfile', {
-                        userName: USERNAME
+                        userName: USERNAME,
+                        userEmail: null,
+                        userPassword: null,
+                        userAvatar: AVATAR,
                       })
 
                       this.registered = !this.registered;
@@ -284,8 +287,8 @@ export default {
         console.log(err)
       })
     },
-    selectAvatar(item) {
-      this.avatar = item;
+    selectAvatar(url) {
+      this.avatar = url;
       this.avatarDialog = false;
     },
   },

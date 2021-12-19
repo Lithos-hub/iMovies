@@ -289,6 +289,7 @@
     "usernameExist": "Ese usuario ya existe.",
     "emailExist": "Ese E-mail ya se encuentra registrado",
     "errorOnUpdating": "Error al actualizar el perfil",
+    "errorOldLogin": "Debes cerrar sesión y volver a hacer login para poder llevar a cabo esta acción",
     "successOnUpdating": "Perfil actualizado correctamente"
   },
   "comp-addTo": {

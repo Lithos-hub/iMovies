@@ -26,6 +26,7 @@ export default new Vuex.Store({
     userID: null,
     isLogged: false,
     isDefault: false,
+    isLoadingDynamicUserData: false,
     apikey: "c9a3e87b703c630c13d5ea61ef62c7b6",
     language: "es-ES",
     no_image: require("@/assets/img/no-image.jpg"),
@@ -67,6 +68,9 @@ export default new Vuex.Store({
     },
     setLoadingUserAuthStatus(state, payload) {
       state.loadingUserAuthStatus = payload;
+    },
+    setIsLoadingDynamicUserData(state, payload) {
+      state.isLoadingDynamicUserData = payload;
     },
     setDefault(state, payload) {
       state.isDefault = payload;
@@ -119,7 +123,7 @@ export default new Vuex.Store({
       };
       setTimeout(() => {
         state.snackbarObject.snackbar = false;
-      }, 2000);
+      }, 3000);
     },
     setAddDialog(state, payload) {
       state.addToDialog = payload;
@@ -178,7 +182,7 @@ export default new Vuex.Store({
         );
       });
     },
-    async updateProfile({ commit }, { userName, userEmail, userPassword}) {
+    async updateProfile({ commit }, { userName, userEmail, userPassword, userAvatar}) {
       const user = auth.currentUser;
 
       if (userName) {
@@ -190,9 +194,11 @@ export default new Vuex.Store({
       if (userPassword) {
         await user.updatePassword(userPassword);
       }
+      if (userAvatar) {
+        await user.updateProfile({ photoURL: userAvatar });
+      }
 
       commit("setUser", user);
-      console.log(user.displayName)
     },
     showInfo({ commit }, item) {
       router.push({ path: `movie/${item.id}` });

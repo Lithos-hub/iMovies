@@ -43,14 +43,10 @@
                         <span class="my-auto">@{{ user.displayName }}</span>
                         <v-btn tile small class="ml-auto" @click="openDialog(); isEditingName = true;">{{ $t('view-account.change') }}</v-btn>
                     </li>
-                    <!-- <li class="account-item-list d-flex">
+                    <li class="account-item-list d-flex">
                         <v-icon color="primary" class="mr-5" size="30px">mdi-key</v-icon><span class="text-h6 mr-2">{{ $t('view-account.password') }}</span>
-                        <span class="font-italic my-auto">{{ computePass(user.userPassword, showPassword) }}</span>
-                        <v-btn dark icon tile class="ml-5" @click="showPassword = !showPassword">
-                        <v-icon color="cyan">mdi-eye</v-icon>
-                        </v-btn>
                         <v-btn tile small class="ml-auto" @click="openDialog(); isEditingPass = true">{{ $t('view-account.change') }}</v-btn>
-                    </li> -->
+                    </li>
                     <li class="account-item-list d-flex">
                         <v-icon color="primary" class="mr-5" size="30px">mdi-email</v-icon><span class="text-h6 mr-2">{{ $t('view-account.email') }}</span>
                         <span class="my-auto">{{ user.email }}</span>
@@ -62,8 +58,7 @@
                      <v-img
                       id="account-avatar"
                       aspect-ratio="1"
-                      v-if="user.avatar !== undefined"
-                      :src="user.avatar"
+                      :src="user.photoURL"
                       width="auto"
                       height="auto"
                       max-width="200px"
@@ -99,18 +94,18 @@
           :label="$t('view-account.username')"
           ></v-text-field>
           <div class="d-flex" v-if="isEditingPass">
-          <!-- <v-text-field
+          <v-text-field
           class="account-input"
           v-model="newPassword"
           dark
           filled
           :type="show ? 'password' : 'text'"
-          :rules="[passwordRules.length]"
+          :rules="passwordRules"
           height="100%"
           color="cyan"
           :label="$t('view-account.password')"
           ></v-text-field>
-          <v-btn height="100%" depressed tile color="transparent" class="pa-5" @click="show = !show"><v-icon color="cyan">mdi-eye</v-icon></v-btn> -->
+          <v-btn height="100%" depressed tile color="transparent" class="pa-5" @click="show = !show"><v-icon color="cyan">mdi-eye</v-icon></v-btn>
           </div>
           <v-text-field
           class="account-input"
@@ -141,13 +136,13 @@
         </v-card-title>
         <v-container fluid class="pa-5">
           <v-row>
-            <v-col lg="2" v-for="(item, i) in avatar_imgs" :key="i">
+            <v-col lg="2" v-for="(url, i) in avatar_imgs" :key="i">
               <v-avatar
                 size="100"
                 id="avatar-img"
-                @click="selectAvatar(item)"
+                @click="selectAvatar(url)"
               >
-                <v-img :src="item" aspect-ratio="1"></v-img>
+                <v-img :src="url" aspect-ratio="1"></v-img>
               </v-avatar>
             </v-col>
           </v-row>
@@ -165,7 +160,7 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import Snackbar from '@/components/Snackbar.vue';
-import { storage } from '../firebase.js';
+import { storage } from '../../firebase.js';
 
 export default {
   components: {
@@ -196,135 +191,50 @@ export default {
       emailRules: [
         (v) => /.+@.+\..+/.test(v) || this.$t('view-register.emailInvalid'),
       ],
-      passwordRules: {
-        length: (v) => v.length >= 8 || this.$t('view-register.passwordLength'),
-      },
-      avatar_imgs: [
-        require("../assets/avatars/godfather1.jpg"),
-        require("../assets/avatars/godfather2.jpg"),
-        require("../assets/avatars/interstellar1.jpg"),
-        require("../assets/avatars/interstellar2.jpg"),
-        require("../assets/avatars/jurassicpark1.jpg"),
-        require("../assets/avatars/jurassicpark2.jpg"),
-        require("../assets/avatars/lotr1.jpg"),
-        require("../assets/avatars/lotr2.jpg"),
-        require("../assets/avatars/matrix1.jpg"),
-        require("../assets/avatars/matrix2.png"),
-        require("../assets/avatars/potter1.jpg"),
-        require("../assets/avatars/potter2.jpg"),
-        require("../assets/avatars/runner1.jpg"),
-        require("../assets/avatars/runner2.jpeg"),
-        require("../assets/avatars/spiderman1.png"),
-        require("../assets/avatars/spiderman2.jpeg"),
-        require("../assets/avatars/starwars1.jpg"),
-        require("../assets/avatars/starwars2.jpg"),
-        require("../assets/avatars/wick1.jpg"),
-        require("../assets/avatars/wick2.jpg"),
+      passwordRules: [
+        (v) => v.length >= 8 || this.$t('view-register.passwordLength'),
       ],
+      avatar_imgs: [],
     };
   },
   computed: {
     ...mapState(['snackbarObject', 'user']),
-    hasDataChanged () {
-      return (
-        (this.user.newName && this.user.newName !== this.user.name) ||
-        (this.user.newEmail && this.user.newEmail !== this.user.email) ||
-        (this.user.newPassword && this.user.newPassword !== this.user.password)
-      )
-    }
+  },
+  mounted () {
+    this.getAvatarsImages();
   },
   methods: {
     ...mapActions(['showSnackbar']),
-    computePass(pass, show) {
-      let string = ''
-      if (!show) {
-        for (let char of pass) {
-          string += char.replace(char, '•')
-        }
-      } else {
-        string = pass
-      }
-      return string
-    },
     openDialog () {
       this.changesDialog = true
       this.newName = this.user.displayName
-      this.newPassword = this.user.password
       this.newEmail = this.user.email
     },
     async updateProfile () {
       this.isLoading = true
+      this.$store.commit("setIsLoadingDynamicUserData", true);
 
       try {
         await this.$store.dispatch('updateProfile', {
           userName: this.newName,
           userEmail: this.newEmail,
-          userPassword: this.newPassword
+          userPassword: this.newPassword,
+          userAvatar: this.newAvatar
         })
         this.showSnackbar({ text: this.$t('view-account.successOnUpdating'), color: "success" })
-        this.newName = ''
-        this.newEmail = ''
-        this.newPassword = ''
         this.closeDialog()
-        this.$forceUpdate()
+        this.$store.commit("setIsLoadingDynamicUserData", false);
+        
       } catch (error) {
-        this.closeDialog()
+        if (error.code === "auth/requires-recent-login") {
+          this.showSnackbar({ text: this.$t('view-account.errorOldLogin'), color: "error" })
+        } else {
           this.showSnackbar({ text: this.$t('view-account.errorOnUpdating'), color: "error" })
+        }
+        this.closeDialog()
+        this.$store.commit("setIsLoadingDynamicUserData", false);
       }
     },
-    // changeAUsername () {
-    //   this.$refs.form.validate()
-
-    //   let storage = JSON.parse(localStorage.getItem("user")) || [];
-    //   let existedUser = storage.filter(user => user.userName === this.newName);
-
-    //   if (this.valid) {
-    //     if (!existedUser.length) { 
-    //     this.loadingName = true
-    //       setTimeout(() => {
-    //         let user = JSON.parse(localStorage.getItem("user")) || [];
-    //         user.userName = this.newName
-    //         localStorage.setItem("user", JSON.stringify(user));
-    //         this.closeDialog()
-    //       }, 500)
-    //     } else {
-    //       this.showSnackbar({ text: this.$t('view-account.usernameExist'), color: "error" })
-    //     }
-    //   }
-    // },
-    // changePassword () {
-    //   this.$refs.form.validate()
-
-    //   if (this.valid) {
-    //     this.loadingPass = true
-    //       setTimeout(() => {
-    //         let user = JSON.parse(localStorage.getItem("user")) || [];
-    //         user.userPassword = this.newPassword
-    //         localStorage.setItem("user", JSON.stringify(user));
-    //         this.closeDialog()
-    //       }, 500)
-    //     }
-    // },
-    // changeEmail () {
-    //   this.$refs.form.validate()
-
-    //   let storage = JSON.parse(localStorage.getItem("user")) || [];
-    //   let existedEmail = storage.filter(user => user.userEmail === this.newEmail);
-
-    //   if (this.valid) {
-    //     if (!existedEmail.length) { 
-    //     this.loadingEmail = true
-    //       setTimeout(() => {
-    //         let user = JSON.parse(localStorage.getItem("user")) || [];
-    //         user.userEmail = this.newEmail
-    //         localStorage.setItem("user", JSON.stringify(user));
-    //         this.closeDialog()
-    //       }, 500)
-    //     } else {
-    //       this.showSnackbar({ text: this.$t('view-account.emailExist'), color: "error" })
-    //     }
-    //   }
-    // },
     async getAvatarsImages () {
       // TODO: Conseguir avatares "free"
       // TODO: Escuchar un campo del usuario con su puntuación y, si tiene más de X puntos, cargar más carpetas de avatares
@@ -344,12 +254,9 @@ export default {
         console.log(err)
       })
     },
-    selectAvatar (item) {
-      this.newAvatar = item
-      let user = JSON.parse(localStorage.getItem("user")) || [];
-      user.avatar = this.newAvatar
-      localStorage.setItem("user", JSON.stringify(user));
-      this.avatarDialog = false
+    selectAvatar (url) {
+      this.newAvatar = url
+      this.updateProfile()
       this.$emit('refresh')
     },
     closeDialog () {
@@ -358,6 +265,7 @@ export default {
       this.isEditingPass = false
       this.isEditingEmail = false
       this.changesDialog = false
+      this.avatarDialog = false
       this.newName = ''
       this.newPassword = ''
       this.newEmail = ''

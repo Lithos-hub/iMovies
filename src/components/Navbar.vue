@@ -11,8 +11,11 @@
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
       <div id="username-toolbar">
+        <v-progress-circular class="mx-auto" size="30" width="2" color="cyan" indeterminate v-if="isLoadingDynamicUserData"></v-progress-circular>
+        <div v-else>
         {{ $t("navbar.user") }}
         <span class="cyan--text">@{{ user.displayName }}</span>
+        </div>
       </div>
 
       <div class="mx-auto">
@@ -125,8 +128,8 @@
       <v-list dense nav>
         <v-list-item-group v-model="group" active-class="black">
           <v-img
-            v-if="user.avatar !== undefined"
-            :src="user.avatar"
+            v-if="user.photoURL !== undefined"
+            :src="user.photoURL"
             width="90"
             height="90"
             class="avatar ma-5 ma-auto"
@@ -265,7 +268,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["isDefault", "user"]),
+    ...mapState(["isDefault", "user", "isLoadingDynamicUserData"]),
     displayText() {
       switch (this.$vuetify.breakpoint.name) {
         case "xs":
