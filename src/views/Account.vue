@@ -11,6 +11,12 @@
         </v-tab>
         <v-tab active-class="secondary" class="cyan--text justify-start">
           <v-icon color="cyan" left>
+            mdi-star
+          </v-icon>
+          {{ $t('view-account.achieves') }} (soon)
+        </v-tab>
+        <v-tab active-class="secondary" class="cyan--text justify-start">
+          <v-icon color="cyan" left>
             mdi-lock
           </v-icon>
           {{ $t('view-account.security') }} (soon)

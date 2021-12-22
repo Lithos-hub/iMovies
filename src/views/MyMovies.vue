@@ -140,7 +140,7 @@
       <v-container>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div class="text-h5 cyan--text">{{ $t("view-myMovies.row1") }}</div>
+            <div :class="isUsingMobile ? 'text-h6 cyan--text' : 'text-h4 cyan--text'">{{ $t("view-myMovies.row1") }}</div>
           </v-col>
           <v-col>
             <div class="data-list-number" :style="{ color: color1 }">
@@ -150,7 +150,7 @@
         </v-row>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div class="text-h5 cyan--text">{{ $t("view-myMovies.row2") }}</div>
+            <div :class="isUsingMobile ? 'text-h6 cyan--text' : 'text-h4 cyan--text'">{{ $t("view-myMovies.row2") }}</div>
           </v-col>
           <v-col>
             <div class="data-list-number" :style="{ color: color2 }">
@@ -160,7 +160,7 @@
         </v-row>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div class="text-h5 cyan--text">{{ $t("view-myMovies.row3") }}</div>
+            <div :class="isUsingMobile ? 'text-h6 cyan--text' : 'text-h4 cyan--text'">{{ $t("view-myMovies.row3") }}</div>
           </v-col>
           <v-col>
             <div class="data-list-number" :style="{ color: color3 }">
@@ -170,7 +170,7 @@
         </v-row>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div class="text-h5 cyan--text">{{ $t("view-myMovies.row4") }}</div>
+            <div :class="isUsingMobile ? 'text-h6 cyan--text' : 'text-h4 cyan--text'">{{ $t("view-myMovies.row4") }}</div>
           </v-col>
           <v-col>
             <div class="data-list-number" :style="{ color: color4 }">
@@ -234,6 +234,9 @@ export default {
   },
   computed: {
     ...mapState(["userID", "clickedTab"]),
+    isUsingMobile() {
+      return this.$vuetify.breakpoint.xs;
+    },
     color1() {
       if (!this.wishListMovies.length) {
         return "#F44336";
@@ -281,13 +284,7 @@ export default {
         4: "byrate",
       }[key];
     },
-    getUserID() {
-      const userID = JSON.parse(localStorage.getItem("USERID")) || {};
-      const id = userID.id;
-      this.userID = id;
-    },
     getStoragedMovies() {
-      const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
       let movies = storage[this.userID].myMovies;
       this.favouriteMovies = movies.favourite;
       this.watchedMovies = movies.watched;
@@ -322,14 +319,14 @@ export default {
   }
 
   .data-list {
-    font-size: 20px;
+    font-size: 15px;
     background: $dark;
     padding-inline: 10px;
     border-bottom: 2px solid $secondary;
   }
 
   .data-list-number {
-    font-size: 5em;
+    font-size: 3em;
     text-align: right;
   }
 }
@@ -343,14 +340,14 @@ export default {
     display: block;
   }
   .data-list {
-    font-size: 20px;
+    font-size: 16px;
     background: $dark;
     padding-inline: 10px;
     border-bottom: 2px solid $secondary;
   }
 
   .data-list-number {
-    font-size: 5em;
+    font-size: 3em;
     text-align: right;
   }
 }

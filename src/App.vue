@@ -9,7 +9,7 @@
         this.$route.path !== '/register'
       "
     />
-      <v-progress-circular
+    <v-progress-circular
       v-if="loadingUserAuthStatus"
       class="centered"
       :size="100"
@@ -27,66 +27,57 @@ import { mapActions, mapState } from "vuex";
 import Navbar from "./components/Navbar";
 import LoadingData from "./components/LoadingData";
 import router from "./router/index";
-import { auth } from "./../firebase.js";
+import { auth, db } from "./../firebase.js";
 
 export default {
   components: {
     Navbar,
-    LoadingData
+    LoadingData,
   },
   data() {
     return {
       isLoading: true,
     };
   },
-  mounted() {
-    if (router.path !== "/") {
-      this.getUserData();
-    }
-  },
   watch: {
     $route(to) {
       if (to.path !== "/") {
         this.getUserData();
+        let userData = this.$store.getters.userData
         this.$store.dispatch("checkAuth");
-      }
-      let userData = JSON.parse(localStorage.getItem("user"));
-      userData.userName === "defaultUser"
-        ? this.$store.commit("setDefault", true)
-        : this.$store.commit("setDefault", false);
-      if (to.path !== "/" && !userData) {
-        router.push("/");
+        if (to.path !== "/" && !userData) {
+          router.push("/");
+        }
       }
       window.scrollTo(0, 0);
     },
   },
   computed: {
-    ...mapState(['loadingUserAuthStatus'])
+    ...mapState(["loadingUserAuthStatus"]),
+  },
+  mounted () {
+    this.getMyDocID()
   },
   methods: {
     ...mapActions(["changeLanguage", "getUserID"]),
-    getUserData() {
-      auth
-      .onAuthStateChanged(user => {
+    async getUserData() {
+      await auth.onAuthStateChanged((user) => {
         if (user) {
           this.$store.commit("setUser", user);
         }
-      })
-      // let userData = JSON.parse(localStorage.getItem("user"));
-      // if (userData.userName === "defaultUser") {
-      //   this.user = userData
-      // } else {
-      //   const user = auth.currentUser;
-      //   db.collection("userData")
-      //     .get((snapshot) => {
-      //       const MATCH = snapshot.find((doc) => doc.data().uid === user.uid);
-      //       console.log(MATCH);
-      //     })
-      //     .catch((e) => console.log(e));
-      // }
+      });
       setTimeout(() => {
         this.isLoading = false;
       }, 1500);
+    },
+    async getMyDocID () {
+      const COLLECTION = await db.collection("userData").get()
+      const USERDATA = this.$store.getters.userData
+      COLLECTION.forEach((doc) => {
+        if (doc.data().userID === USERDATA.uid) {
+          this.$store.commit('setDocID', doc.data().docID)
+        }
+      })
     },
   },
 };
@@ -101,7 +92,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  margin: 0;
+  margin: 0 auto;
 }
 
 .main-content {

@@ -17,26 +17,7 @@
           </v-card-title>
           <v-card-text class="pa-5">
             <v-row>
-              <v-col lg="6" cols="12" class="text-center">
-                <h4>
-                  {{ $t("view-access.access1") }}<br />
-                  {{ $t("view-access.access2") }}
-                </h4>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-icon class="info-icon" v-bind="attrs" v-on="on"
-                      >mdi-information</v-icon
-                    >
-                  </template>
-                  <span>{{ $t("view-access.info1") }}</span>
-                </v-tooltip>
-                <v-divider class="my-5" dark></v-divider>
-                <v-sheet
-                  color="secondary darken-1"
-                  class="py-5 px-2"
-                  elevation="10"
-                  rounded="2"
-                >
+              <v-col cols="12" class="text-center">
                   <form @submit.prevent="login(email, password)">
                     <v-text-field
                       required
@@ -75,7 +56,7 @@
                       :disabled="email === '' || password.length < 8"
                       type="submit"
                       block
-                      class="gradient-btn1 mt-5"
+                      class="gradient-btn1"
                       >{{ $t("view-access.enter") }}</v-btn
                     >
                   </form>
@@ -87,33 +68,6 @@
                   <v-btn block class="mb-2 gradient-btn2" to="/register">{{
                     $t("view-access.register")
                   }}</v-btn>
-                </v-sheet>
-              </v-col>
-              <v-col lg="6" cols="12" class="text-center">
-                <h4>
-                  {{ $t("view-access.access3") }} <br />
-                  {{ $t("view-access.access4") }}
-                </h4>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-icon class="info-icon" v-bind="attrs" v-on="on"
-                      >mdi-information</v-icon
-                    >
-                  </template>
-                  <span>{{ $t("view-access.info2") }}</span>
-                </v-tooltip>
-                <v-divider class="my-5" dark></v-divider>
-                <v-card
-                  rounded="2"
-                  width="auto"
-                  class="mx-auto justify-content-center"
-                  elevation="5"
-                  id="card-default"
-                  @click="setDefault"
-                >
-                  <v-icon id="card-default-icon">mdi-account-circle</v-icon>
-                  <h5 class="pa-2" id="card-default-text">@DefaultUser</h5>
-                </v-card>
               </v-col>
             </v-row>
           </v-card-text>
@@ -194,9 +148,6 @@ export default {
       }
     },
   },
-  mounted() {
-    this.$store.commit("setDefault", false);
-  },
   watch: {
     loader() {
       const l = this.loader;
@@ -216,10 +167,10 @@ export default {
       await auth
         .signInWithEmailAndPassword(email, password)
         .then(() => {
+          console.log('Login con éxito')
           this.formAlert = true;
           this.validUser = true;
           this.loader = "loading";
-          localStorage.setItem("user", JSON.stringify(auth.currentUser));
           this.$store.commit("setAuthStatus", true);
           this.$store.commit("setUser", auth.currentUser);
           setTimeout(() => {
@@ -234,15 +185,13 @@ export default {
     },
     setDefault() {
       const userData = {
-        userName: "defaultUser",
+        displayName: "defaultUser",
+        photoURL: require("@/assets/avatars/avatar-_0020_default.jpg"),
       };
 
       this.$store.commit("setUser", userData);
-      localStorage.setItem("user", JSON.stringify(userData));
-
       this.$store.commit("setAuthStatus", false);
       this.$store.commit("setDefault", true);
-
       this.$router.push("/home");
     },
   },

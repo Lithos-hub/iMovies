@@ -41,7 +41,7 @@
     </h3>
     
     <v-container>
-        <v-row no-gutters>
+        <v-row>
           <v-col
             md="3"
             xs="12"

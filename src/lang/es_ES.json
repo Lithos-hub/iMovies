@@ -275,6 +275,7 @@
   },
   "view-account": {
     "profile": "Perfil",
+    "achieves": "Logros",
     "security": "Seguridad",
     "appearance": "Apariencia",
     "notifications": "Notificaciones",
@@ -319,15 +320,15 @@
     "changelog": "Historial de cambios"
   },
   "comp-snackbar": {
-    "favourite-added": "Película añadida a la categoría de FAVORITAS",
-    "favourite-removed": "Película eliminada de la categoría FAVORITAS",
-    "watched-added": "Película añadida a la categoría de VISTAS",
-    "watched-removed": "Película eliminada de la categoría VISTAS",
-    "wishlist-added": "Película añadida a la LISTA DE DESEOS",
-    "wishlist-removed": "Película eliminada de la LISTA DE DESEOS",
-    "rate-added": "Película añadida a la categoría de PUNTUADAS",
-    "rate-removed": "Película eliminada de la categoría PUNTUADAS",
-    "rate-updated": "Puntuación de la película actualizada"
+    "favouriteMovies-added": "Película añadida a la categoría de FAVORITAS",
+    "favouriteMovies-removed": "Película eliminada de la categoría FAVORITAS",
+    "watchedMovies-added": "Película añadida a la categoría de VISTAS",
+    "watchedMovies-removed": "Película eliminada de la categoría VISTAS",
+    "wishListMovies-added": "Película añadida a la LISTA DE DESEOS",
+    "wishListMovies-removed": "Película eliminada de la LISTA DE DESEOS",
+    "ratedMovies-added": "Película añadida a la categoría de PUNTUADAS",
+    "ratedMovies-removed": "Película eliminada de la categoría PUNTUADAS",
+    "ratedMovies-updated": "Puntuación de la película actualizada"
   },
   "comp-trailerDialog": {
     "noAvailable": "Este vídeo no se encuentra disponible en tu idioma.",

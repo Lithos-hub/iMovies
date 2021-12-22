@@ -75,7 +75,7 @@
                 <v-icon class="white--text" v-else>mdi-youtube</v-icon>
               </v-btn>
             </v-col>
-            <v-col class="text-center" v-if="!isDefault">
+            <v-col class="text-center">
               <v-btn
                 block
                 class="d-block my-1 ml-auto"
@@ -122,7 +122,7 @@ export default {
     this.$store.commit('setMovieDetails', {})
   },
   computed: {
-    ...mapState(['movieDetails', 'trailerVideo', 'addToDialog', 'imageURL', 'isDefault']),
+    ...mapState(['movieDetails', 'trailerVideo', 'addToDialog', 'imageURL']),
     isUsingMobile() {
       return this.$vuetify.breakpoint.xs;
     },

@@ -152,7 +152,7 @@ export default {
 
         if (this.category === "favourite") {
           arrFavourite.splice(arrFavourite.indexOf(item), 1)
-          this.showSnackbar({text: this.$t('comp-snackbar.favourite-removed'), color: "secondary"});
+          this.showSnackbar({text: this.$t('comp-snackbar.favouriteMovies-removed'), color: "secondary"});
           storage[this.userID].myMovies.favourite = arrFavourite;
           localStorage.setItem("storageUserDATA", JSON.stringify(storage));
         }
@@ -164,7 +164,7 @@ export default {
         }
         if (this.category === "watched") {
           arrWatched.splice(arrWatched.indexOf(item), 1)
-          this.showSnackbar({text: this.$t('comp-snackbar.watched-removed'), color: "secondary"});
+          this.showSnackbar({text: this.$t('comp-snackbar.watchedMovies-removed'), color: "secondary"});
           storage[this.userID].myMovies.watched = arrWatched;
           localStorage.setItem("storageUserDATA", JSON.stringify(storage));
         }

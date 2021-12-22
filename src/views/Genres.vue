@@ -92,7 +92,7 @@
                         <v-icon class="white--text" v-else>mdi-youtube</v-icon>
                       </v-btn>
                     </v-col>
-                    <v-col v-if="!isDefault">
+                    <v-col>
                       <v-btn
                         :width="isUsingMobile ? 'auto' : '100%'"
                         color="purple"
@@ -334,7 +334,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['snackbarObject', 'imageURL', 'moviesByGenre', 'selectedGenre', 'genreDialog', 'loadingData', 'trailerVideo', 'addToDialog', 'isDefault']),
+    ...mapState(['snackbarObject', 'imageURL', 'moviesByGenre', 'selectedGenre', 'genreDialog', 'loadingData', 'trailerVideo', 'addToDialog']),
     isUsingMobile() {
       return this.$vuetify.breakpoint.xs;
     },

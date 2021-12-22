@@ -3,6 +3,7 @@
     <v-app-bar
       color="secondary darken-2"
       dark
+      dense
       class="overflow-hidden justify-content-between"
       width="100%"
       elevation="10"
@@ -145,22 +146,10 @@
             </v-list-item-icon>
           </v-list-item>
 
-          <v-divider></v-divider>
+          <!-- <v-divider></v-divider> -->
 
           <div v-for="(item, i) in navbarItems" :key="i">
             <v-list-item
-              v-if="isDefault && item.visibleToDefaultUser"
-              :to="item.to"
-            >
-              <v-list-item-icon>
-                <v-icon class="nav-icons"> {{ item.icon }} </v-icon>
-                <v-list-item-title class="nav-links">
-                  {{ item.text }}
-                </v-list-item-title>
-              </v-list-item-icon>
-            </v-list-item>
-            <v-list-item
-              v-if="!isDefault"
               :to="item.to"
               @click="setComingFromDetails"
             >
@@ -204,62 +193,53 @@ export default {
       date: new Date().getFullYear(),
       id: null,
       major: 2,
-      minor: 0,
+      minor: 2,
       patch: 0,
       group: null,
       drawer: false,
       langMenu: false,
       navbarItems: [
         {
-          visibleToDefaultUser: false,
           to: "/account",
           text: this.$t("navbar.account"),
           icon: "mdi-account",
         },
         {
-          visibleToDefaultUser: false,
           to: "/search",
           text: this.$t("navbar.search"),
           icon: "mdi-magnify",
         },
         {
-          visibleToDefaultUser: false,
           to: "/myMovies",
           text: this.$t("navbar.mymovies"),
           icon: "mdi-star",
         },
         {
-          visibleToDefaultUser: false,
           to: "/trending",
           text: this.$t("navbar.trending"),
           icon: "mdi-table",
         },
         {
-          visibleToDefaultUser: true,
           to: "/trailers",
           text: this.$t("navbar.trailers"),
           icon: "mdi-video-vintage",
         },
         {
-          visibleToDefaultUser: true,
           to: "/genres",
           text: this.$t("navbar.genres"),
           icon: "mdi-shape",
         },
         {
-          visibleToDefaultUser: false,
           to: "/popular",
           text: this.$t("navbar.ranking"),
           icon: "mdi-format-list-numbered",
         },
         {
-          visibleToDefaultUser: true,
           to: "/changelog",
           text: this.$t("navbar.changelog"),
           icon: "mdi-lead-pencil",
         },
         {
-          visibleToDefaultUser: true,
           to: "/about",
           text: this.$t("navbar.about"),
           icon: "mdi-information-variant",
@@ -268,7 +248,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["isDefault", "user", "isLoadingDynamicUserData"]),
+    ...mapState(["user", "isLoadingDynamicUserData"]),
     displayText() {
       switch (this.$vuetify.breakpoint.name) {
         case "xs":
@@ -293,17 +273,12 @@ export default {
   methods: {
     ...mapActions(["changeLanguage"]),
     logout() {
-      let userStorage = JSON.parse(localStorage.getItem("user"));
 
       const userData = {};
 
       this.$store.commit("setDefault", false);
       this.$store.commit("setUser", userData);
-      localStorage.setItem("user", JSON.stringify(userData));
 
-      if (userStorage.userName === "defaultUser") {
-        this.$router.push("/");
-      } else {
         auth
           .signOut()
           .then(() => {
@@ -311,14 +286,12 @@ export default {
 
             this.$store.commit("setDefault", false);
             this.$store.commit("setUser", userData);
-            localStorage.setItem("user", JSON.stringify(userData));
 
             this.$router.push("/");
           })
           .catch((error) => {
             console.log(error);
           });
-      }
     },
     refresh() {
       this.$router.go(0);
@@ -504,7 +477,7 @@ export default {
     text-align: center;
     margin-top: 40px;
     letter-spacing: 2px;
-    font-size: 13px;
+    font-size: 10px;
     font-family: $style2;
   }
 
@@ -588,7 +561,7 @@ export default {
     color: white;
     margin-top: 40px;
     letter-spacing: 2px;
-    font-size: 15px;
+    font-size: 12px;
     font-family: $style3;
   }
 

@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import axios from "axios";
 import i18n from "@/plugins/i18n";
 import router from "@/router/index";
-import { auth } from "../../firebase.js";
+import { auth, db } from "../../firebase.js";
 
 Vue.use(Vuex);
 
@@ -22,10 +22,10 @@ export default new Vuex.Store({
     imageURL: "https://image.tmdb.org/t/p/original",
     user: {},
     userData: {},
+    documentId: "",
     loadingUserAuthStatus: false,
     userID: null,
     isLogged: false,
-    isDefault: false,
     isLoadingDynamicUserData: false,
     apikey: "c9a3e87b703c630c13d5ea61ef62c7b6",
     language: "es-ES",
@@ -71,9 +71,6 @@ export default new Vuex.Store({
     },
     setIsLoadingDynamicUserData(state, payload) {
       state.isLoadingDynamicUserData = payload;
-    },
-    setDefault(state, payload) {
-      state.isDefault = payload;
     },
     setTrending(state, payload) {
       state.trendingMovies = payload;
@@ -158,6 +155,9 @@ export default new Vuex.Store({
     setSearchInput(state, payload) {
       state.searchInput = payload;
     },
+    setDocID (state, payload) {
+      state.documentId = payload;
+    }
   },
   actions: {
     // ******* USER ACTIONS ******* //
@@ -453,7 +453,7 @@ export default new Vuex.Store({
   },
   getters: {
     userData: (state) => state.user,
-    defaultUser: (state) => state.isDefault,
     isLogged: (state) => state.isLogged,
+    myDocumentID: (state) => state.documentId,
   },
 });

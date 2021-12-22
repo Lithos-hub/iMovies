@@ -117,15 +117,14 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-  // Requires auth BUT user is not logged in
-  if (requiresAuth && !(await store.dispatch("getCurrentUser"))) {
-    next({ path: "/"})
-    // If not requires auth and user is logged in
-  } else if (!requiresAuth && (await store.dispatch("getCurrentUser"))) {
-    next({ path: "/home"})
+  // Requires Auth and the user is logged in
+  if (requiresAuth && (await store.dispatch("getCurrentUser"))) {
+    next()
+    // If requires auth and user is not logged in
+  } else if (requiresAuth && !(await store.dispatch("getCurrentUser"))) {
+    next({ path: "/" })
   } else {
-    // Anything else
-    next();
+    next()
   }
 })
 

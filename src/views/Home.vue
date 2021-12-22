@@ -24,7 +24,7 @@
                 ? imageURL + item.backdrop_path
                 : ''
             "
-            @click="getMovieDetails(item.id)"
+            @click="item.id ? getMovieDetails(item.id) : null"
           >
           </v-img>
           <h3 class="movie-title shadow-text">
@@ -148,7 +148,7 @@
                       }}</span>
                     </v-tooltip>
                   </v-col>
-                  <v-col class="text-center" v-if="!isDefault">
+                  <v-col class="text-center">
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn
@@ -255,8 +255,7 @@ export default {
       "movieOfTheWeek",
       "no_image",
       "imageURL",
-      "addToDialog",
-      "isDefault"
+      "addToDialog"
     ]),
     computedRateColor() {
       let movieRate = this.movieOfTheWeek.vote_average;
