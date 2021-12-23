@@ -47,7 +47,7 @@
             <v-col :cols="isUsingMobile ? '12' : '4'">
               <h4 class="info--text">{{ $t('view-trending.casting') }}</h4>
               <v-divider class="ma-0 mb-2"></v-divider>
-              <p v-for="(cast, j) in item.cast.slice(0, 11)" :key="'A' + j">
+              <p v-for="(cast, j) in item.cast.slice(0, 11)" :key="'A' + j" class="ma-0">
                   <v-icon color="primary" size="10" class="mr-2">mdi-circle</v-icon>
                   <span class="font-weight-bold mr-3">{{ cast.name }}</span>
                   <span class="info--text mr-2" v-if="cast.character">{{ $t('view-trending.as') }}</span>

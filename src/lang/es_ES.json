@@ -2,7 +2,7 @@
   "error-404": {
     "soundDisabled": "El sonido está desactivado",
     "soundActivated": "El sonido está activado",
-    "text1": "Esta no es la página que estás buscando...",
+    "text1": "La página a la que estás intentando acceder no existe",
     "comeback": "Regresar"
   },
   "languages": {
@@ -255,7 +255,9 @@
     "2_0_0-7": "Refactorización y mejoras con Vuex",
     "2_0_0-8": "Nuevos componentes: Snackbar para mensajes de éxito/error/información; barra de datos de carga; diálogo 'Añadir a mis películas'",
     "2_0_0-9": "Nueva landing page en /home",
-  "2_0_0-10":  "Nueva vista de configuración de la cuenta"
+    "2_0_0-10":  "Nueva vista de configuración de la cuenta",
+    "2_1_0-1": "(Backend) Añadido un sistema de login y registro con Firebase (Authentication) con correo electrónico y contraseña",
+    "2_2_0-1": "(Backend) Añadido el CRUD de películas con Firebase (Firestore)"
   },
   "view-about": {
     "title": "Acerca de iMovies",

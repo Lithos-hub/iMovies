@@ -167,6 +167,18 @@ export default {
             this.$t('view-changelog.2_0_0-10')
           ],
         },
+        {
+          version: "v2.1.0",
+          changes: [
+            this.$t('view-changelog.2_1_0-1'),
+          ]
+        },
+        {
+          version: "v2.2.0",
+          changes: [
+            this.$t('view-changelog.2_2_0-1'),
+          ]
+        }
       ],
     };
   },
