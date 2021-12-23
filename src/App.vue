@@ -42,8 +42,13 @@ export default {
   watch: {
     $route(to) {
       if (to.path !== "/") {
-        this.getUserData();
-        let userData = this.$store.getters.userData
+        const MY_FS_DOC = localStorage.getItem("docID");
+        if (MY_FS_DOC) {
+          this.$store.commit("setDocID", MY_FS_DOC);
+        } else {
+          this.getMyDocID();
+        }
+        let userData = this.$store.getters.userData;
         this.$store.dispatch("checkAuth");
         if (to.path !== "/" && !userData) {
           router.push("/");
@@ -55,8 +60,15 @@ export default {
   computed: {
     ...mapState(["loadingUserAuthStatus"]),
   },
-  mounted () {
-    this.getMyDocID()
+  created() {
+    this.getUserData()
+    const MY_FS_DOC = localStorage.getItem("docID");
+    if (MY_FS_DOC) {
+      this.$store.commit("setDocID", MY_FS_DOC);
+    } else {
+      this.getMyDocID();
+    }
+    console.log('My Firestore Doc ID: ', this.$store.getters.myDocumentID);
   },
   methods: {
     ...mapActions(["changeLanguage", "getUserID"]),
@@ -64,20 +76,19 @@ export default {
       await auth.onAuthStateChanged((user) => {
         if (user) {
           this.$store.commit("setUser", user);
-        }
-      });
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 1500);
-    },
-    async getMyDocID () {
-      const COLLECTION = await db.collection("userData").get()
-      const USERDATA = this.$store.getters.userData
-      COLLECTION.forEach((doc) => {
-        if (doc.data().userID === USERDATA.uid) {
-          this.$store.commit('setDocID', doc.data().docID)
+          this.isLoading = false
         }
       })
+    },
+    async getMyDocID() {
+      const COLLECTION = await db.collection("userData").get();
+      const USERDATA = this.$store.getters.userData;
+      COLLECTION.forEach((doc) => {
+        if (doc.data().userID === USERDATA.uid) {
+          this.$store.commit("setDocID", doc.data().docID);
+          localStorage.setItem("docID", doc.data().docID);
+        }
+      });
     },
   },
 };

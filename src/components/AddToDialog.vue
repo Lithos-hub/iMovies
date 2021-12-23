@@ -7,11 +7,25 @@
       persistent
       class="no-overflow-x"
     >
-      <v-card width="auto" class="no-overflow-x">
+      <v-card width="auto" min-height="300" class="no-overflow-x">
         <v-card-title
-          class="gradient-background-1 text-h5 white--text shadow-text"
+          class="
+            gradient-background-1
+            text-h5
+            white--text
+            shadow-text
+            d-flex
+            justify-space-between
+          "
         >
           {{ $t("comp-addTo.add") }}
+          <v-progress-circular
+            v-if="isLoadingAddedMovies"
+            indeterminate
+            color="white"
+            size="30"
+            width="3"
+          />
         </v-card-title>
 
         <v-row no-gutters>
@@ -86,18 +100,18 @@
             <v-btn
               large
               icon
-              :color="!addedRate ? 'black' : 'green'"
+              :color="!addedRated ? 'black' : 'green'"
               width="80px"
               height="80px"
               @click="rateMenu = true"
             >
               <v-icon size="50px">{{
-                !addedRate ? "mdi-sort-numeric-variant" : "mdi-numeric"
+                !addedRated ? "mdi-sort-numeric-variant" : "mdi-numeric"
               }}</v-icon>
             </v-btn>
-            <p :class="!addedRate ? 'black--text' : 'green--text'">
+            <p :class="!addedRated ? 'black--text' : 'green--text'">
               {{
-                !addedRate
+                !addedRated
                   ? $t("comp-addTo.rated")
                   : `${$t("comp-addTo.rate1")} ${rate} ${$t(
                       "comp-addTo.rate2"
@@ -137,14 +151,10 @@
               tile
               block
               color="secondary"
-              @click="
-                addedRate
-                  ? removeMovieByCategory('ratedMovies', movieToAdd)
-                  : saveMovieByCategory('ratedMovies', movieToAdd)
-              "
+              @click="saveMovieByCategory('ratedMovies', movieToAdd)"
             >
               <span class="white--text">{{
-                !addedRate
+                !addedRated
                   ? $t("comp-addTo.rate-dialog-btn1")
                   : $t("comp-addTo.rate-dialog-btn2")
               }}</span>
@@ -189,22 +199,27 @@ export default {
   },
   data() {
     return {
-      addedFavourite: false,
-      addedWatched: false,
-      addedWishlist: false,
-      addedRate: false,
       rateMenu: false,
       dialog: true,
       slider: 0,
-      rate: 0,
-      auxFavourite: [],
-      auxWatched: [],
-      auxWishlist: [],
-      auxRated: [],
     };
   },
   computed: {
-    ...mapState(["snackbarObject", "movieToAdd", "storagedMovies", "userID"]),
+    ...mapState([
+      "snackbarObject",
+      "movieToAdd",
+      "documentId",
+      "isLoadingAddedMovies",
+      "addedFavourite",
+      "addedWatched",
+      "addedWishlist",
+      "addedRated",
+      "favouriteMovies",
+      "watchedMovies",
+      "wishListMovies",
+      "ratedMovies",
+      "rate",
+    ]),
     validRate() {
       if (this.rate >= 0 && this.rate <= 10 && this.rate !== "") {
         return true;
@@ -238,97 +253,80 @@ export default {
   methods: {
     ...mapActions(["showSnackbar", "showAddToDialog"]),
     async saveMovieByCategory(category, movie) {
-      const MY_DOC_ID = this.$store.getters.myDocumentID;
+      const MY_DOC_ID = localStorage.getItem("docID");
       let myDocRef = await db.doc(`userData/${MY_DOC_ID}/myMovies/${category}`);
-      myDocRef.update({
-        moviesList: firebase.firestore.FieldValue.arrayUnion(movie),
-      })
-      .then(() => {
-        this.getStoragedMovies();
-        this.showSnackbar({
-          text: 'Película añadida',
-          color: 'success',
-        })
-      })
+      // We'll save the rate as a property and we'll remove the movie
+      // to be able to update it with the new rate
+      if (category === "ratedMovies") {
+        myDocRef
+          .update({
+            moviesList: firebase.firestore.FieldValue.arrayRemove(movie),
+          })
+          .then(() => {
+            movie.rate = this.rate;
+            myDocRef
+              .update({
+                moviesList: firebase.firestore.FieldValue.arrayUnion(movie),
+              })
+              .then(() => {
+                this.getStoragedMovies();
+                this.showSnackbar({
+                  text: this.$t(`comp-snackbar.${category}-added`),
+                  color: "success",
+                });
+                this.rateMenu = false;
+              });
+          });
+      } else {
+        // In the other cases, we'll just add the movie to the array
+        myDocRef
+          .update({
+            moviesList: firebase.firestore.FieldValue.arrayUnion(movie),
+          })
+          .then(() => {
+            this.getStoragedMovies();
+            this.showSnackbar({
+              text: this.$t(`comp-snackbar.${category}-added`),
+              color: "success",
+            });
+            this.rateMenu = false;
+          });
+      }
     },
     async removeMovieByCategory(category, movie) {
-      const MY_DOC_ID = this.$store.getters.myDocumentID;
+      const MY_DOC_ID = localStorage.getItem("docID");
       let myDocRef = await db.doc(`userData/${MY_DOC_ID}/myMovies/${category}`);
-      myDocRef.update({
-        moviesList: firebase.firestore.FieldValue.arrayRemove(movie),
-      })
-      .then(() => {
-        this.getStoragedMovies();
-        this.showSnackbar({
-          text: 'Película eliminada',
-          color: 'success',
+      myDocRef
+        .update({
+          moviesList: firebase.firestore.FieldValue.arrayRemove(movie),
         })
-      })
+        .then(() => {
+          this.getStoragedMovies();
+          this.showSnackbar({
+            text: this.$t(`comp-snackbar.${category}-removed`),
+            color: "success",
+          });
+        });
     },
-    async getStoragedMovies() {
-      const MY_DOC_ID = this.$store.getters.myDocumentID;
-      const MY_favourite_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/favouriteMovies`)
-        .get("moviesList");
-      const MY_watched_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/watchedMovies`)
-        .get("moviesList");
-      const MY_wishList_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/wishListMovies`)
-        .get("moviesList");
-      const MY_rated_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/ratedMovies`)
-        .get("moviesList")
-
-      const favouriteData = MY_favourite_MOVIES.data();
-      const watchedData = MY_watched_MOVIES.data();
-      const wishListData = MY_wishList_MOVIES.data();
-      const ratedData = MY_rated_MOVIES.data();
-
-      this.auxFavourite = favouriteData.moviesList;
-      this.auxWatched = watchedData.moviesList;
-      this.auxWishlist = wishListData.moviesList;
-      this.auxRated = ratedData.moviesList;
-
-      if (this.auxFavourite !== undefined) {
-        this.addedFavourite = this.auxFavourite.find(
-          (item) => item.id === this.movieToAdd.id
-        )
-          ? true
-          : false;
-      }
-      if (this.auxWatched !== undefined) {
-        this.addedWatched = this.auxWatched.find(
-          (item) => item.id === this.movieToAdd.id
-        )
-          ? true
-          : false;
-      }
-      if (this.auxWishlist !== undefined) {
-        this.addedWishlist = this.auxWishlist.find(
-          (item) => item.id === this.movieToAdd.id
-        )
-          ? true
-          : false;
-      }
-      if (this.auxRated !== undefined) {
-        this.addedRate = this.auxRated.find(
-          (item) => item.id === this.movieToAdd.id
-        )
-          ? true
-          : false;
-      }
+    getStoragedMovies() {
+      const MY_DOC_ID = localStorage.getItem("docID");
+      const movieToAdd = this.movieToAdd;
+      this.slider = movieToAdd.rate * 10;
+      this.$store.dispatch("getStoragedMovies", { movieToAdd, MY_DOC_ID });
     },
-    saveMovieRate() {},
     toDecimal(rate) {
       let dec = rate / 10;
-      this.rate = dec;
+      this.$store.commit("setRate", dec);
     },
     rateMovie() {
       this.rateMenu = true;
     },
     emitForceUpdate() {
       this.$emit("force-update");
+      this.$store.commit('setAddedFavourite', false);
+      this.$store.commit('setAddedWatched', false);
+      this.$store.commit('setAddedWishlist', false);
+      this.$store.commit('setAddedRated', false);
     },
   },
 };

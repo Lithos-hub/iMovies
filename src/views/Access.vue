@@ -167,7 +167,6 @@ export default {
       await auth
         .signInWithEmailAndPassword(email, password)
         .then(() => {
-          console.log('Login con éxito')
           this.formAlert = true;
           this.validUser = true;
           this.loader = "loading";

@@ -322,15 +322,15 @@
     "changelog": "Changelog"
   },
   "comp-snackbar": {
-    "favouriteMovies-added": "Film added to the FAVOURITES category",
-    "favouriteMovies-removed": "Film removed from the FAVOURITES category",
-    "watchedMovies-added": "Film added to the WATCHED category",
-    "watchedMovies-removed": "Film removed from the WATCHED category",
-    "wishListMovies-added": "Movie added to the WISHLIST",
-    "wishListMovies-removed": "Movie removed from the WISHLIST",
-    "ratedMovies-added": "Film added to the rated category",
-    "ratedMovies-removed": "Film removed from the SCORED category",
-    "ratedMovies-updated": "Film score updated"
+    "favouriteMovies-added": "Film added",
+    "favouriteMovies-removed": "Film removed",
+    "watchedMovies-added": "Film added",
+    "watchedMovies-removed": "Film removed",
+    "wishListMovies-added": "Movie added",
+    "wishListMovies-removed": "Movie removed",
+    "ratedMovies-added": "Rate added",
+    "ratedMovies-removed": "Rate removed",
+    "ratedMovies-updated": "Rate updated"
   },
   "comp-trailerDialog": {
     "noAvailable": "Video no available in your language",

@@ -217,6 +217,7 @@
 import { mapActions, mapState } from "vuex";
 import TrailerDialog from "@/components/TrailerDialog.vue";
 import AddToDialog from "../components/AddToDialog";
+import { db } from "../../firebase";
 
 export default {
   name: "Ranking",
@@ -235,6 +236,7 @@ export default {
     this.getMovieOfTheWeek();
   },
   mounted() {
+    this.getMyDocID();
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
     setTimeout(() => {
@@ -355,6 +357,15 @@ export default {
     getTrailer(item) {
       this.trailerDialog = true;
       this.getMovieTrailer({ type: "other", id: item.id });
+    },
+    async getMyDocID () {
+      const COLLECTION = await db.collection("userData").get()
+      const USERDATA = this.$store.getters.userData
+      COLLECTION.forEach((doc) => {
+        if (doc.data().userID === USERDATA.uid) {
+          this.$store.commit('setDocID', doc.data().docID)
+        }
+      })
     },
   },
 };

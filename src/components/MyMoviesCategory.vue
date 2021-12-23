@@ -1,13 +1,20 @@
 <template>
   <v-container fluid>
-    <!-- INFO DIALOG -->
-
     <!-- TRAILER DIALOG -->
     <TrailerDialog
       v-if="trailerDialog"
       :video="trailerVideo"
       @close-dialog="trailerDialog = false"
     />
+
+    <v-progress-circular
+      v-if="isLoadingAllStoragedMovies"
+      class="centered"
+      :size="100"
+      color="cyan"
+      width="2"
+      indeterminate
+      />
 
 
     <v-card
@@ -17,7 +24,7 @@
       {{ $t('view-myMovies.noMovies') }}
       </v-card>
 
-      <v-row no-gutters>
+      <v-row no-gutters v-if="!isLoadingAllStoragedMovies">
         <v-col
           :cols="isUsingMobile ? '12' : '3'"
           v-for="(item, i) in arrayMovies"
@@ -26,18 +33,24 @@
         >
             <v-card height="auto" tile class="elevation-10 movie-card indigo darken-4 white--text">
               <v-row no-gutters>
-                <v-col cols="6">
-                      <p class="text-h5 white--text text-center movie-title mt-2">
+                <v-col cols="12">
+                  <v-img
+                    :src="item.backdrop_path !== undefined ? imageURL + item.backdrop_path : ''"
+                    max-height="150px"
+                    :height="item.backdrop_path === undefined ? '350px' : 'auto'"
+                    class="movie-img"
+                  ></v-img>
+                </v-col>
+                <v-col cols="12">
+                      <p class="text-h6 white--text text-center movie-title mt-2">
                         {{ item.title }}
                       </p>
                       <p
                         class="
-                          overline
                           white--text
                           text-center
                           rounded
-                          movie-date
-                          mb-0
+                          font-weight-light
                         "
                       >
                         {{ formatDate(item.release_date) }}
@@ -54,17 +67,9 @@
                         </small>
                       </div>
                 </v-col>
-                <v-col cols="6">
-                  <v-img
-                    :src="item.poster_path !== undefined ? imageURL + item.poster_path : ''"
-                    max-height="325px"
-                    :height="item.poster_path === undefined ? '350px' : 'auto'"
-                    class="movie-img"
-                  ></v-img>
-                </v-col>
               </v-row>
               <v-card-actions>
-                <v-row class="py-2">
+                <v-row>
                   <v-col>
                   <v-btn
                     tile
@@ -84,7 +89,7 @@
                       color="red"
                       elevation="5"
                       class="white--text mx-auto"
-                      @click="removeMovie(item)"
+                      @click="removeMovieByCategory(category, item)"
                     >
                       <v-icon>mdi-delete</v-icon>
                     </v-btn>
@@ -107,6 +112,8 @@ import { mapActions, mapState } from 'vuex';
 import Snackbar from '../components/Snackbar'
 import TrailerDialog from '../components/TrailerDialog'
 
+import { firebase, db } from '../../firebase';
+
 export default {
   props: ['arrayMovies', 'category', 'rate'],
   components: {
@@ -123,7 +130,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['snackbarObject', 'user', 'imageURL', 'userID']),
+    ...mapState(['snackbarObject', 'user', 'imageURL', 'isLoadingAllStoragedMovies']),
     isUsingMobile() {
       return this.$vuetify.breakpoint.xs;
     },
@@ -141,40 +148,21 @@ export default {
         return `${day}-${month}-${year}`
       }
     },
-    removeMovie(item) {
-      const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-          let arrFavourite = this.arrayMovies
-          let arrWishlist = this.arrayMovies
-          let arrWatched = this.arrayMovies
-          let arrRated = this.arrayMovies
-
-          console.log(arrWatched)
-
-        if (this.category === "favourite") {
-          arrFavourite.splice(arrFavourite.indexOf(item), 1)
-          this.showSnackbar({text: this.$t('comp-snackbar.favouriteMovies-removed'), color: "secondary"});
-          storage[this.userID].myMovies.favourite = arrFavourite;
-          localStorage.setItem("storageUserDATA", JSON.stringify(storage));
-        }
-        if (this.category === "wishlist") {
-          arrWishlist.splice(arrWishlist.indexOf(item), 1)
-          this.showSnackbar({text: this.$t('comp-snackbar.wishlist-removed'), color: "secondary"});
-          storage[this.userID].myMovies.wishlist = arrWishlist;
-          localStorage.setItem("storageUserDATA", JSON.stringify(storage));
-        }
-        if (this.category === "watched") {
-          arrWatched.splice(arrWatched.indexOf(item), 1)
-          this.showSnackbar({text: this.$t('comp-snackbar.watchedMovies-removed'), color: "secondary"});
-          storage[this.userID].myMovies.watched = arrWatched;
-          localStorage.setItem("storageUserDATA", JSON.stringify(storage));
-        }
-        if (this.category === "byrate") {
-          arrRated.splice(arrRated.indexOf(item), 1)
-          this.showSnackbar({text: this.$t('comp-snackbar.rate-removed'), color: "secondary"});
-          storage[this.userID].myMovies.rated = arrRated;
-          localStorage.setItem("storageUserDATA", JSON.stringify(storage));
-        }
-    }
+    async removeMovieByCategory(category, movie) {
+      const MY_DOC_ID = localStorage.getItem("docID");
+      let myDocRef = await db.doc(`userData/${MY_DOC_ID}/myMovies/${category}`);
+      myDocRef
+        .update({
+          moviesList: firebase.firestore.FieldValue.arrayRemove(movie),
+        })
+        .then(() => {
+          this.$store.dispatch('getAllStoragedMovies');
+          this.showSnackbar({
+            text: this.$t(`comp-snackbar.${category}-removed`),
+            color: "success",
+          });
+        });
+    },
   },
 };
 </script>
@@ -185,7 +173,6 @@ export default {
 .movie-img {
   width: 100% !important;
   height: 100% !important;
-  border-radius: 0px 10px 0px 0px;
 }
 
 .myrate-section {

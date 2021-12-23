@@ -107,6 +107,7 @@
                       lg="2"
                       cols="4"
                       v-for="(url, i) in avatar_imgs"
+                      class="text-center"
                       :key="i"
                     >
                       <v-avatar

@@ -320,15 +320,15 @@
     "changelog": "Historial de cambios"
   },
   "comp-snackbar": {
-    "favouriteMovies-added": "Película añadida a la categoría de FAVORITAS",
-    "favouriteMovies-removed": "Película eliminada de la categoría FAVORITAS",
-    "watchedMovies-added": "Película añadida a la categoría de VISTAS",
-    "watchedMovies-removed": "Película eliminada de la categoría VISTAS",
-    "wishListMovies-added": "Película añadida a la LISTA DE DESEOS",
-    "wishListMovies-removed": "Película eliminada de la LISTA DE DESEOS",
-    "ratedMovies-added": "Película añadida a la categoría de PUNTUADAS",
-    "ratedMovies-removed": "Película eliminada de la categoría PUNTUADAS",
-    "ratedMovies-updated": "Puntuación de la película actualizada"
+    "favouriteMovies-added": "Película añadida",
+    "favouriteMovies-removed": "Película eliminada",
+    "watchedMovies-added": "Película añadida",
+    "watchedMovies-removed": "Película eliminada",
+    "wishListMovies-added": "Película añadida",
+    "wishListMovies-removed": "Película eliminada",
+    "ratedMovies-added": "Puntuación añadida",
+    "ratedMovies-removed": "Puntuación eliminada",
+    "ratedMovies-updated": "Puntuación actualizada"
   },
   "comp-trailerDialog": {
     "noAvailable": "Este vídeo no se encuentra disponible en tu idioma.",

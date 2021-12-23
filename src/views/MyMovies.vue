@@ -26,7 +26,7 @@
         active-class="error--text"
         class="white--text tab"
         @click="
-          category = 'favourite';
+          category = 'favouriteMovies';
           rememberClickedTab(1);
         "
         >{{ $t("view-myMovies.favourite") }}</v-tab
@@ -36,7 +36,7 @@
         active-class="error--text"
         class="white--text tab"
         @click="
-          category = 'wishlist';
+          category = 'wishListMovies';
           rememberClickedTab(2);
         "
         >{{ $t("view-myMovies.wishList") }}</v-tab
@@ -46,7 +46,7 @@
         active-class="error--text"
         class="white--text tab"
         @click="
-          category = 'watched';
+          category = 'watchedMovies';
           rememberClickedTab(3);
         "
         >{{ $t("view-myMovies.watched") }}</v-tab
@@ -56,7 +56,7 @@
         active-class="error--text"
         class="white--text tab"
         @click="
-          category = 'byrate';
+          category = 'ratedMovies';
           rememberClickedTab(4);
         "
         >{{ $t("view-myMovies.byRate") }}</v-tab
@@ -89,7 +89,7 @@
           <div
             class="category-col ma-auto"
             @click="
-              category = 'favourite';
+              category = 'favouriteMovies';
               expand = !expand;
             "
           >
@@ -100,7 +100,7 @@
           <div
             class="category-col ma-auto"
             @click="
-              category = 'wishlist';
+              category = 'wishListMovies';
               expand = !expand;
             "
           >
@@ -111,18 +111,18 @@
           <div
             class="category-col ma-auto"
             @click="
-              category = 'watched';
+              category = 'watchedMovies';
               expand = !expand;
             "
           >
-          <v-btn tile block dark class="my-3 gradient-background-1">
-            {{ $t("view-myMovies.watched") }}
-          </v-btn>
+            <v-btn tile block dark class="my-3 gradient-background-1">
+              {{ $t("view-myMovies.watched") }}
+            </v-btn>
           </div>
           <div
             class="category-col ma-auto"
             @click="
-              category = 'byrate';
+              category = 'ratedMovies';
               expand = !expand;
             "
           >
@@ -140,41 +140,117 @@
       <v-container>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div :class="isUsingMobile ? 'text-h6 cyan--text' : 'text-h4 cyan--text'">{{ $t("view-myMovies.row1") }}</div>
+            <div
+              :class="
+                isUsingMobile ? 'text-h6 cyan--text' : 'text-h4 cyan--text'
+              "
+            >
+              {{ $t("view-myMovies.row1") }}
+            </div>
           </v-col>
           <v-col>
-            <div class="data-list-number" :style="{ color: color1 }">
+            <div
+              v-if="!isLoadingAllStoragedMovies"
+              class="data-list-number"
+              :style="{ color: color1 }"
+            >
               {{ wishListMovies.length }}
             </div>
+            <div v-else>
+              <v-progress-circular
+                class="data-list-spinner"
+                indeterminate
+                color="cyan"
+                size="30"
+                width="2"
+              ></v-progress-circular>
+            </div>
           </v-col>
         </v-row>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div :class="isUsingMobile ? 'text-h6 cyan--text' : 'text-h4 cyan--text'">{{ $t("view-myMovies.row2") }}</div>
+            <div
+              :class="
+                isUsingMobile ? 'text-h6 cyan--text' : 'text-h4 cyan--text'
+              "
+            >
+              {{ $t("view-myMovies.row2") }}
+            </div>
           </v-col>
           <v-col>
-            <div class="data-list-number" :style="{ color: color2 }">
+            <div
+              v-if="!isLoadingAllStoragedMovies"
+              class="data-list-number"
+              :style="{ color: color2 }"
+            >
               {{ favouriteMovies.length }}
             </div>
-          </v-col>
-        </v-row>
-        <v-row no-gutters class="data-list">
-          <v-col class="ma-auto">
-            <div :class="isUsingMobile ? 'text-h6 cyan--text' : 'text-h4 cyan--text'">{{ $t("view-myMovies.row3") }}</div>
-          </v-col>
-          <v-col>
-            <div class="data-list-number" :style="{ color: color3 }">
-              {{ watchedMovies.length }}
+            <div v-else>
+              <v-progress-circular
+                class="data-list-spinner"
+                indeterminate
+                color="cyan"
+                size="30"
+                width="2"
+              ></v-progress-circular>
             </div>
           </v-col>
         </v-row>
         <v-row no-gutters class="data-list">
           <v-col class="ma-auto">
-            <div :class="isUsingMobile ? 'text-h6 cyan--text' : 'text-h4 cyan--text'">{{ $t("view-myMovies.row4") }}</div>
+            <div
+              :class="
+                isUsingMobile ? 'text-h6 cyan--text' : 'text-h4 cyan--text'
+              "
+            >
+              {{ $t("view-myMovies.row3") }}
+            </div>
           </v-col>
           <v-col>
-            <div class="data-list-number" :style="{ color: color4 }">
+            <div
+              v-if="!isLoadingAllStoragedMovies"
+              class="data-list-number"
+              :style="{ color: color3 }"
+            >
+              {{ watchedMovies.length }}
+            </div>
+            <div v-else>
+              <v-progress-circular
+                class="data-list-spinner"
+                indeterminate
+                color="cyan"
+                size="30"
+                width="2"
+              ></v-progress-circular>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row no-gutters class="data-list">
+          <v-col class="ma-auto">
+            <div
+              :class="
+                isUsingMobile ? 'text-h6 cyan--text' : 'text-h4 cyan--text'
+              "
+            >
+              {{ $t("view-myMovies.row4") }}
+            </div>
+          </v-col>
+          <v-col>
+            <div
+              v-if="!isLoadingAllStoragedMovies"
+              class="data-list-number"
+              :style="{ color: color4 }"
+            >
               {{ ratedMovies.length }}
+            </div>
+            <div v-else>
+              <v-progress-circular
+                class="data-list-spinner"
+                indeterminate
+                color="cyan"
+                size="30"
+                width="2"
+              ></v-progress-circular>
             </div>
           </v-col>
         </v-row>
@@ -182,24 +258,24 @@
     </v-row>
 
     <MyMoviesCategory
-      v-if="category === 'favourite'"
+      v-if="category === 'favouriteMovies'"
       :array-movies="favouriteMovies"
       :category="favourite"
     />
     <MyMoviesCategory
-      v-if="category === 'watched'"
+      v-if="category === 'watchedMovies'"
       :array-movies="watchedMovies"
       :category="watched"
     />
     <MyMoviesCategory
-      v-if="category === 'wishlist'"
+      v-if="category === 'wishListMovies'"
       :array-movies="wishListMovies"
       :category="wishlist"
     />
     <MyMoviesCategory
-      v-if="category === 'byrate'"
-      :category="byrate"
+      v-if="category === 'ratedMovies'"
       :array-movies="ratedMovies"
+      :category="byrate"
     />
   </div>
 </template>
@@ -221,19 +297,22 @@ export default {
       sectionTitle: this.$t("comp-sectionTitle.mymovies"),
       selectedTab: 0,
       category: "summary",
-      watched: "watched",
-      wishListMovies: [],
-      watchedMovies: [],
-      favouriteMovies: [],
-      ratedMovies: [],
-      wishlist: "wishlist",
-      favourite: "favourite",
-      byrate: "byrate",
+      watched: "watchedMovies",
+      wishlist: "wishListMovies",
+      favourite: "favouriteMovies",
+      byrate: "ratedMovies",
       expand: false,
     };
   },
   computed: {
-    ...mapState(["userID", "clickedTab"]),
+    ...mapState([
+      "clickedTab",
+      "favouriteMovies",
+      "watchedMovies",
+      "wishListMovies",
+      "ratedMovies",
+      "isLoadingAllStoragedMovies",
+    ]),
     isUsingMobile() {
       return this.$vuetify.breakpoint.xs;
     },
@@ -278,18 +357,14 @@ export default {
     setCategory(key) {
       this.category = {
         0: "summary",
-        1: "favourite",
-        2: "wishlist",
-        3: "watched",
-        4: "byrate",
+        1: "favouriteMovies",
+        2: "wishListMovies",
+        3: "watchedMovies",
+        4: "ratedMovies",
       }[key];
     },
     getStoragedMovies() {
-      let movies = storage[this.userID].myMovies;
-      this.favouriteMovies = movies.favourite;
-      this.watchedMovies = movies.watched;
-      this.wishListMovies = movies.wishlist;
-      this.ratedMovies = movies.rated;
+      this.$store.dispatch("getAllStoragedMovies");
     },
   },
 };
@@ -319,15 +394,23 @@ export default {
   }
 
   .data-list {
+    position: relative;
     font-size: 15px;
     background: $dark;
     padding-inline: 10px;
     border-bottom: 2px solid $secondary;
+    min-height: 72px;
   }
 
   .data-list-number {
     font-size: 3em;
     text-align: right;
+  }
+
+  .data-list-spinner {
+    position: absolute;
+    right: 1em;
+    top: 1em;
   }
 }
 // ******* LAPTOP RESPONSIVE ******* //

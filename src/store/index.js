@@ -58,6 +58,17 @@ export default new Vuex.Store({
     videoNoAvailable: false,
     secondaryVideoNoAvailable: false,
     clickedTab: 0,
+    isLoadingAddedMovies: false,
+    addedFavourite: false,
+    addedWatched: false,
+    addedWishlist: false,
+    addedRated: false,
+    rate: 0,
+    favouriteMovies: [],
+    watchedMovies: [],
+    wishListMovies: [],
+    ratedMovies: [],
+    isLoadingAllStoragedMovies: false,
   },
   mutations: {
     setUser(state, payload) {
@@ -157,6 +168,39 @@ export default new Vuex.Store({
     },
     setDocID (state, payload) {
       state.documentId = payload;
+    },
+    setIsLoadingAddedMovies(state, payload) {
+      state.isLoadingAddedMovies = payload;
+    },
+    setAddedFavourite (state, payload) {
+      state.addedFavourite = payload;
+    },
+    setAddedWatched (state, payload) {
+      state.addedWatched = payload;
+    },
+    setAddedWishlist (state, payload) {
+      state.addedWishlist = payload;
+    },
+    setAddedRated (state, payload) {
+      state.addedRated = payload;
+    },
+    setRate (state, payload) {
+      state.rate = payload;
+    },
+    setFavouriteMovies (state, payload) {
+      state.favouriteMovies = payload;
+    },
+    setWatchedMovies (state, payload) {
+      state.watchedMovies = payload;
+    },
+    setWishListMovies (state, payload) {
+      state.wishListMovies = payload;
+    },
+    setRatedMovies (state, payload) {
+      state.ratedMovies = payload;
+    },
+    setLoadingAllStoragedMovies (state, payload) {
+      state.isLoadingAllStoragedMovies = payload;
     }
   },
   actions: {
@@ -200,6 +244,7 @@ export default new Vuex.Store({
 
       commit("setUser", user);
     },
+    // ************ MIX ACTIONS ************* //
     showInfo({ commit }, item) {
       router.push({ path: `movie/${item.id}` });
     },
@@ -221,13 +266,77 @@ export default new Vuex.Store({
         i18n.locale = payload.split("-")[0];
       }, 1000);
     },
-    storageMovie({ commit }, payload) {
-      commit("setMovieInCategory", payload);
+    // ************ MOVIE ACTIONS ************* //
+    async getAllStoragedMovies({ commit }) {
+      commit("setLoadingAllStoragedMovies", true);
+      const MY_DOC_ID = localStorage.getItem("docID");
+      const MY_favourite_MOVIES = await db
+        .doc(`userData/${MY_DOC_ID}/myMovies/favouriteMovies`)
+        .get("moviesList");
+      const MY_watched_MOVIES = await db
+        .doc(`userData/${MY_DOC_ID}/myMovies/watchedMovies`)
+        .get("moviesList");
+      const MY_wishList_MOVIES = await db
+        .doc(`userData/${MY_DOC_ID}/myMovies/wishListMovies`)
+        .get("moviesList");
+      const MY_rated_MOVIES = await db
+        .doc(`userData/${MY_DOC_ID}/myMovies/ratedMovies`)
+        .get("moviesList");
+
+        const favouriteData = MY_favourite_MOVIES.data();
+        const watchedData = MY_watched_MOVIES.data();
+        const wishListData = MY_wishList_MOVIES.data();
+        const ratedData = MY_rated_MOVIES.data();
+
+        commit('setFavouriteMovies', favouriteData.moviesList);
+        commit('setWatchedMovies', watchedData.moviesList);
+        commit('setWishListMovies', wishListData.moviesList);
+        commit('setRatedMovies', ratedData.moviesList);
+
+        commit("setLoadingAllStoragedMovies", false);
     },
-    getStoragedMovies({ commit }) {
-      const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || {};
-      let movies = storage.myMovies;
-      commit("setStoragedMovies", movies);
+    async getStoragedMovies({ commit }, { movieToAdd, MY_DOC_ID }) {
+      commit('setIsLoadingAddedMovies', true)
+      const MY_favourite_MOVIES = await db
+        .doc(`userData/${MY_DOC_ID}/myMovies/favouriteMovies`)
+        .get("moviesList");
+      const MY_watched_MOVIES = await db
+        .doc(`userData/${MY_DOC_ID}/myMovies/watchedMovies`)
+        .get("moviesList");
+      const MY_wishList_MOVIES = await db
+        .doc(`userData/${MY_DOC_ID}/myMovies/wishListMovies`)
+        .get("moviesList");
+      const MY_rated_MOVIES = await db
+        .doc(`userData/${MY_DOC_ID}/myMovies/ratedMovies`)
+        .get("moviesList");
+
+      const favouriteData = MY_favourite_MOVIES.data();
+      const watchedData = MY_watched_MOVIES.data();
+      const wishListData = MY_wishList_MOVIES.data();
+      const ratedData = MY_rated_MOVIES.data();
+
+      commit('setFavouriteMovies', favouriteData.moviesList);
+      commit('setWatchedMovies', watchedData.moviesList);
+      commit('setWishListMovies', wishListData.moviesList);
+      commit('setRatedMovies', ratedData.moviesList);
+
+      if (favouriteData.moviesList !== undefined && movieToAdd) {
+        commit('setAddedFavourite', favouriteData.moviesList.find(movie => movie.id === movieToAdd.id) ? true : false);
+      };
+      if (watchedData.moviesList !== undefined && movieToAdd) {
+        commit('setAddedWatched', watchedData.moviesList.find(movie => movie.id === movieToAdd.id) ? true : false);
+      };
+      if (wishListData.moviesList !== undefined && movieToAdd) {
+        commit('setAddedWishlist', wishListData.moviesList.find(movie => movie.id === movieToAdd.id) ? true : false);
+      };
+      if (ratedData.moviesList !== undefined && movieToAdd) {
+        commit('setAddedRated', ratedData.moviesList.find(movie => movie.id === movieToAdd.id) ? true : false);
+        const RATED_MATCH = ratedData.moviesList.find(
+          (item) => item.id === movieToAdd.id
+        );
+        commit('setRate', RATED_MATCH ? RATED_MATCH.rate : 0);
+      };
+      commit('setIsLoadingAddedMovies', false)
     },
     async getLatestReleases({ commit }, byPopularity) {
       let CALL_URL;
@@ -371,7 +480,7 @@ export default new Vuex.Store({
           });
         });
     },
-    async getMoviesByYear({ commit }, { year, page }) {
+    async getMoviesByYear({ commit, dispatch }, { year, page }) {
       commit("setLoadingData", true);
       let arrMovies = [];
       let arrMoviesID = [];
@@ -386,6 +495,7 @@ export default new Vuex.Store({
                   arrMovies.push(data);
                   arrMoviesID.push(data.id);
                 }
+                dispatch('getAllStoragedMovies');
                 setTimeout(() => {
                   commit("setMoviesByYear", arrMovies);
                   commit("setMoviesID", arrMoviesID);

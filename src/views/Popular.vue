@@ -5,12 +5,15 @@
     <!-- ADD TO MY MOVIES DIALOG -->
     <AddToDialog
       v-if="addToDialog"
-      @force-update="refreshStoragedMovies()"
+      @force-update="this.$store.dispatch('getAllStoragedMovies')"
     />
 
     <v-row>
       <v-col />
-      <v-col :cols="isUsingMobile ? '8' : '1'">
+      <v-col class="text-center cyan--text" :cols="isUsingMobile ? '8' : '2'">
+        <small>
+          {{ $t('view-popular.writeYear') }}
+        </small>
         <v-text-field
         elevation-10
         v-model="year"
@@ -18,9 +21,7 @@
         filled
         dark
         color="cyan"
-        width="auto"
-        :label="$t('view-popular.writeYear')"
-        class="rounded-0"
+        class="rounded-0 centered-input"
         @change="checkAndSave(); getMoviesByYear({year, page})">
         </v-text-field>
       </v-col>
@@ -64,16 +65,16 @@
                       class="mb-5 mx-auto elevation-10"
                       @click="showDetails(item)">
                       <div class="favourite-badge">
-                        <div v-if="auxFavourite.some(el => el.id === item.id)">
+                        <div v-if="favouriteMovies.some(movie => movie.id === item.id)">
                           <v-icon id="favourite-badge" color="red" class="movie-badge">mdi-heart</v-icon>
                         </div>
-                        <div v-if="auxWatched.some(el => el.id === item.id)">
+                        <div v-if="watchedMovies.some(movie => movie.id === item.id)">
                           <v-icon id="watched-badge" color="primary" class="movie-badge">mdi-eye</v-icon>
                         </div>
-                        <div v-if="auxWishlist.some(el => el.id === item.id)">
+                        <div v-if="wishListMovies.some(movie => movie.id === item.id)">
                           <v-icon id="wishlist-badge" color="amber" class="movie-badge">mdi-star-shooting</v-icon>
                         </div>
-                        <div v-if="auxRated.some(el => el.id === item.id)">
+                        <div v-if="ratedMovies.some(movie => movie.id === item.id)">
                           <v-icon id="rated-badge" color="green" class="movie-badge">mdi-numeric</v-icon>
                         </div>
                       </div>
@@ -126,10 +127,6 @@ export default {
       tooBigYear: false,
       value: 0,
       page: 1,
-      auxFavourite: [],
-      auxWatched: [],
-      auxWishlist: [],
-      auxRated: [],
       capturedYear: ''
     };
   },
@@ -137,38 +134,38 @@ export default {
     this.comesFromDetails ? this.getSavedYear() : this.getRandomYear()
   },
   mounted() {
-    this.getStoragedMovies()
     this.getMoviesByYear({ year: this.year, page: this.page });
     if (this.$route.path === '/popular') { 
-        this.infiniteScroll();
+      this.infiniteScroll();
     }
   },
   computed: {
-    ...mapState(['moviesByYear', 'userID', 'moviesID', 'no_image', 'imageURL', 'loadingData', 'loadingIMG', 'addToDialog', 'storagedMovies', 'comesFromDetails']),
+    ...mapState([
+      'moviesByYear', 
+      'userID', 
+      'moviesID', 
+      'no_image', 
+      'imageURL', 
+      'loadingData', 
+      'loadingIMG', 
+      'addToDialog',
+      'comesFromDetails',
+      'favouriteMovies',
+      'watchedMovies',
+      'wishListMovies',
+      'ratedMovies']),
     isUsingMobile() {
       return this.$vuetify.breakpoint.xs;
     },
   },
   methods: {
     ...mapActions(['getMoviesByYear', 'showAddToDialog', 'setAddMovie']),
-    refreshStoragedMovies () {
-      this.getStoragedMovies()
-    },
     getSavedYear() {
       let storagedYear = localStorage.getItem('popularYear');
       this.year = storagedYear
     },
     showDetails(item) {
       this.$router.push(`/movie/${item.id}`);
-    },
-    getStoragedMovies() {
-      // const storage = JSON.parse(localStorage.getItem("storageUserDATA")) || [];
-      // let movies = storage[this.userID].myMovies
-      // this.auxFavourite = movies.favourite
-      // this.auxWatched = movies.watched
-      // this.auxWishlist = movies.wishlist
-      // this.auxRated = movies.rated
-      // console.log({ ...movies })
     },
     getRandomYear() {
         let max = new Date().getFullYear();
