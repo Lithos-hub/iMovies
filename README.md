@@ -10,6 +10,19 @@ This application uses The Movie Database (TMDB) API to show info about movies (r
 
 Changelog:
 
+Version 2.2.1
+
+- Added some fixes and style improvements
+
+Version 2.2.0
+
+- (Backend) Added the CRUD system for the user's movies,
+
+Version 2.1.0
+
+- (Backend) Added a login/register system with Firebase (Authentication) using E-mail and password,
+- Added a navigation guard based on the authentication status,
+
 Version 2.0.0
 
 - Added internationalization (ENG / SPA) in all the app.

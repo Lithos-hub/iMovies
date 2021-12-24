@@ -194,7 +194,7 @@ export default {
       id: null,
       major: 2,
       minor: 2,
-      patch: 0,
+      patch: 1,
       group: null,
       drawer: false,
       langMenu: false,

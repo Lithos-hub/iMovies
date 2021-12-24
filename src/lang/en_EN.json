@@ -261,7 +261,8 @@
    "2_0_0-10":  "New account settings view",
    "2_1_0-1": "(Backend) Added a login/register system with Firebase (Authentication) using E-mail and password",
    "2_1_0-2": "Added a navigation guard based on the authentication status",
-   "2_2_0-1": "(Backend) Added the CRUD system for the user's movies"
+   "2_2_0-1": "(Backend) Added the CRUD system for the user's movies",
+   "2_2_1-1": "Added some fixes and style improvements"
   },
   "view-about": {
     "title": "About iMovies",
