@@ -14,138 +14,160 @@
       color="cyan"
       width="2"
       indeterminate
-      />
-
+    />
 
     <v-card
       color="error"
       class="white--text pa-2 empty-error-message"
-      v-if="arrayMovies.length === 0">
-      {{ $t('view-myMovies.noMovies') }}
-      </v-card>
+      v-if="arrayMovies.length === 0"
+    >
+      {{ $t("view-myMovies.noMovies") }}
+    </v-card>
 
-      <v-row no-gutters v-if="!isLoadingAllStoragedMovies">
-        <v-col
-          :cols="isUsingMobile ? '12' : '3'"
-          v-for="(item, i) in arrayMovies"
-          :key="i"
-          class="text-center mx-auto"
+    <v-row no-gutters v-if="!isLoadingAllStoragedMovies">
+      <v-col
+        :cols="isUsingMobile ? '12' : '3'"
+        v-for="(item, i) in arrayMovies"
+        :key="i"
+        class="text-center mx-auto"
+      >
+        <v-card
+          height="auto"
+          tile
+          class="elevation-10 movie-card indigo darken-4 white--text"
         >
-            <v-card height="auto" tile class="elevation-10 movie-card indigo darken-4 white--text">
-              <v-row no-gutters>
-                <v-col cols="12">
-                  <v-img
-                    :src="item.backdrop_path !== undefined ? imageURL + item.backdrop_path : ''"
-                    max-height="150px"
-                    :height="item.backdrop_path === undefined ? '350px' : 'auto'"
-                    class="movie-img"
-                  ></v-img>
-                </v-col>
-                <v-col cols="12">
-                      <p class="text-h6 white--text text-center movie-title mt-2">
-                        {{ item.title }}
-                      </p>
-                      <p
-                        class="
-                          white--text
-                          text-center
-                          rounded
-                          font-weight-light
-                        "
-                      >
-                        {{ formatDate(item.release_date) }}
-                      </p>
-                      <v-divider class="white"></v-divider>
-                      <div class="myrate-section" v-if="category === 'byrate'">
-                        <small class="white--text text-center">
-                          {{ $t('view-myMovies.myRate') }}
-                          <span :class="isUsingMobile ? 'text-h4 d-block' : 'rate-number'">
-                          {{
-                            item.myrate
-                          }}
-                          </span>
-                        </small>
-                      </div>
-                </v-col>
-              </v-row>
-              <v-card-actions>
-                <v-row>
-                  <v-col>
-                  <v-btn
-                    tile
-                    width="100%"
-                    color="info darken-2"
-                    elevation="5"
-                    class="white--text mx-auto"
-                    @click="showInfo(item)"
-                  >
-                    <v-icon>mdi-information</v-icon>
-                    </v-btn>    
-                    </v-col>
-                  <v-col>
-                    <v-btn
-                      tile
-                      width="100%"
-                      color="red"
-                      elevation="5"
-                      class="white--text mx-auto"
-                      @click="removeMovieByCategory(category, item)"
-                    >
-                      <v-icon>mdi-delete</v-icon>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-card-actions>
-            </v-card>
-        </v-col>
-      </v-row>
+          <v-row no-gutters>
+            <v-col cols="12">
+              <v-img
+                :src="
+                  item.backdrop_path !== undefined
+                    ? imageURL + item.backdrop_path
+                    : ''
+                "
+                max-height="150px"
+                :height="item.backdrop_path === undefined ? '350px' : 'auto'"
+                class="movie-img"
+              ></v-img>
+            </v-col>
+            <v-col cols="12">
+              <p class="white--text text-center movie-title mt-2">
+                {{ item.title }}
+                <span
+                  class="
+                    mini-text
+                    cyan--text
+                    text-center
+                    rounded
+                    font-weight-light
+                  "
+                >
+                  ({{ formatDate(item.release_date) }})
+                </span>
+              </p>
+              <!-- TODO: FIX THE RATE ON THE CARD -->
+              <div v-if="category === 'ratedMovies'">
+                <small
+                  class="
+                    white--text
+                    text-center
+                    d-flex
+                    justify-center
+                    align-center
+                  "
+                >
+                  <span class="mr-5">{{ $t("view-myMovies.myRate") }}</span>
+                  <span id="movie-rate" class="rate-number shadow-text">
+                    {{ item.rate }}
+                  </span>
+                </small>
+              </div>
+              <v-divider class="white"></v-divider>
+            </v-col>
+          </v-row>
+          <v-card-actions>
+            <v-row>
+              <v-col>
+                <v-btn
+                  tile
+                  width="100%"
+                  color="info darken-2"
+                  elevation="5"
+                  class="white--text mx-auto"
+                  @click="showInfo(item)"
+                >
+                  <v-icon>mdi-information</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn
+                  tile
+                  width="100%"
+                  color="red"
+                  elevation="5"
+                  class="white--text mx-auto"
+                  @click="removeMovieByCategory(category, item)"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
     <div v-if="snackbarObject.snackbar">
       <Snackbar
         :snackbar-color="snackbarObject.snackbarColor"
-        :snackbar-text="snackbarObject.snackbarText" />
+        :snackbar-text="snackbarObject.snackbarText"
+      />
     </div>
   </v-container>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import Snackbar from '../components/Snackbar'
-import TrailerDialog from '../components/TrailerDialog'
+import { mapActions, mapState } from "vuex";
+import Snackbar from "../components/Snackbar";
+import TrailerDialog from "../components/TrailerDialog";
 
-import { firebase, db } from '../../firebase';
+import { firebase, db } from "../../firebase";
 
 export default {
-  props: ['arrayMovies', 'category', 'rate'],
+  props: ["arrayMovies", "category"],
   components: {
     Snackbar,
-    TrailerDialog
+    TrailerDialog,
   },
   data() {
     return {
       trailerDialog: false,
-      title: '',
-      release_date: '',
-      overview: '',
-      img: '',
+      title: "",
+      release_date: "",
+      overview: "",
+      img: "",
     };
   },
   computed: {
-    ...mapState(['snackbarObject', 'user', 'imageURL', 'isLoadingAllStoragedMovies']),
+    ...mapState([
+      "snackbarObject",
+      "user",
+      "imageURL",
+      "isLoadingAllStoragedMovies",
+    ]),
     isUsingMobile() {
       return this.$vuetify.breakpoint.xs;
     },
   },
   methods: {
-    ...mapActions(['showSnackbar', 'showInfo']),
+    ...mapActions(["showSnackbar", "showInfo"]),
     formatDate(date) {
-      if (!date) return null
-      if (date.includes('/')) {
-        const [day, month, year] = date.split('/')
-        return `${day}-${month}-${year}`
+      if (!date) return null;
+      if (date.includes("/")) {
+        const [day, month, year] = date.split("/");
+        return `${year}`;
       }
-      if (date.includes('-')) {
-        const [year, month, day] = date.split('-')
-        return `${day}-${month}-${year}`
+      if (date.includes("-")) {
+        const [year, month, day] = date.split("-");
+        return `${year}`;
       }
     },
     async removeMovieByCategory(category, movie) {
@@ -156,9 +178,9 @@ export default {
           moviesList: firebase.firestore.FieldValue.arrayRemove(movie),
         })
         .then(() => {
-          this.$store.dispatch('getAllStoragedMovies');
+          this.$store.dispatch("getAllStoragedMovies");
           this.showSnackbar({
-            text: this.$t(`comp-snackbar.${category}-removed`),
+            text: this.$t(`comp-snackbar.movie-removed`),
             color: "success",
           });
         });
@@ -182,6 +204,19 @@ export default {
   transform: translate(-50%, 0);
 }
 
+#movie-rate {
+  background: $gradient_1;
+  padding: 10px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+}
+
+.rate-number {
+  font-size: 22px;
+  color: white;
+  display: block;
+}
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
@@ -193,7 +228,6 @@ export default {
     box-shadow: 0px 10px 10px black;
   }
 
-
   .empty-error-message {
     margin: 50px;
     width: 400px;
@@ -204,12 +238,6 @@ export default {
   .card-buttons {
     position: relative;
     margin-top: 100px;
-  }
-
-  .rate-number {
-    font-size: 4em;
-    color: white;
-    display: block;
   }
 
   #dialog-title {
@@ -266,12 +294,6 @@ export default {
     margin-top: 100px;
   }
 
-  .rate-number {
-    font-size: 4em;
-    color: white;
-    display: block;
-  }
-
   #dialog-title {
     font-size: 2em;
     justify-content: center;
@@ -324,12 +346,6 @@ export default {
   .card-buttons {
     position: relative;
     margin-top: 100px;
-  }
-
-  .rate-number {
-    font-size: 4em;
-    color: white;
-    display: block;
   }
 
   #dialog-title {

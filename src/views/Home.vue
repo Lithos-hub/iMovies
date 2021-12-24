@@ -65,7 +65,7 @@
             <v-img
               width="auto"
               max-width="400px"
-              height="100%"
+              height="auto"
               max-height="430px"
               :src="
                 movieOfTheWeek.poster_path !== null
@@ -444,7 +444,7 @@ export default {
     width: 100%;
     height: 350px;
     max-height: auto;
-    box-shadow: 0px 10px 10px 2px black;
+    box-shadow: 0px 5px 10px black;
   }
 
   .movie-video {
@@ -558,9 +558,9 @@ export default {
 
   #trailer-of-the-week {
     width: calc(1366px / 2.15);
-    height: calc(768px / 2.15);
-    max-height: 350px;
-    box-shadow: 0px 10px 10px 2px black;
+    height: calc(768px / 2);
+    max-height: 330px;
+    box-shadow: 0px 5px 10px black;
   }
 
   .movie-video {
@@ -598,6 +598,7 @@ export default {
 
   .movieOfTheWeek-img {
     box-shadow: 0px 5px 10px black;
+    max-height: 200px;
   }
 
   .movieOfTheWeek-genres {
@@ -676,7 +677,7 @@ export default {
     width: calc(1920px / 2.15);
     height: calc(1080px / 2.15);
     max-height: 430px;
-    box-shadow: 0px 10px 10px 2px black;
+    box-shadow: 0px 5px 10px black;
   }
 
   .movie-video {

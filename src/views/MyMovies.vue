@@ -138,36 +138,7 @@
 
     <v-row class="mt-5" v-if="category === 'summary'">
       <v-container>
-        <v-row no-gutters class="data-list">
-          <v-col class="ma-auto">
-            <div
-              :class="
-                isUsingMobile ? 'text-h6 cyan--text' : 'text-h4 cyan--text'
-              "
-            >
-              {{ $t("view-myMovies.row1") }}
-            </div>
-          </v-col>
-          <v-col>
-            <div
-              v-if="!isLoadingAllStoragedMovies"
-              class="data-list-number"
-              :style="{ color: color1 }"
-            >
-              {{ wishListMovies.length }}
-            </div>
-            <div v-else>
-              <v-progress-circular
-                class="data-list-spinner"
-                indeterminate
-                color="cyan"
-                size="30"
-                width="2"
-              ></v-progress-circular>
-            </div>
-          </v-col>
-        </v-row>
-        <v-row no-gutters class="data-list">
+        <v-row no-gutters :class="favouriteMovies.length ? 'data-list data-list-filled' : 'data-list data-list-empty'">
           <v-col class="ma-auto">
             <div
               :class="
@@ -196,7 +167,36 @@
             </div>
           </v-col>
         </v-row>
-        <v-row no-gutters class="data-list">
+        <v-row no-gutters :class="wishListMovies.length ? 'data-list data-list-filled' : 'data-list data-list-empty'">
+          <v-col class="ma-auto">
+            <div
+              :class="
+                isUsingMobile ? 'text-h6 cyan--text' : 'text-h4 cyan--text'
+              "
+            >
+              {{ $t("view-myMovies.row1") }}
+            </div>
+          </v-col>
+          <v-col>
+            <div
+              v-if="!isLoadingAllStoragedMovies"
+              class="data-list-number"
+              :style="{ color: color1 }"
+            >
+              {{ wishListMovies.length }}
+            </div>
+            <div v-else>
+              <v-progress-circular
+                class="data-list-spinner"
+                indeterminate
+                color="cyan"
+                size="30"
+                width="2"
+              ></v-progress-circular>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row no-gutters :class="watchedMovies.length ? 'data-list data-list-filled' : 'data-list data-list-empty'">
           <v-col class="ma-auto">
             <div
               :class="
@@ -225,7 +225,7 @@
             </div>
           </v-col>
         </v-row>
-        <v-row no-gutters class="data-list">
+        <v-row no-gutters :class="ratedMovies.length ? 'data-list data-list-filled' : 'data-list data-list-empty'">
           <v-col class="ma-auto">
             <div
               :class="
@@ -398,8 +398,15 @@ export default {
     font-size: 15px;
     background: $dark;
     padding-inline: 10px;
-    border-bottom: 2px solid $secondary;
     min-height: 72px;
+  }
+
+  .data-list-empty {
+    border-bottom: 2px solid $secondary;
+  }
+
+  .data-list-filled {
+    border-bottom: 2px solid $primary;
   }
 
   .data-list-number {
@@ -426,7 +433,6 @@ export default {
     font-size: 16px;
     background: $dark;
     padding-inline: 10px;
-    border-bottom: 2px solid $secondary;
   }
 
   .data-list-number {
@@ -448,7 +454,6 @@ export default {
     font-size: 20px;
     background: $dark;
     padding-inline: 10px;
-    border-bottom: 2px solid $secondary;
   }
 
   .data-list-number {

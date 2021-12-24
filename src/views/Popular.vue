@@ -5,7 +5,7 @@
     <!-- ADD TO MY MOVIES DIALOG -->
     <AddToDialog
       v-if="addToDialog"
-      @force-update="this.$store.dispatch('getAllStoragedMovies')"
+      @force-update="getStoragedMovies()"
     />
 
     <v-row>
@@ -191,6 +191,9 @@ export default {
         }
       }
     },
+    getStoragedMovies () {
+      this.$store.dispatch('getAllStoragedMovies')
+    }
   },
 };
 </script>

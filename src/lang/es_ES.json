@@ -258,6 +258,7 @@
     "2_0_0-9": "Nueva landing page en /home",
     "2_0_0-10":  "Nueva vista de configuración de la cuenta",
     "2_1_0-1": "(Backend) Añadido un sistema de login y registro con Firebase (Authentication) con correo electrónico y contraseña",
+    "2_1_0-2": "Añadido un sistema de protección de rutas basado en el estado de autenticación del usuario",
     "2_2_0-1": "(Backend) Añadido el CRUD de películas con Firebase (Firestore)"
   },
   "view-about": {
@@ -323,12 +324,10 @@
     "changelog": "Historial de cambios"
   },
   "comp-snackbar": {
-    "favouriteMovies-added": "Película añadida",
-    "favouriteMovies-removed": "Película eliminada",
-    "watchedMovies-added": "Película añadida",
-    "watchedMovies-removed": "Película eliminada",
-    "wishListMovies-added": "Película añadida",
-    "wishListMovies-removed": "Película eliminada",
+    "movie-added": "Película añadida",
+    "movie-removed": "Película eliminada",
+    "movie-added-error": "Error al añadir la película",
+    "movie-removed-error": "Error al eliminar la película",
     "ratedMovies-added": "Puntuación añadida",
     "ratedMovies-removed": "Puntuación eliminada",
     "ratedMovies-updated": "Puntuación actualizada"

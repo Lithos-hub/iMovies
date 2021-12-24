@@ -260,6 +260,7 @@
     "2_0_0-9": "New landing page in /home",
    "2_0_0-10":  "New account settings view",
    "2_1_0-1": "(Backend) Added a login/register system with Firebase (Authentication) using E-mail and password",
+   "2_1_0-2": "Added a navigation guard based on the authentication status",
    "2_2_0-1": "(Backend) Added the CRUD system for the user's movies"
   },
   "view-about": {
@@ -325,12 +326,10 @@
     "changelog": "Changelog"
   },
   "comp-snackbar": {
-    "favouriteMovies-added": "Film added",
-    "favouriteMovies-removed": "Film removed",
-    "watchedMovies-added": "Film added",
-    "watchedMovies-removed": "Film removed",
-    "wishListMovies-added": "Movie added",
-    "wishListMovies-removed": "Movie removed",
+    "movie-added": "Film added",
+    "movie-removed": "Film removed",
+    "movie-added-error": "Error when adding the movie",
+    "movie-removed-error": "Error when removing the movie",
     "ratedMovies-added": "Rate added",
     "ratedMovies-removed": "Rate removed",
     "ratedMovies-updated": "Rate updated"

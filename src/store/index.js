@@ -320,16 +320,16 @@ export default new Vuex.Store({
       commit('setWishListMovies', wishListData.moviesList);
       commit('setRatedMovies', ratedData.moviesList);
 
-      if (favouriteData.moviesList !== undefined && movieToAdd) {
+      if (favouriteData.moviesList !== undefined) {
         commit('setAddedFavourite', favouriteData.moviesList.find(movie => movie.id === movieToAdd.id) ? true : false);
       };
-      if (watchedData.moviesList !== undefined && movieToAdd) {
+      if (watchedData.moviesList !== undefined) {
         commit('setAddedWatched', watchedData.moviesList.find(movie => movie.id === movieToAdd.id) ? true : false);
       };
-      if (wishListData.moviesList !== undefined && movieToAdd) {
+      if (wishListData.moviesList !== undefined) {
         commit('setAddedWishlist', wishListData.moviesList.find(movie => movie.id === movieToAdd.id) ? true : false);
       };
-      if (ratedData.moviesList !== undefined && movieToAdd) {
+      if (ratedData.moviesList !== undefined) {
         commit('setAddedRated', ratedData.moviesList.find(movie => movie.id === movieToAdd.id) ? true : false);
         const RATED_MATCH = ratedData.moviesList.find(
           (item) => item.id === movieToAdd.id

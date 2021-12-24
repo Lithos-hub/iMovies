@@ -247,12 +247,19 @@ export default {
       return colorClass;
     },
   },
+  beforeCreate () {
+      this.$store.commit('setAddedFavourite', false);
+      this.$store.commit('setAddedWatched', false);
+      this.$store.commit('setAddedWishlist', false);
+      this.$store.commit('setAddedRated', false);
+  },
   created() {
     this.getStoragedMovies();
   },
   methods: {
     ...mapActions(["showSnackbar", "showAddToDialog"]),
     async saveMovieByCategory(category, movie) {
+      console.log('Adding movie...')
       const MY_DOC_ID = localStorage.getItem("docID");
       let myDocRef = await db.doc(`userData/${MY_DOC_ID}/myMovies/${category}`);
       // We'll save the rate as a property and we'll remove the movie
@@ -269,13 +276,20 @@ export default {
                 moviesList: firebase.firestore.FieldValue.arrayUnion(movie),
               })
               .then(() => {
+                console.log('Movie rated')
                 this.getStoragedMovies();
                 this.showSnackbar({
-                  text: this.$t(`comp-snackbar.${category}-added`),
+                  text: this.$t(`comp-snackbar.movie-added`),
                   color: "success",
                 });
                 this.rateMenu = false;
-              });
+              })
+              .catch(() => {
+                this.showSnackbar({
+                  text: this.$t('comp-snackbar.movie-added-error'),
+                  color: 'error'
+                })
+              })
           });
       } else {
         // In the other cases, we'll just add the movie to the array
@@ -284,16 +298,24 @@ export default {
             moviesList: firebase.firestore.FieldValue.arrayUnion(movie),
           })
           .then(() => {
+            console.log('Movie added')
             this.getStoragedMovies();
             this.showSnackbar({
-              text: this.$t(`comp-snackbar.${category}-added`),
+              text: this.$t(`comp-snackbar.movie-added`),
               color: "success",
             });
             this.rateMenu = false;
-          });
+          })
+          .catch(() => {
+            this.showSnackbar({
+              text: this.$t('comp-snackbar.movie-added-error'),
+              color: 'error'
+            })
+          })
       }
     },
     async removeMovieByCategory(category, movie) {
+      console.log('Deleting movie...')
       const MY_DOC_ID = localStorage.getItem("docID");
       let myDocRef = await db.doc(`userData/${MY_DOC_ID}/myMovies/${category}`);
       myDocRef
@@ -301,12 +323,19 @@ export default {
           moviesList: firebase.firestore.FieldValue.arrayRemove(movie),
         })
         .then(() => {
+          console.log('Movie deleted')
           this.getStoragedMovies();
           this.showSnackbar({
-            text: this.$t(`comp-snackbar.${category}-removed`),
+            text: this.$t(`comp-snackbar.movie-removed`),
             color: "success",
           });
-        });
+        })
+        .catch(() => {
+          this.showSnackbar({
+            text: this.$t('comp-snackbar.movie-removed-error'),
+            color: 'error'
+          })
+        })
     },
     getStoragedMovies() {
       const MY_DOC_ID = localStorage.getItem("docID");
@@ -323,10 +352,6 @@ export default {
     },
     emitForceUpdate() {
       this.$emit("force-update");
-      this.$store.commit('setAddedFavourite', false);
-      this.$store.commit('setAddedWatched', false);
-      this.$store.commit('setAddedWishlist', false);
-      this.$store.commit('setAddedRated', false);
     },
   },
 };

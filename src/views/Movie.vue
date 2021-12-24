@@ -84,7 +84,7 @@
                 large
                 outlined
                 tile
-                @click="showAddToDialog(true); setAddMovie(movieDetails)"
+                @click="setAddMovie(movieDetails), showAddToDialog(true)"
                 dark
                 id="add-to-btn"
                 >
