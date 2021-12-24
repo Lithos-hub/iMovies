@@ -271,7 +271,8 @@
     "text3": "In November 2021 was released the 2.0.0 version with a lot of improvements and some new features. The storage system was improved and setted in a globally way, so the user is able to save and rate movies all around the app using LocalStorage.",
     "text4": "In the other hand, the landing page was changed in a 'Netflix style'. Ranking view was renamed as Popular, and it was added a symple way to search movies by year. The Search view was modified and it was included a dual search system: by movie, and by actor/actress name.",
     "text5": "Last but not least, it was added internationalization using i18n. So, both the app and the movies info is available in English and Spanish.",
-    "text6": "This app is under constant development, and it will be new content in the future."
+    "text6": "This app is under constant development, and it will be new content in the future.",
+    "text7": "Since the 2.1.0 and 2.2.0 version, was added a backend using Google Firebase for the user authentication and the movies storage in some categories"
   },
   "view-movie-id": {
     "releaseDate":"Release date: ",

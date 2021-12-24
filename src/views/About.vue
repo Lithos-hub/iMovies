@@ -13,7 +13,8 @@
         <p>{{ $t('view-about.text3') }}</p>
         <p>{{ $t('view-about.text4') }}</p>
         <p>{{ $t('view-about.text5') }}</p>
-        <p>{{ $t('view-about.text6') }}</p> 
+        <p>{{ $t('view-about.text6') }}</p>
+        <p>{{ $t('view-about.text7') }}</p>
       </v-col>
       <v-col v-if="!isUsingMobile"></v-col>
     </v-row>

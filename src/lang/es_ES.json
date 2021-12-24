@@ -269,7 +269,8 @@
     "text3": "En noviembre de 2021 se lanzó la versión 2.0.0 con muchas mejoras y algunas nuevas características. El sistema de almacenamiento fue mejorado y configurado de forma global, por lo que el usuario es capaz de guardar y calificar las películas en toda la aplicación utilizando LocalStorage.",
     "text4": "Por otro lado, la landing page fue cambiada a un 'estilo Netflix'. La vista de clasificación fue renombrada como Popular, y se añadió una forma sencilla de buscar películas por año. La vista de Buscar fue modificada y se incluyó un sistema de búsqueda dual: por película, y por nombre de artista.",
     "text5": "Por último, pero no menos importante, se agregó la internacionalización usando i18n. Así, tanto la app como la información de las películas está disponible en inglés y español.",
-    "text6": "Esta app está en constante desarrollo, y habrá nuevos contenidos en el futuro"
+    "text6": "Esta app está en constante desarrollo, y habrá nuevos contenidos en el futuro",
+    "text7": "Desde las versiones 2.1.0 y 2.2.0, se ha añadido un backend con Google Firebase para autenticación de usuarios y el guardado de películas en diferentes categorías."
   },
   "view-movie-id": {
     "releaseDate":"Fecha de lanzamiento: ",
