@@ -310,6 +310,9 @@ export default {
       await db.doc(`userData/${myDocID}/myMovies/watchedMovies`).set({});
       await db.doc(`userData/${myDocID}/myMovies/wishListMovies`).set({});
       await db.doc(`userData/${myDocID}/myMovies/ratedMovies`).set({});
+      await db.doc(`userData/${myDocID}/triviaQuestions/resolved`).set({
+        questions: [],
+      });
     },
     async getAvatarsImages() {
       let pathReference = storage.ref("avatars");

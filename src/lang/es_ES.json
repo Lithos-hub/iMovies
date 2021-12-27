@@ -71,6 +71,7 @@
     "eng": "ING",
     "logout": "Cerrar Sesión",
     "home": "Inicio",
+    "trivia": "Trivial",
     "account": "Mi cuenta",
     "search": "Buscar",
     "mymovies": "Mis películas",
@@ -281,7 +282,7 @@
   },
   "view-account": {
     "profile": "Perfil",
-    "achieves": "Logros",
+    "achievements": "Logros",
     "security": "Seguridad",
     "appearance": "Apariencia",
     "notifications": "Notificaciones",

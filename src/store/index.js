@@ -69,6 +69,8 @@ export default new Vuex.Store({
     wishListMovies: [],
     ratedMovies: [],
     isLoadingAllStoragedMovies: false,
+    moviesCounter: null,
+    questionID: 0,
   },
   mutations: {
     setUser(state, payload) {
@@ -166,85 +168,51 @@ export default new Vuex.Store({
     setSearchInput(state, payload) {
       state.searchInput = payload;
     },
-    setDocID (state, payload) {
+    setDocID(state, payload) {
       state.documentId = payload;
     },
     setIsLoadingAddedMovies(state, payload) {
       state.isLoadingAddedMovies = payload;
     },
-    setAddedFavourite (state, payload) {
+    setAddedFavourite(state, payload) {
       state.addedFavourite = payload;
     },
-    setAddedWatched (state, payload) {
+    setAddedWatched(state, payload) {
       state.addedWatched = payload;
     },
-    setAddedWishlist (state, payload) {
+    setAddedWishlist(state, payload) {
       state.addedWishlist = payload;
     },
-    setAddedRated (state, payload) {
+    setAddedRated(state, payload) {
       state.addedRated = payload;
     },
-    setRate (state, payload) {
+    setRate(state, payload) {
       state.rate = payload;
     },
-    setFavouriteMovies (state, payload) {
+    setFavouriteMovies(state, payload) {
       state.favouriteMovies = payload;
     },
-    setWatchedMovies (state, payload) {
+    setWatchedMovies(state, payload) {
       state.watchedMovies = payload;
     },
-    setWishListMovies (state, payload) {
+    setWishListMovies(state, payload) {
       state.wishListMovies = payload;
     },
-    setRatedMovies (state, payload) {
+    setRatedMovies(state, payload) {
       state.ratedMovies = payload;
     },
-    setLoadingAllStoragedMovies (state, payload) {
+    setLoadingAllStoragedMovies(state, payload) {
       state.isLoadingAllStoragedMovies = payload;
-    }
+    },
+    setMoviesCounter(state, payload) {
+      state.moviesCounter = payload;
+    },
+    setQuestionID(state, payload) {
+      state.questionID = payload;
+    },
   },
   actions: {
-    // ******* USER ACTIONS ******* //
-    checkAuth({ commit }) {
-      commit("setLoadingUserAuthStatus", true);
-      auth.onAuthStateChanged((user) => {
-        user ? commit("setAuthStatus", true) : commit("setAuthStatus", false);
-        // localStorage.setItem("user", JSON.stringify(user));
-        commit("setLoadingUserAuthStatus", false);
-      });
-    },
-    getCurrentUser() {
-      return new Promise((resolve, reject) => {
-        const unsubscribe = auth.onAuthStateChanged(
-          (user) => {
-            unsubscribe();
-            resolve(user);
-          },
-          () => {
-            reject();
-          }
-        );
-      });
-    },
-    async updateProfile({ commit }, { userName, userEmail, userPassword, userAvatar}) {
-      const user = auth.currentUser;
-
-      if (userName) {
-        await user.updateProfile({ displayName: userName });
-      }
-      if (userEmail) {
-        await user.updateEmail(userEmail);
-      }
-      if (userPassword) {
-        await user.updatePassword(userPassword);
-      }
-      if (userAvatar) {
-        await user.updateProfile({ photoURL: userAvatar });
-      }
-
-      commit("setUser", user);
-    },
-    // ************ MIX ACTIONS ************* //
+    // ! __________________ MIX ACTIONS __________________ //
     showInfo({ commit }, item) {
       router.push({ path: `movie/${item.id}` });
     },
@@ -266,37 +234,54 @@ export default new Vuex.Store({
         i18n.locale = payload.split("-")[0];
       }, 1000);
     },
-    // ************ MOVIE ACTIONS ************* //
+    // ! __________________ FIREBASE ACTIONS __________________ //
+    // ? ----- USER ACTIONS ----- //
+    checkAuth({ commit }) {
+      commit("setLoadingUserAuthStatus", true);
+      auth.onAuthStateChanged((user) => {
+        user ? commit("setAuthStatus", true) : commit("setAuthStatus", false);
+        // localStorage.setItem("user", JSON.stringify(user));
+        commit("setLoadingUserAuthStatus", false);
+      });
+    },
+    getCurrentUser() {
+      return new Promise((resolve, reject) => {
+        const unsubscribe = auth.onAuthStateChanged(
+          (user) => {
+            unsubscribe();
+            resolve(user);
+          },
+          () => {
+            reject();
+          }
+        );
+      });
+    },
+    async updateProfile(
+      { commit },
+      { userName, userEmail, userPassword, userAvatar }
+    ) {
+      const user = auth.currentUser;
+
+      if (userName) {
+        await user.updateProfile({ displayName: userName });
+      }
+      if (userEmail) {
+        await user.updateEmail(userEmail);
+      }
+      if (userPassword) {
+        await user.updatePassword(userPassword);
+      }
+      if (userAvatar) {
+        await user.updateProfile({ photoURL: userAvatar });
+      }
+
+      commit("setUser", user);
+    },
+    // ? ----- FIRESTORE ACTIONS ----- //
     async getAllStoragedMovies({ commit }) {
       commit("setLoadingAllStoragedMovies", true);
       const MY_DOC_ID = localStorage.getItem("docID");
-      const MY_favourite_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/favouriteMovies`)
-        .get("moviesList");
-      const MY_watched_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/watchedMovies`)
-        .get("moviesList");
-      const MY_wishList_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/wishListMovies`)
-        .get("moviesList");
-      const MY_rated_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/ratedMovies`)
-        .get("moviesList");
-
-        const favouriteData = MY_favourite_MOVIES.data();
-        const watchedData = MY_watched_MOVIES.data();
-        const wishListData = MY_wishList_MOVIES.data();
-        const ratedData = MY_rated_MOVIES.data();
-
-        commit('setFavouriteMovies', favouriteData.moviesList);
-        commit('setWatchedMovies', watchedData.moviesList);
-        commit('setWishListMovies', wishListData.moviesList);
-        commit('setRatedMovies', ratedData.moviesList);
-
-        commit("setLoadingAllStoragedMovies", false);
-    },
-    async getStoragedMovies({ commit }, { movieToAdd, MY_DOC_ID }) {
-      commit('setIsLoadingAddedMovies', true)
       const MY_favourite_MOVIES = await db
         .doc(`userData/${MY_DOC_ID}/myMovies/favouriteMovies`)
         .get("moviesList");
@@ -315,29 +300,139 @@ export default new Vuex.Store({
       const wishListData = MY_wishList_MOVIES.data();
       const ratedData = MY_rated_MOVIES.data();
 
-      commit('setFavouriteMovies', favouriteData.moviesList);
-      commit('setWatchedMovies', watchedData.moviesList);
-      commit('setWishListMovies', wishListData.moviesList);
-      commit('setRatedMovies', ratedData.moviesList);
+      let moviesCounter =
+        favouriteData.moviesList.length +
+        watchedData.moviesList.length +
+        wishListData.moviesList.length +
+        ratedData.moviesList.length;
+
+      commit("setMoviesCounter", moviesCounter);
+      commit("setFavouriteMovies", favouriteData.moviesList);
+      commit("setWatchedMovies", watchedData.moviesList);
+      commit("setWishListMovies", wishListData.moviesList);
+      commit("setRatedMovies", ratedData.moviesList);
+
+      commit("setLoadingAllStoragedMovies", false);
+    },
+    async getStoragedMovies({ commit }, { movieToAdd, MY_DOC_ID }) {
+      commit("setIsLoadingAddedMovies", true);
+      const MY_favourite_MOVIES = await db
+        .doc(`userData/${MY_DOC_ID}/myMovies/favouriteMovies`)
+        .get("moviesList");
+      const MY_watched_MOVIES = await db
+        .doc(`userData/${MY_DOC_ID}/myMovies/watchedMovies`)
+        .get("moviesList");
+      const MY_wishList_MOVIES = await db
+        .doc(`userData/${MY_DOC_ID}/myMovies/wishListMovies`)
+        .get("moviesList");
+      const MY_rated_MOVIES = await db
+        .doc(`userData/${MY_DOC_ID}/myMovies/ratedMovies`)
+        .get("moviesList");
+
+      const favouriteData = MY_favourite_MOVIES.data();
+      const watchedData = MY_watched_MOVIES.data();
+      const wishListData = MY_wishList_MOVIES.data();
+      const ratedData = MY_rated_MOVIES.data();
+
+      let moviesCounter =
+        favouriteData.moviesList.length +
+        watchedData.moviesList.length +
+        wishListData.moviesList.length +
+        ratedData.moviesList.length;
+
+      commit("setMoviesCounter", moviesCounter);
+      commit("setFavouriteMovies", favouriteData.moviesList);
+      commit("setWatchedMovies", watchedData.moviesList);
+      commit("setWishListMovies", wishListData.moviesList);
+      commit("setRatedMovies", ratedData.moviesList);
 
       if (favouriteData.moviesList !== undefined) {
-        commit('setAddedFavourite', favouriteData.moviesList.find(movie => movie.id === movieToAdd.id) ? true : false);
-      };
+        commit(
+          "setAddedFavourite",
+          favouriteData.moviesList.find((movie) => movie.id === movieToAdd.id)
+            ? true
+            : false
+        );
+      }
       if (watchedData.moviesList !== undefined) {
-        commit('setAddedWatched', watchedData.moviesList.find(movie => movie.id === movieToAdd.id) ? true : false);
-      };
+        commit(
+          "setAddedWatched",
+          watchedData.moviesList.find((movie) => movie.id === movieToAdd.id)
+            ? true
+            : false
+        );
+      }
       if (wishListData.moviesList !== undefined) {
-        commit('setAddedWishlist', wishListData.moviesList.find(movie => movie.id === movieToAdd.id) ? true : false);
-      };
+        commit(
+          "setAddedWishlist",
+          wishListData.moviesList.find((movie) => movie.id === movieToAdd.id)
+            ? true
+            : false
+        );
+      }
       if (ratedData.moviesList !== undefined) {
-        commit('setAddedRated', ratedData.moviesList.find(movie => movie.id === movieToAdd.id) ? true : false);
+        commit(
+          "setAddedRated",
+          ratedData.moviesList.find((movie) => movie.id === movieToAdd.id)
+            ? true
+            : false
+        );
         const RATED_MATCH = ratedData.moviesList.find(
           (item) => item.id === movieToAdd.id
         );
-        commit('setRate', RATED_MATCH ? RATED_MATCH.rate : 0);
-      };
-      commit('setIsLoadingAddedMovies', false)
+        commit("setRate", RATED_MATCH ? RATED_MATCH.rate : 0);
+      }
+      commit("setIsLoadingAddedMovies", false);
     },
+    getQuestionID({ commit }) {
+      let id = null;
+      // TODO: get question ID from firestore
+
+      commit("setQuestionID", id);
+    },
+    // ? ----- TRIVIA ACTIONS ----- //
+    // ! Remove coments to generate the trivia database
+    // async getAndProcessQuestions() {
+    //   let uniqueQuestions = [];
+    //   await axios
+    //     .get('/trivia/triviaQ.json')
+    //     .then((res) => {
+    //       let data = res.data.questions
+    //       const removeDuplicateUsingSet = (arr) => {
+    //         let unique_array = Array.from(new Set(arr))
+    //         return unique_array
+    //     }
+        
+    //     uniqueQuestions = removeDuplicateUsingSet(data);
+
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+        
+    //     uniqueQuestions.slice(0, 365).forEach((item, index) => {
+    //       const jsonDB = db.collection('Trivia').doc();
+    //       const jsonID = jsonDB.id;
+    //       jsonDB.set({
+    //         id: index,
+    //         key: jsonID,
+    //         question: item.question,
+    //         correct_answer: item.correct_answer,
+    //         incorrect_answers: item.incorrect_answers
+    //       })
+    //     })
+    // },
+    async getTriviaQuestion () {
+      // First: We get the questions resolved by the user to ignore them
+
+      // Second: We generate a random number between 0 and 364 and
+      // the number must be different from the questions index resolved by the user
+
+      // Third: We get the question from the database
+
+      // Fourth: We call the Deepl API to get the translated question
+    },
+    // ! __________________ API ACTIONS __________________ //
     async getLatestReleases({ commit }, byPopularity) {
       let CALL_URL;
 
@@ -495,7 +590,7 @@ export default new Vuex.Store({
                   arrMovies.push(data);
                   arrMoviesID.push(data.id);
                 }
-                dispatch('getAllStoragedMovies');
+                dispatch("getAllStoragedMovies");
                 setTimeout(() => {
                   commit("setMoviesByYear", arrMovies);
                   commit("setMoviesID", arrMoviesID);
@@ -565,5 +660,7 @@ export default new Vuex.Store({
     userData: (state) => state.user,
     isLogged: (state) => state.isLogged,
     myDocumentID: (state) => state.documentId,
+    counterMovies: (state) => state.counterMovies,
+    questionID: (state) => state.questionID,
   },
 });

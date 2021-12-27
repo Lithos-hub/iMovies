@@ -162,11 +162,11 @@ export default {
     formatDate(date) {
       if (!date) return null;
       if (date.includes("/")) {
-        const [day, month, year] = date.split("/");
+        const [, , year] = date.split("/");
         return `${year}`;
       }
       if (date.includes("-")) {
-        const [year, month, day] = date.split("-");
+        const [year, , ] = date.split("-");
         return `${year}`;
       }
     },

@@ -182,17 +182,6 @@ export default {
           this.loader = null;
         });
     },
-    setDefault() {
-      const userData = {
-        displayName: "defaultUser",
-        photoURL: require("@/assets/avatars/avatar-_0020_default.jpg"),
-      };
-
-      this.$store.commit("setUser", userData);
-      this.$store.commit("setAuthStatus", false);
-      this.$store.commit("setDefault", true);
-      this.$router.push("/home");
-    },
   },
 };
 </script>

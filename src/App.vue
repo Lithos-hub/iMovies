@@ -56,9 +56,40 @@ export default {
       }
       window.scrollTo(0, 0);
     },
+    moviesCounter (count) {
+      console.log('My movies counter: ', count)
+      // ! Stages to get avatars and badges
+      // ? const FIRST_STAGE = 1
+      // ? const SECOND_STAGE = 25
+      // ? const THIRD_STAGE = 50
+      // ? const FOURTH_STAGE = 100
+      // ? const FIFTH_STAGE = 200
+      // ? const SIXTH_STAGE = 300
+      // ? const SEVENTH_STAGE = 500
+      // ? const EIGHTH_STAGE = 750
+      // ? const NINTH_STAGE = 1000
+      const addRewardByStage = (stage) => {
+      }
+
+      const STAGES_AND_ACTIONS = {
+        1: addRewardByStage('first'),
+        25: addRewardByStage('second'),
+        50: addRewardByStage('third'),
+        100: addRewardByStage('fourth'),
+        200: addRewardByStage('fifth'),
+        300: addRewardByStage('sixth'),
+        500: addRewardByStage('seventh'),
+        750: addRewardByStage('eighth'),
+        1000: addRewardByStage('ninth')
+      }
+
+
+      STAGES_AND_ACTIONS[count];
+
+    }
   },
   computed: {
-    ...mapState(["loadingUserAuthStatus"]),
+    ...mapState(["loadingUserAuthStatus", "moviesCounter", "moviesCounter"]),
   },
   created() {
     this.getUserData()

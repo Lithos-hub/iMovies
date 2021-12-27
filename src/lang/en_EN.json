@@ -71,6 +71,7 @@
     "eng": "ENG",
     "logout": "Logout",
     "home": "Home",
+    "trivia": "Trivia",
     "account": "My account",
     "search": "Search",
     "mymovies": "My movies",
@@ -283,7 +284,7 @@
   },
   "view-account": {
     "profile": "Profile",
-    "achieves": "Achieves",
+    "achievements": "Achievements",
     "security": "Security",
     "appearance": "Appearance",
     "notifications": "Notifications",

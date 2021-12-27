@@ -23,7 +23,7 @@ const routes = [
     name: "Home",
     component: () => import("../views/Home.vue"),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     },
   },
   {
@@ -31,7 +31,7 @@ const routes = [
     name: "Movie",
     component: () => import("../views/Movie.vue"),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     },
   },
   {
@@ -39,7 +39,31 @@ const routes = [
     name: "About",
     component: () => import("../views/About.vue"),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/trivia",
+    name: "Trivia first view",
+    component: () => import("../views/Trivia.vue"),
+    meta: {
+      requiresAuth: true,
+    }
+  },
+  {
+    path: "/trivia/game/instructions",
+    name: "Trivia game",
+    component: () => import("../views/TriviaInstructions.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/trivia/game/:id",
+    name: "Trivia game",
+    component: () => import("../views/TriviaGame.vue"),
+    meta: {
+      requiresAuth: true,
     },
   },
   {
@@ -47,7 +71,7 @@ const routes = [
     name: "Account",
     component: () => import("../views/Account.vue"),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     },
   },
   {
@@ -55,7 +79,7 @@ const routes = [
     name: "Trending",
     component: () => import("../views/Trending.vue"),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     },
   },
   {
@@ -63,7 +87,7 @@ const routes = [
     name: "Trailers",
     component: () => import("../views/Trailers.vue"),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     },
   },
   {
@@ -71,7 +95,7 @@ const routes = [
     name: "Genres",
     component: () => import("../views/Genres.vue"),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     },
   },
   {
@@ -79,7 +103,7 @@ const routes = [
     name: "Ranking",
     component: () => import("../views/Popular.vue"),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     },
   },
   {
@@ -87,7 +111,7 @@ const routes = [
     name: "Change Log",
     component: () => import("../views/Changelog.vue"),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     },
   },
   {
@@ -95,7 +119,7 @@ const routes = [
     name: "My Movies",
     component: () => import("../views/MyMovies.vue"),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     },
   },
   {
@@ -103,7 +127,7 @@ const routes = [
     name: "Search",
     component: () => import("../views/Search.vue"),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     },
   },
 ];
@@ -115,17 +139,17 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 
   // Requires Auth and the user is logged in
   if (requiresAuth && (await store.dispatch("getCurrentUser"))) {
-    next()
+    next();
     // If requires auth and user is not logged in
   } else if (requiresAuth && !(await store.dispatch("getCurrentUser"))) {
-    next({ path: "/" })
+    next({ path: "/" });
   } else {
-    next()
+    next();
   }
-})
+});
 
 export default router;

@@ -200,6 +200,11 @@ export default {
       langMenu: false,
       navbarItems: [
         {
+          to: "/trivia",
+          text: this.$t("navbar.trivia"),
+          icon: "mdi-gamepad-variant",
+        },
+        {
           to: "/account",
           text: this.$t("navbar.account"),
           icon: "mdi-account",
@@ -276,7 +281,6 @@ export default {
 
       const userData = {};
 
-      this.$store.commit("setDefault", false);
       this.$store.commit("setUser", userData);
 
         auth
@@ -284,7 +288,6 @@ export default {
           .then(() => {
             const userData = {};
 
-            this.$store.commit("setDefault", false);
             this.$store.commit("setUser", userData);
 
             this.$router.push("/");

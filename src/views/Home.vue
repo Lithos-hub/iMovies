@@ -332,19 +332,17 @@ export default {
     },
     animateScroll() {
       let homeView = document.querySelector("#home-view");
-      let scroll = homeView.querySelector("#scroll-x");
+      let scroll = document.querySelector("#scroll-x");
       const SCROLL_MAX = 58080;
       let i = 0;
       setInterval(() => {
         if (i < SCROLL_MAX) {
-          scroll = homeView.querySelector("#scroll-x");
           scroll.style.transition = "0.5s ease-out";
           scroll.style.opacity = "1";
           scroll.scrollLeft += 1;
           i++;
         }
         if (scroll.scrollLeft === SCROLL_MAX) {
-          scroll = homeView.querySelector("#scroll-x");
           scroll.style.transition = "0.5s ease-out";
           scroll.style.opacity = "0";
           setTimeout(() => {
