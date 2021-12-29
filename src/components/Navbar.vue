@@ -131,8 +131,8 @@
           <v-img
             v-if="user.photoURL !== undefined"
             :src="user.photoURL"
-            width="90"
-            height="90"
+            width="70"
+            height="70"
             class="avatar ma-5 ma-auto"
           />
           <h5 class="username-drawer text-center my-2">@{{ user.displayName }}</h5>
@@ -145,8 +145,6 @@
               }}</v-list-item-title>
             </v-list-item-icon>
           </v-list-item>
-
-          <!-- <v-divider></v-divider> -->
 
           <div v-for="(item, i) in navbarItems" :key="i">
             <v-list-item
@@ -165,7 +163,6 @@
       </v-list>
 
       <div id="drawer-below-section">
-        <v-divider v-if="!isUsingMobile"></v-divider>
         <p id="developedBy">
           {{ date }} <v-icon size="17">mdi-copyright</v-icon>
           {{ $t("navbar.developed") }}<br />

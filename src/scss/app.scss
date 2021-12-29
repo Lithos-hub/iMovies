@@ -17,6 +17,12 @@ body {
 .gradient-background-4 {
   background: $gradient_4;
 }
+.gradient-success {
+  background: $gradient_success;
+}
+.gradient-error {
+  background: $gradient_danger;
+}
 
 .movie-badge {
   background: $dark2;
@@ -76,4 +82,20 @@ input::-webkit-inner-spin-button {
 
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.surprise {
+  animation: surprise 0.3s ease-in-out;
+}
+
+@keyframes surprise {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

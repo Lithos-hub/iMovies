@@ -1,0 +1,40 @@
+{
+    "questions": [
+        {
+            "question": "What breed of dog was Marley in the film 'Marley & Me' (2008)?",
+            "correct_answer": "Labrador Retriever",
+            "incorrect_answers": [
+                "Golden Retriever",
+                "Dalmatian",
+                "Shiba Inu"
+            ]
+        },
+        {
+            "question": "Which of the following is not the name of a 'Bond Girl'? ",
+            "correct_answer": "Vanessa Kensington",
+            "incorrect_answers": [
+                "Pam Bouvier",
+                "Mary Goodnight",
+                "Wai Lin"
+            ]
+        },
+        {
+            "question": "Which of the following was not one of 'The Magnificent Seven'?",
+            "correct_answer": "Clint Eastwood",
+            "incorrect_answers": [
+                "Steve McQueen",
+                "Charles Bronson",
+                "Robert Vaughn"
+            ]
+        },
+        {
+            "question": "Who starred as Bruce Wayne and Batman in Tim Burton's 1989 movie 'Batman'?",
+            "correct_answer": "Michael Keaton",
+            "incorrect_answers": [
+                "George Clooney",
+                "Val Kilmer",
+                "Adam West"
+            ]
+        }
+    ]
+}

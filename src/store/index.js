@@ -36,6 +36,11 @@ export default new Vuex.Store({
       snackbarColor: "",
       snackbarText: "",
     },
+    warningObject: {
+      warning: false,
+      warningColor: "",
+      warningText: "",
+    },
     comesFromDetails: false,
     isSearchingMovie: false,
     searchItem: {},
@@ -71,6 +76,7 @@ export default new Vuex.Store({
     isLoadingAllStoragedMovies: false,
     moviesCounter: null,
     questionID: 0,
+    resolvedQuestions: [],
   },
   mutations: {
     setUser(state, payload) {
@@ -133,6 +139,17 @@ export default new Vuex.Store({
       };
       setTimeout(() => {
         state.snackbarObject.snackbar = false;
+      }, 3000);
+    },
+    showWarning(state, { text, color, isCorrect }) {
+      state.warningObject = {
+        warning: true,
+        warningColor: color,
+        warningText: text,
+        isCorrect: isCorrect
+      };
+      setTimeout(() => {
+        state.warningObject.warning = false;
       }, 3000);
     },
     setAddDialog(state, payload) {
@@ -210,14 +227,20 @@ export default new Vuex.Store({
     setQuestionID(state, payload) {
       state.questionID = payload;
     },
+    setResolvedQuestions(state, payload) {
+      state.resolvedQuestions = payload;
+    }
   },
   actions: {
     // ! __________________ MIX ACTIONS __________________ //
-    showInfo({ commit }, item) {
+    showInfo(item) {
       router.push({ path: `movie/${item.id}` });
     },
     showSnackbar({ commit }, payload) {
       commit("showSnackbar", payload);
+    },
+    showWarning({ commit }, payload) {
+      commit("showWarning", payload);
     },
     setAddMovie({ commit }, item) {
       commit("setAddToMovie", item);
@@ -391,37 +414,6 @@ export default new Vuex.Store({
       commit("setQuestionID", id);
     },
     // ? ----- TRIVIA ACTIONS ----- //
-    // ! Remove coments to generate the trivia database
-    // async getAndProcessQuestions() {
-    //   let uniqueQuestions = [];
-    //   await axios
-    //     .get('/trivia/triviaQ.json')
-    //     .then((res) => {
-    //       let data = res.data.questions
-    //       const removeDuplicateUsingSet = (arr) => {
-    //         let unique_array = Array.from(new Set(arr))
-    //         return unique_array
-    //     }
-        
-    //     uniqueQuestions = removeDuplicateUsingSet(data);
-
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-        
-    //     uniqueQuestions.slice(0, 365).forEach((item, index) => {
-    //       const jsonDB = db.collection('Trivia').doc();
-    //       const jsonID = jsonDB.id;
-    //       jsonDB.set({
-    //         id: index,
-    //         key: jsonID,
-    //         question: item.question,
-    //         correct_answer: item.correct_answer,
-    //         incorrect_answers: item.incorrect_answers
-    //       })
-    //     })
-    // },
     async getTriviaQuestion () {
       // First: We get the questions resolved by the user to ignore them
 
@@ -661,6 +653,6 @@ export default new Vuex.Store({
     isLogged: (state) => state.isLogged,
     myDocumentID: (state) => state.documentId,
     counterMovies: (state) => state.counterMovies,
-    questionID: (state) => state.questionID,
+    questionID: (state) => state.questionID
   },
 });

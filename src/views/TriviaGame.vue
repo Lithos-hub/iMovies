@@ -29,6 +29,7 @@
 <script>
 import TriviaQuestions from "../components/TriviaQuestions";
 import { db } from "../../firebase";
+import Services from "../services/services";
 export default {
   components: {
     TriviaQuestions,
@@ -40,54 +41,22 @@ export default {
     };
   },
   mounted() {
-    this.getTriviaQuestion();
+    this.getQuestion()
   },
   methods: {
     goToStart() {
       this.$router.push({ path: "/trivia" });
     },
-    async getTriviaQuestion() {
-      this.loadingTrivia = true;
-
-      // First, we have to know the questions resolved by the user
-
-      const myDocID = this.$store.getters.myDocumentID;
-      let resolvedQuestionsRef = await db
-        .doc(`userData/${myDocID}/triviaQuestions/resolved`)
-        .get();
-      const questionsData = resolvedQuestionsRef.data();
-      console.log(questionsData.questions);
-
-      // Then, we get the collection from Firebase and get all the docs
-      const triviaRef = await db.collection("Trivia").get();
-      const triviaDocs = triviaRef.docs;
-
-      // If there is no length, it's the first time the user plays the game
-      // So, we'll get a random question between 0 and 364
-      // Else, we have to get the resolved questions and get a random question with a different id
-      if (!questionsData.questions.length) {
-        const randomNumber = Math.floor(Math.random() * 364);
-        const randomQuestion = triviaDocs[randomNumber].data();
-        this.question.answers = randomQuestion.incorrect_answers;
-        this.question.answers.splice(
-          randomNumber,
-          0,
-          randomQuestion.correct_answer
-        );
-        this.question.ask = randomQuestion.question;
-        this.loadingTrivia = false;
-      } else {
-        const resolvedQuestions = [];
-      }
-
-      // Then, we get a random number between 1 and the total number of questions
-
-      // const triviaData = triviaDocs[randomNumber].data()
-      // const randomOrder = Math.floor(Math.random() * 4);
-      // this.question.answers = triviaData.incorrect_answers
-      // this.question.answers.splice(randomOrder, 0, triviaData.correct_answer)
-      // this.question.ask = triviaData.question
-    },
+    async getQuestion () {
+      await Services
+      .getQuestion()
+      .then(res => {
+        this.question = res
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
   },
 };
 </script>
