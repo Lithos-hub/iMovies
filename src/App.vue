@@ -101,8 +101,16 @@ export default {
     }
     console.log('My Firestore Doc ID: ', this.$store.getters.myDocumentID);
   },
+  mounted () {
+    this.getCurrentDate()
+  },
   methods: {
     ...mapActions(["changeLanguage", "getUserID"]),
+    getCurrentDate() {
+      let date = new Date();
+      let currentDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+      this.$store.commit("setCurrentDate", currentDate);
+    },
     async getUserData() {
       await auth.onAuthStateChanged((user) => {
         if (user) {

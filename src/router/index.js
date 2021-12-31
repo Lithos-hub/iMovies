@@ -59,7 +59,7 @@ const routes = [
     },
   },
   {
-    path: "/trivia/game/:id",
+    path: "/trivia/game/playgame",
     name: "Trivia game",
     component: () => import("../views/TriviaGame.vue"),
     meta: {

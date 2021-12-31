@@ -5,6 +5,28 @@ class Services {
     this.myDocID = localStorage.getItem("docID");
   }
 
+  async getHasPlayedToday() {
+    const resolvedQuestions = await this.getResolvedQuestions();
+    const date = new Date();
+    const currentDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    const lastItem = resolvedQuestions[resolvedQuestions.length - 1];
+    if (lastItem.date === currentDate) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  async getResolvedQuestions() {
+    const RESOLVED_QUESTIONS = await db
+      .doc(`userData/${this.myDocID}/triviaQuestions/resolved`)
+      .get("questions");
+    const RESOLVED_DATA = RESOLVED_QUESTIONS.data();
+    const RESOLVED_ARR = RESOLVED_DATA.questions;
+
+    return RESOLVED_ARR;
+  }
+
   async getQuestion() {
     let question = {};
     // First, we get the resolved questions
@@ -28,21 +50,21 @@ class Services {
     questionData = questionRef.data();
 
     for (let resolved of RESOLVED_ARR) {
-        question = ALL_ARR.find(question => question.id !== resolved.id)
+      question = ALL_ARR.find((question) => question.id !== resolved.id);
     }
-        question.answers = questionData.incorrect_answers;
-        question.id = questionData.id;
-        question.correct_answer = questionData.correct_answer;
-        question.ask = questionData.question;
-        question.answers.splice(randomOrder, 0, questionData.correct_answer);
+    question.answers = questionData.incorrect_answers;
+    question.id = questionData.id;
+    question.correct_answer = questionData.correct_answer;
+    question.ask = questionData.question;
+    question.answers.splice(randomOrder, 0, questionData.correct_answer);
 
     if (RESOLVED_ARR.length === 364) {
-        question = {
-            ask: "¡Congratulations! You have played all the questions.",
-            answers: [],
-            correct_answer: "",
-            id: "",
-        }
+      question = {
+        ask: "¡Congratulations! You have played all the questions.",
+        answers: [],
+        correct_answer: "",
+        id: "",
+      };
     }
 
     return question;
@@ -50,7 +72,7 @@ class Services {
 
   async saveQuestion(question) {
     const date = new Date();
-    const currentDate = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
+    const currentDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     question.date = currentDate;
     const myDocRef = await db.doc(
       `userData/${this.myDocID}/triviaQuestions/resolved`

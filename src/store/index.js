@@ -55,6 +55,7 @@ export default new Vuex.Store({
     moviesByGenre: [],
     moviesID: [],
     movieCasting: [],
+    triviaMoviesBackground: [],
     movieOfTheWeek: {},
     movieDetails: {},
     selectedGenre: "",
@@ -77,6 +78,7 @@ export default new Vuex.Store({
     moviesCounter: null,
     questionID: 0,
     resolvedQuestions: [],
+    currentDate: null
   },
   mutations: {
     setUser(state, payload) {
@@ -229,6 +231,12 @@ export default new Vuex.Store({
     },
     setResolvedQuestions(state, payload) {
       state.resolvedQuestions = payload;
+    },
+    setTriviaMoviesBackground(state, payload) {
+      state.triviaMoviesBackground = payload;
+    },
+    setCurrentDate(state, payload) {
+      state.currentDate = payload;
     }
   },
   actions: {
@@ -474,6 +482,7 @@ export default new Vuex.Store({
             arrMoviesID.push(data.id);
           }
           commit("setMoviesID", arrMoviesID);
+          commit("setTriviaMoviesBackground", arrMovies);
         })
         .catch((e) => {
           console.log(e);
@@ -629,7 +638,7 @@ export default new Vuex.Store({
 
       // TODO: INFINITE SCROLL
 
-      const CALL_URL = `${URL}/discover/movie?&api_key=${APIKEY}&sort_by=popularity.desc&language=${LANGUAGE}&page=${page}&with_genres=${genre}`;
+      const CALL_URL = `${URL}/discover/movie/?api_key=${APIKEY}&sort_by=popularity.desc&language=${LANGUAGE}&page=${page}&with_genres=${genre}`;
 
       await axios
         .get(CALL_URL)
@@ -646,6 +655,26 @@ export default new Vuex.Store({
           });
           commit("setLoadingData", false);
         });
+    },
+    async getRandomMovies({ commit }) {
+      let arr = []
+      let page = 1
+      const CALL_URL = `${URL}/discover/movie?year=2021&api_key=${APIKEY}&include_adult=false&page=${page}&sort_by=popularity.desc&vote_average.gte=6`
+      await axios
+      .get(CALL_URL)
+      .then((resp) => {
+        for (let movie of resp.data.results) {
+          arr.push(movie)
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        commit("showSnackbar", {
+          text: "Database error connection",
+          color: "red",
+        });
+      });
+    commit("setTriviaMoviesBackground", arr)
     },
   },
   getters: {
