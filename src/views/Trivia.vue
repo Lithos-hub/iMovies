@@ -145,7 +145,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .trivia-background {
   position: fixed;
   top: 47px;

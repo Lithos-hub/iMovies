@@ -87,6 +87,7 @@
   "app-buttons": {
     "view": "View trailer",
     "add": "Add to my movies",
+    "info": "Show info",
     "close": "Close",
     "comeback": "Comeback"
   },

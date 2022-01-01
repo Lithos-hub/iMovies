@@ -108,6 +108,7 @@
   "app-buttons": {
     "view": "Ver trailer",
     "add": "Añadir a mis películas",
+    "info": "Ver información",
     "close": "Cerrar",
     "comeback": "Regresar"
   },
