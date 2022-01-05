@@ -40,8 +40,8 @@
       <v-col cols="5" class="text-center">
         <h5 class="ml-5">{{ $t("view-home.text2") }}</h5>
       </v-col>
-      <v-col cols="3" class="text-center">
-        <h5>{{ $t("view-home.text3") }}</h5>
+      <v-col cols="3" class="justify-center d-flex">
+        <h5>{{ $t("view-home.text3") }}</h5><small>(Beta)</small>
       </v-col>
     </v-row>
     <div id="home-divider"></div>

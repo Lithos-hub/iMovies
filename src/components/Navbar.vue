@@ -190,15 +190,15 @@ export default {
       date: new Date().getFullYear(),
       id: null,
       major: 2,
-      minor: 2,
-      patch: 1,
+      minor: 3,
+      patch: 0,
       group: null,
       drawer: false,
       langMenu: false,
       navbarItems: [
         {
           to: "/trivia",
-          text: this.$t("navbar.trivia"),
+          text: this.$t("navbar.trivia") + ' (Beta)',
           icon: "mdi-gamepad-variant",
         },
         {

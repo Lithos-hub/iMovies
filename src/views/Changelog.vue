@@ -185,6 +185,12 @@ export default {
           changes: [
             this.$t('view-changelog.2_2_1-1'),
           ]
+        },
+        {
+          version: "v2.3.0",
+          changes: [
+            this.$t('view-changelog.2_3_0-1'),
+          ]
         }
       ],
     };

@@ -2,26 +2,32 @@
 
 ![logo](https://user-images.githubusercontent.com/57297760/104850259-56674000-58ee-11eb-9add-8f684be8bbbd.jpg)
 
-iMovies is a web app I'm developing using Vue.js.
+iMovies is a web application developed by me using Vue + Vuetify.
 
-This application uses The Movie Database (TMDB) API to show info about movies (release dates, titles, vote average, overviews, etc). In adition, since the Version 1.5.0, the user can create custom lists of movies based in some categories like favourite movies or want to watch. That information is shown in My Movies section and is storaged using LocalStorage.
+This application uses The Movie Database (TMDB) API to show info about movies (release dates, titles, vote average, overviews, etc).
 
-//////////////
+Since I started developing it at October 2019, a tons of changes have been added, such as global visual and design improvements; internationalization (English / Spanish); a login/register backend using Google Firebase Authentication; a movies CRUD backend system using Google Firebase Firestore; navigation guard or a Trivia game (available in Beta phase since version 2.3.0).
 
-Changelog:
+This application is under continuous development.
+
+//////////////  C H A N G E L O G  //////////////
+
+Version 2.3.0
+
+- Added a Trivia game in Beta phase (pending internationalization and future changes).
 
 Version 2.2.1
 
-- Added some fixes and style improvements
+- Added some fixes and style improvements.
 
 Version 2.2.0
 
-- (Backend) Added the CRUD system for the user's movies,
+- (Backend) Added the CRUD system for the user's movies.
 
 Version 2.1.0
 
-- (Backend) Added a login/register system with Firebase (Authentication) using E-mail and password,
-- Added a navigation guard based on the authentication status,
+- (Backend) Added a login/register system with Firebase (Authentication) using E-mail and password.
+- Added a navigation guard based on the authentication status.
 
 Version 2.0.0
 

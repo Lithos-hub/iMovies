@@ -3,9 +3,10 @@
     <!-- Instructions -->
     <div v-if="showInstruction" class="d-flex justify-center mt-10">
       <v-card color="primary" min-width="500" max-width="500" max-height="400" min-height="400" class="pa-5">
-        <v-card-title class="text-h2 justify-center white--text"
-          >iMovies Trivial</v-card-title
-        >
+        <v-card-title class="ustify-center white--text d-flex"
+          ><h2 class="text-h2">iMovies Trivial</h2>
+        <span class="mb-auto"><small>(Beta)</small></span>
+          </v-card-title>
         <v-divider class="white"></v-divider>
         <v-card-subtitle class="text-h5 text-center white--text"
           >Instrucciones</v-card-subtitle

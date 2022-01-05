@@ -164,7 +164,7 @@
     "text2": "Movie of the week",
     "ratings": " ratings",
     "noOverview": "This overview is not available in your language.",
-    "text3": "Question of the day",
+    "text3": "Trivia",
     "hasPlayed": "You have already played today's challengue",
     "hasNotPlayed": "You have a new challengue to complete!",
     "play": "Play"
@@ -268,7 +268,8 @@
    "2_1_0-1": "(Backend) Added a login/register system with Firebase (Authentication) using E-mail and password",
    "2_1_0-2": "Added a navigation guard based on the authentication status",
    "2_2_0-1": "(Backend) Added the CRUD system for the user's movies",
-   "2_2_1-1": "Added some fixes and style improvements"
+   "2_2_1-1": "Added some fixes and style improvements",
+   "2_3_0-1": "Added a Trivia game in Beta phase (pending internationalization and future changes)"
   },
   "view-about": {
     "title": "About iMovies",

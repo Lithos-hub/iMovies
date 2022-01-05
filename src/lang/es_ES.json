@@ -162,7 +162,7 @@
     "text2": "Película de la semana",
     "ratings": " puntuaciones",
     "noOverview": "No hay sinopsis disponible en tu idioma para esta película.",
-    "text3": "Pregunta del día",
+    "text3": "Trivial",
     "hasPlayed": "Ya has jugado el reto de hoy",
     "hasNotPlayed": "¡Tienes un reto nuevo para completar!",
     "play": "Jugar"
@@ -266,7 +266,8 @@
     "2_1_0-1": "(Backend) Añadido un sistema de login y registro con Firebase (Authentication) con correo electrónico y contraseña",
     "2_1_0-2": "Añadido un sistema de protección de rutas basado en el estado de autenticación del usuario",
     "2_2_0-1": "(Backend) Añadido el CRUD de películas con Firebase (Firestore)",
-    "2_2_1-1": "Añadidos algunos arreglos y mejoras visuales"
+    "2_2_1-1": "Añadidos algunos arreglos y mejoras visuales",
+    "2_3_0-1": "Añadido un juego de tipo Trivial en fase Beta (pendiente de internacionalización y futuros cambios)"
   },
   "view-about": {
     "title": "Acerca de iMovies",

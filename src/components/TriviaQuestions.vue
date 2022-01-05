@@ -8,7 +8,7 @@
       height="auto"
       tile
     >
-    <v-img v-if="question.image" :src="require(`../../public/trivia/triviaImages/${question.image}`)" :max-width="imageWidth" :max-height="imageHeight" />
+    <v-img id="trivia-image"  v-if="question.image" :src="require(`../../public/trivia/triviaImages/${question.image}`)" :max-width="imageWidth" :max-height="imageHeight" />
       <v-list dense class="transparent">
         <v-subheader class="justify-center"
           ><p class="text-h6 primary--text">
@@ -166,4 +166,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#trivia-image {
+  justify-self: center;
+  margin: 0 auto;
+}
+</style>
