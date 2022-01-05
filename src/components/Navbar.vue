@@ -9,7 +9,7 @@
       elevation="10"
       app
     >
-      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon width="30" height="30" @click="drawer = true"></v-app-bar-nav-icon>
 
       <div id="username-toolbar">
         <v-progress-circular class="mx-auto" size="30" width="2" color="cyan" indeterminate v-if="isLoadingDynamicUserData"></v-progress-circular>

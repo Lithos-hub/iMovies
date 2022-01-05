@@ -60,7 +60,7 @@ const routes = [
   },
   {
     path: "/trivia/game/playgame",
-    name: "Trivia game",
+    name: "Trivia play game",
     component: () => import("../views/TriviaGame.vue"),
     meta: {
       requiresAuth: true,

@@ -2,7 +2,7 @@
   <div id="triviaGame-view">
     <!-- Instructions -->
     <div v-if="showInstruction" class="d-flex justify-center mt-10">
-      <v-card color="primary" min-width="500" width="500" class="pa-5">
+      <v-card color="primary" min-width="500" max-width="500" max-height="400" min-height="400" class="pa-5">
         <v-card-title class="text-h2 justify-center white--text"
           >iMovies Trivial</v-card-title
         >
@@ -23,17 +23,20 @@
             Habrá diferentes tipos de preguntas y de respuestas. En algunos
             casos serán de tipo test, en otras tendrás que escribir o rellenar,
             en algunas se mostrará una imagen y en otras deberás arrastrar
-            elementos al lugar correcto
+            elementos al lugar correcto. Recuerda que <span class="font-weight-bold">habrá un contador de 
+            20 segundos</span>, por lo que piensa bien antes de contestar e intenta
+            ser rápido.
           </div>
           <div class="instructions" v-if="cardCounter === 3">
             Cada cierto número de puntos, obtendrás una recompensa, ya sea en
             forma de avatares o en forma de insignias coleccionables.
           </div>
           <div class="instructions text-center" v-if="cardCounter === 4">
+            ¡Eso es todo! <br><br>
             ¡Pulsa el botón de "Jugar" para empezar!
           </div>
         </v-card-text>
-        <v-card-actions class="d-flex justify-space-between">
+        <v-card-actions id="card-actions" class="d-flex justify-space-between">
           <v-btn @click="comeback" v-if="card1" color="secondary" tile
             >Volver atrás</v-btn
           >
@@ -105,8 +108,7 @@ export default {
     playGame() {
       this.showInstruction = false;
       setTimeout(() => {
-        const firstQuestion = 1;
-        this.$router.push({ path: `/trivia/game/${firstQuestion}` });
+        this.$router.push({ path: `/trivia/game/playGame` });
       }, 200);
     },
   },
@@ -118,5 +120,12 @@ export default {
 
 .instructions {
   animation: fadeIn 0.5s ease-in-out;
+}
+
+#card-actions {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
 }
 </style>

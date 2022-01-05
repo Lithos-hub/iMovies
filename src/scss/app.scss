@@ -115,3 +115,9 @@ input[type="number"] {
     transform: scale(1);
   }
 }
+
+.gradient-text {
+  background: $gradient_1;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

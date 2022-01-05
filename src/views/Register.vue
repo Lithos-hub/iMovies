@@ -266,6 +266,7 @@ export default {
                       const USER_DATA_REF = db.collection("userData").doc();
                       const newID = USER_DATA_REF.id;
                       this.$store.commit("setDocID", newID);
+                      localStorage.setItem("docID", newID);
                       await USER_DATA_REF.set({
                         docID: newID,
                         userID: user.uid,
@@ -305,13 +306,24 @@ export default {
       }
     },
     async createSubCollection() {
-      const myDocID = this.$store.getters.myDocumentID;
-      await db.doc(`userData/${myDocID}/myMovies/favouriteMovies`).set({});
-      await db.doc(`userData/${myDocID}/myMovies/watchedMovies`).set({});
-      await db.doc(`userData/${myDocID}/myMovies/wishListMovies`).set({});
-      await db.doc(`userData/${myDocID}/myMovies/ratedMovies`).set({});
+      const myDocID = localStorage.getItem("docID");
+      await db.doc(`userData/${myDocID}/myMovies/favouriteMovies`).set({
+        moviesList: []
+      });
+      await db.doc(`userData/${myDocID}/myMovies/watchedMovies`).set({
+        moviesList: []
+      });
+      await db.doc(`userData/${myDocID}/myMovies/wishListMovies`).set({
+        moviesList: []
+      });
+      await db.doc(`userData/${myDocID}/myMovies/ratedMovies`).set({
+        moviesList: []
+      });
       await db.doc(`userData/${myDocID}/triviaQuestions/resolved`).set({
-        questions: [],
+        questions: []
+      });
+      await db.doc(`userData/${myDocID}/triviaQuestions/points`).set({
+        total: 0
       });
     },
     async getAvatarsImages() {

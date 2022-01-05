@@ -8,6 +8,17 @@
         >
       </div>
       <div id="trivia-divider"></div>
+      <!-- COUNTER -->
+      <div id="counter" class="text-center" v-if="!hideCounter">
+        <h1 :class="computeCounter(counter)">{{ counter }}</h1>
+      </div>
+      <TriviaQuestions
+        v-if="!loadingTrivia && !isGameOver"
+        :loading="loadingTrivia"
+        id="triviaQuestions-comp"
+        :question="question"
+        @hide-counter="isHiddingCounter"
+      />
       <v-progress-circular
         class="centered"
         indeterminate
@@ -16,17 +27,27 @@
         size="100"
         v-if="loadingTrivia"
       ></v-progress-circular>
-      <TriviaQuestions
-        v-if="!loadingTrivia"
-        :loading="loadingTrivia"
-        id="triviaQuestions-comp"
-        :question="question"
-      />
+      <!-- GAME OVER MESSAGE -->
+      <div v-if="isGameOver" class="centered text-justify">
+        <h4 class="text-center text-h4 red--text">
+          ¡Demasiado lento! El tiempo se ha agotado.
+        </h4>
+        <br />
+        <h4 class="text-center text-h4 red--text">
+          ¡Inténtalo de nuevo en el reto de mañana!
+        </h4>
+        <br />
+        <v-btn class="error" tile block large @click="comeback">Regresar</v-btn>
+      </div>
     </v-container>
     <v-container v-else>
       <div class="centered">
-        <h3 class="text-h3 text-center my-5 primary--text">Ya has jugado por hoy.</h3>
-        <h3 class="text-h3 text-center my-5 primary--text">¡Vuelve mañana para resolver el siguiente reto!</h3>
+        <h3 class="text-h3 text-center my-5 primary--text">
+          Ya has jugado por hoy.
+        </h3>
+        <h3 class="text-h3 text-center my-5 primary--text">
+          ¡Vuelve mañana para resolver el siguiente reto!
+        </h3>
         <v-btn class="error" tile block large @click="comeback">Regresar</v-btn>
       </div>
     </v-container>
@@ -44,12 +65,15 @@ export default {
   data() {
     return {
       question: {},
+      hideCounter: false,
       loadingTrivia: false,
       hasPlayedToday: false,
+      isGameOver: false,
+      counter: 20,
     };
   },
   computed: {
-    ...mapState(['currentDate'])
+    ...mapState(["currentDate"]),
   },
   mounted() {
     this.getHasPlayedToday();
@@ -58,44 +82,81 @@ export default {
     }
   },
   methods: {
-    comeback () {
-      this.$router.push({ path: '/home' })
+    comeback() {
+      this.$router.push({ path: "/home" });
+    },
+    isHiddingCounter() {
+      this.counter = 20;
+      this.hideCounter = true;
+      this.startCounter(false)
+    },
+    computeCounter(val) {
+      if (val > 15) return "green--text";
+      if (val > 10) return "yellow--text";
+      if (val > 5) return "orange--text";
+      if (val >= 0) return "red--text";
+    },
+    startCounter(toggle) {
+      if (toggle) {
+        let i = 20;
+        const countdown = () => {
+          if (i > 0) {
+            i--;
+            this.counter--;
+            setTimeout(countdown, 1000);
+          }
+          if (this.counter === 0) {
+            this.gameOver();
+          }
+        };
+        countdown();
+      }
+    },
+    gameOver() {
+      this.isGameOver = true;
+      Services.saveQuestion(this.question).then(() => {});
     },
     getHasPlayedToday() {
       this.loadingTrivia = true;
-      Services
-      .getHasPlayedToday()
-      .then(res => {
-        this.loadingTrivia = false
-        this.hasPlayedToday = res
-      })
-      .catch(err => {
-        this.loadingTrivia = false
-        console.log(err)
-      })
+      Services.getHasPlayedToday()
+        .then((res) => {
+          this.loadingTrivia = false;
+          this.hasPlayedToday = res;
+        })
+        .catch((err) => {
+          this.loadingTrivia = false;
+          console.log(err);
+        });
     },
     goToStart() {
       this.$router.push({ path: "/trivia" });
     },
-    async getQuestion () {
-      this.loadingTrivia = true
-      await Services
-      .getQuestion()
-      .then(res => {
-        this.question = res
-        this.loadingTrivia = false
-      })
-      .catch(err => {
-        console.log(err)
-        this.loadingTrivia = false
-      })
-    }
+    async getQuestion() {
+      this.loadingTrivia = true;
+      await Services.getQuestion()
+        .then((res) => {
+          this.question = res;
+          this.loadingTrivia = false;
+          this.startCounter(true);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.loadingTrivia = false;
+        });
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../scss/variables";
+
+#counter {
+  background: #303030;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 auto;
+}
 
 #triviaGame-title {
   background: $gradient_1;
@@ -105,7 +166,7 @@ export default {
 
 #triviaQuestions-comp {
   position: absolute;
-  top: 50%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
 }

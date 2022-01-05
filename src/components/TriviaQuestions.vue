@@ -2,24 +2,25 @@
   <div v-if="!loadingTrivia">
     <v-card
       v-if="!checkingAnswer && !checkedAnswer && !answered"
-      class="mx-auto pa-5"
+      class="mx-auto pa-0"
       width="auto"
       color="transparent"
       height="auto"
       tile
     >
+    <v-img v-if="question.image" :src="require(`../../public/trivia/triviaImages/${question.image}`)" :max-width="imageWidth" :max-height="imageHeight" />
       <v-list dense class="transparent">
-        <v-subheader
-          ><p class="text-h5 text-center primary--text">
+        <v-subheader class="justify-center"
+          ><p class="text-h6 primary--text">
             {{ cleanQuestion(question.ask) }}
           </p></v-subheader
         >
-        <v-divider class="cyan"></v-divider>
+        <v-divider class="cyan pa-0 ma-0"></v-divider>
         <v-list-item-group v-model="responseIndex" color="cyan">
           <v-list-item v-for="(item, i) in question.answers" :key="i">
             <v-list-item-content class="white--text pa-2 rounded">
               <v-list-item-title
-                class="text-h5 py-2"
+                class="text-center py-2"
                 v-text="item"
               ></v-list-item-title>
             </v-list-item-content>
@@ -30,6 +31,7 @@
         class="gradient-success white--text"
         block
         tile
+        small
         :disabled="selectedResponse === null"
         @click="confirm"
         >Confirmar respuesta</v-btn
@@ -86,6 +88,20 @@ export default {
   },
   computed: {
     ...mapState(["warningObject"]),
+    imageWidth () {
+      let clientWidth = window.screen.width
+      switch (true) {
+        case clientWidth > 1824 : return '500px'
+        case clientWidth < 1824 : return '360px'
+      }
+    },
+    imageHeight () {
+      let clientWidth = window.screen.width
+      switch (true) {
+        case clientWidth > 1824 : return '450px'
+        case clientWidth < 1824 : return '140px'
+      }
+    },
   },
   methods: {
     ...mapActions(["showWarning"]),
@@ -108,14 +124,18 @@ export default {
       this.selectedResponse = this.question.answers[this.responseIndex];
     },
     confirm() {
+      this.$emit('hide-counter')
       this.answered = true;
       this.checkingAnswer = true
       this.getItem();
       setTimeout(() => {
         if (this.selectedResponse === this.question.correct_answer) {
+          this.question.passed = true
           Services
           .saveQuestion(this.question)
           .then(() => {
+            Services
+            .getResolvedQuestions()
             this.showWarning({
               text: "¡Correcto!",
               color: "success",
@@ -123,9 +143,12 @@ export default {
             });
           })
         } else {
+          this.question.passed = false
           Services
           .saveQuestion(this.question)
           .then(() => {
+            Services
+            .getResolvedQuestions()
             this.showWarning({
               text: "¡Has fallado!",
               color: "error",

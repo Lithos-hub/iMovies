@@ -1,0 +1,214 @@
+{
+    "questions": [
+        {
+            "question": "¿Cómo se llaman estos monumentos?",
+            "image": "./triviaImages/image-1.jpg",
+            "correct_answer": "Argonath",
+            "incorrect_answers": [
+                "Barad-dûr",
+                "Baldur's Gate",
+                "Cair Anduin"
+            ]
+        },
+        {
+            "question": "¿Qué velocidad tenía que alcanzar este coche para viajar en el tiempo?",
+            "image": "./triviaImages/image-2.jpg",
+            "correct_answer": "Unos 140 km/h",
+            "incorrect_answers": [
+                "Unos 100 km/h",
+                "Unos 88 km/h",
+                "Unos 187 km/h"
+            ]
+        },
+        {
+            "question": "En 'El Atlas de las Nubes', ¿Cómo se llama este personaje?",
+            "image": "./triviaImages/image-3.jpg",
+            "correct_answer": "Sonmi-451",
+            "incorrect_answers": [
+                "Solmi-451",
+                "Noo-lee Zet",
+                "Tian Yong 233"
+            ]
+        },
+        {
+            "question": "¿Cómo se llama este helado planeta?",
+            "image": "./triviaImages/image-4.jpg",
+            "correct_answer": "Hoth",
+            "incorrect_answers": [
+                "Mygeeto",
+                "Alderaan",
+                "Kessel"
+            ]
+        },
+        {
+            "question": "¿Cómo se llama este vehículo de la saga Star Wars?",
+            "image": "./triviaImages/image-5.jpg",
+            "correct_answer": "Ala-B - B-wing",
+            "incorrect_answers": [
+                "Ala-A - A-wing",
+                "Ala-T - T-65",
+                "Ala-E - E-wing"
+            ]
+        },
+        {
+            "question": "¿A qué película pertenece el siguiente fotograma?",
+            "image": "./triviaImages/image-6.jpg",
+            "correct_answer": "Doce hombres sin piedad",
+            "incorrect_answers": [
+                "Casablanca",
+                "Psicosis",
+                "La Lista de Schindler"
+            ]
+        },
+        {
+            "question": "¿A qué película pertenece el siguiente fotograma?",
+            "image": "./triviaImages/image-7.jpg",
+            "correct_answer": "Camino a la perdición",
+            "incorrect_answers": [
+                "American Gangster",
+                "Gangsters of New York",
+                "Gangster Squad"
+            ]
+        },
+        {
+            "question": "¿A qué película pertenece el siguiente fotograma?",
+            "image": "./triviaImages/image-8.jpg",
+            "correct_answer": "La Lista de Schindler",
+            "incorrect_answers": [
+                "El Pianista",
+                "Citizen Kane",
+                "The Maltese Falcon"
+            ]
+        },
+        {
+            "question": "¿A qué película pertenece el siguiente fotograma?",
+            "image": "./triviaImages/image-9.jpg",
+            "correct_answer": "Abyss",
+            "incorrect_answers": [
+                "Deep Blue Sea",
+                "Tiburón",
+                "La caza del Octubre Rojo"
+            ]
+        },
+        {
+            "question": "¿A qué película pertenece el siguiente fotograma?",
+            "image": "./triviaImages/image-10.jpg",
+            "correct_answer": "Animatrix",
+            "incorrect_answers": [
+                "El Viaje de Chihiro",
+                "Your Name",
+                "La Princesa Mononoke"
+            ]
+        },
+        {
+            "question": "¿Cómo se llama este personaje de la película Matrix?",
+            "image": "./triviaImages/image-11.jpg",
+            "correct_answer": "Ratón",
+            "incorrect_answers": [
+                "Cifra",
+                "Interruptor",
+                "Tanque"
+            ]
+        },
+        {
+            "question": "¿Cómo se llama el siguiente vehículo de la película Matrix?",
+            "image": "./triviaImages/image-12.jpg",
+            "correct_answer": "Nebuchadnezzar",
+            "incorrect_answers": [
+                "Logos",
+                "Hammer",
+                "Zion"
+            ]
+        },
+        {
+            "question": "¿Cómo se esta espada perteneciente al universo de El Señor de los Anillos?",
+            "image": "./triviaImages/image-13.jpg",
+            "correct_answer": "Dardo",
+            "incorrect_answers": [
+                "Anduril",
+                "Glamdring",
+                "Handhafang"
+            ]
+        },
+        {
+            "question": "¿Cómo se llama este personaje de la película Gattaca?",
+            "image": "./triviaImages/image-14.jpg",
+            "correct_answer": "Vincent Anton Freeman",
+            "incorrect_answers": [
+                "Vincent Martin Freeman",
+                "Michael D. Oldfield",
+                "Steve Audley Clinton"
+            ]
+        },
+        {
+            "question": "¿De qué se encarga este personaje de una famosa película de animación japonesa?",
+            "image": "./triviaImages/image-15.jpg",
+            "correct_answer": "Controlar las calderas",
+            "incorrect_answers": [
+                "Cocinar",
+                "Recibir a los huéspedes",
+                "Fabricar herramientas"
+            ]
+        },
+        {
+            "question": "¿Cómo se llama este gato?",
+            "image": "./triviaImages/image-16.jpg",
+            "correct_answer": "Jiji",
+            "incorrect_answers": [
+                "Kiki",
+                "Lily",
+                "Ket"
+            ]
+        },
+        {
+            "question": "¿Cómo se llama este lugar?",
+            "image": "./triviaImages/image-17.jpg",
+            "correct_answer": "Osgiliath",
+            "incorrect_answers": [
+                "Minas Tirith",
+                "Bahía de los Esclavos",
+                "Theed"
+            ]
+        },
+        {
+            "question": "¿Cuánto tiempo corre Forrest Gump sin detenerse?",
+            "image": "./triviaImages/image-18.jpg",
+            "correct_answer": "3 años, 2 meses, 14 días y 16 horas",
+            "incorrect_answers": [
+                "2 años, 6 meses, 21 días y 19 horas",
+                "1 año, 9 meses, 3 días y 5 horas",
+                "5 años, 11 meses, 28 días y 3 horas"
+            ]
+        },
+        {
+            "question": "¿Cómo se llama esta ciudad?",
+            "image": "./triviaImages/image-20.jpg",
+            "correct_answer": "Ramelle",
+            "incorrect_answers": [
+                "Moselle",
+                "Normandy",
+                "Amiens"
+            ]
+        },
+        {
+            "question": "¿Dónde se encuentra Indiana Jones en esta imagen?",
+            "image": "./triviaImages/image-21.jpg",
+            "correct_answer": "Perú",
+            "incorrect_answers": [
+                "El Amazonas",
+                "La India",
+                "El Congo"
+            ]
+        },
+        {
+            "question": "¿Cómo se llama esta isla?",
+            "image": "./triviaImages/image-19.jpg",
+            "correct_answer": "Isla Sorna",
+            "incorrect_answers": [
+                "Isla Nublar",
+                "Isla Matanceros",
+                "Isla Mantah Corp"
+            ]
+        }
+    ]
+}

@@ -161,7 +161,11 @@
     "text1": "Trailer de la semana",
     "text2": "Película de la semana",
     "ratings": " puntuaciones",
-    "noOverview": "No hay sinopsis disponible en tu idioma para esta película."
+    "noOverview": "No hay sinopsis disponible en tu idioma para esta película.",
+    "text3": "Pregunta del día",
+    "hasPlayed": "Ya has jugado el reto de hoy",
+    "hasNotPlayed": "¡Tienes un reto nuevo para completar!",
+    "play": "Jugar"
   },
   "view-search": {
     "byTitle": "Buscar por título de película",

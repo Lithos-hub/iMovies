@@ -27,9 +27,10 @@
 </template>
 
 <script>
-// import Utils from "../utils/genQuestions";
+import Utils from "../utils/genQuestions";
 import Services from "../services/services";
 import { mapState } from "vuex";
+import { db } from "../../firebase";
 
 export default {
   data() {
@@ -41,6 +42,7 @@ export default {
     ...mapState(["triviaMoviesBackground", "imageURL", "no_image"]),
   },
   created() {
+    // this.genQuestions() // => Comment when generated the questions once
     this.getResolvedQuestions();
     this.$store.dispatch("getRandomMovies");
     setTimeout(() => {
@@ -54,25 +56,26 @@ export default {
   },
   methods: {
     // ! ******** To generate the questions in firebase ******** ! //
-    // async genQuestions() {
-    //   const questions = await Utils.genQuestions();
-    //   questions.forEach((question, index) => {
-    //     db.collection("TriviaV2")
-    //       .doc(`triviadoc-${index}`)
-    //       .set({
-    //         id: index,
-    //         incorrect_answers: question.incorrect_answers,
-    //         correct_answer: question.correct_answer,
-    //         question: question.question,
-    //       })
-    //       .then(() => {
-    //         console.log("Document successfully written!");
-    //       })
-    //       .catch((error) => {
-    //         console.error("Error writing document: ", error);
-    //       });
-    //   });
-    // },
+    async genQuestions() {
+      const questions = await Utils.genQuestions();
+      questions.forEach((question, index) => {
+        db.collection("TriviaV2")
+          .doc(`triviadoc-${index}`)
+          .set({
+            id: index,
+            incorrect_answers: question.incorrect_answers,
+            correct_answer: question.correct_answer,
+            image: question.image ? question.image : null,
+            question: question.question,
+          })
+          .then(() => {
+            console.log("Document successfully written!");
+          })
+          .catch((error) => {
+            console.error("Error writing document: ", error);
+          });
+      });
+    },
     paintImages() {
       let triviaImages = this.triviaMoviesBackground;
 

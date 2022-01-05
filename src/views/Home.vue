@@ -10,7 +10,7 @@
     <!-- ADD TO MY MOVIES DIALOG -->
     <AddToDialog v-if="addToDialog" />
 
-    <v-row id="scroll-x" no-gutters class="d-flex" @scroll="enableScrollX">
+    <div id="scroll-x" class="d-flex" @scroll="enableScrollX">
       <div
         v-for="(item, i) in latestReleases"
         :key="i"
@@ -32,19 +32,20 @@
           </h3>
         </router-link>
       </div>
+    </div>
+    <v-row no-gutters class="mt-2 pa-0 gradient-text" v-if="!isUsingMobile">
+      <v-col cols="4" class="text-center">
+        <h5 class="ml-5">{{ $t("view-home.text1") }}</h5>
+      </v-col>
+      <v-col cols="5" class="text-center">
+        <h5 class="ml-5">{{ $t("view-home.text2") }}</h5>
+      </v-col>
+      <v-col cols="3" class="text-center">
+        <h5>{{ $t("view-home.text3") }}</h5>
+      </v-col>
     </v-row>
-    <v-row no-gutters class="mt-2" v-if="!isUsingMobile">
-      <v-col cols="4" class="text-left">
-        <h5 class="info--text ml-5">{{ $t("view-home.text1") }}</h5>
-      </v-col>
-      <v-col cols="6" class="text-left">
-        <h5 class="info--text ml-5">{{ $t("view-home.text2") }}</h5>
-      </v-col>
-      <v-col cols="2">
-        <h5 class="info--text">Pregunta del día</h5>
-      </v-col>
-    </v-row>
-    <v-row class="mt-0">
+    <div id="home-divider"></div>
+    <v-row class="ma-0 pa-0">
       <!-- TRAILER COLUMN -->
       <v-col :cols="isUsingMobile ? '12' : '4'" class="text-left">
         <h2 v-if="isUsingMobile" class="text-h5 info--text text-center">
@@ -62,7 +63,7 @@
       <!-- MOVIE COLUMN -->
       <v-col :cols="isUsingMobile ? '12' : '5'" id="movie-of-the-week-section">
         <v-row no-gutters>
-          <v-col :cols="isUsingMobile ? '12' : '5'">
+          <v-col :cols="isUsingMobile ? '12' : '3'">
             <h2 v-if="isUsingMobile" class="text-h5 info--text text-center">
               {{ $t("view-home.text2") }}
             </h2>
@@ -85,7 +86,7 @@
             </v-img>
           </v-col>
           <v-col
-            :cols="isUsingMobile ? '12' : '7'"
+            :cols="isUsingMobile ? '12' : '9'"
             :class="isUsingMobile ? 'pt-5' : ''"
           >
             <v-row no-gutters class="mx-5">
@@ -97,17 +98,17 @@
                       {{ movieOfTheWeek.title }}
                     </p>
                   </v-col>
-                  <v-col cols="3" class="text-right">
+                </v-row>
+                <v-row no-gutters>
+                  <v-col class="text-center">
                     <!-- MOVIE GENRES -->
-                    <small class="d-block">
                       <span
                         v-for="(genre, z) in movieOfTheWeek.genre_ids"
                         :key="'A' + z"
-                        class="movieOfTheWeek-genres"
+                        class="movieOfTheWeek-genres ma-0 mx-1"
                       >
                         <small>{{ formatGenre(genre) }}</small>
                       </span>
-                    </small>
                   </v-col>
                 </v-row>
 
@@ -231,7 +232,7 @@
       </v-col>
       <!-- TRIVIA COLUMN -->
       <v-col
-        :cols="isUsingMobile ? '12' : '2'"
+        :cols="isUsingMobile ? '12' : '3'"
         id="trivia-section"
         class="text-center mx-auto"
       >
@@ -240,14 +241,14 @@
           <div class="trivia-message" v-if="!loadingTrivia && !hasPlayedToday">
             <v-icon class="pulse star-icon" color="cyan">mdi-star</v-icon>
             <p class="cyan--text">
-              Tienes un reto diario pendiente.
+             {{ $t("view-home.hasNotPlayed") }}
             </p>
-            <v-btn small class="gradient-background-1 white--text" tile
-              >Jugar</v-btn
+            <v-btn small class="gradient-background-1 white--text" tile @click="playGame"
+              >{{ $t("view-home.play") }}</v-btn
             >
           </div>
           <div v-if="!loadingTrivia && hasPlayedToday" class="trivia-message">
-            <p class="error--text">Ya has jugado al reto de hoy.</p>
+            <p class="error--text">{{ $t("view-home.hasPlayed") }}</p>
           </div>
         </div>
       </v-col>
@@ -353,6 +354,9 @@ export default {
         this.loadingTrivia = false;
       })
     },
+    playGame () {
+      this.$router.push({ path: '/trivia/game/playGame' });
+    },
     formatDate(date) {
       const [year, month, day] = date.split("-");
       return `${day}/${month}/${year}`;
@@ -383,7 +387,7 @@ export default {
     },
     formatOverview(text) {
       if (!text) return null;
-      return text.slice(0, 550) + "...";
+      return text.slice(0, 700) + "...";
     },
     enableScrollX() {
       let homeView = document.querySelector("#home-view");
@@ -435,6 +439,15 @@ export default {
 @import "src/scss/variables";
 @import "src/scss/app";
 
+
+#home-divider {
+  border-radius: 10px;
+  height: 2px;
+  width: 100%;
+  margin: 0 auto;
+  background: $gradient_1;
+}
+
 ::-webkit-scrollbar {
   display: none !important;
 }
@@ -450,7 +463,7 @@ export default {
     padding: 20px;
     border-radius: 5px;
     height: auto;
-    width: 100%;
+    width: 80%;
     border: 1px solid #151515;
     box-shadow: 0px 0px 10px black, 0px 0px 20px #151515, 0px 0px 30px #202020;
     position: absolute;
@@ -638,7 +651,7 @@ export default {
 
   #trailer-of-the-week {
     width: 100%;
-    max-height: calc(768px / 2.5);
+    max-height: calc(768px / 2.75);
     box-shadow: 0px 5px 10px black;
   }
 
@@ -646,8 +659,7 @@ export default {
     position: relative;
     margin-left: 15px;
     width: 100%;
-    height: auto;
-    max-height: auto;
+    height: 300px;
   }
 
   #movie-of-the-week-section {
@@ -753,23 +765,23 @@ export default {
   }
 
   #trailer-of-the-week {
-    width: calc(1920px / 2.15);
-    height: calc(1080px / 2.15);
+    width: 100%;
+    height: 100%;
     max-height: 430px;
     box-shadow: 0px 5px 10px black;
   }
 
   .movie-video {
     position: relative;
-    width: 100%;
+    width: auto;
     max-height: 430px;
     height: 100%;
   }
 
   #movie-of-the-week-section {
     display: block;
-    width: calc(1920px / 2);
-    height: calc(1080px / 2);
+    width: 100%;
+    height: 100%;
     background: transparent;
     margin: 0;
 

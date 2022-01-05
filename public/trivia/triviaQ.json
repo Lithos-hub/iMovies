@@ -1221,6 +1221,2130 @@
                 "Hank Williams, Sr.",
                 "Buddy Holly"
             ]
+        },
+        {
+            "question": "Which of the following is NOT a quote from the 1942 film Casablanca? ",
+            "correct_answer": "'Frankly, my dear, I don't give a damn.'",
+            "incorrect_answers": [
+                "'Here's lookin' at you, kid.'",
+                "'Of all the gin joints, in all the towns, in all the world, she walks into mine.'",
+                "'Round up the usual suspects.'"
+            ]
+        },
+        {
+            "question": "In the movie 'The Iron Giant,' this character is the protagonist.",
+            "correct_answer": "Hogarth Hughes",
+            "incorrect_answers": [
+                "Kent Mansley",
+                "Dean McCoppin",
+                "Annie Hughes"
+            ]
+        },
+        {
+            "question": "Which 1958 movie starred Kirk Douglas and Tony Curtis as half-brothers Einar and Eric?",
+            "correct_answer": "The Vikings ",
+            "incorrect_answers": [
+                "The Long Ships",
+                "Prince Valiant",
+                "Spartacus"
+            ]
+        },
+        {
+            "question": "Which retired American football quarterback played himself in 'Ace Ventura: Pet Detective' and 'Little Nicky'?",
+            "correct_answer": "Dan Marino",
+            "incorrect_answers": [
+                "John Elway",
+                "Tom Brady",
+                "Joe Montana"
+            ]
+        },
+        {
+            "question": "What was Marilyn Monroe`s character's first name in the film 'Some Like It Hot'?",
+            "correct_answer": "Sugar",
+            "incorrect_answers": [
+                "Honey",
+                "Caramel",
+                "Candy"
+            ]
+        },
+        {
+            "question": "Velma Kelly and Roxie Hart are the protagonists of which Oscar winning movie?",
+            "correct_answer": "Chicago",
+            "incorrect_answers": [
+                "Dreamgirls",
+                "Cabaret",
+                "All That Jazz"
+            ]
+        },
+        {
+            "question": "Who voiced the character Draco in the 1996 movie 'DragonHeart'?",
+            "correct_answer": "Sean Connery",
+            "incorrect_answers": [
+                "Dennis Quaid",
+                "Pete Postlethwaite",
+                "Brian Thompson"
+            ]
+        },
+        {
+            "question": "In the 1984 movie 'The Terminator', what model number is the Terminator portrayed by Arnold Schwarzenegger?",
+            "correct_answer": "T-800",
+            "incorrect_answers": [
+                "I-950",
+                "T-888",
+                "T-1000"
+            ]
+        },
+        {
+            "question": "What is the name of the robot in the 1951 science fiction film classic 'The Day the Earth Stood Still'?",
+            "correct_answer": "Gort",
+            "incorrect_answers": [
+                "Robby",
+                "Colossus",
+                "Box"
+            ]
+        },
+        {
+            "question": "Which of the following James Bond villains is not affiliated with the SPECTRE organization?",
+            "correct_answer": "Auric Goldfinger",
+            "incorrect_answers": [
+                "Dr. Julius No",
+                "Rosa Klebb",
+                "Emilio Largo"
+            ]
+        },
+        {
+            "question": "Who directed the 1973 film 'American Graffiti'?",
+            "correct_answer": "George Lucas",
+            "incorrect_answers": [
+                "Ron Howard",
+                "Francis Ford Coppola",
+                "Steven Spielberg"
+            ]
+        },
+        {
+            "question": "This movie contains the quote, 'I love the smell of napalm in the morning!'",
+            "correct_answer": "Apocalypse Now",
+            "incorrect_answers": [
+                "Platoon",
+                "The Deer Hunter",
+                "Full Metal Jacket"
+            ]
+        },
+        {
+            "question": "In which African country was the 2006 film 'Blood Diamond' mostly set in?",
+            "correct_answer": "Sierra Leone",
+            "incorrect_answers": [
+                "Liberia",
+                "Burkina Faso",
+                "Central African Republic"
+            ]
+        },
+        {
+            "question": "In what year was the first Transformers movie released?",
+            "correct_answer": "1986",
+            "incorrect_answers": [
+                "2007",
+                "1984",
+                "2009"
+            ]
+        },
+        {
+            "question": "What is the name of the first 'Star Wars' film by release order?",
+            "correct_answer": "A New Hope",
+            "incorrect_answers": [
+                "The Phantom Menace",
+                "The Force Awakens",
+                "Revenge of the Sith"
+            ]
+        },
+        {
+            "question": "What is the name of the Artificial Intelligence system in the 1983 film, 'WarGames'?",
+            "correct_answer": "War Operation Plan Response",
+            "incorrect_answers": [
+                "Self Evolving Thought Helix",
+                "Master Control Program",
+                "West Campus Analog Computer"
+            ]
+        },
+        {
+            "question": "Who plays the Nemesis in the Resident Evil movies?",
+            "correct_answer": "Matthew Taylor",
+            "incorrect_answers": [
+                "Jason Dip",
+                "Eric Mabius",
+                "Jimmy Matts"
+            ]
+        },
+        {
+            "question": "In the 1979 British film 'Quadrophenia' what is the name of the seaside city the mods are visiting?",
+            "correct_answer": "Brighton",
+            "incorrect_answers": [
+                "Eastbourne",
+                "Mousehole",
+                "Bridlington"
+            ]
+        },
+        {
+            "question": "In the 1979 British film 'Quadrophenia' what is the name of the main protagonist?",
+            "correct_answer": "Jimmy Cooper",
+            "incorrect_answers": [
+                "Pete Townshend",
+                "Franc Roddam",
+                "Archie Bunker"
+            ]
+        },
+        {
+            "question": "Who played Baron Victor Frankestein in the 1957 Hammer horror film 'The Curse of Frankenstein'?",
+            "correct_answer": "Peter Cushing",
+            "incorrect_answers": [
+                "Boris Karloff",
+                "Vincent Price",
+                "Lon Chaney Jr."
+            ]
+        },
+        {
+            "question": "The 1939 movie 'The Wizard of Oz' contained a horse that changed color, what material did they use to achieve this effect?",
+            "correct_answer": "Gelatin",
+            "incorrect_answers": [
+                "Dye",
+                "Paint",
+                "CGI Effect"
+            ]
+        },
+        {
+            "question": "Which one of these films are shot entirely in one-take?",
+            "correct_answer": "Russian Ark",
+            "incorrect_answers": [
+                "Good Will Hunting",
+                "Birdman",
+                "Schindler's List"
+            ]
+        },
+        {
+            "question": "Which one of these action movies are shot entirely in one take?",
+            "correct_answer": "Victoria",
+            "incorrect_answers": [
+                "Ip Man 2",
+                "The Bourne Legacy",
+                "Léon: The Professional"
+            ]
+        },
+        {
+            "question": "Which movie of film director Stanley Kubrick is known to be an adaptation of a Stephen King novel?",
+            "correct_answer": "The Shining",
+            "incorrect_answers": [
+                "2001: A Space Odyssey",
+                " Dr. Strangelove ",
+                "Eyes Wide Shut"
+            ]
+        },
+        {
+            "question": "What was another suggested name for, the 1985 film, Back to the Future?",
+            "correct_answer": "Spaceman From Pluto",
+            "incorrect_answers": [
+                "Hill Valley Time Travelers",
+                "The Time Travelers",
+                "The Lucky Man"
+            ]
+        },
+        {
+            "question": "Who played Sgt. Gordon Elias in 'Platoon' (1986)?",
+            "correct_answer": "Willem Dafoe",
+            "incorrect_answers": [
+                "Charlie Sheen",
+                "Matt Damon",
+                "Johnny Depp"
+            ]
+        },
+        {
+            "question": "In what year was the movie 'Police Academy' released?",
+            "correct_answer": "1984",
+            "incorrect_answers": [
+                "1986",
+                "1985",
+                "1983"
+            ]
+        },
+        {
+            "question": "Sean Connery wasn't in 'Indiana Jones and the Kingdom of the Crystal Skull' because he found retirement too enjoyable.",
+            "correct_answer": "True",
+            "incorrect_answers": [
+                "False"
+            ]
+        },
+        {
+            "question": "In The Lord of the Rings: The Fellowship of the Ring, which one of the following characters from the book was left out of the film?",
+            "correct_answer": "Tom Bombadil",
+            "incorrect_answers": [
+                "Strider",
+                "Barliman Butterbur",
+                "Celeborn"
+            ]
+        },
+        {
+            "question": "Darth Vader's famous reveal to Luke is iconic. But which of these is the right one?",
+            "correct_answer": "'No. I am your father.'",
+            "incorrect_answers": [
+                "'Luke, I am your father.'",
+                "'You're wrong. I am your father.'",
+                "'The truth is that I am your father.'"
+            ]
+        },
+        {
+            "question": "Which animated film did Steven Lisberger direct in 1980 before going on to direct Tron?",
+            "correct_answer": "Animalympics",
+            "incorrect_answers": [
+                "The Fox and the Hound",
+                "The Black Cauldron",
+                "The Great Mouse Detecive"
+            ]
+        },
+        {
+            "question": "What year did the James Cameron film 'Titanic' come out in theaters?",
+            "correct_answer": "1997",
+            "incorrect_answers": [
+                "1996",
+                "1998",
+                "1999"
+            ]
+        },
+        {
+            "question": "Who played the Cenobite called 'Pinhead' in the original Hellraiser films?",
+            "correct_answer": "Doug Bradley",
+            "incorrect_answers": [
+                "Doug Jones",
+                "Doug Savant",
+                "Doug Benson"
+            ]
+        },
+        {
+            "question": "What is the correct spelling of the protagonist of the book in The NeverEnding Story (1984)?",
+            "correct_answer": "Atreyu",
+            "incorrect_answers": [
+                "Atrayu",
+                "Atraiyu",
+                "Atraeyu"
+            ]
+        },
+        {
+            "question": "Which famous singer was portrayed by actor Kevin Spacey in the 2004 biographical film 'Beyond the Sea'?",
+            "correct_answer": "Bobby Darin",
+            "incorrect_answers": [
+                "Louis Armstrong",
+                "Frank Sinatra",
+                "Dean Martin"
+            ]
+        },
+        {
+            "question": "Who was the director of 'Scott Pilgrim vs. the World (2010)'?",
+            "correct_answer": "Edgar Wright",
+            "incorrect_answers": [
+                "Phil Lord",
+                "Chris Miller",
+                "Seth Rogan"
+            ]
+        },
+        {
+            "question": "In the 'Jurassic Park' universe, what is the name of the island that contains InGen's Site B?",
+            "correct_answer": "Isla Sorna",
+            "incorrect_answers": [
+                "Isla Nublar",
+                "Isla Pena",
+                "Isla Muerta"
+            ]
+        },
+        {
+            "question": "Which town is the setting for the Disney movie The Love Bug (1968)?",
+            "correct_answer": "San Francisco",
+            "incorrect_answers": [
+                "Los Angeles",
+                "Sacramento",
+                "San Jose"
+            ]
+        },
+        {
+            "question": "Which director directed the movie 'Pan's Labyrinth'?",
+            "correct_answer": "Guillermo Del Toro",
+            "incorrect_answers": [
+                "Alfonso Cuarón",
+                "Alejandro González Iñárritu",
+                " Alejandro Jodorowsky"
+            ]
+        },
+        {
+            "question": "What film did James Cameron's Avatar dethrone as the highest-grossing film ever?",
+            "correct_answer": "Titanic",
+            "incorrect_answers": [
+                "Star Wars",
+                "Gone with the Wind",
+                "Jaws"
+            ]
+        },
+        {
+            "question": "The movie 'Tron' received an Oscar nomination for Best Visual Effects.",
+            "correct_answer": "False",
+            "incorrect_answers": [
+                "True"
+            ]
+        },
+        {
+            "question": "Who performed the opening theme song for the James Bond 007 movie 'Goldfinger'?",
+            "correct_answer": "Shirley Basey",
+            "incorrect_answers": [
+                "Tom Jones",
+                "John Barry",
+                "Sheena Easton"
+            ]
+        },
+        {
+            "question": "Brendan Fraser starred in the following movies, except which one?",
+            "correct_answer": "Titanic",
+            "incorrect_answers": [
+                "Monkeybone",
+                "Encino Man",
+                "Mrs. Winterbourne"
+            ]
+        },
+        {
+            "question": "Which Marvel superhero did Chris Evans play prior to his role as Captain America?",
+            "correct_answer": "Human Torch",
+            "incorrect_answers": [
+                "Cyclops",
+                "Iceman",
+                "Daredevil"
+            ]
+        },
+        {
+            "question": "In the movie 'Back to the Future,' what speed does Doc Brown's DeLorean need to reach in order to travel through time?",
+            "correct_answer": "88 mph",
+            "incorrect_answers": [
+                "77 mph",
+                "100 mph",
+                "70 mph"
+            ]
+        },
+        {
+            "question": "Which of the following actors does not play a role in the movie 'The Usual Suspects?'",
+            "correct_answer": "Steve Buscemi",
+            "incorrect_answers": [
+                "Kevin Spacey",
+                "Benicio Del Toro",
+                "Gabriel Byrne"
+            ]
+        },
+        {
+            "question": "What is the name of the foley artist who designed the famous sounds of Star Wars, including Chewbacca's roar and R2-D2's beeps and whistles?",
+            "correct_answer": "Ben Burtt",
+            "incorrect_answers": [
+                "Ken Burns",
+                "Ralph McQuarrie",
+                "Miranda Keyes"
+            ]
+        },
+        {
+            "question": "About how much money did it cost for Tommy Wiseau to make his masterpiece 'The Room' (2003)?",
+            "correct_answer": "$6 Million",
+            "incorrect_answers": [
+                "$20,000",
+                "$1 Million",
+                "$10 Million"
+            ]
+        },
+        {
+            "question": "What is the birth name of Michael Keaton?",
+            "correct_answer": "Michael Douglas",
+            "incorrect_answers": [
+                "Michael Fox",
+                "Michael Richards",
+                "Michael Kane"
+            ]
+        },
+        {
+            "question": "In the Mad Max franchise, what type of car is the Pursuit Special driven by Max?",
+            "correct_answer": "Ford Falcon",
+            "incorrect_answers": [
+                "Holden Monaro",
+                "Chrysler Valiant Charger",
+                "Pontiac Firebird"
+            ]
+        },
+        {
+            "question": "What breed of dog was Marley in the film 'Marley & Me' (2008)?",
+            "correct_answer": "Labrador Retriever",
+            "incorrect_answers": [
+                "Golden Retriever",
+                "Dalmatian",
+                "Shiba Inu"
+            ]
+        },
+        {
+            "question": "Which of the following is not the name of a 'Bond Girl'? ",
+            "correct_answer": "Vanessa Kensington",
+            "incorrect_answers": [
+                "Pam Bouvier",
+                "Mary Goodnight",
+                "Wai Lin"
+            ]
+        },
+        {
+            "question": "Which of the following was not one of 'The Magnificent Seven'?",
+            "correct_answer": "Clint Eastwood",
+            "incorrect_answers": [
+                "Steve McQueen",
+                "Charles Bronson",
+                "Robert Vaughn"
+            ]
+        },
+        {
+            "question": "Which of the following movies was not based on a novel by Stephen King? ",
+            "correct_answer": "The Thing",
+            "incorrect_answers": [
+                "Carrie",
+                "Misery",
+                "The Green Mile"
+            ]
+        },
+        {
+            "question": "Which movie released in 2016 features Superman and Batman fighting?",
+            "correct_answer": "Batman v Superman: Dawn of Justice",
+            "incorrect_answers": [
+                "Batman v Superman: Superapocalypse",
+                "Batman v Superman: Black of Knight",
+                "Batman v Superman: Knightfall"
+            ]
+        },
+        {
+            "question": "Who starred as Bruce Wayne and Batman in Tim Burton's 1989 movie 'Batman'?",
+            "correct_answer": "Michael Keaton",
+            "incorrect_answers": [
+                "George Clooney",
+                "Val Kilmer",
+                "Adam West"
+            ]
+        },
+        {
+            "question": "What name did Tom Hanks give to his volleyball companion in the film `Cast Away`?",
+            "correct_answer": "Wilson",
+            "incorrect_answers": [
+                "Friday",
+                "Jones",
+                "Billy"
+            ]
+        },
+        {
+            "question": "Who directed 'E.T. the Extra-Terrestrial' (1982)?",
+            "correct_answer": "Steven Spielberg",
+            "incorrect_answers": [
+                "Stanley Kubrick",
+                "James Cameron",
+                "Tim Burton"
+            ]
+        },
+        {
+            "question": "Who wrote and directed the 1986 film 'Platoon'?",
+            "correct_answer": "Oliver Stone",
+            "incorrect_answers": [
+                "Francis Ford Coppola",
+                "Stanley Kubrick",
+                "Michael Cimino"
+            ]
+        },
+        {
+            "question": "Who played Deputy Marshal Samuel Gerard in the 1993 film 'The Fugitive'?",
+            "correct_answer": "Tommy Lee Jones",
+            "incorrect_answers": [
+                "Harrison Ford",
+                "Harvey Keitel",
+                "Martin Landau"
+            ]
+        },
+        {
+            "question": "Which actress danced the twist with John Travolta in 'Pulp Fiction'?",
+            "correct_answer": "Uma Thurman",
+            "incorrect_answers": [
+                "Kathy Griffin",
+                "Pam Grier",
+                "Bridget Fonda"
+            ]
+        },
+        {
+            "question": "Who starred in the film 1973 movie 'Enter The Dragon'?",
+            "correct_answer": "Bruce Lee",
+            "incorrect_answers": [
+                "Jackie Chan",
+                "Jet Li",
+                " Yun-Fat Chow"
+            ]
+        },
+        {
+            "question": "Leonardo DiCaprio won an Oscar for Best Actor in 2004's 'The Aviator'.",
+            "correct_answer": "False",
+            "incorrect_answers": [
+                "True"
+            ]
+        },
+        {
+            "question": "Which movie contains the quote, 'Say hello to my little friend!'?",
+            "correct_answer": "Scarface",
+            "incorrect_answers": [
+                "Reservoir Dogs",
+                "Heat",
+                "Goodfellas"
+            ]
+        },
+        {
+            "question": "The film '2001: A Space Odyssey' was released on December 31st, 2000.",
+            "correct_answer": "False",
+            "incorrect_answers": [
+                "True"
+            ]
+        },
+        {
+            "question": "Who directed the 2015 movie 'The Revenant'?",
+            "correct_answer": "Alejandro G. I&ntilde;&aacute;rritu",
+            "incorrect_answers": [
+                "Christopher Nolan",
+                "David Fincher",
+                "Wes Anderson"
+            ]
+        },
+        {
+            "question": "The Queen song `A Kind Of Magic` is featured in which 1986 film?",
+            "correct_answer": "Highlander",
+            "incorrect_answers": [
+                "Flash Gordon",
+                "Labyrinth",
+                "Howard the Duck"
+            ]
+        },
+        {
+            "question": "What was Dorothy's surname in 'The Wizard Of Oz'?",
+            "correct_answer": "Gale",
+            "incorrect_answers": [
+                "Perkins",
+                "Day",
+                "Parker"
+            ]
+        },
+        {
+            "question": "What was the title of the first Bond movie, released in 1962?",
+            "correct_answer": "Dr. No",
+            "incorrect_answers": [
+                "From Russia with Love",
+                "Goldfinger",
+                "Thunderball"
+            ]
+        },
+        {
+            "question": "This movie contains the quote, 'Houston, we have a problem.'",
+            "correct_answer": "Apollo 13",
+            "incorrect_answers": [
+                "The Right Stuff",
+                "Capricorn One",
+                "Marooned"
+            ]
+        },
+        {
+            "question": "This movie contains the quote, 'Nobody puts Baby in a corner.'",
+            "correct_answer": "Dirty Dancing",
+            "incorrect_answers": [
+                "Three Men and a Baby",
+                "Ferris Bueller's Day Off",
+                "Pretty in Pink"
+            ]
+        },
+        {
+            "question": "The 2010 film 'The Social Network' is a biographical drama film about MySpace founder Tom Anderson.",
+            "correct_answer": "False",
+            "incorrect_answers": [
+                "True"
+            ]
+        },
+        {
+            "question": "What is the orange and white bot's name in 'Star Wars: The Force Awakens'?",
+            "correct_answer": "BB-8",
+            "incorrect_answers": [
+                "BB-3",
+                "AA-A",
+                "R2-D2"
+            ]
+        },
+        {
+            "question": "The word 'Inception' came from the 2010 blockbuster hit 'Inception'.",
+            "correct_answer": "False",
+            "incorrect_answers": [
+                "True"
+            ]
+        },
+        {
+            "question": "Which of these actors/actresses is NOT a part of the cast for the 2016 movie 'Suicide Squad'?",
+            "correct_answer": "Scarlett Johansson",
+            "incorrect_answers": [
+                "Jared Leto",
+                "Will Smith",
+                "Margot Robbie"
+            ]
+        },
+        {
+            "question": "Which of these movies did Jeff Bridges not star in?",
+            "correct_answer": "The Hateful Eight",
+            "incorrect_answers": [
+                "Tron: Legacy",
+                "The Giver",
+                "True Grit"
+            ]
+        },
+        {
+            "question": "Which movie includes a giant bunny-like spirit who has magic powers including growing trees?",
+            "correct_answer": "My Neighbor Totoro",
+            "incorrect_answers": [
+                "Hop",
+                "Rise of the Guardians",
+                "Alice in Wonderland"
+            ]
+        },
+        {
+            "question": "Shaquille O'Neal appeared in the 1997 film 'Space Jam'.",
+            "correct_answer": "False",
+            "incorrect_answers": [
+                "True"
+            ]
+        },
+        {
+            "question": "What is the oldest Disney film?",
+            "correct_answer": "Snow White and the Seven Dwarfs",
+            "incorrect_answers": [
+                "Pinocchio",
+                "Dumbo",
+                "Fantasia"
+            ]
+        },
+        {
+            "question": "Samuel L. Jackson had the words, 'Bad Motherf*cker' in-scripted on his lightsaber during the filming of Star Wars.",
+            "correct_answer": "True",
+            "incorrect_answers": [
+                "False"
+            ]
+        },
+        {
+            "question": "Who is the main protagonist in, the 1985 film, Back to the Future?",
+            "correct_answer": "Marty McFly",
+            "incorrect_answers": [
+                "Emmett 'Doc' Brown",
+                "Biff Tannen",
+                "George McFly"
+            ]
+        },
+        {
+            "question": "Which actor plays Obi-Wan Kenobi in Star Wars Episodes I-lll?",
+            "correct_answer": "Ewan McGregor",
+            "incorrect_answers": [
+                "Alec Guinness",
+                "Hayden Christensen",
+                "Liam Neeson"
+            ]
+        },
+        {
+            "question": "The 2002 film '28 Days Later' is mainly set in which European country?",
+            "correct_answer": "United Kingdom",
+            "incorrect_answers": [
+                "France",
+                "Italy",
+                "Germany"
+            ]
+        },
+        {
+            "question": "In the movie 'Spaceballs', what are the Spaceballs attempting to steal from Planet Druidia?",
+            "correct_answer": "Air",
+            "incorrect_answers": [
+                "The Schwartz",
+                "Princess Lonestar",
+                "Meatballs"
+            ]
+        },
+        {
+            "question": "Brandon Routh plays the titular character in the movie 'John Wick'.",
+            "correct_answer": "False",
+            "incorrect_answers": [
+                "True"
+            ]
+        },
+        {
+            "question": "When does 'Rogue One: A Star Wars Story' take place chronologically in the series?",
+            "correct_answer": "Between Episode 3 and 4",
+            "incorrect_answers": [
+                "After Episode 6",
+                "Before Episode 1",
+                "Between Episode 4 and 5"
+            ]
+        },
+        {
+            "question": "In the 2012 film, 'The Lorax', who is the antagonist?",
+            "correct_answer": "Aloysius O'Hare",
+            "incorrect_answers": [
+                "Ted Wiggins",
+                "The Once-Ler",
+                "Grammy Norma"
+            ]
+        },
+        {
+            "question": "In the 1992 film 'Army of Darkness', what name does Ash give to his double-barreled shotgun?",
+            "correct_answer": "Boomstick",
+            "incorrect_answers": [
+                "Bloomstick",
+                "Blastbranch",
+                "2-Pump Chump"
+            ]
+        },
+        {
+            "question": "At the end of the 2001 film 'Rat Race', whose concert do the contestants crash?",
+            "correct_answer": "Smash Mouth",
+            "incorrect_answers": [
+                "Bowling for Soup",
+                "Sum 41",
+                "Linkin Park"
+            ]
+        },
+        {
+            "question": "'Minions' was released on the June 10th, 2015.",
+            "correct_answer": "False",
+            "incorrect_answers": [
+                "True"
+            ]
+        },
+        {
+            "question": "Who plays the character of Po in the Kung Fu Panda movies?",
+            "correct_answer": "Jack Black",
+            "incorrect_answers": [
+                "Mirana Jonnes",
+                "McConahey Ramses",
+                "Jim Petersson"
+            ]
+        },
+        {
+            "question": "Actor Tommy Chong served prison time.",
+            "correct_answer": "True",
+            "incorrect_answers": [
+                "False"
+            ]
+        },
+        {
+            "question": "In Big Hero 6, what fictional city is the Big Hero 6 from?",
+            "correct_answer": "San Fransokyo",
+            "incorrect_answers": [
+                "San Tokyo",
+                "Tokysisco",
+                "Sankyo"
+            ]
+        },
+        {
+            "question": "Where does the original Friday The 13th movie take place?",
+            "correct_answer": "Camp Crystal Lake",
+            "incorrect_answers": [
+                "Packanack",
+                "Higgins Haven",
+                "Camp Forest Green"
+            ]
+        },
+        {
+            "question": "Which of these Movies was NOT released in 1996?",
+            "correct_answer": "Gladiator",
+            "incorrect_answers": [
+                "Independence Day",
+                "The Rock",
+                "Mission: Impossible"
+            ]
+        },
+        {
+            "question": "Who directed the Kill Bill movies?",
+            "correct_answer": "Quentin Tarantino",
+            "incorrect_answers": [
+                "Arnold Schwarzenegger",
+                "David Lean",
+                "Stanley Kubrick"
+            ]
+        },
+        {
+            "question": "In 'ALF', what was ALF's real name?",
+            "correct_answer": "Gordon Shumway",
+            "incorrect_answers": [
+                "Gordon Milipp",
+                "Gordon Foster",
+                "Gordon von Gam"
+            ]
+        },
+        {
+            "question": "Who plays Jack Burton in the movie 'Big Trouble in Little China?'",
+            "correct_answer": "Kurt Russell",
+            "incorrect_answers": [
+                "Patrick Swayze",
+                "John Cusack",
+                "Harrison Ford"
+            ]
+        },
+        {
+            "question": "The 1996 film 'Fargo' is primarily set in which US state?",
+            "correct_answer": "Minnesota",
+            "incorrect_answers": [
+                "North Dakota",
+                "South Dakota",
+                "Wisconsin"
+            ]
+        },
+        {
+            "question": "Which of these films is NOT set in Los Angeles?",
+            "correct_answer": "RoboCop",
+            "incorrect_answers": [
+                "Blade Runner",
+                "The Terminator",
+                "Predator 2"
+            ]
+        },
+        {
+            "question": "In the movie 'The Iron Giant,' this character is the protagonist.",
+            "correct_answer": "Hogarth Hughes",
+            "incorrect_answers": [
+                "Kent Mansley",
+                "Dean McCoppin",
+                "Annie Hughes"
+            ]
+        },
+        {
+            "question": "Which retired American football quarterback played himself in 'Ace Ventura: Pet Detective' and 'Little Nicky'?",
+            "correct_answer": "Dan Marino",
+            "incorrect_answers": [
+                "John Elway",
+                "Tom Brady",
+                "Joe Montana"
+            ]
+        },
+        {
+            "question": "In the 1984 movie 'The Terminator', what model number is the Terminator portrayed by Arnold Schwarzenegger?",
+            "correct_answer": "T-800",
+            "incorrect_answers": [
+                "I-950",
+                "T-888",
+                "T-1000"
+            ]
+        },
+        {
+            "question": "There aren't any live-action clones in 'Star Wars: Episode III - Revenge of the Sith'.",
+            "correct_answer": "True",
+            "incorrect_answers": [
+                "False"
+            ]
+        },
+        {
+            "question": "What is the name of the robot in the 1951 science fiction film classic 'The Day the Earth Stood Still'?",
+            "correct_answer": "Gort",
+            "incorrect_answers": [
+                "Robby",
+                "Colossus",
+                "Box"
+            ]
+        },
+        {
+            "question": "Who directed the 1973 film 'American Graffiti'?",
+            "correct_answer": "George Lucas",
+            "incorrect_answers": [
+                "Ron Howard",
+                "Francis Ford Coppola",
+                "Steven Spielberg"
+            ]
+        },
+        {
+            "question": "Who played Batman in the 1997 film 'Batman and Robin'?",
+            "correct_answer": "George Clooney",
+            "incorrect_answers": [
+                "Michael Keaton",
+                "Val Kilmer",
+                "Christian Bale"
+            ]
+        },
+        {
+            "question": "In which African country was the 2006 film 'Blood Diamond' mostly set in?",
+            "correct_answer": "Sierra Leone",
+            "incorrect_answers": [
+                "Liberia",
+                "Burkina Faso",
+                "Central African Republic"
+            ]
+        },
+        {
+            "question": "In what year was the first Transformers movie released?",
+            "correct_answer": "1986",
+            "incorrect_answers": [
+                "2007",
+                "1984",
+                "2009"
+            ]
+        },
+        {
+            "question": "What does TIE stand for in reference to the TIE Fighter in 'Star Wars'?",
+            "correct_answer": "Twin Ion Engine",
+            "incorrect_answers": [
+                "Twin Iron Engine",
+                "Twin Intercepter Engine",
+                "Twin Inception Engine"
+            ]
+        },
+        {
+            "question": "The colour of the pills in the Matrix were Blue and Yellow.",
+            "correct_answer": "False",
+            "incorrect_answers": [
+                "True"
+            ]
+        },
+        {
+            "question": "What is the name of the first 'Star Wars' film by release order?",
+            "correct_answer": "A New Hope",
+            "incorrect_answers": [
+                "The Phantom Menace",
+                "The Force Awakens",
+                "Revenge of the Sith"
+            ]
+        },
+        {
+            "question": "What is the name of the Artificial Intelligence system in the 1983 film, 'WarGames'?",
+            "correct_answer": "War Operation Plan Response",
+            "incorrect_answers": [
+                "Self Evolving Thought Helix",
+                "Master Control Program",
+                "West Campus Analog Computer"
+            ]
+        },
+        {
+            "question": "In the 1971 film 'Willy Wonka & the Chocolate Factory', who played Willy Wonka?",
+            "correct_answer": "Gene Wilder",
+            "incorrect_answers": [
+                "Shia LeBouf",
+                "Peter Ostrum",
+                "Johnny Depp"
+            ]
+        },
+        {
+            "question": "What is the name of the villian in the 2015 Russian-American Sci-Fi Movie 'Hardcore Henry'?",
+            "correct_answer": "Akan",
+            "incorrect_answers": [
+                "Estelle",
+                "Jimmy",
+                "Henry"
+            ]
+        },
+        {
+            "question": "In the 1979 British film 'Quadrophenia' what is the name of the main protagonist?",
+            "correct_answer": "Jimmy Cooper",
+            "incorrect_answers": [
+                "Pete Townshend",
+                "Franc Roddam",
+                "Archie Bunker"
+            ]
+        },
+        {
+            "question": "The 1939 movie 'The Wizard of Oz' contained a horse that changed color, what material did they use to achieve this effect?",
+            "correct_answer": "Gelatin",
+            "incorrect_answers": [
+                "Dye",
+                "Paint",
+                "CGI Effect"
+            ]
+        },
+        {
+            "question": "Which one of these action movies are shot entirely in one take?",
+            "correct_answer": "Victoria",
+            "incorrect_answers": [
+                "Ip Man 2",
+                "The Bourne Legacy",
+                "L&eacute;on: The Professional"
+            ]
+        },
+        {
+            "question": "Which movie of film director Stanley Kubrick is known to be an adaptation of a Stephen King novel?",
+            "correct_answer": "The Shining",
+            "incorrect_answers": [
+                "2001: A Space Odyssey",
+                " Dr. Strangelove ",
+                "Eyes Wide Shut"
+            ]
+        },
+        {
+            "question": "What was another suggested name for, the 1985 film, Back to the Future?",
+            "correct_answer": "Spaceman From Pluto",
+            "incorrect_answers": [
+                "Hill Valley Time Travelers",
+                "The Time Travelers",
+                "The Lucky Man"
+            ]
+        },
+        {
+            "question": "In what year was the movie 'Police Academy' released?",
+            "correct_answer": "1984",
+            "incorrect_answers": [
+                "1986",
+                "1985",
+                "1983"
+            ]
+        },
+        {
+            "question": "In The Lord of the Rings: The Fellowship of the Ring, which one of the following characters from the book was left out of the film?",
+            "correct_answer": "Tom Bombadil",
+            "incorrect_answers": [
+                "Strider",
+                "Barliman Butterbur",
+                "Celeborn"
+            ]
+        },
+        {
+            "question": "In Back to the Future Part II, Marty and Dr. Emmett Brown go to which future date?",
+            "correct_answer": "October 21, 2015",
+            "incorrect_answers": [
+                "August 28, 2015",
+                "July 20, 2015",
+                "January 25, 2015"
+            ]
+        },
+        {
+            "question": "Darth Vader's famous reveal to Luke is iconic. But which of these is the right one?",
+            "correct_answer": "'No. I am your father.'",
+            "incorrect_answers": [
+                "'Luke, I am your father.'",
+                "'You're wrong. I am your father.'",
+                "'The truth is that I am your father.'"
+            ]
+        },
+        {
+            "question": "This trope refers to minor characters that are killed off to show how a monster works.",
+            "correct_answer": "Red Shirt",
+            "incorrect_answers": [
+                "Minions",
+                "Expendables",
+                "Cannon Fodder"
+            ]
+        },
+        {
+            "question": "Which animated film did Steven Lisberger direct in 1980 before going on to direct Tron?",
+            "correct_answer": "Animalympics",
+            "incorrect_answers": [
+                "The Fox and the Hound",
+                "The Black Cauldron",
+                "The Great Mouse Detecive"
+            ]
+        },
+        {
+            "question": "What city did the monster attack in the film, 'Cloverfield'?",
+            "correct_answer": "New York, New York",
+            "incorrect_answers": [
+                "Las Vegas, Nevada",
+                "Chicago, Illinois",
+                "Orlando, Florida"
+            ]
+        },
+        {
+            "question": "Joan Cusack starred in the 2009 disaster movie, '2012'.",
+            "correct_answer": "False",
+            "incorrect_answers": [
+                "True"
+            ]
+        },
+        {
+            "question": "In which movie does Robin Williams' character have to disguise themselves into a woman?",
+            "correct_answer": "Mrs. Doubtfire",
+            "incorrect_answers": [
+                "Old Dogs",
+                "Jumanji",
+                "Awakenings"
+            ]
+        },
+        {
+            "question": "Which famous singer was portrayed by actor Kevin Spacey in the 2004 biographical film 'Beyond the Sea'?",
+            "correct_answer": "Bobby Darin",
+            "incorrect_answers": [
+                "Louis Armstrong",
+                "Frank Sinatra",
+                "Dean Martin"
+            ]
+        },
+        {
+            "question": "Who is the director of the 1991 film 'Silence of the Lambs'?",
+            "correct_answer": "Jonathan Demme",
+            "incorrect_answers": [
+                "Stanley Kubrick",
+                "Frank Darabont",
+                "Michael Bay"
+            ]
+        },
+        {
+            "question": "Mark Wahlberg played the titular character of which 2008 video-game adaptation?",
+            "correct_answer": "Max Payne",
+            "incorrect_answers": [
+                "Alan Wake",
+                "Hitman",
+                "God Of War"
+            ]
+        },
+        {
+            "question": "In the 'Jurassic Park' universe, what is the name of the island that contains InGen's Site B?",
+            "correct_answer": "Isla Sorna",
+            "incorrect_answers": [
+                "Isla Nublar",
+                "Isla Pena",
+                "Isla Muerta"
+            ]
+        },
+        {
+            "question": "What is the make and model of the tour vehicles in 'Jurassic Park' (1993)?",
+            "correct_answer": "1992 Ford Explorer XLT",
+            "incorrect_answers": [
+                "1992 Toyota Land Cruiser",
+                "1992 Jeep Wrangler YJ Sahar",
+                "Mercedes M-Class"
+            ]
+        },
+        {
+            "question": "Who directed the movie 'Alien'?",
+            "correct_answer": "Ridley Scott",
+            "incorrect_answers": [
+                "Christopher Nolan",
+                "Michael Bay",
+                "James Cameron"
+            ]
+        },
+        {
+            "question": "Who plays 'Bruce Wayne' in the 2008 movie 'The Dark Knight'?",
+            "correct_answer": "Christian Bale",
+            "incorrect_answers": [
+                "Michael Caine",
+                "Ron Dean",
+                "Heath Ledger"
+            ]
+        },
+        {
+            "question": "Which former Star Trek actor directed Three Men and a Baby (1987)?",
+            "correct_answer": "Leonard Nimoy",
+            "incorrect_answers": [
+                "William Shatner",
+                "George Takei",
+                "James Doohan"
+            ]
+        },
+        {
+            "question": "Which town is the setting for the Disney movie The Love Bug (1968)?",
+            "correct_answer": "San Francisco",
+            "incorrect_answers": [
+                "Los Angeles",
+                "Sacramento",
+                "San Jose"
+            ]
+        },
+        {
+            "question": "What character in the Winnie the Pooh films was added by Disney and does not appear in the original books?",
+            "correct_answer": "Gopher",
+            "incorrect_answers": [
+                "Tigger",
+                "Heffalumps",
+                "Rabbit"
+            ]
+        },
+        {
+            "question": "Which director directed the movie 'Pan's Labyrinth'?",
+            "correct_answer": "Guillermo Del Toro",
+            "incorrect_answers": [
+                "Alfonso Cuar&oacute;n",
+                "Alejandro Gonz&aacute;lez I&ntilde;&aacute;rritu",
+                " Alejandro Jodorowsky"
+            ]
+        },
+        {
+            "question": "What film did James Cameron's Avatar dethrone as the highest-grossing film ever?",
+            "correct_answer": "Titanic",
+            "incorrect_answers": [
+                "Star Wars",
+                "Gone with the Wind",
+                "Jaws"
+            ]
+        },
+        {
+            "question": "Which of these Disney classics was released in 1970?",
+            "correct_answer": "The Aristocats",
+            "incorrect_answers": [
+                "One Hundred and One Dalmatians",
+                "The Fox and the Hound",
+                "The Little Mermaid"
+            ]
+        },
+        {
+            "question": "In the 2014 film 'Birdman', what is the primary instrument in the score?",
+            "correct_answer": "Drums",
+            "incorrect_answers": [
+                "Saxophone",
+                "Violin",
+                "Actual Live Birds Singing"
+            ]
+        },
+        {
+            "question": "Which Marvel superhero did Chris Evans play prior to his role as Captain America?",
+            "correct_answer": "Human Torch",
+            "incorrect_answers": [
+                "Cyclops",
+                "Iceman",
+                "Daredevil"
+            ]
+        },
+        {
+            "question": "Who did the score to the original Blade Runner?",
+            "correct_answer": "Vangelis",
+            "incorrect_answers": [
+                "Kitaro",
+                "Yanni",
+                "Enya"
+            ]
+        },
+        {
+            "question": "Which of the following films was NOT directed by Quentin Tarantino?",
+            "correct_answer": "From Dusk till Dawn",
+            "incorrect_answers": [
+                "Jackie Brown",
+                "Pulp Fiction",
+                "Reservoir Dogs"
+            ]
+        },
+        {
+            "question": "About how much money did it cost for Tommy Wiseau to make his masterpiece 'The Room' (2003)?",
+            "correct_answer": "$6 Million",
+            "incorrect_answers": [
+                "$20,000",
+                "$1 Million",
+                "$10 Million"
+            ]
+        },
+        {
+            "question": "What is the birth name of Michael Caine?",
+            "correct_answer": "Maurice Micklewhite",
+            "incorrect_answers": [
+                "Morris Coleman",
+                "Carl Myers",
+                "Martin Michaels"
+            ]
+        },
+        {
+            "question": "What is the birth name of Michael Keaton?",
+            "correct_answer": "Michael Douglas",
+            "incorrect_answers": [
+                "Michael Fox",
+                "Michael Richards",
+                "Michael Kane"
+            ]
+        },
+        {
+            "question": "Johnny Depp made his big-screen acting debut in which film?",
+            "correct_answer": "A Nightmare on Elm Street",
+            "incorrect_answers": [
+                "My Bloody Valentine",
+                "Halloween",
+                "Friday the 13th"
+            ]
+        },
+        {
+            "question": "Which was the first of Alfred Hitchcock's movies to be filmed in colour?",
+            "correct_answer": "Rope",
+            "incorrect_answers": [
+                "Psycho",
+                "Vertigo",
+                "Rebecca"
+            ]
+        },
+        {
+            "question": "What was the last Marx Brothers film to feature Zeppo?",
+            "correct_answer": "Duck Soup",
+            "incorrect_answers": [
+                "A Night at the Opera",
+                "A Day at the Races",
+                "Monkey Business"
+            ]
+        },
+        {
+            "question": "In the film 'Interstellar', how long did they spend on Miller's planet?",
+            "correct_answer": "23 years, 4 months, and 8 days",
+            "incorrect_answers": [
+                "15 years, 2 months, and 15 days",
+                "10 months and 6 days",
+                "26 years, 4 months, and 10 days"
+            ]
+        },
+        {
+            "question": "In the 1976 film 'Taxi Driver', how many guns did Travis buy from the salesman?",
+            "correct_answer": "4",
+            "incorrect_answers": [
+                "2",
+                "6",
+                "1"
+            ]
+        },
+        {
+            "question": "What did Alfred Hitchcock use as blood in the film 'Psycho'? ",
+            "correct_answer": "Chocolate syrup",
+            "incorrect_answers": [
+                "Ketchup",
+                "Red food coloring",
+                "Maple syrup"
+            ]
+        },
+        {
+            "question": "What is the name of the assassin in the first 'Hellboy' movie?",
+            "correct_answer": "Karl Ruprecht Kroenen",
+            "incorrect_answers": [
+                "Klaus Werner von Krupt",
+                "Grigori Efimovich Rasputin",
+                "Ilsa Haupstein"
+            ]
+        },
+        {
+            "question": "What was the name of the planet in 'Aliens'?",
+            "correct_answer": "LV-426",
+            "incorrect_answers": [
+                "Weyland Yutani Corporation Base",
+                "FR-838",
+                "DI-621"
+            ]
+        },
+        {
+            "question": "What did the first moving picture depict?",
+            "correct_answer": "A galloping horse",
+            "incorrect_answers": [
+                "A woman in a dress",
+                "A man walking",
+                "A crackling fire"
+            ]
+        },
+        {
+            "question": "In 2012, which movie won every category in the 32nd 'Golden Raspberry Awards'?",
+            "correct_answer": "Jack and Jill",
+            "incorrect_answers": [
+                "The Girl with the Dragon Tattoo",
+                "Thor",
+                "The King's Speech"
+            ]
+        },
+        {
+            "question": "In what Disney movie can you spot the character 'Pac-Man' in if you look closely enough in some scenes?",
+            "correct_answer": "Tron",
+            "incorrect_answers": [
+                "Big Hero 6",
+                "Fantasia",
+                "Monsters, Inc."
+            ]
+        },
+        {
+            "question": "In the 1964 film 'Zulu', what song does the British Army company sing before the final battle?",
+            "correct_answer": "Men of Harlech",
+            "incorrect_answers": [
+                "Scotland the Brave",
+                "Colonel Bogey March",
+                "The British Grenadiers"
+            ]
+        },
+        {
+            "question": "What was the first movie to ever use a Wilhelm Scream?",
+            "correct_answer": "Distant Drums",
+            "incorrect_answers": [
+                "Treasure of the Sierra Madre",
+                "The Charge at Feather River",
+                "Indiana Jones"
+            ]
+        },
+        {
+            "question": "In the movie 'Scream' who is Ghost Face?",
+            "correct_answer": "Billy Loomis and Stu Macher",
+            "incorrect_answers": [
+                "Dewey Riley",
+                "Sidney Prescott",
+                "Archie Prescott and Philip Marv"
+            ]
+        },
+        {
+            "question": "'Cube', 'Cube 2: Hypercube' and 'Cube Zero' were directed by the same person.",
+            "correct_answer": "False",
+            "incorrect_answers": [
+                "True"
+            ]
+        },
+        {
+            "question": "What was the name of the actor who played Leatherface in the 1974 horror film, The Texas Chainsaw Massacre?",
+            "correct_answer": "Gunnar Hansen",
+            "incorrect_answers": [
+                "Edwin Neal",
+                "John Dugan",
+                "Joe Bill Hogan"
+            ]
+        },
+        {
+            "question": "In order to cut costs, what were most of the extras of Mad Max (1979) paid with?",
+            "correct_answer": "Beer",
+            "incorrect_answers": [
+                "Fast food",
+                "Food stamps",
+                "They weren't paid"
+            ]
+        },
+        {
+            "question": "In 'Star Trek Nemesis', why was Praetor Shinzon created?",
+            "correct_answer": "To replace Picard as a Romulan Agent",
+            "incorrect_answers": [
+                "To destroy the Enterprise",
+                "To become Picard's friend ",
+                "To steal the Enterprise"
+            ]
+        },
+        {
+            "question": "In what year did Clint Eastwood star as Inspector Harry Callahan in the film 'Dirty Harry'?",
+            "correct_answer": "1971",
+            "incorrect_answers": [
+                "1975",
+                "1983",
+                "1969"
+            ]
+        },
+        {
+            "question": "The weapon Clint Eastwood uses in 'Dirty Harry' was a .44 Automag.",
+            "correct_answer": "False",
+            "incorrect_answers": [
+                "True"
+            ]
+        },
+        {
+            "question": "According to 'Star Wars' lore, which planet does Obi-Wan Kenobi come from?",
+            "correct_answer": "Stewjon",
+            "incorrect_answers": [
+                "Alderaan",
+                "Tatooine",
+                "Naboo"
+            ]
+        },
+        {
+            "question": "In what year does Jurassic World open in the 'Jurassic Park' universe?",
+            "correct_answer": "2005",
+            "incorrect_answers": [
+                "2007",
+                "2015",
+                "2020"
+            ]
+        },
+        {
+            "question": "What is the name of the supercomputer located in the control room in 'Jurassic Park' (1993)?",
+            "correct_answer": "Thinking Machines CM-5",
+            "incorrect_answers": [
+                "Cray X-MP",
+                "Cray XK7",
+                "IBM Blue Gene/Q"
+            ]
+        },
+        {
+            "question": "Before 'Jurassic Park III' was finalized and the Spinosaurus was chosen, which dinosaur was going to be the star?",
+            "correct_answer": "Baryonyx",
+            "incorrect_answers": [
+                "Tyrannosaurus Rex",
+                "Velociraptor",
+                "Suchomimus"
+            ]
+        },
+        {
+            "question": "In the 'Jurassic Park' universe, what was the first dinosaur cloned by InGen in 1986?",
+            "correct_answer": "Velociraptor",
+            "incorrect_answers": [
+                "Triceratops",
+                "Troodon",
+                "Brachiosaurus"
+            ]
+        },
+        {
+            "question": "In the 'Jurassic Park' universe, when did 'Jurassic Park: San Diego' begin construction?",
+            "correct_answer": "1985",
+            "incorrect_answers": [
+                "1988",
+                "1986",
+                "1993"
+            ]
+        },
+        {
+            "question": "What three movies, in order from release date, make up the 'Dollars Trilogy'?",
+            "correct_answer": "'A Fistful of Dollars', 'For a Few Dollars More', 'The Good, the Bad, and the Ugly'",
+            "incorrect_answers": [
+                "'The Good, the Bad, and the Ugly', 'For A Few Dollars More', 'A Fistful of Dollars'",
+                "'For a Few Dollars More', 'The Good, the Bad, and the Ugly', 'A Fistful of Dollars'",
+                "'For a Few Dollars More', 'A Fistful of Dollars', 'The Good, the Bad, and the Ugly'"
+            ]
+        },
+        {
+            "question": "Which actors made up the trio in 'The Good, the Bad, and the Ugly'? ",
+            "correct_answer": "Clint Eastwood, Eli Wallach, and Lee Van Cleef",
+            "incorrect_answers": [
+                "Sergio Leone, Ennio Morricone, and Tonino Delli Colli",
+                "Yul Brynner, Steve McQueen, and Charles Bronson",
+                "Aldo Giuffr&egrave;, Mario Brega, and Luigi Pistilli"
+            ]
+        },
+        {
+            "question": "What is the species of the 'Predator' in the 1987 movie 'Predator'?",
+            "correct_answer": "Yautja",
+            "incorrect_answers": [
+                "Xenomorph",
+                "Praetorian",
+                "Phocrex"
+            ]
+        },
+        {
+            "question": "Which of the following films was directed by Ivan Reitman, written by Gary Ross, featured Kevin Kline, and was released in 1993?",
+            "correct_answer": "Dave",
+            "incorrect_answers": [
+                "John",
+                "Will",
+                "Carl"
+            ]
+        },
+        {
+            "question": "In Big Hero 6, what were Baymax's motions modeled after?",
+            "correct_answer": "Baby penguins",
+            "incorrect_answers": [
+                "Baby monkeys",
+                "Baby ostriches",
+                "Baby bears"
+            ]
+        },
+        {
+            "question": "In the Friday The 13th series, what year did Jason drown in?",
+            "correct_answer": "1957",
+            "incorrect_answers": [
+                "1955",
+                "1953",
+                "1959"
+            ]
+        },
+        {
+            "question": "Which sci-fi cult films plot concerns aliens attempting to prevent humans from creating a doomsday weapon?",
+            "correct_answer": "Plan 9 from Outer Space",
+            "incorrect_answers": [
+                "The Man from Planet X",
+                "It Came from Outer Space",
+                "The Day The Earth Stood Still"
+            ]
+        },
+        {
+            "question": "Which 1994 film did Roger Ebert famously despise, saying 'I hated hated hated hated hated this movie'.",
+            "correct_answer": "North",
+            "incorrect_answers": [
+                "3 Ninjas Kick Back",
+                "The Santa Clause",
+                "Richie Rich"
+            ]
+        },
+        {
+            "question": "Which boxer was famous for striking the gong in the introduction to J. Arthur Rank films?",
+            "correct_answer": "Bombardier Billy Wells",
+            "incorrect_answers": [
+                "Freddie Mills",
+                "Terry Spinks",
+                "Don Cockell"
+            ]
+        },
+        {
+            "question": "What was Humphrey Bogart's middle name?",
+            "correct_answer": "DeForest",
+            "incorrect_answers": [
+                "DeWinter",
+                "Steven",
+                "Bryce"
+            ]
+        },
+        {
+            "question": "The film Mad Max: Fury Road features the Dies Irae  from which composer's requiem?",
+            "correct_answer": "Verdi",
+            "incorrect_answers": [
+                "Mozart",
+                "Berlioz",
+                "Brahms"
+            ]
+        },
+        {
+            "question": "YouTube personality Jenna Marbles served as an executive producer of the film Maximum Ride (2016).",
+            "correct_answer": "True",
+            "incorrect_answers": [
+                "False"
+            ]
+        },
+        {
+            "question": "In the 1974 Christmas flick 'The Year Without a Santa Claus,' what are the names of the two elves who help Mrs. Claus save Christmas?",
+            "correct_answer": "Jingle & Jangle",
+            "incorrect_answers": [
+                "Buddy & Bobby",
+                "Holly & Jolly",
+                "Snowflake & Icicle"
+            ]
+        },
+        {
+            "question": "What was the wifi password given to Stephen Strange in Doctor Strange?",
+            "correct_answer": "Shambala",
+            "incorrect_answers": [
+                "Peace",
+                "Ancient",
+                "Chakra"
+            ]
+        },
+        {
+            "question": "Which singer is portrayed by Bruce Campbell in the 2002 film 'Bubba Ho-Tep'?",
+            "correct_answer": "Elvis Presley",
+            "incorrect_answers": [
+                "Johnny Cash",
+                "Hank Williams, Sr.",
+                "Buddy Holly"
+            ]
+        },
+        {
+            "question": "Which 1958 movie starred Kirk Douglas and Tony Curtis as half-brothers Einar and Eric?",
+            "correct_answer": "The Vikings ",
+            "incorrect_answers": [
+                "The Long Ships",
+                "Prince Valiant",
+                "Spartacus"
+            ]
+        },
+        {
+            "question": "Which retired American football quarterback played himself in 'Ace Ventura: Pet Detective' and 'Little Nicky'?",
+            "correct_answer": "Dan Marino",
+            "incorrect_answers": [
+                "John Elway",
+                "Tom Brady",
+                "Joe Montana"
+            ]
+        },
+        {
+            "question": "In which 1973 film does Yul Brynner play a robotic cowboy who malfunctions and goes on a killing\tspree?",
+            "correct_answer": "Westworld",
+            "incorrect_answers": [
+                "Runaway",
+                "Android",
+                "The Terminators"
+            ]
+        },
+        {
+            "question": "Who voiced the character Draco in the 1996 movie 'DragonHeart'?",
+            "correct_answer": "Sean Connery",
+            "incorrect_answers": [
+                "Dennis Quaid",
+                "Pete Postlethwaite",
+                "Brian Thompson"
+            ]
+        },
+        {
+            "question": "In the 1984 movie 'The Terminator', what model number is the Terminator portrayed by Arnold Schwarzenegger?",
+            "correct_answer": "T-800",
+            "incorrect_answers": [
+                "I-950",
+                "T-888",
+                "T-1000"
+            ]
+        },
+        {
+            "question": "What is the name of the robot in the 1951 science fiction film classic 'The Day the Earth Stood Still'?",
+            "correct_answer": "Gort",
+            "incorrect_answers": [
+                "Robby",
+                "Colossus",
+                "Box"
+            ]
+        },
+        {
+            "question": "Which of the following James Bond villains is not affiliated with the SPECTRE organization?",
+            "correct_answer": "Auric Goldfinger",
+            "incorrect_answers": [
+                "Dr. Julius No",
+                "Rosa Klebb",
+                "Emilio Largo"
+            ]
+        },
+        {
+            "question": "Who directed the 1973 film 'American Graffiti'?",
+            "correct_answer": "George Lucas",
+            "incorrect_answers": [
+                "Ron Howard",
+                "Francis Ford Coppola",
+                "Steven Spielberg"
+            ]
+        },
+        {
+            "question": "Who played Batman in the 1997 film 'Batman and Robin'?",
+            "correct_answer": "George Clooney",
+            "incorrect_answers": [
+                "Michael Keaton",
+                "Val Kilmer",
+                "Christian Bale"
+            ]
+        },
+        {
+            "question": "Which iconic character is featured in movies such as 'The Enforcer', 'Sudden Impact', and 'The Dead Pool'?",
+            "correct_answer": "Dirty Harry",
+            "incorrect_answers": [
+                "Indiana Jones",
+                "James Bond",
+                "Harry Potter"
+            ]
+        },
+        {
+            "question": "What is the name of the villian in the 2015 Russian-American Sci-Fi Movie 'Hardcore Henry'?",
+            "correct_answer": "Akan",
+            "incorrect_answers": [
+                "Estelle",
+                "Jimmy",
+                "Henry"
+            ]
+        },
+        {
+            "question": "In the 1979 British film 'Quadrophenia' what is the name of the main protagonist?",
+            "correct_answer": "Jimmy Cooper",
+            "incorrect_answers": [
+                "Pete Townshend",
+                "Franc Roddam",
+                "Archie Bunker"
+            ]
+        },
+        {
+            "question": "In the 2010 Nightmare on Elm Street reboot, who played Freddy Kruger?",
+            "correct_answer": "Jackie Earle Haley",
+            "incorrect_answers": [
+                "Tyler Mane",
+                "Derek Mears",
+                "Gunnar Hansen"
+            ]
+        },
+        {
+            "question": "The 1939 movie 'The Wizard of Oz' contained a horse that changed color, what material did they use to achieve this effect?",
+            "correct_answer": "Gelatin",
+            "incorrect_answers": [
+                "Dye",
+                "Paint",
+                "CGI Effect"
+            ]
+        },
+        {
+            "question": "Which one of these films are shot entirely in one-take?",
+            "correct_answer": "Russian Ark",
+            "incorrect_answers": [
+                "Good Will Hunting",
+                "Birdman",
+                "Schindler's List"
+            ]
+        },
+        {
+            "question": "Who voices the main character Blu in the 2011 animated film 'Rio'?",
+            "correct_answer": "Jesse Eisenberg",
+            "incorrect_answers": [
+                "Michael Cera",
+                "Jonah Hill",
+                "Zach Galifianakis"
+            ]
+        },
+        {
+            "question": "In what year was the movie 'Police Academy' released?",
+            "correct_answer": "1984",
+            "incorrect_answers": [
+                "1986",
+                "1985",
+                "1983"
+            ]
+        },
+        {
+            "question": "Sean Connery wasn't in 'Indiana Jones and the Kingdom of the Crystal Skull' because he found retirement too enjoyable.",
+            "correct_answer": "True",
+            "incorrect_answers": [
+                "False"
+            ]
+        },
+        {
+            "question": "In the 1999 movie Fight Club, which of these is not a rule of the 'fight club'?",
+            "correct_answer": "Always wear a shirt",
+            "incorrect_answers": [
+                "You do not talk about FIGHT CLUB",
+                "Only two guys to a fight",
+                "Fights will go on as long as they have to"
+            ]
+        },
+        {
+            "question": "Which animated film did Steven Lisberger direct in 1980 before going on to direct Tron?",
+            "correct_answer": "Animalympics",
+            "incorrect_answers": [
+                "The Fox and the Hound",
+                "The Black Cauldron",
+                "The Great Mouse Detecive"
+            ]
+        },
+        {
+            "question": "What year did the James Cameron film 'Titanic' come out in theaters?",
+            "correct_answer": "1997",
+            "incorrect_answers": [
+                "1996",
+                "1998",
+                "1999"
+            ]
+        },
+        {
+            "question": "What was the name of the protagonist in the movie Commando (1985)?",
+            "correct_answer": "John Matrix",
+            "incorrect_answers": [
+                "Ben Richards",
+                "Douglas Quaid",
+                "Harry Tasker"
+            ]
+        },
+        {
+            "question": "Who played the Cenobite called 'Pinhead' in the original Hellraiser films?",
+            "correct_answer": "Doug Bradley",
+            "incorrect_answers": [
+                "Doug Jones",
+                "Doug Savant",
+                "Doug Benson"
+            ]
+        },
+        {
+            "question": "What is the correct spelling of the protagonist of the book in The NeverEnding Story (1984)?",
+            "correct_answer": "Atreyu",
+            "incorrect_answers": [
+                "Atrayu",
+                "Atraiyu",
+                "Atraeyu"
+            ]
+        },
+        {
+            "question": "Which famous singer was portrayed by actor Kevin Spacey in the 2004 biographical film 'Beyond the Sea'?",
+            "correct_answer": "Bobby Darin",
+            "incorrect_answers": [
+                "Louis Armstrong",
+                "Frank Sinatra",
+                "Dean Martin"
+            ]
+        },
+        {
+            "question": "Who is the director of the 1991 film 'Silence of the Lambs'?",
+            "correct_answer": "Jonathan Demme",
+            "incorrect_answers": [
+                "Stanley Kubrick",
+                "Frank Darabont",
+                "Michael Bay"
+            ]
+        },
+        {
+            "question": "Which documentary film maker wrote and starred in the film 'My Scientology Movie' which first debuted in 2015?",
+            "correct_answer": "Louis Theroux",
+            "incorrect_answers": [
+                "Errol Morris",
+                "Joe Berlinger",
+                "Adam Curtis"
+            ]
+        },
+        {
+            "question": "What is the make and model of the tour vehicles in 'Jurassic Park' (1993)?",
+            "correct_answer": "1992 Ford Explorer XLT",
+            "incorrect_answers": [
+                "1992 Toyota Land Cruiser",
+                "1992 Jeep Wrangler YJ Sahar",
+                "Mercedes M-Class"
+            ]
+        },
+        {
+            "question": "In 'Jurassic World', which company purchases InGen and creates Jurassic World?",
+            "correct_answer": "Masrani Global Corporation ",
+            "incorrect_answers": [
+                "Biology Synthetics Technologies",
+                "International Genetics Incorporated",
+                "International Genetic Technologies"
+            ]
+        },
+        {
+            "question": "What Queen song plays during the final fight scene of the film 'Hardcore Henry'?",
+            "correct_answer": "Don't Stop Me Now",
+            "incorrect_answers": [
+                "Brighton Rock",
+                "Another Bites the Dust",
+                "We Will Rock You"
+            ]
+        },
+        {
+            "question": "Which actor plays the character 'Tommy Jarvis' in 'Friday the 13th: The Final Chapter' (1984)?",
+            "correct_answer": "Corey Feldman",
+            "incorrect_answers": [
+                "Macaulay Culkin",
+                "Mel Gibson",
+                "Mark Hamill"
+            ]
+        },
+        {
+            "question": "Which former Star Trek actor directed Three Men and a Baby (1987)?",
+            "correct_answer": "Leonard Nimoy",
+            "incorrect_answers": [
+                "William Shatner",
+                "George Takei",
+                "James Doohan"
+            ]
+        },
+        {
+            "question": "In Mulan (1998), who is the leader of the Huns?",
+            "correct_answer": "Shan Yu",
+            "incorrect_answers": [
+                "Chien-Po",
+                "Li Shang",
+                "Fa Zhou"
+            ]
+        },
+        {
+            "question": "What is the name of the queen's pet in A Bug's Life?",
+            "correct_answer": "Aphie",
+            "incorrect_answers": [
+                "Flik",
+                "Hopper",
+                "Dot"
+            ]
+        },
+        {
+            "question": "In Finding Nemo, what was the name of Nemo's mom?",
+            "correct_answer": "Coral",
+            "incorrect_answers": [
+                "Sandy",
+                "Pearl",
+                "Shelly"
+            ]
+        },
+        {
+            "question": "Which director directed the movie 'Pan's Labyrinth'?",
+            "correct_answer": "Guillermo Del Toro",
+            "incorrect_answers": [
+                "Alfonso Cuar&oacute;n",
+                "Alejandro Gonz&aacute;lez I&ntilde&;aacute;rritu",
+                " Alejandro Jodorowsky"
+            ]
+        },
+        {
+            "question": "What film did James Cameron's Avatar dethrone as the highest-grossing film ever?",
+            "correct_answer": "Titanic",
+            "incorrect_answers": [
+                "Star Wars",
+                "Gone with the Wind",
+                "Jaws"
+            ]
+        },
+        {
+            "question": "Which of these Disney classics was released in 1970?",
+            "correct_answer": "The Aristocats",
+            "incorrect_answers": [
+                "One Hundred and One Dalmatians",
+                "The Fox and the Hound",
+                "The Little Mermaid"
+            ]
+        },
+        {
+            "question": "Which 90's comedy cult classic features cameos appearances from Meat Loaf, Alice Cooper and Chris Farley?",
+            "correct_answer": "Wayne's World",
+            "incorrect_answers": [
+                "Bill & Ted's Excellent Adventure",
+                "Dumb and Dumber",
+                "Austin Powers: International Man of Mystery"
+            ]
+        },
+        {
+            "question": "Which actor and martial artist starred as Colonel Guile in the 1994 action film adaptation of Street Fighter?",
+            "correct_answer": "Jean-Claude Van Damme",
+            "incorrect_answers": [
+                "Chuck Norris",
+                "Steven Seagal",
+                "Scott Adkins"
+            ]
+        },
+        {
+            "question": "Ed Koch, the Mayor of New York in 1984, played himself in which Muppets movie?",
+            "correct_answer": "The Muppets Take Manhattan",
+            "incorrect_answers": [
+                "The Great Muppet Caper",
+                "The Muppet Christmas Carol",
+                "The Muppet Movie"
+            ]
+        },
+        {
+            "question": "Who performed the opening theme song for the James Bond 007 movie 'Goldfinger'?",
+            "correct_answer": "Shirley Basey",
+            "incorrect_answers": [
+                "Tom Jones",
+                "John Barry",
+                "Sheena Easton"
+            ]
+        },
+        {
+            "question": "Which musical artist had a prominent role in the 2017 film 'Kingsman: The Golden Circle'?",
+            "correct_answer": "Elton John",
+            "incorrect_answers": [
+                "Lady Gaga",
+                "Rihanna",
+                "Justin Bieber"
+            ]
+        },
+        {
+            "question": "Which Marvel superhero did Chris Evans play prior to his role as Captain America?",
+            "correct_answer": "Human Torch",
+            "incorrect_answers": [
+                "Cyclops",
+                "Iceman",
+                "Daredevil"
+            ]
+        },
+        {
+            "question": "After India, which country produces the second most movies per year?",
+            "correct_answer": "Nigeria",
+            "incorrect_answers": [
+                "United States",
+                "China",
+                "France"
+            ]
+        },
+        {
+            "question": "What is the name of the foley artist who designed the famous sounds of Star Wars, including Chewbacca's roar and R2-D2's beeps and whistles?",
+            "correct_answer": "Ben Burtt",
+            "incorrect_answers": [
+                "Ken Burns",
+                "Ralph McQuarrie",
+                "Miranda Keyes"
+            ]
+        },
+        {
+            "question": "What is the birth name of Michael Caine?",
+            "correct_answer": "Maurice Micklewhite",
+            "incorrect_answers": [
+                "Morris Coleman",
+                "Carl Myers",
+                "Martin Michaels"
+            ]
+        },
+        {
+            "question": "Johnny Depp made his big-screen acting debut in which film?",
+            "correct_answer": "A Nightmare on Elm Street",
+            "incorrect_answers": [
+                "My Bloody Valentine",
+                "Halloween",
+                "Friday the 13th"
+            ]
+        },
+        {
+            "question": "The killer in the 1981 film 'My Bloody Valentine' wears what sort of outfit?",
+            "correct_answer": "Mining gear",
+            "incorrect_answers": [
+                "Clown costume",
+                "Santa suit",
+                "Police uniform"
+            ]
+        },
+        {
+            "question": "In the Mad Max franchise, what type of car is the Pursuit Special driven by Max?",
+            "correct_answer": "Ford Falcon",
+            "incorrect_answers": [
+                "Holden Monaro",
+                "Chrysler Valiant Charger",
+                "Pontiac Firebird"
+            ]
         }
     ]
 }

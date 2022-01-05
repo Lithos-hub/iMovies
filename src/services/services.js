@@ -23,6 +23,21 @@ class Services {
       .get("questions");
     const RESOLVED_DATA = RESOLVED_QUESTIONS.data();
     const RESOLVED_ARR = RESOLVED_DATA.questions;
+    let points = 0
+    let myDocID = localStorage.getItem("docID")
+
+    
+    for (let resolved of RESOLVED_ARR) {
+      if (resolved.passed) {
+        points += 10
+      }
+    }
+
+    await db.doc(`userData/${myDocID}/triviaQuestions/points`).set({
+      total: points
+    });
+
+    console.log('Total points: ', points)
 
     return RESOLVED_ARR;
   }
@@ -56,6 +71,7 @@ class Services {
     question.id = questionData.id;
     question.correct_answer = questionData.correct_answer;
     question.ask = questionData.question;
+    question.image = questionData.image;
     question.answers.splice(randomOrder, 0, questionData.correct_answer);
 
     if (RESOLVED_ARR.length === 364) {

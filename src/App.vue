@@ -68,6 +68,7 @@ export default {
       // ? const SEVENTH_STAGE = 500
       // ? const EIGHTH_STAGE = 750
       // ? const NINTH_STAGE = 1000
+      // TODO: Continue
       const addRewardByStage = (stage) => {
       }
 

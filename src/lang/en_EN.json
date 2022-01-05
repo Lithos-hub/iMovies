@@ -163,7 +163,11 @@
     "text1": "Trailer of the week",
     "text2": "Movie of the week",
     "ratings": " ratings",
-    "noOverview": "This overview is not available in your language."
+    "noOverview": "This overview is not available in your language.",
+    "text3": "Question of the day",
+    "hasPlayed": "You have already played today's challengue",
+    "hasNotPlayed": "You have a new challengue to complete!",
+    "play": "Play"
   },
   "view-search": {
     "byTitle": "Search by movie title",
