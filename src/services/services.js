@@ -97,6 +97,10 @@ class Services {
       questions: firebase.firestore.FieldValue.arrayUnion(question),
     });
   }
+
+  async getAchievements() {
+    
+  }
 }
 
 export default new Services();

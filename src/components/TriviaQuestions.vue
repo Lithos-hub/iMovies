@@ -160,6 +160,7 @@ export default {
         setTimeout(() => {
           this.checkedAnswer = true
         }, 3000)
+        this.$store.dispatch('getUserPoints')
       }, 1000);
     },
   },

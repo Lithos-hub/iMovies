@@ -1,5 +1,6 @@
 <template>
   <v-app class="app">
+    <RewardNotification id="reward-notification" class="d-none" />
     <Navbar
       id="navbar"
       v-if="
@@ -25,6 +26,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import Navbar from "./components/Navbar";
+import RewardNotification from "./components/RewardNotification";
 import LoadingData from "./components/LoadingData";
 import router from "./router/index";
 import { auth, db } from "./../firebase.js";
@@ -32,11 +34,13 @@ import { auth, db } from "./../firebase.js";
 export default {
   components: {
     Navbar,
-    LoadingData,
+    RewardNotification,
+    LoadingData
   },
   data() {
     return {
       isLoading: true,
+      hasNotification: false,
     };
   },
   watch: {
@@ -56,8 +60,11 @@ export default {
       }
       window.scrollTo(0, 0);
     },
-    moviesCounter (count) {
-      console.log('My movies counter: ', count)
+    userPoints(points) {
+      console.log("My user points", points);
+    },
+    moviesCounter(count) {
+      console.log("My movies counter: ", count);
       // ! Stages to get avatars and badges
       // ? const FIRST_STAGE = 1
       // ? const SECOND_STAGE = 25
@@ -69,56 +76,72 @@ export default {
       // ? const EIGHTH_STAGE = 750
       // ? const NINTH_STAGE = 1000
       // TODO: Continue
-      const addRewardByStage = (stage) => {
-      }
+      const addRewardByStage = (stage) => {};
 
       const STAGES_AND_ACTIONS = {
-        1: addRewardByStage('first'),
-        25: addRewardByStage('second'),
-        50: addRewardByStage('third'),
-        100: addRewardByStage('fourth'),
-        200: addRewardByStage('fifth'),
-        300: addRewardByStage('sixth'),
-        500: addRewardByStage('seventh'),
-        750: addRewardByStage('eighth'),
-        1000: addRewardByStage('ninth')
-      }
-
-
+        1: addRewardByStage("first"),
+        25: addRewardByStage("second"),
+        50: addRewardByStage("third"),
+        100: addRewardByStage("fourth"),
+        200: addRewardByStage("fifth"),
+        300: addRewardByStage("sixth"),
+        500: addRewardByStage("seventh"),
+        750: addRewardByStage("eighth"),
+        1000: addRewardByStage("ninth"),
+      };
       STAGES_AND_ACTIONS[count];
-
-    }
+    },
   },
   computed: {
-    ...mapState(["loadingUserAuthStatus", "moviesCounter", "moviesCounter"]),
+    ...mapState(["loadingUserAuthStatus", "moviesCounter", "userPoints"]),
   },
   created() {
-    this.getUserData()
+    this.getUserData();
     const MY_FS_DOC = localStorage.getItem("docID");
     if (MY_FS_DOC) {
       this.$store.commit("setDocID", MY_FS_DOC);
     } else {
       this.getMyDocID();
     }
-    console.log('My Firestore Doc ID: ', this.$store.getters.myDocumentID);
+    console.log("My Firestore Doc ID: ", this.$store.getters.myDocumentID);
   },
-  mounted () {
-    this.getCurrentDate()
+  mounted() {
+    this.getCurrentDate();
+    this.$store.dispatch("getUserPoints");
   },
   methods: {
     ...mapActions(["changeLanguage", "getUserID"]),
+    triggerNotification () {
+      const notification = document.querySelector('#reward-notification');
+      notification.style.opacity = 0;
+      notification.classList.remove('d-none');
+      notification.classList.add('to-bottom');
+      notification.style.transition = 'opacity 1s ease-out';
+      notification.style.opacity = 1;
+
+      setTimeout(() => {
+        notification.style.transition = 'all 1s ease-out';
+        notification.style.opacity = 0;
+      }, 5000)
+      setTimeout(() => {
+        notification.classList.add('d-none');
+        notification.classList.remove('to-bottom');
+      }, 6000)
+    },
     getCurrentDate() {
       let date = new Date();
-      let currentDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+      let currentDate = `${date.getDate()}-${
+        date.getMonth() + 1
+      }-${date.getFullYear()}`;
       this.$store.commit("setCurrentDate", currentDate);
     },
     async getUserData() {
       await auth.onAuthStateChanged((user) => {
         if (user) {
           this.$store.commit("setUser", user);
-          this.isLoading = false
+          this.isLoading = false;
         }
-      })
+      });
     },
     async getMyDocID() {
       const COLLECTION = await db.collection("userData").get();
@@ -136,6 +159,7 @@ export default {
 
 <style lang="scss">
 @import "src/scss/variables";
+@import "src/scss/app";
 
 body {
   position: absolute;
@@ -187,76 +211,4 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(255, 255, 255);
 }
-
-// // ******* MOBILE RESPONSIVE ******* //
-// @media only screen and (min-width: 360px) {
-//   .main-content {
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background: $dark2 !important;
-//   color: white;
-//   font-family: $style1 !important;
-// }
-
-//   .routerview {
-//     position: relative;
-//     top: 0;
-//     left: 0;
-//     width: 100%;
-//     height: 100%;
-//     margin: 0 auto;
-//   }
-// }
-
-// // ******* LAPTOP RESPONSIVE ******* //
-// @media only screen and (min-width: 1366px) {
-//   .main-content {
-//   overflow-y: scroll;
-//   overflow-x: hidden;
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background: $dark2 !important;
-//   color: white;
-//   font-family: $style1 !important;
-// }
-
-//   .routerview {
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     width: 100%;
-//     height: 100%;
-//     margin: 0 auto;
-//   }
-// }
-
-// // ******* DESKTOP RESPONSIVE ******* //
-// @media only screen and (min-width: 1920px) {
-//   .main-content {
-//   overflow-y: scroll;
-//   overflow-x: hidden;
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background: $dark2 !important;
-//   color: white;
-//   font-family: $style1 !important;
-// }
-
-//   .routerview {
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     width: 100%;
-//     height: 100%;
-//     margin: 0 auto;
-//   }
-// }
 </style>

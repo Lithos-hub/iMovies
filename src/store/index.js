@@ -21,6 +21,7 @@ export default new Vuex.Store({
   state: {
     imageURL: "https://image.tmdb.org/t/p/original",
     user: {},
+    userPoints: null,
     userData: {},
     documentId: "",
     loadingUserAuthStatus: false,
@@ -78,7 +79,8 @@ export default new Vuex.Store({
     moviesCounter: null,
     questionID: 0,
     resolvedQuestions: [],
-    currentDate: null
+    currentDate: null,
+    achievementsCards: [],
   },
   mutations: {
     setUser(state, payload) {
@@ -148,7 +150,7 @@ export default new Vuex.Store({
         warning: true,
         warningColor: color,
         warningText: text,
-        isCorrect: isCorrect
+        isCorrect: isCorrect,
       };
       setTimeout(() => {
         state.warningObject.warning = false;
@@ -237,11 +239,17 @@ export default new Vuex.Store({
     },
     setCurrentDate(state, payload) {
       state.currentDate = payload;
+    },
+    setUserPoints(state, payload) {
+      state.userPoints = payload;
+    },
+    setAchievementsCards(state, payload) {
+      state.achievementsCards = payload;
     }
   },
   actions: {
     // ! __________________ MIX ACTIONS __________________ //
-    showInfo(item) {
+    showInfo({ commit }, item) {
       router.push({ path: `movie/${item.id}` });
     },
     showSnackbar({ commit }, payload) {
@@ -309,6 +317,37 @@ export default new Vuex.Store({
 
       commit("setUser", user);
     },
+    async getUserPoints ({ commit }) {
+      const MY_DOC_ID = localStorage.getItem("docID");
+      const My_POINTS = await db
+        .doc(`userData/${MY_DOC_ID}/triviaQuestions/points`)
+        .get("total");
+
+        const userPoints = My_POINTS.data();
+        commit("setUserPoints", userPoints.total);
+    },
+    async addUserPoints (points) {
+      const MY_DOC_ID = localStorage.getItem("docID");
+      await db.doc(`userData/${MY_DOC_ID}/triviaQuestions/points`).set({
+        total: points
+      });
+    },
+    async triggerAchievements(code) {
+      const MY_DOC_ID = localStorage.getItem("docID");
+      const MY_ACHIEVES = await db
+        .doc(`userData/${MY_DOC_ID}/rewards/achievements`)
+        .get("cards");
+      // ? Here we will control all the achievements
+      // ? If code !== null, we will add the achieve with that code
+      // ? Else, we will analyze the movies data to check if the user has achieved something
+
+      if (!code) {
+
+      } else {
+
+      }
+
+    },
     // ? ----- FIRESTORE ACTIONS ----- //
     async getAllStoragedMovies({ commit }) {
       commit("setLoadingAllStoragedMovies", true);
@@ -342,7 +381,6 @@ export default new Vuex.Store({
       commit("setWatchedMovies", watchedData.moviesList);
       commit("setWishListMovies", wishListData.moviesList);
       commit("setRatedMovies", ratedData.moviesList);
-
       commit("setLoadingAllStoragedMovies", false);
     },
     async getStoragedMovies({ commit }, { movieToAdd, MY_DOC_ID }) {
@@ -414,6 +452,14 @@ export default new Vuex.Store({
         commit("setRate", RATED_MATCH ? RATED_MATCH.rate : 0);
       }
       commit("setIsLoadingAddedMovies", false);
+
+      // ! ****************************************************** ! //
+      // ? Here we must to set rewards watching the movies lists
+      // ! ****************************************************** ! //
+
+
+      commit("setAchievementsCards", Array)
+
     },
     getQuestionID({ commit }) {
       let id = null;
@@ -422,14 +468,11 @@ export default new Vuex.Store({
       commit("setQuestionID", id);
     },
     // ? ----- TRIVIA ACTIONS ----- //
-    async getTriviaQuestion () {
+    async getTriviaQuestion() {
       // First: We get the questions resolved by the user to ignore them
-
       // Second: We generate a random number between 0 and 364 and
       // the number must be different from the questions index resolved by the user
-
       // Third: We get the question from the database
-
       // Fourth: We call the Deepl API to get the translated question
     },
     // ! __________________ API ACTIONS __________________ //
@@ -657,24 +700,24 @@ export default new Vuex.Store({
         });
     },
     async getRandomMovies({ commit }) {
-      let arr = []
-      let page = 1
-      const CALL_URL = `${URL}/discover/movie?year=2021&api_key=${APIKEY}&include_adult=false&page=${page}&sort_by=popularity.desc&vote_average.gte=6`
+      let arr = [];
+      let page = 1;
+      const CALL_URL = `${URL}/discover/movie?year=2021&api_key=${APIKEY}&include_adult=false&page=${page}&sort_by=popularity.desc&vote_average.gte=6`;
       await axios
-      .get(CALL_URL)
-      .then((resp) => {
-        for (let movie of resp.data.results) {
-          arr.push(movie)
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-        commit("showSnackbar", {
-          text: "Database error connection",
-          color: "red",
+        .get(CALL_URL)
+        .then((resp) => {
+          for (let movie of resp.data.results) {
+            arr.push(movie);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          commit("showSnackbar", {
+            text: "Database error connection",
+            color: "red",
+          });
         });
-      });
-    commit("setTriviaMoviesBackground", arr)
+      commit("setTriviaMoviesBackground", arr);
     },
   },
   getters: {
@@ -682,6 +725,7 @@ export default new Vuex.Store({
     isLogged: (state) => state.isLogged,
     myDocumentID: (state) => state.documentId,
     counterMovies: (state) => state.counterMovies,
-    questionID: (state) => state.questionID
+    userPoints: (state) => state.userPoints,
+    questionID: (state) => state.questionID,
   },
 });

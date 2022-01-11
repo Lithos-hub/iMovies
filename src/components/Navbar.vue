@@ -9,13 +9,62 @@
       elevation="10"
       app
     >
-      <v-app-bar-nav-icon width="30" height="30" @click="drawer = true"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        width="30"
+        height="30"
+        @click="drawer = true"
+      ></v-app-bar-nav-icon>
 
       <div id="username-toolbar">
-        <v-progress-circular class="mx-auto" size="30" width="2" color="cyan" indeterminate v-if="isLoadingDynamicUserData"></v-progress-circular>
+        <v-progress-circular
+          class="mx-auto"
+          size="30"
+          width="2"
+          color="cyan"
+          indeterminate
+          v-if="isLoadingDynamicUserData"
+        ></v-progress-circular>
         <div v-else>
-        {{ $t("navbar.user") }}
-        <span class="cyan--text">@{{ user.displayName }}</span>
+          {{ $t("navbar.user") }}
+          <span class="cyan--text">@{{ user.displayName }}</span>
+
+          <!-- // ** Notifications button ** // -->
+          <v-menu bottom offset-y :close-on-content-click="false">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn class="ml-2" small fab v-bind="attrs" v-on="on">
+                <div v-if="!notifications.every(noti => noti.isRead)" id="notification-wrapper">
+                  <div id="notification-dot"></div>
+                  <v-icon color="white">mdi-bell</v-icon>
+                </div>
+                <v-icon v-else color="white">mdi-bell</v-icon>
+              </v-btn>
+            </template>
+            <v-card min-width="350" class="mx-auto text-left" tile dark>
+              <v-toolbar class="gradient-background-1" dark dense>
+                <v-toolbar-title class="white--text">Notificaciones</v-toolbar-title>
+              </v-toolbar>
+              <v-list three-line id="notifications-list" v-if="notifications.length">
+                <div v-for="(item, i) in notifications" :key="i">
+                  <v-list-item :class="item.isRead ? 'just-read' : 'not-read'" @click="item.isRead = true">
+                    <v-img class="mr-5" max-width="50px" height="auto" :src="item.avatar"></v-img>
+                    <v-list-item-content>
+                      <v-icon id="notifications-eye" color="white">{{ item.isRead ? 'mdi-eye-off' : 'mdi-eye' }}</v-icon>
+                      <v-list-item-title class="pa-0 ma-0 cyan--text">{{ item.title}}</v-list-item-title>
+                      <v-list-item-subtitle class="pa-0 ma-0 white--text"> {{ item.subtitle }} </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-divider v-if="i < notifications.length - 1" inset class="notifications-divider ma-0 pa-0"></v-divider>
+                </div>
+              </v-list>
+              <v-list v-else>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title class="text-center red--text">No tienes notificaciones</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-menu>
         </div>
       </div>
 
@@ -135,7 +184,9 @@
             height="70"
             class="avatar ma-5 ma-auto"
           />
-          <h5 class="username-drawer text-center my-2">@{{ user.displayName }}</h5>
+          <h5 class="username-drawer text-center my-2">
+            @{{ user.displayName }}
+          </h5>
 
           <v-list-item to="/home">
             <v-list-item-icon>
@@ -147,10 +198,7 @@
           </v-list-item>
 
           <div v-for="(item, i) in navbarItems" :key="i">
-            <v-list-item
-              :to="item.to"
-              @click="setComingFromDetails"
-            >
+            <v-list-item :to="item.to" @click="setComingFromDetails">
               <v-list-item-icon>
                 <v-icon class="nav-icons"> {{ item.icon }} </v-icon>
                 <v-list-item-title class="nav-links">
@@ -195,10 +243,50 @@ export default {
       group: null,
       drawer: false,
       langMenu: false,
+      hasNotifications: false,
+      notifications: [],
+      notifications: [
+        {
+          avatar: require('@/assets/img/achieve-common.png'),
+          title: '¡Has conseguido un logro!',
+          subtitle: `Has hecho tal acción`,
+          isRead: false,
+        },
+        {
+          avatar: require('@/assets/img/achieve-common.png'),
+          title: '¡Has conseguido un logro!',
+          subtitle: `Has hecho tal acción`,
+          isRead: false,
+        },
+        {
+          avatar: require('@/assets/img/achieve-rare.png'),
+          title: '¡Has conseguido un logro!',
+          subtitle: `Has hecho tal acción`,
+          isRead: false,
+        },
+        {
+          avatar: require('@/assets/img/achieve-epic.png'),
+          title: '¡Has conseguido un logro!',
+          subtitle: `Has hecho tal acción`,
+          isRead: false,
+        },
+        {
+          avatar: require('@/assets/img/achieve-epic.png'),
+          title: '¡Has conseguido un logro!',
+          subtitle: `Has hecho tal acción`,
+          isRead: false,
+        },
+        {
+          avatar: require('@/assets/img/achieve-epic.png'),
+          title: '¡Has conseguido un logro!',
+          subtitle: `Has hecho tal acción`,
+          isRead: false,
+        },
+      ],
       navbarItems: [
         {
           to: "/trivia",
-          text: this.$t("navbar.trivia") + ' (Beta)',
+          text: this.$t("navbar.trivia") + " (Beta)",
           icon: "mdi-gamepad-variant",
         },
         {
@@ -272,26 +360,30 @@ export default {
       return this.$vuetify.breakpoint.xs;
     },
   },
+  mounted () {
+    if (this.notifications.length) {
+      this.hasNotifications = true;
+    }
+  },
   methods: {
     ...mapActions(["changeLanguage"]),
     logout() {
-
       const userData = {};
 
       this.$store.commit("setUser", userData);
 
-        auth
-          .signOut()
-          .then(() => {
-            const userData = {};
+      auth
+        .signOut()
+        .then(() => {
+          const userData = {};
 
-            this.$store.commit("setUser", userData);
+          this.$store.commit("setUser", userData);
 
-            this.$router.push("/");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     refresh() {
       this.$router.go(0);
@@ -371,6 +463,42 @@ export default {
 .avatar {
   border-radius: 50%;
   border: 2px solid $primary;
+}
+
+#notification-wrapper {
+  position: relative;
+}
+
+#notification-dot {
+  position: absolute;
+  top: 25%;
+  right: 20%;
+  transform: translate(50%, -50%);
+  background: rgb(255, 55, 55);
+  border: 1px solid #151515;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  z-index: 99999;
+}
+
+.notifications-divider {
+  min-width: 350px !important;
+}
+
+#notifications-list {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 350px;
+}
+
+#notifications-eye {
+  position: absolute;
+  right: 20px;
+}
+
+.not-read {
+  background: rgba(65, 255, 255, 0.247);
 }
 
 // ******* MOBILE RESPONSIVE ******* //

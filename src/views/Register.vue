@@ -325,6 +325,9 @@ export default {
       await db.doc(`userData/${myDocID}/triviaQuestions/points`).set({
         total: 0
       });
+      await db.doc(`userData/${myDocID}/rewards/achievements`).set({
+        cards: []
+      });
     },
     async getAvatarsImages() {
       let pathReference = storage.ref("avatars");
