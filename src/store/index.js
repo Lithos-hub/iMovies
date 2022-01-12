@@ -241,7 +241,7 @@ export default new Vuex.Store({
   },
   actions: {
     // ! __________________ MIX ACTIONS __________________ //
-    showInfo(item) {
+    showInfo({ commit }, item) {
       router.push({ path: `movie/${item.id}` });
     },
     showSnackbar({ commit }, payload) {
