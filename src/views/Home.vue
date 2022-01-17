@@ -295,6 +295,7 @@ export default {
     this.getMovieOfTheWeek();
   },
   mounted() {
+    Services.hasVisitedTheSection("home");
     this.getMyDocID();
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;

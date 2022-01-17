@@ -11,12 +11,15 @@ module.exports = {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     "max-len": [
-      "off",
+      "true",
       {
-        code: 120,
+        code: 150,
         ignoreUrls: true,
       },
     ],
-    "quotes": ["error", "double"]
+    "quotes": ["error", "double"],
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
   },
 };

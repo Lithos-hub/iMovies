@@ -136,6 +136,7 @@ export default {
           .then(() => {
             Services
             .getResolvedQuestions()
+            this.$store.dispatch('getReward', 29)
             this.showWarning({
               text: "¡Correcto!",
               color: "success",

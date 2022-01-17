@@ -31,7 +31,7 @@
           <!-- // ** Notifications button ** // -->
           <v-menu bottom offset-y :close-on-content-click="false">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn class="ml-2" small fab v-bind="attrs" v-on="on">
+              <v-btn class="ml-2" small fab icon v-bind="attrs" v-on="on">
                 <div v-if="!notifications.every(noti => noti.isRead)" id="notification-wrapper">
                   <div id="notification-dot"></div>
                   <v-icon color="white">mdi-bell</v-icon>
@@ -46,7 +46,7 @@
               <v-list three-line id="notifications-list" v-if="notifications.length">
                 <div v-for="(item, i) in notifications" :key="i">
                   <v-list-item :class="item.isRead ? 'just-read' : 'not-read'" @click="item.isRead = true">
-                    <v-img class="mr-5" max-width="50px" height="auto" :src="item.avatar"></v-img>
+                    <v-icon class="notification-icon mr-5" size="35" color="white">{{ item.icon }}</v-icon>
                     <v-list-item-content>
                       <v-icon id="notifications-eye" color="white">{{ item.isRead ? 'mdi-eye-off' : 'mdi-eye' }}</v-icon>
                       <v-list-item-title class="pa-0 ma-0 cyan--text">{{ item.title}}</v-list-item-title>
@@ -247,37 +247,37 @@ export default {
       notifications: [],
       notifications: [
         {
-          avatar: require('@/assets/img/achieve-common.png'),
+          icon: 'mdi-trophy-variant',
           title: '¡Has conseguido un logro!',
           subtitle: `Has hecho tal acción`,
           isRead: false,
         },
         {
-          avatar: require('@/assets/img/achieve-common.png'),
+          icon: 'mdi-trophy-variant',
           title: '¡Has conseguido un logro!',
           subtitle: `Has hecho tal acción`,
           isRead: false,
         },
         {
-          avatar: require('@/assets/img/achieve-rare.png'),
+          icon: 'mdi-trophy-variant',
           title: '¡Has conseguido un logro!',
           subtitle: `Has hecho tal acción`,
           isRead: false,
         },
         {
-          avatar: require('@/assets/img/achieve-epic.png'),
+          icon: 'mdi-trophy-variant',
           title: '¡Has conseguido un logro!',
           subtitle: `Has hecho tal acción`,
           isRead: false,
         },
         {
-          avatar: require('@/assets/img/achieve-epic.png'),
+          icon: 'mdi-trophy-variant',
           title: '¡Has conseguido un logro!',
           subtitle: `Has hecho tal acción`,
           isRead: false,
         },
         {
-          avatar: require('@/assets/img/achieve-epic.png'),
+          icon: 'mdi-trophy-variant',
           title: '¡Has conseguido un logro!',
           subtitle: `Has hecho tal acción`,
           isRead: false,
@@ -498,7 +498,15 @@ export default {
 }
 
 .not-read {
-  background: rgba(65, 255, 255, 0.247);
+  background: rgb(43, 71, 122);
+  backdrop-filter: blur(5px);
+}
+
+.notification-icon {
+  background: $gradient_1;
+  padding: 10px;
+  border-radius: 50%;
+  box-shadow: 0px 5px 10px #303030;
 }
 
 // ******* MOBILE RESPONSIVE ******* //

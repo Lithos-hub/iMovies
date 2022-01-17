@@ -326,7 +326,10 @@ export default {
         total: 0
       });
       await db.doc(`userData/${myDocID}/rewards/achievements`).set({
-        cards: []
+        codes: []
+      });
+      await db.doc(`userData/${myDocID}/iMovies-Sections/sections`).set({
+        visited: []
       });
     },
     async getAvatarsImages() {

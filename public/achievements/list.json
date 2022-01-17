@@ -221,8 +221,8 @@
           "title": "Deborapalomitas",
           "code": 32,
           "description": "Has visto más de 50 películas",
-          "className": "common",
-          "image": "achieve-common.png"
+          "className": "rare",
+          "image": "achieve-rare.png"
         },
         {
           "title": "Luz, cámara y ¡acción!",
@@ -258,6 +258,27 @@
           "description": "Has dado con el error 404.",
           "className": "common",
           "image": "achieve-common.png"
+        },
+        {
+          "title": "Enamorado del cine",
+          "code": 38,
+          "description": "Has marcado como favoritas 50 películas.",
+          "className": "rare",
+          "image": "achieve-rare.png"
+        },
+        {
+          "title": "Has guardado en tu lista de deseos 50 películas",
+          "code": 39,
+          "description": "Has guardado en tu lista de deseos 50 películas.",
+          "className": "rare",
+          "image": "achieve-rare.png"
+        },
+        {
+          "title": "El apuntador.",
+          "code": 40,
+          "description": "Has puntuado 50 películas.",
+          "className": "rare",
+          "image": "achieve-rare.png"
         }
     ]
 }

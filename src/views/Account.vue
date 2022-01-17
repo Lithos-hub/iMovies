@@ -99,7 +99,6 @@
           <v-tab
             active-class="secondary"
             class="cyan--text justify-start"
-            @click="getAchievements"
           >
             <v-icon color="cyan" left> mdi-star </v-icon>
             {{ $t("view-account.achievements") }}
@@ -225,10 +224,11 @@
             </div>
             <v-row no-gutters>
               <v-col
-                cols="2"
-                lg="2"
-                md="4"
-                sm="12"
+                cols="3"
+                lg="3"
+                md="3"
+                sm="6"
+                xs="12"
                 v-for="(item, j) of achievementsCards"
                 :key="'B' + j"
               >
@@ -238,7 +238,7 @@
                   </p>
                   <v-img
                     class="mx-auto my-5 achieve-img"
-                    :src="item.image"
+                    :src="require('../assets/img/' + item.image)"
                     width="100"
                     height="100"
                   />
@@ -263,7 +263,7 @@
 import { mapActions, mapState } from "vuex";
 import Snackbar from "@/components/Snackbar.vue";
 import { storage } from "../../firebase.js";
-import Services from "../services/services";
+import Services from '../services/services';
 
 export default {
   components: {
@@ -302,8 +302,8 @@ export default {
     ...mapState(["snackbarObject", "user", "achievementsCards"]),
   },
   mounted() {
+    Services.hasVisitedTheSection("account");
     this.getAvatarsImages();
-    this.getAchievements();
   },
   methods: {
     ...mapActions(["showSnackbar"]),
@@ -366,6 +366,7 @@ export default {
       this.newAvatar = url;
       this.updateProfile();
       this.$emit("refresh");
+      this.$store.dispatch('getReward', 30);
     },
     closeDialog() {
       this.isLoading = false;
@@ -478,6 +479,7 @@ input::placeholder {
   border-radius: 5px;
   min-width: 200px;
   min-height: 300px;
+  max-width: 200px;
   width: auto;
   text-align: center;
   margin: 20px;

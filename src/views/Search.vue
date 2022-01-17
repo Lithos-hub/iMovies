@@ -440,6 +440,7 @@ import { mapActions, mapState } from "vuex";
 import TrailerDialog from "../components/TrailerDialog";
 import AddToDialog from "../components/AddToDialog";
 import i18n from "@/plugins/i18n";
+import Services from '../services/services';
 
 export default {
   components: {
@@ -490,6 +491,7 @@ export default {
     },
   },
   mounted() {
+    Services.hasVisitedTheSection("search");
     window.scrollTo(0, 0);
     if (this.input.length > 1) {
       this.fillItemsList();

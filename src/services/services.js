@@ -5,6 +5,15 @@ class Services {
     this.myDocID = localStorage.getItem("docID");
   }
 
+  async hasVisitedTheSection (section) {
+    const myDocRef = await db.doc(
+      `userData/${this.myDocID}/iMovies-Sections/sections`
+    );
+    myDocRef.update({
+      visited: firebase.firestore.FieldValue.arrayUnion(section),
+    });
+  }
+
   async getHasPlayedToday() {
     const resolvedQuestions = await this.getResolvedQuestions();
     const date = new Date();
