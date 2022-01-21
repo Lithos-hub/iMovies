@@ -322,8 +322,20 @@ export default {
       await db.doc(`userData/${myDocID}/triviaQuestions/resolved`).set({
         questions: []
       });
-      await db.doc(`userData/${myDocID}/triviaQuestions/points`).set({
-        total: 0
+      await db.doc(`userData/${myDocID}/iMovies-Sections/sections`).set({
+        visited: []
+      });
+      await db.doc(`userData/${myDocID}/myFriends/accepted`).set({
+        acceptedList: []
+      });
+      await db.doc(`userData/${myDocID}/myFriends/rejected`).set({
+        rejectedList: []
+      });
+      await db.doc(`userData/${myDocID}/myFriends/sended`).set({
+        sendedList: []
+      });
+      await db.doc(`userData/${myDocID}/myFriends/requestInbox`).set({
+        requestsList: []
       });
     },
     async getAvatarsImages() {

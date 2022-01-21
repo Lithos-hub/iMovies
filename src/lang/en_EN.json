@@ -73,6 +73,7 @@
     "home": "Home",
     "trivia": "Trivia",
     "account": "My account",
+    "community": "Community",
     "search": "Search",
     "mymovies": "My movies",
     "trending": "Trending",
@@ -82,7 +83,8 @@
     "changelog": "Changelog",
     "about": "About",
     "developed": "Developed by ",
-    "goTo": "Go to my website"
+    "goTo": "Go to my website",
+    "showChat": "Show chat"
   },
   "app-buttons": {
     "view": "View trailer",

@@ -1,0 +1,354 @@
+<template>
+  <div>
+    <SectionTitle :title="sectionTitle" />
+    <Spinner v-if="isLoading" />
+
+    <div v-if="!isLoading">
+      <!-- // ? ** SEARCH USER ** ? // -->
+      <v-container>
+        <v-row>
+          <v-text-field
+            v-model="user"
+            filled
+            label="Buscar usuario"
+            dark
+            @change="searchUser"
+          ></v-text-field>
+        </v-row>
+      </v-container>
+      <v-container>
+        <!-- // ? ** MY FRIENDSHIP REQUESTS LIST ** ? // -->
+        <div class="primary--text text-h4 mt-5">Solicitudes de amistad</div>
+        <v-divider class="primary mt-0"></v-divider>
+        <v-row v-if="!allFriendshipRequestsData.length">
+          <p class="red--text">No tienes solicitudes de amistad</p>
+        </v-row>
+        <v-row>
+          <v-col
+            cols="2"
+            class="card-col my-5"
+            v-for="(user, i) in allFriendshipRequestsData"
+            :key="i"
+          >
+            <div class="card-wrapper">
+              <div class="card-inner">
+                <div class="user-card pa-1 pb-3" width="150">
+                  <v-img
+                    :src="user.avatar"
+                    width="140"
+                    class="mx-auto rounded"
+                  ></v-img>
+                  <v-card-text class="pa-0 mt-2 text-h5 text-center">
+                    {{ user.userName }}
+                  </v-card-text>
+                </div>
+                <div class="card-back pa-2" width="150">
+                  <p class="text-h6 text-center primary--text pb-5">
+                    ¿Aceptar?
+                  </p>
+                  <div class="d-flex justify-center">
+                    <div>
+                      <v-btn
+                        color="success"
+                        fab
+                        small
+                        depressed
+                        class="mx-2"
+                        @click="acceptRequest(user)"
+                        ><v-icon color="white">mdi-check</v-icon></v-btn
+                      >
+                    </div>
+                    <div>
+                      <v-btn
+                        color="red"
+                        fab
+                        small
+                        depressed
+                        class="mx-2"
+                        @click="rejectRequest(user)"
+                        ><v-icon color="white">mdi-cancel</v-icon></v-btn
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </v-col>
+        </v-row>
+        <!-- // ? ** MY FRIENDSHIP LIST ** ? // -->
+        <div class="primary--text text-h4 mt-5">Mis amigos</div>
+        <v-divider class="primary mt-0"></v-divider>
+        <v-row>
+          <v-col cols="2" v-for="(friend, i) in myFriendsList" :key="i">
+            <v-card class="gradient-background-1 white--text pa-0" width="220">
+              <v-img
+                :src="friend.avatar"
+                width="220"
+                height="200"
+                class="mx-auto"
+              ></v-img>
+              <v-card-title class="text-h5 justify-center">
+                {{ friend.userName }}
+              </v-card-title>
+              <v-card-text class="white pt-3">
+                <v-row class="text-center">
+                  <v-col>
+                    <v-icon size="40" color="red">mdi-heart</v-icon>
+                    <span class="mx-2 text-h5">{{
+                      friend.userMovies.favourites
+                    }}</span>
+                  </v-col>
+                  <v-col>
+                    <v-icon size="40" color="primary">mdi-eye</v-icon>
+                    <span class="mx-2 text-h5">{{
+                      friend.userMovies.watched
+                    }}</span>
+                  </v-col>
+                </v-row>
+                <v-row class="text-center">
+                  <v-col>
+                    <v-icon size="40" color="amber">mdi-star-shooting</v-icon>
+                    <span class="mx-2 text-h5">{{
+                      friend.userMovies.wishlist
+                    }}</span>
+                  </v-col>
+                  <v-col>
+                    <v-icon size="40" color="green"
+                      >mdi-sort-numeric-variant</v-icon
+                    >
+                    <span class="mx-2 text-h5">{{
+                      friend.userMovies.rated
+                    }}</span>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+        <!-- // ? ** USERS LIST ** ? // -->
+        <div class="primary--text text-h4 mt-5">Usuarios de iMovies</div>
+        <v-divider class="primary mt-0"></v-divider>
+        <v-list class="pa-0">
+          <v-list-item
+            class="d-flex justify-space-between user-list-item"
+            @click="showUserData"
+            v-for="(user, i) in allUsersData"
+            :key="i"
+          >
+            <!-- // ! ** USER INDEX ** // -->
+            <div class="user-index mr-2 text-h5">{{ i + 1 }}</div>
+            <!-- // ! ** USER AVATAR ** // -->
+            <v-list-item-avatar size="70">
+              <v-img :src="user.userData.avatar"></v-img>
+            </v-list-item-avatar>
+            <!-- // ! ** USER ALIAS ** // -->
+            <v-list-item-title
+              class="text-h6 ml-5 d-flex justify-space-between"
+            >
+              <div class="my-auto">
+                {{ user.userData.userName }}
+              </div>
+            </v-list-item-title>
+              <!-- // ! ** USER BUTTON ** // -->
+              <div v-if="!myFriendsList.some(friend => friend.docID === user.userData.docID)">
+                <v-btn
+                  :color="computedRequestColor(user.userData.docID)"
+                  fab
+                  depressed
+                  @click="sendFriendRequest(user.userData.docID)"
+                >
+                  <v-icon color="white">
+                    {{ computedRequestIcon(user.userData.docID) }}
+                  </v-icon>
+                </v-btn>
+              </div>
+              <div v-else>
+                <v-btn color="info" fab depressed>
+                <v-icon>mdi-account-check</v-icon>
+                </v-btn>
+              </div>
+            <!-- // ! ** USER MOVIES ** // -->
+            <div class="ml-auto pr-5 text-center">
+              Películas guardadas:
+              <span class="d-block">{{ user.userMovies.total }}</span>
+            </div>
+            <div class="d-block">
+              <div class="d-flex justify-end my-2">
+                <v-icon size="30" color="red">mdi-heart</v-icon>
+                <span class="mx-2 text-h6">{{
+                  user.userMovies.favourites
+                }}</span>
+                <v-icon size="30" color="primary">mdi-eye</v-icon>
+                <span class="mx-2 text-h6">{{ user.userMovies.watched }}</span>
+              </div>
+              <div class="d-flex justify-end my-2">
+                <v-icon size="30" color="amber">mdi-star-shooting</v-icon>
+                <span class="mx-2 text-h6">{{ user.userMovies.wishlist }}</span>
+                <v-icon size="30" color="green"
+                  >mdi-sort-numeric-variant</v-icon
+                >
+                <span class="mx-2 text-h6">{{ user.userMovies.rated }}</span>
+              </div>
+            </div>
+          </v-list-item>
+        </v-list>
+      </v-container>
+    </div>
+  </div>
+</template>
+
+<script>
+import SectionTitle from "../components/SectionTitle.vue";
+import Spinner from "../components/Spinner.vue";
+import { mapState } from "vuex";
+export default {
+  components: {
+    SectionTitle,
+    Spinner,
+  },
+  data() {
+    return {
+      sectionTitle: "Community",
+      user: "",
+    };
+  },
+  computed: {
+    ...mapState([
+      "myFriends",
+      "myFriendsList",
+      "isLoading",
+      "allUsersData",
+      "allFriendshipRequestsData",
+    ]),
+  },
+  mounted() {
+    this.$store.commit("setIsLoading", true);
+    this.$store.dispatch("getMyFriendshipData");
+    this.$store.dispatch("getAllUsers");
+  },
+  methods: {
+    searchUser() {
+      console.log(this.user);
+      this.user = "";
+    },
+    showUserData() {
+      console.log("show user data");
+    },
+    async sendFriendRequest(userDocID) {
+      this.$nextTick()
+        .then(await this.$store.dispatch("sendFriendRequest", userDocID))
+        .then(this.$store.dispatch("getMyFriendshipData"));
+      this.$forceUpdate();
+    },
+    computedRequestColor(docID) {
+      const MATCH_SENDED = this.myFriends.sended.find((id) => id === docID);
+      const MATCH_REJECTED = this.myFriends.sended.find((id) => id === docID);
+      let color = "green";
+      if (MATCH_SENDED) {
+        color = "warning";
+      } else if (MATCH_REJECTED) {
+        color = "red";
+      }
+      return color;
+    },
+    computedRequestIcon(docID) {
+      const MATCH_SENDED = this.myFriends.sended.find((id) => id === docID);
+      const MATCH_REJECTED = this.myFriends.sended.find((id) => id === docID);
+      let icon = "mdi-account-plus";
+      if (MATCH_SENDED) {
+        icon = "mdi-account-question";
+      } else if (MATCH_REJECTED) {
+        icon = "mdi-account-remove";
+      }
+      return icon;
+    },
+    acceptRequest(user) {
+      this.$store.dispatch("acceptFriendshipRequest", user.docID);
+    },
+    rejectRequest(user) {
+      this.$store.dispatch("rejectFriendshipRequest", user.docID);
+    },
+  },
+};
+</script>
+
+<style lang="scss">
+@import "../scss/variables";
+
+.user-list-item {
+  padding-left: 0 !important;
+}
+
+.user-index {
+  background: #151515;
+  color: cyan;
+  padding-block: 30px;
+  width: 50px;
+  height: 100%;
+  text-align: center;
+}
+
+// #1
+
+.card-wrapper {
+  background-color: transparent;
+  perspective: 1000px;
+}
+
+// #2
+
+.card-inner {
+  position: relative;
+  transition: transform 0.6s ease-in-out;
+  transform-style: preserve-3d;
+  border-radius: 5px;
+  box-shadow: 0px 5px 15px #151515;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+}
+
+// #3
+
+// Back card styles
+.user-card,
+.card-back {
+  position: absolute;
+  bottom: 0;
+  background-color: white;
+  border-radius: 5px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+// #4
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+// #5
+
+.card-wrapper:hover .card-inner {
+  cursor: pointer;
+  transform: rotateY(180deg);
+}
+
+.user-card {
+  background-color: white;
+  color: #151515;
+  max-width: 140px;
+  height: 180px;
+  position: relative;
+  border-radius: 5px;
+  margin: 0 auto;
+  justify-content: center;
+  text-align: center;
+  padding: auto;
+}
+
+.card-col {
+  max-width: 170px;
+  min-height: 180px;
+}
+</style>

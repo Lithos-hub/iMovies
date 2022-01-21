@@ -283,9 +283,10 @@ export default {
     this.getMovieOfTheWeek();
   },
   mounted() {
-    this.getMyDocID();
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
+    this.$store.dispatch('getFriendshipNotification');
+    this.getMyDocID();
     this.enableScrollX();
     this.animateScroll();
     setTimeout(() => {
