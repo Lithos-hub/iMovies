@@ -146,6 +146,8 @@
     "email": "E-mail",
     "password": "Password",
     "repeat": "Repeat the password",
+    "birthday": "Birthday",
+    "country": "Country",
     "register": "Register",
     "maximum": "Maximum 10 characters",
     "accessSuccess": "Correct data! Loading the app...",

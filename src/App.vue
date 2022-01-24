@@ -10,7 +10,7 @@
       "
     />
     <Chat
-      v-if="chatIsActivated"
+      v-if="chatIsActivated && correctPath"
       id="chat"
       :class="minimized ? 'minimized-card' : 'maximized-card'"
       @minimize-chat="minimizeChat"
@@ -71,6 +71,9 @@ export default {
   },
   computed: {
     ...mapState(["loadingUserAuthStatus", "moviesCounter", "moviesCounter", "chatIsActivated", "notifications"]),
+    correctPath () {
+      return this.$route.path !== "/" && this.$route.path !== "/404" && this.$route.path !== "/register"
+    }
   },
   created() {
     this.getUserData();
@@ -85,6 +88,7 @@ export default {
   mounted() {
     this.getCurrentDate();
     this.$store.dispatch('getFriendshipNotification');
+    this.$store.dispatch('getMySocialData');
   },
   methods: {
     ...mapActions(["changeLanguage", "getUserID", "showingFriends"]),

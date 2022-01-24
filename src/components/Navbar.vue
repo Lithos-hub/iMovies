@@ -60,16 +60,17 @@
                 :class="item.isRead ? 'just-read' : 'not-read'"
                 @click="item.isRead = true"
               >
-                <v-icon
+                <v-icon v-if="!item.avatar"
                   class="notification-icon mr-5"
                   size="30"
                   color="white"
                   >{{ item.icon }}</v-icon
                 >
+                <v-img v-else class="notification-avatar" :src="item.avatar" max-width="70" height="70"></v-img>
                 <v-list-item-content>
-                  <v-icon id="notifications-eye" color="white">{{
+                  <!-- <v-icon id="notifications-eye" color="white">{{
                     item.isRead ? "mdi-eye-off" : "mdi-eye"
-                  }}</v-icon>
+                  }}</v-icon> -->
                   <v-list-item-title class="pa-0 ma-0 cyan--text">{{
                     item.title
                   }}</v-list-item-title>
@@ -527,6 +528,12 @@ export default {
   padding: 10px;
   border-radius: 50%;
   box-shadow: 0px 5px 10px #303030;
+}
+
+.notification-avatar {
+  padding: 10px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
 // ******* MOBILE RESPONSIVE ******* //

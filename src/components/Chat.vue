@@ -1,5 +1,5 @@
 <template>
-  <div id="chat-wrapper" class="d-flex justify-end" v-if="isChatting">
+  <div id="chat-wrapper" class="d-flex justify-end">
     <v-card id="chat-card">
       <v-card-title
         class="primary white--text pa-2 px-5 d-flex justify-space-between"
@@ -28,9 +28,6 @@
               <v-row class="d-flex justify-start my-2" v-for="(msg, i) in messages" :key="i">
                   <v-col cols="auto" class="user-conversation">{{ msg }}</v-col>
               </v-row>
-              <!-- <v-row class="d-flex justify-end my-2">
-                  <v-col class="my-conversation" cols="auto">¡Hey! Has visto la nueva de Spider-man?</v-col>
-              </v-row> -->
           </v-container>
       </v-card-text>
       <v-card-actions id="message-box-section" class="pa-0 ma-0 d-flex">
@@ -49,8 +46,8 @@
       </v-card-title>
       <v-card-text class="pa-0">
         <v-list dense class="pa-0 ma-0">
-            <div v-if="friends.length">
-          <v-list-item @click="chatWithFriend(friend)" v-for="(friend, i) in friends" :key="i">
+            <div v-if="myFriendsList.length">
+          <v-list-item @click="chatWithFriend(friend)" v-for="(friend, i) in myFriendsList" :key="i">
             <v-list-item-avatar size="40">
               <v-img
                 :src="friend.avatar"
@@ -59,8 +56,8 @@
             <v-list-item-content>
               <v-list-item-title>{{ friend.userName }}</v-list-item-title>
               <v-list-item-subtitle>
-                {{ friend.isOnline ? 'Online' : 'Offline' }}
-                <v-icon size="10" :color="friend.isOnline ? 'green' : 'red'" class="mb-1"
+                {{ friend.onlineStatus ? 'Online' : 'Offline' }}
+                <v-icon size="10" :color="friend.onlineStatus ? 'green' : 'red'" class="mb-1"
                   >mdi-circle</v-icon
                 ></v-list-item-subtitle
               >
@@ -85,27 +82,7 @@ export default {
     return {
       minimized: false,
       myMessage: '',
-      selectedUserUID: '',
-      friends: [
-        {
-          avatar: "https://randomuser.me/api/portraits/men/79.jpg",
-          userName: "Manolo",
-          isOnline: true,
-          uid: 'Tomate'
-        },
-        {
-          avatar: "https://randomuser.me/api/portraits/men/72.jpg",
-          userName: "Manuel",
-          isOnline: false,
-          uid: 'Berenjena'
-        },
-        {
-          avatar: "https://randomuser.me/api/portraits/women/79.jpg",
-          userName: "Jesusa",
-          isOnline: true,
-          uid: 'Boniato'
-        },
-      ],
+      selectedUserUID: ''
     }
   },
     watch: {
@@ -118,7 +95,7 @@ export default {
       }
     },
   computed: {
-    ...mapState(['isChatting', 'messages', 'showingFriends'])
+    ...mapState(['isChatting', 'messages', 'showingFriends', 'myFriendsList'])
   },
   methods: {
     minimizeChat() {

@@ -145,6 +145,8 @@
     "email": "E-mail",
     "password": "Contraseña",
     "repeat": "Repite la contraseña",
+    "birthday": "Fecha de nacimiento",
+    "country": "País",
     "register": "Registrar",
     "maximum": "10 caracteres como máximo",
     "emailExists": "Ese E-mail ya se encuentra registrado",

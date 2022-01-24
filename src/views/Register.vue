@@ -79,6 +79,65 @@
               </v-col>
             </v-row>
 
+            <v-row>
+              <v-col class="mt-auto">
+                <v-menu
+                  ref="menu"
+                  v-model="birthdayMenu"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="dateFormatted"
+                      :label="$t('view-register.birthday')"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                      @blur="date = parseDate(dateFormatted)"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="date"
+                    locale="es-es"
+                    :active-picker.sync="activePicker"
+                    color="gradient-background-1"
+                    :max="
+                      new Date(
+                        Date.now() - new Date().getTimezoneOffset() * 60000
+                      )
+                        .toISOString()
+                        .substr(0, 10)
+                    "
+                    min="1950-01-01"
+                    @change="save"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col>
+                <!-- <v-combobox
+                  v-model="cityName"
+                  item-text="text"
+                  item-value="text"
+                  chips
+                  append-icon="mdi-map-marker"
+                  :label="$t('view-register.country')"
+                  @input="searchCityName(cityName)"
+                /> -->
+                <small class="pb-2 ma-0">{{ $t('view-register.country') }}: <span class="cyan--text ml-3">{{ selectedCountry }}</span></small>
+                <v-list id="country-list" class="mt-5">
+                  <v-list-item-group color="white">
+                  <v-list-item v-for="(country, i) in countriesList" :key="i" @click="selectCountry(country)" active-class="primary">
+                    <v-list-item-title class="d-flex justify-space-around"><div class="my-auto">{{ country.text }}</div> <v-img class="flag-image ml-auto" :src="country.flag" max-width="40px" height="auto" aspect-ratio="1"></v-img></v-list-item-title>
+                  </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-col>
+            </v-row>
+
             <v-dialog v-model="avatarDialog" width="800" persistent>
               <template v-slot:activator="{ on, attrs }">
                 <div class="text-center">
@@ -133,7 +192,13 @@
             </v-dialog>
 
             <div class="text-center">
-              <v-btn :loading="loadingCreate" :disabled="loadingCreate" block class="btn-gradient1" @click="validate">
+              <v-btn
+                :loading="loadingCreate"
+                :disabled="loadingCreate"
+                block
+                class="btn-gradient1"
+                @click="validate"
+              >
                 {{ $t("view-register.register") }}
               </v-btn>
             </div>
@@ -169,6 +234,7 @@
 
 <script>
 import Snackbar from "../components/Snackbar";
+import axios from "axios";
 import { mapActions, mapState } from "vuex";
 import { auth, db, storage } from "../../firebase.js";
 
@@ -187,7 +253,11 @@ export default {
       password: "",
       repassword: "",
       avatar: "",
+      cityName: "",
+      selectedCountry: "",
+      dateFormatted: "",
       registered: false,
+      countriesList: [],
       nameRules: [
         (v) => !!v || this.$t("view-register.nameRequired"),
         (v) => v.length < 15 || this.$t("view-register.maximum"),
@@ -203,6 +273,9 @@ export default {
           v === this.password || this.$t("view-register.passwordMatch"),
       },
       avatar_imgs: [],
+      activePicker: null,
+      date: null,
+      birthdayMenu: false,
     };
   },
   computed: {
@@ -210,16 +283,81 @@ export default {
   },
   mounted() {
     this.getAvatarsImages();
+    this.searchAllCountries();
+  },
+  watch: {
+    menu(val) {
+      val && setTimeout(() => (this.activePicker = "YEAR"));
+    },
+    date(val) {
+      this.dateFormatted = this.formatDate(this.date);
+    },
   },
   methods: {
     ...mapActions(["showSnackbar"]),
+    formatDate(date) {
+      if (!date) return null;
+
+      const [year, month, day] = date.split("-");
+      return `${day}-${month}-${year}`;
+    },
+    parseDate(date) {
+      if (!date) return null;
+
+      const [day, month, year] = date.split("-");
+      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+    },
+    save(date) {
+      this.$refs.menu.save(date);
+    },
     checkPasswords() {
       this.password === this.repassword
         ? ""
         : this.$t("view-register.passwordMatch");
     },
+    selectCountry (name) {
+      this.selectedCountry = name.text
+    },
+    // async searchCityName(name) {
+    //   let apiURL = `https://restcountries.com/v3.1/name/${name}`
+    //   await axios.get(apiURL).then((res) => {
+    //     let data = res.data
+    //     for (let country of data) {
+    //       let { 
+    //         translations: {
+    //           spa: {
+    //             common
+    //           }
+    //         }
+    //       } = country
+    //       this.countriesList.push(common)
+    //     }
+    //     this.$forceUpdate()
+    //   });
+    // },
+    async searchAllCountries () {
+      let apiURL = 'https://restcountries.com/v3.1/all'
+      await axios.get(apiURL).then((res) => {
+        for (let country of res.data) {
+          let { 
+            flags: {
+              png
+            },
+            translations: {
+              spa: {
+                common
+              }
+            }
+          } = country
+          this.countriesList.push({
+            text: common,
+            flag: png
+          })
+        }
+      })
+    },
     validate() {
-      this.loadingCreate = true
+      this.loadingCreate = true;
       const USERNAME = this.username;
       const EMAIL = this.email;
       const PASSWORD = this.password;
@@ -232,7 +370,7 @@ export default {
           text: this.$t("view-register.formularioInvalido"),
           color: "red",
         });
-        this.loadingCreate = false
+        this.loadingCreate = false;
       } else {
         let users = [];
 
@@ -251,7 +389,7 @@ export default {
                 text: this.$t("view-register.userExists"),
                 color: "red",
               });
-              this.loadingCreate = false
+              this.loadingCreate = false;
             } else {
               // Firebase auth service
               auth
@@ -282,13 +420,13 @@ export default {
                       });
                       await this.createSubCollection();
                       this.registered = !this.registered;
-                      this.loadingCreate = false
+                      this.loadingCreate = false;
                       setTimeout(() => {
                         this.$router.push("/home");
                       }, 3000);
                     } catch (e) {
                       console.error(e);
-                      this.loadingCreate = false
+                      this.loadingCreate = false;
                     }
                   };
                   addUser();
@@ -299,7 +437,7 @@ export default {
                     text: this.$t("view-register.userExists"),
                     color: "red",
                   });
-                  this.loadingCreate = false
+                  this.loadingCreate = false;
                 });
             }
           });
@@ -308,34 +446,34 @@ export default {
     async createSubCollection() {
       const myDocID = localStorage.getItem("docID");
       await db.doc(`userData/${myDocID}/myMovies/favouriteMovies`).set({
-        moviesList: []
+        moviesList: [],
       });
       await db.doc(`userData/${myDocID}/myMovies/watchedMovies`).set({
-        moviesList: []
+        moviesList: [],
       });
       await db.doc(`userData/${myDocID}/myMovies/wishListMovies`).set({
-        moviesList: []
+        moviesList: [],
       });
       await db.doc(`userData/${myDocID}/myMovies/ratedMovies`).set({
-        moviesList: []
+        moviesList: [],
       });
       await db.doc(`userData/${myDocID}/triviaQuestions/resolved`).set({
-        questions: []
+        questions: [],
       });
       await db.doc(`userData/${myDocID}/iMovies-Sections/sections`).set({
-        visited: []
+        visited: [],
       });
       await db.doc(`userData/${myDocID}/myFriends/accepted`).set({
-        acceptedList: []
+        acceptedList: [],
       });
       await db.doc(`userData/${myDocID}/myFriends/rejected`).set({
-        rejectedList: []
+        rejectedList: [],
       });
       await db.doc(`userData/${myDocID}/myFriends/sended`).set({
-        sendedList: []
+        sendedList: [],
       });
       await db.doc(`userData/${myDocID}/myFriends/requestInbox`).set({
-        requestsList: []
+        requestsList: [],
       });
     },
     async getAvatarsImages() {
@@ -437,5 +575,24 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+#country-list {
+  height: 60px;
+  margin-bottom: 20px;
+  overflow-y: scroll;
+  border-bottom: 1px solid white;
+  transition: all 0.3s ease-in-out;
+  background: #303030;
+
+  &:hover {
+    height: 250px !important;
+  }
+}
+
+.flag-image {
+  border-radius: 100%;
+  padding: 0;
+  margin: 0;
 }
 </style>
