@@ -64,6 +64,20 @@
     "basque": "Vasco",
     "malay": "Malayo"
   },
+  "months": {
+    "january": "Enero",
+    "february": "Febrero",
+    "march": "Marzo",
+    "april": "Abril",
+    "may": "Mayo",
+    "june": "Junio",
+    "july": "Julio",
+    "august": "Agosto",
+    "september": "Septiembre",
+    "october": "October",
+    "november": "Noviembre",
+    "december": "Diciembre"
+  },
   "navbar": {
     "user": "Usuario: ",
     "lang": "Idioma: ",
@@ -145,10 +159,11 @@
     "email": "E-mail",
     "password": "Contraseña",
     "repeat": "Repite la contraseña",
+    "favouriteGenres": "Géneros favoritos",
     "birthday": "Fecha de nacimiento",
     "country": "País",
     "register": "Registrar",
-    "maximum": "10 caracteres como máximo",
+    "maximum": "15 caracteres como máximo",
     "emailExists": "Ese E-mail ya se encuentra registrado",
     "userExists": "Ese usuario ya se encuentra registrado",
     "nameRequired": "El nombre es obligatorio",

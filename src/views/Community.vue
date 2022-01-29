@@ -20,14 +20,14 @@
         <!-- // ? ** MY FRIENDSHIP REQUESTS LIST ** ? // -->
         <div class="primary--text text-h4 mt-5">Solicitudes de amistad</div>
         <v-divider class="primary mt-0"></v-divider>
-        <v-row v-if="!allFriendshipRequestsData.length">
+        <v-row v-if="!myFriendshipRequests.length">
           <p class="red--text">No tienes solicitudes de amistad</p>
         </v-row>
-        <v-row>
+        <v-row v-else>
           <v-col
             cols="2"
             class="card-col my-5"
-            v-for="(user, i) in allFriendshipRequestsData"
+            v-for="(user, i) in myFriendshipRequests"
             :key="i"
           >
             <div class="card-wrapper">
@@ -78,8 +78,8 @@
         <!-- // ? ** MY FRIENDSHIP LIST ** ? // -->
         <div class="primary--text text-h4 mt-5">Mis amigos</div>
         <v-divider class="primary mt-0"></v-divider>
-        <v-row>
-          <v-col cols="2" v-for="(friend, i) in myFriendsList" :key="i">
+        <v-row v-if="myFriendsList.length">
+          <v-col lg="2" md="4" sm="6" xs="12" v-for="(friend, i) in myFriendsList" :key="i">
             <v-card class="friend-card gradient-background-1 white--text pa-0" width="220" @click="goToUserDetails(friend)">
               <v-img
                 :src="friend.avatar"
@@ -128,54 +128,53 @@
         <!-- // ? ** USERS LIST ** ? // -->
         <div class="primary--text text-h4 mt-5">Usuarios de iMovies</div>
         <v-divider class="primary mt-0"></v-divider>
-        <v-list class="pa-0">
+        <v-list class="pa-0" v-if="iMoviesUsersList.length">
           <v-list-item
             class="d-flex justify-space-between user-list-item"
-            @click="goToUserDetails(user)"
-            v-for="(user, i) in allUsersData"
+            v-for="(user, i) in iMoviesUsersList"
             :key="i"
           >
             <!-- // ! ** USER INDEX ** // -->
             <div class="user-index mr-2 text-h5">{{ i + 1 }}</div>
             <!-- // ! ** USER AVATAR ** // -->
             <v-list-item-avatar size="70">
-              <v-img :src="user.userData.avatar"></v-img>
+              <v-img :src="user.avatar"></v-img>
             </v-list-item-avatar>
             <!-- // ! ** USER ALIAS ** // -->
             <v-list-item-title
               class="text-h6 ml-5 d-flex justify-space-between"
             >
               <div class="my-auto">
-                {{ user.userData.userName }}
+                {{ user.userName }}
               </div>
             </v-list-item-title>
             <!-- // ! ** USER BUTTON ** // -->
             <!-- <div class="red--text text-center mr-auto">
-                <small class="my-auto">{{ justRejected(user.userData.docID) ? 'Este usuario ha rechazado tu solicitud de amistad' : '' }}</small>
+                <small class="my-auto">{{ justRejected(user.docID) ? 'Este usuario ha rechazado tu solicitud de amistad' : '' }}</small>
               </div> -->
             <div
               v-if="
                 !myFriendsList.some(
-                  (friend) => friend.docID === user.userData.docID
+                  (friend) => friend.docID === user.docID
                 )
               "
             >
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
-                    :color="computedRequestColor(user.userData.docID)"
+                    :color="computedRequestColor(user.docID)"
                     fab
-                    v-bind="justRejected(user.userData.docID) ? attrs : null"
-                    v-on="justRejected(user.userData.docID) ? on : null"
+                    v-bind="justRejected(user.docID) ? attrs : null"
+                    v-on="justRejected(user.docID) ? on : null"
                     depressed
                     @click="
-                      justRejected(user.userData.docID)
+                      justRejected(user.docID)
                         ? null
-                        : sendFriendRequest(user.userData)
+                        : sendFriendRequest(user)
                     "
                   >
                     <v-icon color="white">
-                      {{ computedRequestIcon(user.userData.docID) }}
+                      {{ computedRequestIcon(user.docID) }}
                     </v-icon>
                   </v-btn>
                 </template>
@@ -236,30 +235,29 @@ export default {
   computed: {
     ...mapState([
       "mySocialData",
-      "myFriends",
+      "mySocialRequests",
       "myFriendsList",
-      "isLoading",
-      "allUsersData",
-      "allFriendshipRequestsData",
+      "iMoviesUsersList",
+      "myFriendshipRequests",
+      "isLoading"
     ]),
   },
-  async mounted() {
-    this.$store.commit("setIsLoading", true);
-    await this.$nextTick()
-    .then(() => this.$store.dispatch('getFriendshipNotification'))
-    .then(() => this.$store.dispatch("getAllUsers"))
-    .then(() => this.$store.dispatch("getMySocialData"))
-    .then(() => this.$store.dispatch("getMyFriendshipData"))
-    this.$forceUpdate();
+  mounted() {
+    this.$store.dispatch('getFriendshipNotification')
+    this.$store.dispatch("getAllUsers")
+    this.$store.dispatch("getMySocialData")
+    this.$store.dispatch("getMyFriendshipData")
   },
   methods: {
     searchUser() {
-      console.log(this.user);
       this.user = "";
     },
     goToUserDetails(userData) {
       let docID = userData.docID;
+      let friendshipDate = userData.friendshipDate
+      console.log('User details => ', userData)
       this.$router.push({ path: `/community/userDetails/${docID}` });
+      this.$store.commit('setFriendshipDate', friendshipDate)
     },
     async sendFriendRequest(user) {
       let userData = {
@@ -273,10 +271,10 @@ export default {
       this.$forceUpdate();
     },
     computedRequestColor(docID) {
-      const MATCH_SENDED = this.myFriends.sended.find(
+      const MATCH_SENDED = this.mySocialRequests.sended.find(
         (user) => user.docID === docID
       );
-      const MATCH_REJECTED = this.myFriends.rejected.find(
+      const MATCH_REJECTED = this.mySocialRequests.rejected.find(
         (user) => user.docID === docID
       );
       let color = "green";
@@ -288,10 +286,10 @@ export default {
       return color;
     },
     computedRequestIcon(docID) {
-      const MATCH_SENDED = this.myFriends.sended.find(
+      const MATCH_SENDED = this.mySocialRequests.sended.find(
         (user) => user.docID === docID
       );
-      const MATCH_REJECTED = this.myFriends.rejected.find(
+      const MATCH_REJECTED = this.mySocialRequests.rejected.find(
         (user) => user.docID === docID
       );
       let icon = "mdi-account-plus";
@@ -304,13 +302,12 @@ export default {
       return icon;
     },
     justRejected(docID) {
-      const MATCH_REJECTED = this.myFriends.rejected.find(
+      const MATCH_REJECTED = this.mySocialRequests.rejected.find(
         (user) => user.docID === docID
       );
       return MATCH_REJECTED;
     },
     acceptRequest(userData) {
-      console.log("Accepting request: ", userData);
       this.$store.dispatch("acceptFriendshipRequest", userData);
     },
     rejectRequest(userData) {

@@ -64,6 +64,20 @@
     "basque": "Basque",
     "malay": "Malay"
   },
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  },
   "navbar": {
     "user": "User: ",
     "lang": "Lang: ",
@@ -146,10 +160,11 @@
     "email": "E-mail",
     "password": "Password",
     "repeat": "Repeat the password",
+    "favouriteGenres": "Favourite genres",
     "birthday": "Birthday",
     "country": "Country",
     "register": "Register",
-    "maximum": "Maximum 10 characters",
+    "maximum": "Maximum 15 characters",
     "accessSuccess": "Correct data! Loading the app...",
     "emailExists": "That E-mail already exists",
     "nameRequired": "The name is mandatory",

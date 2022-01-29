@@ -24,7 +24,6 @@ class Services {
     const RESOLVED_DATA = RESOLVED_QUESTIONS.data();
     const RESOLVED_ARR = RESOLVED_DATA.questions;
     let points = 0
-    let myDocID = localStorage.getItem("docID")
 
     
     for (let resolved of RESOLVED_ARR) {
@@ -33,7 +32,7 @@ class Services {
       }
     }
 
-    await db.doc(`userData/${myDocID}/triviaQuestions/points`).set({
+    await db.doc(`userData/${this.myDocID}/triviaQuestions/points`).set({
       total: points
     });
 

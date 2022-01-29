@@ -286,7 +286,6 @@ export default {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
     this.$store.dispatch('getFriendshipNotification');
-    this.getMyDocID();
     this.enableScrollX();
     this.animateScroll();
     setTimeout(() => {
@@ -422,15 +421,6 @@ export default {
     getTrailer(item) {
       this.trailerDialog = true;
       this.getMovieTrailer({ type: "other", id: item.id });
-    },
-    async getMyDocID() {
-      const COLLECTION = await db.collection("userData").get();
-      const USERDATA = this.$store.getters.userData;
-      COLLECTION.forEach((doc) => {
-        if (doc.data().userID === USERDATA.uid) {
-          this.$store.commit("setDocID", doc.data().docID);
-        }
-      });
     },
   },
 };

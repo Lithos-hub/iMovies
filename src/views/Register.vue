@@ -41,6 +41,7 @@
               <v-col cols="6">
                 <v-text-field
                   required
+                  color="cyan"
                   :rules="nameRules"
                   type="text"
                   v-model="username"
@@ -51,6 +52,7 @@
               <v-col>
                 <v-text-field
                   required
+                  color="cyan"
                   :rules="emailRules"
                   type="email"
                   v-model="email"
@@ -62,6 +64,7 @@
               <v-col cols="6">
                 <v-text-field
                   required
+                  color="cyan"
                   :rules="[passwordRules.required, passwordRules.length]"
                   type="password"
                   v-model.trim="password"
@@ -71,6 +74,7 @@
               <v-col cols="6">
                 <v-text-field
                   required
+                  color="cyan"
                   :rules="[passwordRules.match, passwordRules.required]"
                   type="password"
                   v-model.trim="repassword"
@@ -80,7 +84,20 @@
             </v-row>
 
             <v-row>
-              <v-col class="mt-auto">
+              <v-col class="pa-0 ma-0">
+                <v-select
+                  v-model="favouriteGenres"
+                  item-text="text"
+                  item-value="value"
+                  multiple
+                  chips
+                  dark
+                  color="cyan"
+                  deletable-chips
+                  prepend-icon="mdi-movie-open"
+                  :items="genresList"
+                  :label="$t('view-register.favouriteGenres')"
+                ></v-select>
                 <v-menu
                   ref="menu"
                   v-model="birthdayMenu"
@@ -95,6 +112,7 @@
                       :label="$t('view-register.birthday')"
                       prepend-icon="mdi-calendar"
                       readonly
+                      color="cyan"
                       v-bind="attrs"
                       v-on="on"
                       @blur="date = parseDate(dateFormatted)"
@@ -117,22 +135,54 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col>
-                <!-- <v-combobox
-                  v-model="cityName"
-                  item-text="text"
-                  item-value="text"
-                  chips
-                  append-icon="mdi-map-marker"
-                  :label="$t('view-register.country')"
-                  @input="searchCityName(cityName)"
-                /> -->
-                <small class="pb-2 ma-0">{{ $t('view-register.country') }}: <span class="cyan--text ml-3">{{ selectedCountry }}</span></small>
-                <v-list id="country-list" class="mt-5">
+              <v-col class="mt-3" cols="6">
+                <small
+                  >{{ $t("view-register.country") }}:
+                  <span class="cyan--text ml-3">{{
+                    selectedCountry
+                  }}</span></small
+                >
+                <v-list
+                  id="country-list"
+                  class="mt-5"
+                  :key="renderComponentKey"
+                >
                   <v-list-item-group color="white">
-                  <v-list-item v-for="(country, i) in countriesList" :key="i" @click="selectCountry(country)" active-class="primary">
-                    <v-list-item-title class="d-flex justify-space-around"><div class="my-auto">{{ country.text }}</div> <v-img class="flag-image ml-auto" :src="country.flag" max-width="40px" height="auto" aspect-ratio="1"></v-img></v-list-item-title>
-                  </v-list-item>
+                    <v-list-item v-if="loadingCountries">
+                      <v-progress-circular
+                        indeterminate
+                        color="cyan"
+                        size="30"
+                        width="2"
+                        class="mx-auto"
+                      ></v-progress-circular>
+                    </v-list-item>
+                    <v-list-item
+                      v-else
+                      v-for="(country, i) in countriesList"
+                      :key="i"
+                      @click="selectCountry(country)"
+                      active-class="primary"
+                    >
+                      <v-list-item-title class="d-flex justify-space-around"
+                        ><div
+                          :class="`my-auto ${country.color || 'white'}--text`"
+                        >
+                          {{
+                            $i18n.locale === "es-ES"
+                              ? country.text.spa
+                              : country.text.eng
+                          }}
+                        </div>
+                        <v-img
+                          class="flag-image ml-auto"
+                          :src="country.flag"
+                          max-width="40px"
+                          height="auto"
+                          aspect-ratio="1"
+                        ></v-img
+                      ></v-list-item-title>
+                    </v-list-item>
                   </v-list-item-group>
                 </v-list>
               </v-col>
@@ -244,6 +294,7 @@ export default {
   },
   data() {
     return {
+      renderComponentKey: 0,
       avatarDialog: false,
       valid: false,
       fb_user: null,
@@ -257,6 +308,8 @@ export default {
       selectedCountry: "",
       dateFormatted: "",
       registered: false,
+      countryCode: null,
+      loadingCountries: false,
       countriesList: [],
       nameRules: [
         (v) => !!v || this.$t("view-register.nameRequired"),
@@ -276,17 +329,39 @@ export default {
       activePicker: null,
       date: null,
       birthdayMenu: false,
+      favouriteGenres: [],
+      genresList: [
+        { value: "28", text: this.$t("genres.action") },
+        { value: "12", text: this.$t("genres.adventure") },
+        { value: "16", text: this.$t("genres.animation") },
+        { value: "35", text: this.$t("genres.comedy") },
+        { value: "80", text: this.$t("genres.crime") },
+        { value: "99", text: this.$t("genres.documentary") },
+        { value: "18", text: this.$t("genres.drama") },
+        { value: "10751", text: this.$t("genres.family") },
+        { value: "14", text: this.$t("genres.fantasy") },
+        { value: "36", text: this.$t("genres.history") },
+        { value: "27", text: this.$t("genres.horror") },
+        { value: "10402", text: this.$t("genres.music") },
+        { value: "9648", text: this.$t("genres.mystery") },
+        { value: "10749", text: this.$t("genres.romance") },
+        { value: "878", text: this.$t("genres.sci-fi") },
+        { value: "10770", text: this.$t("genres.tv") },
+        { value: "53", text: this.$t("genres.thriller") },
+        { value: "10752", text: this.$t("genres.war") },
+        { value: "37", text: this.$t("genres.western") },
+      ],
     };
   },
   computed: {
-    ...mapState(["snackbarObject", "user"]),
+    ...mapState(["snackbarObject"]),
   },
   mounted() {
     this.getAvatarsImages();
     this.searchAllCountries();
   },
   watch: {
-    menu(val) {
+    birthdayMenu(val) {
       val && setTimeout(() => (this.activePicker = "YEAR"));
     },
     date(val) {
@@ -315,46 +390,60 @@ export default {
         ? ""
         : this.$t("view-register.passwordMatch");
     },
-    selectCountry (name) {
-      this.selectedCountry = name.text
+    selectCountry(name) {
+      this.selectedCountry = this.$i18n.locale === "es-ES" ? name.text.spa : name.text.eng;
+      this.countryCode = name.code
+      const countryListHTML = document.querySelector("#country-list");
+      countryListHTML.addEventListener("mouseleave", (e) => {
+        countryListHTML.scrollTo(0, 0);
+        this.countriesList[0] = {
+          text: name.text,
+          flag: name.flag,
+          color: "cyan",
+        };
+        setTimeout(() => {
+          this.renderComponentKey += 1;
+        }, 250);
+      });
     },
-    // async searchCityName(name) {
-    //   let apiURL = `https://restcountries.com/v3.1/name/${name}`
-    //   await axios.get(apiURL).then((res) => {
-    //     let data = res.data
-    //     for (let country of data) {
-    //       let { 
-    //         translations: {
-    //           spa: {
-    //             common
-    //           }
-    //         }
-    //       } = country
-    //       this.countriesList.push(common)
-    //     }
-    //     this.$forceUpdate()
-    //   });
-    // },
-    async searchAllCountries () {
-      let apiURL = 'https://restcountries.com/v3.1/all'
-      await axios.get(apiURL).then((res) => {
-        for (let country of res.data) {
-          let { 
-            flags: {
-              png
-            },
-            translations: {
-              spa: {
-                common
-              }
-            }
-          } = country
+    async searchAllCountries() {
+      this.loadingCountries = true;
+      let apiURL = "https://restcountries.com/v3.1/all";
+      await axios
+        .get(apiURL)
+        .then((res) => {
           this.countriesList.push({
-            text: common,
-            flag: png
-          })
-        }
-      })
+            text: "",
+            flag: "",
+          });
+          for (let country of res.data) {
+            let {
+              cca2,
+              flags: { png },
+              translations: {
+                spa: { common },
+              },
+            } = country;
+            this.countriesList.push({
+              code: cca2,
+              text: {
+                spa: common,
+                eng: country.name.common,
+              },
+              flag: png,
+            });
+          }
+          if (this.$i18n.locale === 'en-EN') {
+            this.countriesList.sort((a, b )=> a.text.eng.localeCompare(b.text.eng));
+          } else {
+            this.countriesList.sort((a, b )=> a.text.spa.localeCompare(b.text.spa));
+          }
+          this.loadingCountries = false;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.loadingCountries = false;
+        });
     },
     validate() {
       this.loadingCreate = true;
@@ -362,6 +451,9 @@ export default {
       const EMAIL = this.email;
       const PASSWORD = this.password;
       const AVATAR = this.avatar;
+      const BIRTHDAY = this.dateFormatted;
+      const COUNTRY = this.countryCode;
+      const FAVOURITE_GENRES = this.favouriteGenres;
 
       this.valid = this.$refs.form.validate();
 
@@ -395,7 +487,7 @@ export default {
               auth
                 .createUserWithEmailAndPassword(EMAIL, PASSWORD)
                 .then((userCredential) => {
-                  let user = userCredential.user;
+                  this.$store.commit("setUser", userCredential.user);
                   // When signed in, we store the user with its ID, userName, and avatar in Firestore
                   const addUser = async () => {
                     try {
@@ -407,10 +499,13 @@ export default {
                       localStorage.setItem("docID", newID);
                       await USER_DATA_REF.set({
                         docID: newID,
-                        userID: user.uid,
+                        userID: userCredential.user.uid,
                         userName: USERNAME,
                         userEmail: EMAIL,
                         avatar: AVATAR,
+                        birthday: BIRTHDAY,
+                        country: COUNTRY,
+                        favouriteGenres: FAVOURITE_GENRES,
                       });
                       await this.$store.dispatch("updateProfile", {
                         userName: USERNAME,
@@ -463,17 +558,17 @@ export default {
       await db.doc(`userData/${myDocID}/iMovies-Sections/sections`).set({
         visited: [],
       });
-      await db.doc(`userData/${myDocID}/myFriends/accepted`).set({
+      await db.doc(`userData/${myDocID}/mySocialRequests/accepted`).set({
         acceptedList: [],
       });
-      await db.doc(`userData/${myDocID}/myFriends/rejected`).set({
+      await db.doc(`userData/${myDocID}/mySocialRequests/rejected`).set({
         rejectedList: [],
       });
-      await db.doc(`userData/${myDocID}/myFriends/sended`).set({
+      await db.doc(`userData/${myDocID}/mySocialRequests/sended`).set({
         sendedList: [],
       });
-      await db.doc(`userData/${myDocID}/myFriends/requestInbox`).set({
-        requestsList: [],
+      await db.doc(`userData/${myDocID}/mySocialRequests/received`).set({
+        receivedList: [],
       });
     },
     async getAvatarsImages() {
@@ -579,7 +674,6 @@ export default {
 
 #country-list {
   height: 60px;
-  margin-bottom: 20px;
   overflow-y: scroll;
   border-bottom: 1px solid white;
   transition: all 0.3s ease-in-out;

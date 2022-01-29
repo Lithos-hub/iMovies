@@ -50,7 +50,8 @@ export default {
   },
   watch: {
     $route(to) {
-      if (to.path !== "/") {
+      if (to.path !== "/" && to.path !== "/register") {
+        this.getUserData();
         const MY_FS_DOC = localStorage.getItem("docID");
         if (MY_FS_DOC) {
           this.$store.commit("setDocID", MY_FS_DOC);
@@ -65,30 +66,28 @@ export default {
       }
       window.scrollTo(0, 0);
     },
-    showingFriends (val) {
-      if (val) this.$store.dispatch("getMessages")
-    }
+    showingFriends(val) {
+      if (val) this.$store.dispatch("getMessages");
+    },
   },
   computed: {
-    ...mapState(["loadingUserAuthStatus", "moviesCounter", "moviesCounter", "chatIsActivated", "notifications"]),
-    correctPath () {
-      return this.$route.path !== "/" && this.$route.path !== "/404" && this.$route.path !== "/register"
-    }
+    ...mapState([
+      "loadingUserAuthStatus",
+      "moviesCounter",
+      "moviesCounter",
+      "chatIsActivated",
+      "notifications",
+    ]),
+    correctPath() {
+      return (
+        this.$route.path !== "/" &&
+        this.$route.path !== "/404" &&
+        this.$route.path !== "/register"
+      );
+    },
   },
   created() {
     this.getUserData();
-    const MY_FS_DOC = localStorage.getItem("docID");
-    if (MY_FS_DOC) {
-      this.$store.commit("setDocID", MY_FS_DOC);
-    } else {
-      this.getMyDocID();
-    }
-    console.log("My Firestore Doc ID: ", this.$store.getters.myDocumentID);
-  },
-  mounted() {
-    this.getCurrentDate();
-    this.$store.dispatch('getFriendshipNotification');
-    this.$store.dispatch('getMySocialData');
   },
   methods: {
     ...mapActions(["changeLanguage", "getUserID", "showingFriends"]),
@@ -106,17 +105,17 @@ export default {
       await auth.onAuthStateChanged((user) => {
         if (user) {
           this.$store.commit("setUser", user);
-          this.isLoading = false;
-        }
-      });
-    },
-    async getMyDocID() {
-      const COLLECTION = await db.collection("userData").get();
-      const USERDATA = this.$store.getters.userData;
-      COLLECTION.forEach((doc) => {
-        if (doc.data().userID === USERDATA.uid) {
-          this.$store.commit("setDocID", doc.data().docID);
-          localStorage.setItem("docID", doc.data().docID);
+          this.$store.dispatch("getMyDocID");
+          this.getCurrentDate();
+          this.$nextTick().then(() => {
+            this.$store.dispatch("getFriendshipNotification");
+            this.$store.dispatch("getMySocialData");
+            console.log(
+              "My Firestore Doc ID: ",
+              this.$store.getters.myDocID
+            );
+            this.isLoading = false;
+          });
         }
       });
     },

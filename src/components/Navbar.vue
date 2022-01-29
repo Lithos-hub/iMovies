@@ -398,10 +398,10 @@ export default {
         .signOut()
         .then(() => {
           const userData = {};
-
           this.$store.commit("setUser", userData);
-
+          this.$store.commit("setMessagesListener", () => {});
           this.$router.push("/");
+          localStorage.clear();
         })
         .catch((error) => {
           console.log(error);
@@ -438,7 +438,7 @@ export default {
 
 #username-toolbar {
   position: absolute;
-  left: 5%;
+  margin-left: 5em;
   color: $primary;
   font-weight: lighter;
 }
