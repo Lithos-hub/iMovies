@@ -142,7 +142,7 @@
     "email": "E-mail",
     "password": "Contraseña",
     "accessSuccess": "¡Datos correctos! Accediendo a la aplicacion...",
-    "accessError": "El E-mail o la contraseña no son incorrectos. Por favor, inténtalo de nuevo.",
+    "accessError": "El E-mail o la contraseña no son correctos. Por favor, inténtalo de nuevo.",
     "enter": "Acceder",
     "register": "Quiero registrarme",
     "access3": "Accede con una ",
@@ -364,5 +364,10 @@
     "noAvailable": "Este vídeo no se encuentra disponible en tu idioma.",
     "show": "Ver en inglés",
     "noAvailable2": "Video no disponible"
+  },
+  "comp-chat": {
+    "friends": "Mis amigos",
+    "noFriends": "No has agregado a amigos aún",
+    "write": "Escribe un mensaje"
   }
 }

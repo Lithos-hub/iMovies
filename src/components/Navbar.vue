@@ -498,7 +498,7 @@ export default {
   top: 25%;
   right: 20%;
   transform: translate(50%, -50%);
-  background: rgb(255, 55, 55);
+  background: #ff3737;
   border: 1px solid #151515;
   width: 12px;
   height: 12px;

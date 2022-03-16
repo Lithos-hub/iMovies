@@ -85,9 +85,6 @@ export default new Vuex.Store({
     isChatting: false,
     showingFriends: true,
     chatRooms: {},
-    messages: [],
-    messagesListener: () => {},
-    notificationsListener: () => {},
     iMoviesUsersList: [],
     myFriendshipRequests: [],
     mySocialRequests: {
@@ -295,12 +292,6 @@ export default new Vuex.Store({
     setIsShowingFriends(state, payload) {
       state.showingFriends = payload;
     },
-    setMessages(state, payload) {
-      state.messages = payload;
-    },
-    setMessagesListener(state, listener) {
-      listener ? (state.listener = listener) : state.messagesListener();
-    },
     setiMoviesUsersList(state, payload) {
       state.iMoviesUsersList = payload;
     },
@@ -315,9 +306,6 @@ export default new Vuex.Store({
     },
     setHasNotifications(state, payload) {
       state.hasNotifications = payload;
-    },
-    setNotificationsListener(state, listener) {
-      listener ? (state.listener = listener) : state.notificationsListener();
     },
     setNotifications(state, payload) {
       state.notifications = payload;
@@ -491,7 +479,6 @@ export default new Vuex.Store({
             "setiMoviesUsersList",
             arr.filter((user) => user.userID !== rootState.user.uid)
           );
-          commit("setIsLoading", false);
         });
     },
     async getAllMyFriends({ commit, state }) {
@@ -543,8 +530,10 @@ export default new Vuex.Store({
           },
         });
         commit("setMyFriendslist", arr);
-        commit("setIsLoading", false);
       }
+      setTimeout(() => {
+        commit("setIsLoading", false);
+      }, 1000);
     },
     async sendFriendRequest({ commit, state }, userData) {
       let MY_SENDED_DOC_REF = await db.doc(
@@ -891,28 +880,10 @@ export default new Vuex.Store({
         .collection("messages")
         .onSnapshot((querySnapshot) => {
           querySnapshot.forEach((doc) => {
-            rootState.chatRooms[doc.id] = doc.data()
+            rootState.chatRooms[doc.id] = doc.data();
           });
         });
     },
-    // async getMessages({ commit, state }, userDocID) {
-    //   console.log('Getting messages...')
-    //   const query = await db
-    //     .collection("userData")
-    //     .doc(state.myDocID)
-    //     .collection("messages")
-    //     .doc(userDocID)
-    //     .onSnapshot(doc => { // ! Real time database listener
-    //       const messages = [];
-    //       let data = doc.data();
-    //       data.messagesList.forEach((message) => {
-    //         messages.unshift(message);
-    //       });
-    //       commit("setMessages", messages.sort((a, b) => a.createdAt > b.createdAt ? 1 : -1));
-    //     })
-
-    //   commit("setMessagesListener", query);
-    // },
     async createMessage(
       { rootState },
       { message: message, docID: docID, avatar: avatar }
@@ -930,28 +901,37 @@ export default new Vuex.Store({
         createdAt: Date.now(),
       };
       MY_MESSAGES_REF.update({
+        read: false,
         messagesList: firebase.firestore.FieldValue.arrayUnion(obj),
       });
 
       const USER_MESSAGES_REF = await db.doc(
         `userData/${docID}/messages/${rootState.myDocID}`
       );
-
       USER_MESSAGES_REF.update({
+        read: false,
         messagesList: firebase.firestore.FieldValue.arrayUnion(obj),
+      });
+    },
+    async hasReadTheMessage({ rootState }, docID) {
+      const MY_MESSAGES_REF = await db.doc(
+        `userData/${rootState.myDocID}/messages/${docID}`
+      );
+      MY_MESSAGES_REF.set({
+        read: true,
       });
     },
     async generateChatRooms({ commit, rootState }) {
       let chatRoom = {};
-      console.log(rootState.myFriendsList);
       for (let friend of rootState.myFriendsList) {
         chatRoom[friend.docID] = {
+          read: false,
           messagesList: [],
         };
       }
       commit("setChatRooms", chatRoom);
     },
-    async createChatRoom({ rootState, commit }, docID) {
+    async createChatRoom({ rootState }, docID) {
       const MY_MESSAGES_REF = await db
         .doc(`userData/${rootState.myDocID}/messages/${docID}`)
         .get();
@@ -963,10 +943,19 @@ export default new Vuex.Store({
       const MY_FRIEND_DATA = MY_FRIEND_REF.data();
 
       if (!MY_MESSAGES_DATA || !MY_FRIEND_DATA) {
-        await db.doc(`userData/${rootState.myDocID}/messages/${docID}`).set({});
-        await db.doc(`userData/${docID}/messages/${rootState.myDocID}`).set({});
+        await db
+        .doc(`userData/${rootState.myDocID}/messages/${docID}`)
+        .set({
+          read: false,
+          messagesList: []
+        });
+        await db
+        .doc(`userData/${docID}/messages/${rootState.myDocID}`)
+        .set({
+          read: false,
+          messagesList: []
+        });
       }
-      console.log("My chat rooms: ", rootState.chatRooms);
     },
     // ! __________________ API ACTIONS __________________ //
     async getLatestReleases({ commit }, byPopularity) {
@@ -1167,8 +1156,6 @@ export default new Vuex.Store({
         });
     },
     async getMoviesByGenre({ commit }, { genre, page }) {
-      console.log(genre);
-      console.log(page);
       commit("setLoadingData", true);
       commit("setSelectedGenre", genre);
 

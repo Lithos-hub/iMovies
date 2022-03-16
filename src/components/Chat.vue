@@ -32,10 +32,7 @@
           v-if="loadingMessages"
         ></v-progress-circular>
         <v-container id="conversation-container">
-          <div
-            v-if="!loadingMessages"
-            class="conversation-wrapper fadeIn"
-          >
+          <div v-if="!loadingMessages" class="conversation-wrapper fadeIn">
             <v-row
               :class="
                 msg.userId === user.uid
@@ -45,10 +42,14 @@
               v-for="(msg, i) in chatRooms[friendDocID].messagesList"
               :key="i"
             >
-              <v-col cols="3" class="text-center mr-auto">
+              <v-col cols="12" class="text-center mr-auto py-0">
                 <div class="d-block">
-                  <div>
-                    <small class="font-weight-bold">{{ msg.userName }}</small>
+                  <div class="d-flex justify-center">
+                    <p class="font-weight-bold mr-2 my-0">{{ msg.userName }}</p>
+                    |
+                    <span class="primary--text ml-2 my-0">{{
+                      new Date(msg.createdAt).toLocaleString("en-UK").slice(-8)
+                    }}</span>
                   </div>
                 </div>
                 <div>
@@ -58,7 +59,7 @@
                 </div>
               </v-col>
               <v-col
-                cols="8"
+                cols="auto"
                 :class="
                   msg.userId === user.uid
                     ? 'align-center chat-conversation my-conversation d-flex'
@@ -76,16 +77,14 @@
       <v-card-actions id="message-box-section" class="pa-0 ma-0 d-flex">
         <v-textarea
           id="message-inbox"
-          placeholder="Escribe un mensaje"
+          :placeholder="$t('comp-chat.write')"
           hide-details
+          no-resize
           v-model="myMessage"
           height="50px"
           filled
         >
         </v-textarea>
-        <!-- <div id="message-send-btn" class="mr-2" @click="sendMessage">
-          <v-icon color="primary">mdi-send</v-icon>
-        </div> -->
       </v-card-actions>
     </v-card>
     <v-card class="ml-2" id="friends-card" v-if="isChatting || showingFriends">
@@ -100,7 +99,7 @@
           justify-space-between
         "
       >
-        <small>Amigos</small>
+        <small>{{ $t("comp-chat.friends") }}</small>
       </v-card-title>
       <v-card-text class="pa-0">
         <v-list dense class="pa-0 ma-0">
@@ -110,31 +109,40 @@
                 @click="chatWithFriend(friend)"
                 v-for="(friend, i) in myFriendsList"
                 :key="i"
+                class="d-flex justify-space-between"
                 active-class="primary lighten-4 black--text"
               >
-                <v-list-item-avatar size="40">
-                  <v-img :src="friend.avatar"></v-img>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title>{{ friend.userName }}</v-list-item-title>
-                  <v-list-item-subtitle class="black--text">
-                    {{ friend.onlineStatus ? "Online" : "Offline" }}
-                    <v-icon
-                      size="10"
-                      :color="friend.onlineStatus ? 'green' : 'red'"
-                      class="mb-1"
-                      >mdi-circle</v-icon
-                    ></v-list-item-subtitle
-                  >
-                </v-list-item-content>
+                <div class="d-flex">
+                  <v-list-item-avatar size="40">
+                    <v-img :src="friend.avatar"></v-img>
+                  </v-list-item-avatar>
+                  <v-list-item-content class="d-flex">
+                    <v-list-item-title>{{ friend.userName }}</v-list-item-title>
+                    <v-list-item-subtitle class="black--text">
+                      {{ friend.onlineStatus ? "Online" : "Offline" }}
+                      <v-icon
+                        size="10"
+                        :color="friend.onlineStatus ? 'green' : 'red'"
+                        class="mb-1"
+                        >mdi-circle</v-icon
+                      ></v-list-item-subtitle
+                    >
+                  </v-list-item-content>
+                </div>
+                <div
+                  v-if="getHasNotification(friend.docID) && !hasReadTheMessage"
+                >
+                  <v-icon size="20" color="primary">mdi-message</v-icon>
+                  <div class="message-badge">.</div>
+                </div>
               </v-list-item>
             </v-list-item-group>
           </div>
           <div v-else>
             <v-list-item-content class="pa-2">
-              <small class="red--text font-weight-bold text-center"
-                >Aún no has agregado a ningún usuario</small
-              >
+              <small class="red--text font-weight-bold text-center">{{
+                $t("comp-chat.noFriends")
+              }}</small>
             </v-list-item-content>
           </div>
         </v-list>
@@ -155,39 +163,30 @@ export default {
       friendName: "",
       friendDocID: "",
       loadingMessages: true,
+      hasReadTheMessage: false,
+      hasNotification: false,
     };
   },
   watch: {
     showingFriends(val) {
-      console.log("Showing friends? ", val);
       if (!val) {
         this.minimized = false;
         this.$emit("minimize-chat", this.minimized);
       }
     },
-    messages(newVal, oldVal) {
-      if (newVal !== oldVal) {
-        setTimeout(() => {
-          let chatWrapper = document.querySelector(".conversation-wrapper");
-          let chatContainer = document.querySelector("#conversation-container");
-          chatContainer.scrollTo(0, chatWrapper.scrollHeight);
-        }, 50);
+    isChatting(val) {
+      if (val) {
+        this.$store.dispatch("hasReadTheMessage", this.friendDocID);
       }
     },
   },
   computed: {
-    ...mapState([
-      "messages",
-      "showingFriends",
-      "myFriendsList",
-      "user",
-      "chatRooms",
-    ]),
+    ...mapState(["showingFriends", "myFriendsList", "user", "chatRooms"]),
   },
   mounted() {
     this.$store.dispatch("generateChatRooms");
     this.$store.dispatch("getAllMyMessages");
-    this.sendMessage();
+    this.sendMessageListener();
   },
   methods: {
     minimizeChat() {
@@ -195,25 +194,21 @@ export default {
       this.$emit("minimize-chat", this.minimized);
     },
     async chatWithFriend(friend) {
-      console.log(friend)
-      this.friendName = friend.userName
+      this.friendName = friend.userName;
       this.isChatting = true;
       this.friendDocID = friend.docID;
       this.friendAvatar = friend.avatar;
       this.$store.dispatch("createChatRoom", friend.docID);
-      // this.$store.dispatch("getMessages", friend.docID);
       this.$store.dispatch("getAllMyMessages");
       this.loadingMessages = false;
-      if (this.chatRooms.length) {
-        setTimeout(() => {
-          let chatWrapper = document.querySelector(".conversation-wrapper");
-          let chatContainer = document.querySelector("#conversation-container");
-          chatContainer.scrollTo(0, chatWrapper.scrollHeight);
-        }, 50);
-      }
-      this.$forceUpdate();
+      friend.hasNotification = false;
+      setTimeout(() => {
+        let chatWrapper = document.querySelector(".conversation-wrapper");
+        let chatContainer = document.querySelector("#conversation-container");
+        chatContainer.scrollTo(0, chatWrapper.scrollHeight);
+      }, 50);
     },
-    sendMessage() {
+    sendMessageListener() {
       window.addEventListener("keyup", (e) => {
         if (e.key === "Enter" && this.myMessage.trim() !== "") {
           this.$store.dispatch("createMessage", {
@@ -225,14 +220,23 @@ export default {
           // this.$store.dispatch("getMessages", this.friendDocID);
           this.$store.dispatch("getAllMyMessages");
         }
-        if (this.chatRooms.length) {
-          setTimeout(() => {
-            let chatWrapper = document.querySelector(".conversation-wrapper");
-            let chatContainer = document.querySelector(
-              "#conversation-container"
-            );
-            chatContainer.scrollTo(0, chatWrapper.scrollHeight);
-          }, 50);
+        setTimeout(() => {
+          let chatWrapper = document.querySelector(".conversation-wrapper");
+          let chatContainer = document.querySelector("#conversation-container");
+          chatContainer.scrollTo(0, chatWrapper.scrollHeight);
+        }, 50);
+      });
+    },
+    getHasNotification(friendDocID) {
+      this.$nextTick().then(() => {
+        let lastMessage = {};
+        if (this.chatRooms[friendDocID].messagesList.length) {
+          lastMessage = this.chatRooms[friendDocID].messagesList.slice(-1)[0];
+        }
+        if (lastMessage.userId !== this.user.uid) {
+          return true;
+        } else {
+          return false;
         }
       });
     },
@@ -282,6 +286,7 @@ export default {
   margin-inline: 10px;
   width: auto;
   overflow: hidden;
+  box-shadow: 1px 2px 2px #959595;
 
   div {
     width: 100%;
@@ -310,5 +315,17 @@ export default {
     background: none !important;
     outline-color: none !important;
   }
+}
+
+.message-badge {
+  position: absolute;
+  top: 1.5em;
+  right: 1.5em;
+  transform: translate(50%, -50%);
+  background: #ff3737;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  z-index: 99999;
 }
 </style>

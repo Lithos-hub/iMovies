@@ -366,5 +366,10 @@
     "noAvailable": "Video no available in your language",
     "show": "Show in english",
     "noAvailable2": "Video no available"
+  },
+  "comp-chat": {
+    "friends": "My friends",
+    "noFriends": "You have not friends yet",
+    "write": "Write a message"
   }
 }

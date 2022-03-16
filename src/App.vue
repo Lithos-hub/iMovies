@@ -136,9 +136,9 @@ body {
 }
 
 .main-content {
-  background: $dark2 !important;
+  background: $dark2;
   color: white;
-  font-family: $style1 !important;
+  font-family: $style1;
   height: 100%;
   padding-bottom: 5em;
   min-height: 100%;
@@ -188,7 +188,7 @@ body {
   bottom: 0.5em;
   right: 0.5em;
   min-height: 500px;
-  min-width: 550px;
+  width: auto;
   z-index: 99999999;
   justify-content: flex-end;
   transition: all 0.2s ease-out;

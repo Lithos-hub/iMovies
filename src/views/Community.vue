@@ -2,8 +2,7 @@
   <div>
     <SectionTitle :title="sectionTitle" />
     <Spinner v-if="isLoading" />
-
-    <div v-if="!isLoading">
+    <div v-else>
       <!-- // ? ** SEARCH USER ** ? // -->
       <v-container>
         <v-row>
@@ -255,7 +254,6 @@ export default {
     goToUserDetails(userData) {
       let docID = userData.docID;
       let friendshipDate = userData.friendshipDate
-      console.log('User details => ', userData)
       this.$router.push({ path: `/community/userDetails/${docID}` });
       this.$store.commit('setFriendshipDate', friendshipDate)
     },

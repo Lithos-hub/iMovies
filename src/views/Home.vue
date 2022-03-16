@@ -283,11 +283,9 @@ export default {
     this.getMovieOfTheWeek();
   },
   mounted() {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-    this.$store.dispatch('getFriendshipNotification');
     this.enableScrollX();
     this.animateScroll();
+    this.$store.dispatch('getFriendshipNotification');
     setTimeout(() => {
       this.getMovieTrailer({
         type: "ofTheWeek",
@@ -389,34 +387,37 @@ export default {
       if (!text) return null;
       return text.slice(0, 700) + "...";
     },
-    enableScrollX() {
-      let homeView = document.querySelector("#home-view");
-      let scroll = homeView.querySelector("#scroll-x");
-
-      scroll.addEventListener("wheel", function (e) {
+    enableScrollX () {
+      let homeView = document.querySelector('#home-view')
+      let scroll = homeView.querySelector('#scroll-x');
+      
+      scroll.addEventListener('wheel', function(e) {
         scroll.scrollLeft += e.deltaY / 50;
       });
     },
     animateScroll() {
-      let homeView = document.querySelector("#home-view");
-      let scroll = homeView.querySelector("#scroll-x");
-      const SCROLL_MAX = 58080;
-      let i = 0;
-      const animate = () => {
-        if (i <= SCROLL_MAX) {
+      let homeView = document.querySelector('#home-view')
+      let scroll = homeView.querySelector('#scroll-x');
+      const SCROLL_MAX = 58080
+      let i = 0
+      setInterval(() => { 
+        if (i < SCROLL_MAX) {
+          scroll = homeView.querySelector('#scroll-x');
           scroll.style.transition = "0.5s ease-out";
           scroll.style.opacity = "1";
-          scroll.scrollLeft = i;
-          i++;
+          scroll.scrollLeft += 1
+          i++
         }
-        if (i === SCROLL_MAX) {
+        if (scroll.scrollLeft === SCROLL_MAX) {
+          scroll = homeView.querySelector('#scroll-x');
           scroll.style.transition = "0.5s ease-out";
           scroll.style.opacity = "0";
-          i = 0;
+          setTimeout(() => {
+            scroll.scrollLeft = 0
+            i = 0;
+          }, 500)
         }
-        setTimeout(animate, 30);
-      };
-      animate();
+      }, 30)
     },
     getTrailer(item) {
       this.trailerDialog = true;
