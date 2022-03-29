@@ -6,6 +6,7 @@
     "comeback": "Come back"
   },
   "languages": {
+    "cantonese": "Cantonese",
     "english": "English",
     "french": "Français",
     "german": "Deutsch",
@@ -285,8 +286,16 @@
     "releaseDate":"Release date: ",
     "overview": "Overview",
     "average": "Vote average",
+    "casting": "Casting",
     "votes": "Vote count",
-    "language": "Language/s"
+    "language": "Language/s",
+    "genres": "Genres",
+    "extraInfo": "Extra info",
+    "budget": "Budget: ",
+    "revenue": "Revenue: ",
+    "runtime": "Runtime: ",
+    "homepage": "Homepage: ",
+    "mainComp": "Main production company: "
   },
   "view-account": {
     "profile": "Profile",

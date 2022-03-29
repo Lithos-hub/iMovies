@@ -616,11 +616,30 @@ export default new Vuex.Store({
     },
     async getMovieDetails({ commit }, id) {
       const CALL_URL = `${URL}/movie/${id}?api_key=${APIKEY}&language=${LANGUAGE}&include_adult=false`;
+      let castingArr = [];
 
       await axios
         .get(CALL_URL)
         .then((resp) => {
-          commit("setMovieDetails", resp.data);
+            const CALL_URL_CAST = `${URL}/movie/${id}/credits?api_key=${APIKEY}&language=${LANGUAGE}&include_adult=false`;
+            axios
+              .get(CALL_URL_CAST)
+              .then((resp) => {
+                for (let data of resp.data.cast) {
+                  castingArr.push({
+                    name: data.name,
+                    character: data.character,
+                  });
+                }
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+              let movieDetails = {
+                ...resp.data,
+                cast: castingArr,
+              }
+              commit("setMovieDetails", movieDetails);
         })
         .catch((e) => {
           console.log(e);
