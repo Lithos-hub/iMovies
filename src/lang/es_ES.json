@@ -6,6 +6,7 @@
     "comeback": "Regresar"
   },
   "languages": {
+    "cantonese": "Cantonés",
     "english": "inglés",
     "french": "francés",
     "german": "alemán",
@@ -302,6 +303,7 @@
     "releaseDate":"Fecha de lanzamiento: ",
     "overview": "Sinopsis",
     "average": "Nota media",
+    "casting": "Reparto",
     "votes": "Número de votos",
     "language": "Idioma/s"
   },

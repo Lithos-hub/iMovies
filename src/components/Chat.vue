@@ -100,9 +100,14 @@
         "
       >
         <small>{{ $t("comp-chat.friends") }}</small>
+        <v-btn icon @click="closeChatList">
+        <v-icon class="white--text">
+          mdi-close
+        </v-icon>
+        </v-btn>
       </v-card-title>
       <v-card-text class="pa-0">
-        <v-list dense class="pa-0 ma-0">
+        <v-list dense class="pa-0 ma-0" :key="reRenderComponentKey">
           <div v-if="myFriendsList.length">
             <v-list-item-group>
               <v-list-item
@@ -130,10 +135,9 @@
                   </v-list-item-content>
                 </div>
                 <div
-                  v-if="getHasNotification(friend.docID) && !hasReadTheMessage"
+                  v-if="getHasNotification(friend)"
                 >
                   <v-icon size="20" color="primary">mdi-message</v-icon>
-                  <div class="message-badge">.</div>
                 </div>
               </v-list-item>
             </v-list-item-group>
@@ -156,7 +160,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      isChatting: false,
+      reRenderComponentKey: 0,
       minimized: false,
       friendAvatar: "",
       myMessage: "",
@@ -174,11 +178,11 @@ export default {
         this.$emit("minimize-chat", this.minimized);
       }
     },
-    isChatting(val) {
-      if (val) {
-        this.$store.dispatch("hasReadTheMessage", this.friendDocID);
-      }
-    },
+    // isChatting(val) {
+    //   if (val) {
+    //     this.$store.dispatch("hasReadTheMessage", this.friendDocID);
+    //   }
+    // },
   },
   computed: {
     ...mapState(["showingFriends", "myFriendsList", "user", "chatRooms"]),
@@ -189,6 +193,10 @@ export default {
     this.sendMessageListener();
   },
   methods: {
+    closeChatList() {
+      this.$store.commit("setChatIsActivated", false)
+      this.$store.commit('setIsShowingFriends', false)
+    },
     minimizeChat() {
       this.minimized = !this.minimized;
       this.$emit("minimize-chat", this.minimized);
@@ -198,10 +206,11 @@ export default {
       this.isChatting = true;
       this.friendDocID = friend.docID;
       this.friendAvatar = friend.avatar;
-      this.$store.dispatch("createChatRoom", friend.docID);
-      this.$store.dispatch("getAllMyMessages");
+      await this.$store.dispatch("createChatRoom", friend.docID);
+      await this.$store.dispatch("getAllMyMessages");
+      await this.$store.dispatch("hasReadTheMessage", this.friendDocID);
       this.loadingMessages = false;
-      friend.hasNotification = false;
+      this.getHasNotification(friend);
       setTimeout(() => {
         let chatWrapper = document.querySelector(".conversation-wrapper");
         let chatContainer = document.querySelector("#conversation-container");
@@ -227,18 +236,8 @@ export default {
         }, 50);
       });
     },
-    getHasNotification(friendDocID) {
-      this.$nextTick().then(() => {
-        let lastMessage = {};
-        if (this.chatRooms[friendDocID].messagesList.length) {
-          lastMessage = this.chatRooms[friendDocID].messagesList.slice(-1)[0];
-        }
-        if (lastMessage.userId !== this.user.uid) {
-          return true;
-        } else {
-          return false;
-        }
-      });
+    getHasNotification(friend) {
+      console.log('Friend ==> ', friend)
     },
     closeChat() {
       this.isChatting = false;

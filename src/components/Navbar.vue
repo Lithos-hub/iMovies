@@ -416,6 +416,7 @@ export default {
     showChat() {
       let activeChat = this.chatIsActivated;
       this.$store.commit("setChatIsActivated", !activeChat);
+      this.$store.commit('setIsShowingFriends', true)
     },
   },
 };
