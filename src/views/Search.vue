@@ -472,7 +472,8 @@ export default {
       "imageURL",
       "trailerVideo",
       "addToDialog",
-      "comesFromDetails",
+      "comesFromAnotherView",
+      "comebackFromDetails",
       "isSearchingMovie",
       "searchInput",
       "searchItem",
@@ -494,7 +495,15 @@ export default {
     if (this.input.length > 1) {
       this.fillItemsList();
     }
-    if (this.comesFromDetails) {
+    if (this.comebackFromDetails) { // => When the user comes from the movie details using comeback button
+      this.loading = true;
+      this.showContent = true;
+      this.input = this.searchInput;
+      setTimeout(() => {
+        this.searchByInput(this.searchItem);
+      }, 1000);
+    }
+    if (this.comesFromAnotherView) {
       this.loading = true;
       this.showContent = true;
       this.input = this.searchInput;

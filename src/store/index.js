@@ -41,7 +41,8 @@ export default new Vuex.Store({
       warningColor: "",
       warningText: "",
     },
-    comesFromDetails: false,
+    comesFromAnotherView: false,
+    comebackFromDetails: false,
     isSearchingMovie: false,
     searchItem: {},
     searchInput: "",
@@ -172,8 +173,11 @@ export default new Vuex.Store({
     setSelectedGenre(state, payload) {
       state.selectedGenre = payload;
     },
-    setComesFromDetails(state, payload) {
-      state.comesFromDetails = payload;
+    setComesFromAnotherView(state, payload) {
+      state.comesFromAnotherView = payload;
+    },
+    setcomebackFromDetails(state, payload) {
+      state.comebackFromDetails = payload;
     },
     setClickedTab(state, key) {
       state.clickedTab = key;

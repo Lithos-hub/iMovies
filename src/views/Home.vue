@@ -33,21 +33,22 @@
         </router-link>
       </div>
     </div>
-    <v-row no-gutters class="mt-2 pa-0 gradient-text" v-if="!isUsingMobile">
-      <v-col cols="4" class="text-center">
+    <v-row no-gutters class="mt-5 pa-0 gradient-text" v-if="!isUsingMobile">
+      <v-col cols="5" class="text-center">
         <h5 class="ml-5">{{ $t("view-home.text1") }}</h5>
       </v-col>
       <v-col cols="5" class="text-center">
         <h5 class="ml-5">{{ $t("view-home.text2") }}</h5>
       </v-col>
-      <v-col cols="3" class="justify-center d-flex">
-        <h5>{{ $t("view-home.text3") }}</h5><small>(Beta)</small>
+      <v-col cols="2" class="justify-center d-flex">
+        <h5>{{ $t("view-home.text3") }}</h5>
+        <small>(Beta)</small>
       </v-col>
     </v-row>
     <div id="home-divider"></div>
-    <v-row class="ma-0 pa-0">
+    <v-row class="mt-3">
       <!-- TRAILER COLUMN -->
-      <v-col :cols="isUsingMobile ? '12' : '4'" class="text-left">
+      <v-col :cols="isUsingMobile ? '12' : '5'" class="text-left">
         <h2 v-if="isUsingMobile" class="text-h5 info--text text-center">
           {{ $t("view-home.text1") }}
         </h2>
@@ -62,7 +63,7 @@
       </v-col>
       <!-- MOVIE COLUMN -->
       <v-col :cols="isUsingMobile ? '12' : '5'" id="movie-of-the-week-section">
-        <v-row no-gutters>
+        <v-row>
           <v-col :cols="isUsingMobile ? '12' : '3'">
             <h2 v-if="isUsingMobile" class="text-h5 info--text text-center">
               {{ $t("view-home.text2") }}
@@ -89,129 +90,10 @@
             :cols="isUsingMobile ? '12' : '9'"
             :class="isUsingMobile ? 'pt-5' : ''"
           >
-            <v-row no-gutters class="mx-5">
-              <v-col :cols="isUsingMobile ? '12' : '12'">
-                <!-- MOVIE TITLE -->
-                <v-row no-gutters>
-                  <v-col>
-                    <p class="red--text movieOfTheWeek-title">
-                      {{ movieOfTheWeek.title }}
-                    </p>
-                  </v-col>
-                </v-row>
-                <v-row no-gutters>
-                  <v-col class="text-center">
-                    <!-- MOVIE GENRES -->
-                      <span
-                        v-for="(genre, z) in movieOfTheWeek.genre_ids"
-                        :key="'A' + z"
-                        class="movieOfTheWeek-genres ma-0 mx-1"
-                      >
-                        <small>{{ formatGenre(genre) }}</small>
-                      </span>
-                  </v-col>
-                </v-row>
-
-                <!-- VOTE AVERAGE -->
-                <v-row no-gutters>
-                  <v-col cols="10" class="d-flex justify-start align-center">
-                    <v-sheet
-                      elevation="5"
-                      height="auto"
-                      max-height="30px"
-                      width="auto"
-                      :class="`${computedRateColor} pa-1`"
-                    >
-                      <h6 class="white--text align-center text-center">
-                        {{ movieOfTheWeek.vote_average }}
-                      </h6>
-                    </v-sheet>
-                    <p class="white--text mx-2 mt-2">
-                      {{ movieOfTheWeek.vote_count }}
-                      <span
-                        :class="`font-weight-light ${computedRateColor}--text`"
-                        >{{ $t("view-home.ratings") }}</span
-                      >
-                    </p>
-                  </v-col>
-                  <v-col
-                    cols="2"
-                    class="d-flex justify-end ma-0 pa-0 text-right"
-                  >
-                    <v-col>
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn
-                            outlined
-                            v-bind="attrs"
-                            v-on="on"
-                            color="red"
-                            small
-                            icon
-                            fab
-                            @click="getTrailer(movieOfTheWeek)"
-                            dark
-                          >
-                            <v-icon color="white">mdi-youtube</v-icon>
-                          </v-btn>
-                        </template>
-                        <small class="white--text">{{
-                          $t("app-buttons.view")
-                        }}</small>
-                      </v-tooltip>
-                    </v-col>
-                    <v-col>
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn
-                            outlined
-                            v-bind="attrs"
-                            v-on="on"
-                            color="purple"
-                            small
-                            icon
-                            fab
-                            @click="
-                              showAddToDialog(true);
-                              setAddMovie(movieOfTheWeek);
-                            "
-                            dark
-                          >
-                            <v-icon color="white">mdi-plus</v-icon>
-                          </v-btn>
-                        </template>
-                        <small class="white--text">{{
-                          $t("app-buttons.add")
-                        }}</small>
-                      </v-tooltip>
-                    </v-col>
-                    <v-col>
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn
-                            outlined
-                            v-bind="attrs"
-                            v-on="on"
-                            color="primary"
-                            small
-                            icon
-                            fab
-                            @click="showInfo(movieOfTheWeek)"
-                            dark
-                          >
-                            <v-icon color="white">mdi-information</v-icon>
-                          </v-btn>
-                        </template>
-                        <small class="white--text">{{
-                          $t("app-buttons.info")
-                        }}</small>
-                      </v-tooltip>
-                    </v-col>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
-            <v-container>
+            <!-- MOVIE TITLE -->
+            <p class="cyan--text movieOfTheWeek-title text-center">
+              {{ movieOfTheWeek.title }}
+            </p>
               <!-- MOVIE OVERVIEW -->
               <p
                 :class="
@@ -226,24 +108,103 @@
                     : formatOverview(movieOfTheWeek.overview)
                 }}
               </p>
-            </v-container>
+          <v-row>
+              <v-col>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      outlined
+                      v-bind="attrs"
+                      v-on="on"
+                      color="red"
+                      icon
+                      tile
+                      block
+                      @click="getTrailer(movieOfTheWeek)"
+                      dark
+                    >
+                      <v-icon color="white">mdi-youtube</v-icon>
+                    </v-btn>
+                  </template>
+                  <small class="white--text">{{
+                    $t("app-buttons.view")
+                  }}</small>
+                </v-tooltip>
+              </v-col>
+              <v-col>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      outlined
+                      v-bind="attrs"
+                      v-on="on"
+                      color="purple"
+                      icon
+                      tile
+                      block
+                      @click="
+                        showAddToDialog(true);
+                        setAddMovie(movieOfTheWeek);
+                      "
+                      dark
+                    >
+                      <v-icon color="white">mdi-plus</v-icon>
+                    </v-btn>
+                  </template>
+                  <small class="white--text">{{ $t("app-buttons.add") }}</small>
+                </v-tooltip>
+              </v-col>
+              <v-col>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      outlined
+                      v-bind="attrs"
+                      v-on="on"
+                      color="primary"
+                      icon
+                      tile
+                      block
+                      @click="showInfo(movieOfTheWeek)"
+                      dark
+                    >
+                      <v-icon color="white">mdi-information</v-icon>
+                    </v-btn>
+                  </template>
+                  <small class="white--text">{{
+                    $t("app-buttons.info")
+                  }}</small>
+                </v-tooltip>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-col>
       <!-- TRIVIA COLUMN -->
       <v-col
-        :cols="isUsingMobile ? '12' : '3'"
+        :cols="isUsingMobile ? '12' : '2'"
         id="trivia-section"
         class="text-center mx-auto"
       >
-        <v-progress-circular v-if="loadingTrivia" indeterminate color="cyan" size="80" class="centered"  width="2" />
+        <v-progress-circular
+          v-if="loadingTrivia"
+          indeterminate
+          color="cyan"
+          size="80"
+          class="centered"
+          width="2"
+        />
         <div v-else>
           <div class="trivia-message" v-if="!loadingTrivia && !hasPlayedToday">
             <v-icon class="pulse star-icon" color="cyan">mdi-star</v-icon>
             <p class="cyan--text">
-             {{ $t("view-home.hasNotPlayed") }}
+              {{ $t("view-home.hasNotPlayed") }}
             </p>
-            <v-btn small class="gradient-background-1 white--text" tile @click="playGame"
+            <v-btn
+              small
+              class="gradient-background-1 white--text"
+              tile
+              @click="playGame"
               >{{ $t("view-home.play") }}</v-btn
             >
           </div>
@@ -306,26 +267,6 @@ export default {
       "imageURL",
       "addToDialog",
     ]),
-    computedRateColor() {
-      let movieRate = this.movieOfTheWeek.vote_average;
-      let color = "";
-      if (movieRate <= 10) {
-        color = "purple";
-      }
-      if (movieRate < 9) {
-        color = "info";
-      }
-      if (movieRate < 7) {
-        color = "green";
-      }
-      if (movieRate < 5) {
-        color = "orange";
-      }
-      if (movieRate < 3) {
-        color = "red";
-      }
-      return color;
-    },
     isUsingMobile() {
       return this.$vuetify.breakpoint.xs;
     },
@@ -343,47 +284,22 @@ export default {
     ]),
     getHasPlayedToday() {
       this.loadingTrivia = true;
-      Services
-      .getHasPlayedToday()
-      .then(res => {
-        this.hasPlayedToday = res;
-        this.loadingTrivia = false;
-      })
-      .catch(err => {
-        console.log(err)
-        this.loadingTrivia = false;
-      })
+      Services.getHasPlayedToday()
+        .then((res) => {
+          this.hasPlayedToday = res;
+          this.loadingTrivia = false;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.loadingTrivia = false;
+        });
     },
-    playGame () {
-      this.$router.push({ path: '/trivia/game/playGame' });
+    playGame() {
+      this.$router.push({ path: "/trivia/game/playGame" });
     },
     formatDate(date) {
       const [year, month, day] = date.split("-");
       return `${day}/${month}/${year}`;
-    },
-    formatGenre(genre) {
-      let genres = {
-        ["28"]: this.$t("genres.action"),
-        ["12"]: this.$t("genres.adventure"),
-        ["16"]: this.$t("genres.animation"),
-        ["35"]: this.$t("genres.comedy"),
-        ["80"]: this.$t("genres.crime"),
-        ["99"]: this.$t("genres.documentary"),
-        ["18"]: this.$t("genres.drama"),
-        ["10751"]: this.$t("genres.family"),
-        ["14"]: this.$t("genres.fantasy"),
-        ["36"]: this.$t("genres.history"),
-        ["27"]: this.$t("genres.horror"),
-        ["10402"]: this.$t("genres.music"),
-        ["9648"]: this.$t("genres.mystery"),
-        ["10749"]: this.$t("genres.romance"),
-        ["878"]: this.$t("genres.sci-fi"),
-        ["10770"]: this.$t("genres.tv"),
-        ["53"]: this.$t("genres.thriller"),
-        ["10752"]: this.$t("genres.war"),
-        ["37"]: this.$t("genres.western"),
-      };
-      return genres[genre];
     },
     formatOverview(text) {
       if (!text) return null;
@@ -438,7 +354,6 @@ export default {
 <style lang="scss" scoped>
 @import "src/scss/variables";
 @import "src/scss/app";
-
 
 #home-divider {
   border-radius: 10px;

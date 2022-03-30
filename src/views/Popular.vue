@@ -131,7 +131,7 @@ export default {
     };
   },
   created () {
-    this.comesFromDetails ? this.getSavedYear() : this.getRandomYear()
+    this.comebackFromDetails ? this.getSavedYear() : this.getRandomYear()
   },
   mounted() {
     this.getMoviesByYear({ year: this.year, page: this.page });
@@ -149,7 +149,7 @@ export default {
       'loadingData', 
       'loadingIMG', 
       'addToDialog',
-      'comesFromDetails',
+      'comebackFromDetails',
       'favouriteMovies',
       'watchedMovies',
       'wishListMovies',

@@ -13,32 +13,34 @@
     <!-- ************** MOVIE CARD CONTENT ************** -->
     <v-container fluid :class="isUsingMobile ? 'pa-0' : ''">
       <v-row
-        id="movie-title"
+        id="movie__details--title"
         :class="isUsingMobile ? '' : 'text-h2 blue--text mt-5'"
       >
         <div>
           {{ movieDetails.title }}
         </div>
         <div class="mt-5">
-          <p id="movie-date">
+          <p id="movie__details--releaseDate">
             {{ $t("view-movie-id.releaseDate") }}
             <span style="color: cyan">{{ movieDetails.release_date }}</span>
           </p>
         </div>
       </v-row>
-      <v-row id="main-content" class="mx-5">
+      <v-row id="movie__details--mainContent" class="mx-5">
+        <!-- MOVIE POSTER -->
         <v-col xs="12" sm="12" md="3">
           <v-img
             :src="imageURL + movieDetails.poster_path"
-            id="movie-img"
+            id="movie__details--image"
           ></v-img>
         </v-col>
         <v-col>
           <v-row>
+             <!-- REVIEW -->
             <v-col md="4" class="justify-center">
               <v-card-title
                 class="
-                  gradient-background-4
+                  gradient-background-1
                   justify-center
                   white--text
                   rounded
@@ -47,14 +49,15 @@
                 "
                 >{{ $t("view-movie-id.overview") }}</v-card-title
               >
-              <p class="cyan--text" id="movie-overview">
+              <p class="cyan--text" id="movie__details--overview">
                 {{ movieDetails.overview }}
               </p>
             </v-col>
+             <!-- VOTE AVERAGE -->
             <v-col xs="12" sm="12" md="4" cols="12" class="justify-center">
               <v-card-title
                 class="
-                  gradient-background-4
+                  gradient-background-1
                   justify-center
                   white--text
                   rounded
@@ -63,17 +66,30 @@
                 "
                 >{{ $t("view-movie-id.average") }}
               </v-card-title>
-              <p class="text-h4 cyan--text text-center" id="movie-note">
-                {{ movieDetails.vote_average }}
-                <span id="vote-acount"
-                  >({{ movieDetails.vote_count }} votes)</span
-                >
-              </p>
+                    <v-sheet
+                      elevation="5"
+                      height="auto"
+                      rounded
+                      width="auto"
+                      :class="`${computedRateColor}`"
+                    >
+                      <h3 class="white--text align-center text-center">
+                        {{ movieDetails.vote_average }}
+                      </h3>
+                    </v-sheet>
+                    <p class="white--text mx-2 mt-2">
+                      {{ movieDetails.vote_count }}
+                      <span
+                        :class="`font-weight-light ${computedRateColor}--text`"
+                        >{{ $t("view-movie-id.ratings") }}</span
+                      >
+                    </p>
             </v-col>
+             <!-- MOVIE LANGUAGES -->
             <v-col xs="12" sm="12" cols="12" md="4" class="justify-center">
               <v-card-title
                 class="
-                  gradient-background-4
+                  gradient-background-1
                   justify-center
                   white--text
                   rounded
@@ -87,7 +103,7 @@
                   v-for="(lang, i) in movieDetails.spoken_languages"
                   :key="i"
                   class="cyan--text text-center"
-                  id="movie-language"
+                  id="movie__details--languages"
                 >
                   {{ computeLang(lang.english_name) }}
                 </v-col>
@@ -95,10 +111,11 @@
             </v-col>
           </v-row>
           <v-row>
+             <!-- CAST -->
             <v-col md="4" class="justify-center">
               <v-card-title
                 class="
-                  gradient-background-4
+                  gradient-background-1
                   justify-center
                   white--text
                   rounded
@@ -117,7 +134,7 @@
                     <v-icon color="primary" size="10" class="mr-2"
                       >mdi-circle</v-icon
                     >
-                    <span class="font-weight-bold white--text mr-3">{{
+                    <span class="font-weight-bold mr-3" @click="goToArtistInfo(cast.name)" id="movie__details--artistName">{{
                       cast.name
                     }}</span>
                     <span class="info--text mr-2" v-if="cast.character">{{
@@ -128,10 +145,11 @@
                 </v-col>
               </v-row>
             </v-col>
+             <!-- GENRES -->
             <v-col xs="12" sm="12" cols="12" md="4" class="justify-center">
               <v-card-title
                 class="
-                  gradient-background-4
+                  gradient-background-1
                   justify-center
                   white--text
                   rounded
@@ -152,10 +170,11 @@
                 </v-col>
               </v-row>
             </v-col>
+             <!-- EXTRA INFO -->
             <v-col xs="12" sm="12" cols="12" md="4" class="justify-center">
               <v-card-title
                 class="
-                  gradient-background-4
+                  gradient-background-1
                   justify-center
                   white--text
                   rounded
@@ -189,10 +208,12 @@
                   }}</span
                 >
                 <span v-if="movieDetails.revenue !== 0"> $</span>
+                <span v-if="movieDetails.revenue || movieDetails.budget">
                 <v-icon size="20" :class="getPositiveRevenues(movieDetails.budget, movieDetails.revenue) ? 'ml-5 success--text triangle-up' : 'ml-5 mr-2 red--text triangle-down'">
                   mdi-triangle
                 </v-icon>
                 <span :class="getPositiveRevenues(movieDetails.budget, movieDetails.revenue) ? 'success--text' : 'red--text'">{{ getRevenueDif(movieDetails.budget, movieDetails.revenue).toLocaleString('es-UK') }}$</span>
+                </span>
               </p>
               <p>
                 {{ $t("view-movie-id.homepage") }}
@@ -212,7 +233,7 @@
                 <v-col cols="12" class="text-center">
                   <div
                     v-if="movieDetails.production_companies[0].logo_path"
-                    class="productionCompanies__img-wrapper"
+                    class="movie__details--prodCompany"
                   >
                     <v-img
                       :src="
@@ -231,6 +252,7 @@
               </v-row>
             </v-col>
           </v-row>
+           <!-- BUTTONS -->
           <v-row id="buttons-row" class="d-flex justify-space-between">
             <v-col md="4" class="justify-center">
               <v-btn
@@ -321,6 +343,26 @@ export default {
     isUsingMobile() {
       return this.$vuetify.breakpoint.xs;
     },
+    computedRateColor() {
+      let movieRate = this.movieDetails.vote_average;
+      let color = "";
+      if (movieRate <= 10) {
+        color = "purple";
+      }
+      if (movieRate < 9) {
+        color = "info";
+      }
+      if (movieRate < 7) {
+        color = "green";
+      }
+      if (movieRate < 5) {
+        color = "orange";
+      }
+      if (movieRate < 3) {
+        color = "red";
+      }
+      return color;
+    },
   },
   methods: {
     ...mapActions([
@@ -334,7 +376,7 @@ export default {
       this.getMovieTrailer({ type: "other", id: movieDetails.id });
     },
     comeBack() {
-      this.$store.commit("setComesFromDetails", true);
+      this.$store.commit("setcomebackFromDetails", true);
       setTimeout(() => {
         this.$router.go(-1);
       }, 500);
@@ -352,6 +394,12 @@ export default {
     },
     getRevenueDif(budget, revenue) {
       return (parseInt(revenue) - parseInt(budget));
+    },
+    goToArtistInfo(name) {
+      this.$store.commit('setSearchInput', name);
+      this.$store.commit('setcomebackFromDetails', true);
+      this.$store.commit('setSearchingMovie', false);
+      this.$router.push({ path: '/search' });
     }
   },
 };
@@ -370,7 +418,7 @@ p {
   color: white;
 }
 
-.productionCompanies__img-wrapper {
+.movie__details--prodCompany {
   background: white;
   text-align: center;
   padding: 5px;
@@ -387,10 +435,10 @@ p {
   text-align: center;
   background: $primary;
   margin-right: 10px;
-  max-width: 120px;
+  max-width: 130px;
   font-family: $style1;
   text-transform: uppercase;
-  font-size: 13px;
+  font-size: 11px;
   display: inline-block;
   margin-bottom: 10px;
   color: white;
@@ -400,9 +448,19 @@ p {
   margin-top: auto;
 }
 
+#movie__details--artistName {
+  transition: all .3s ease-out;
+  cursor: pointer;
+  color: white;
+
+  &:hover {
+    color: $primary;
+  }
+}
+
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
-  #movie-title {
+  #movie__details--title {
     font-size: 1em;
     position: relative;
     text-align: center;
@@ -414,7 +472,7 @@ p {
     margin-top: 2em;
   }
 
-  #movie-img {
+  #movie__details--image {
     top: auto;
     width: 100%;
     height: 100%;
@@ -422,12 +480,12 @@ p {
     position: relative;
   }
 
-  #main-content {
+  #movie__details--mainContent {
     font-size: 15px;
     color: white;
   }
 
-  #movie-date {
+  #movie__details--releaseDate {
     position: relative;
     right: 0px;
     font-size: 12px;
@@ -435,10 +493,9 @@ p {
     bottom: 0px;
   }
 
-  #movie-overview,
-  #movie-note,
-  #movie-count,
-  #movie-language {
+  #movie__details--overview,
+  #movie__details--rate,
+  #movie__details--languages {
     margin: 5px;
   }
 
@@ -448,30 +505,29 @@ p {
 }
 // ******* LAPTOP RESPONSIVE ******* //
 @media only screen and (min-width: 767px) {
-  #movie-title {
+  #movie__details--title {
     font-size: 1em;
     background: $dark2;
     color: $secondary;
     width: 100%;
   }
 
-  #movie-img {
+  #movie__details--image {
     width: auto;
     height: 100%;
     margin-bottom: 50px;
     position: relative;
   }
 
-  #movie-date {
+  #movie__details--releaseDate {
     font-size: 20px;
     color: white;
     bottom: 10px;
   }
 
-  #movie-overview,
-  #movie-note,
-  #movie-count,
-  #movie-language {
+  #movie__details--overview,
+  #movie__details--rate,
+  #movie__details--languages {
     margin: 20px;
   }
 
@@ -482,31 +538,30 @@ p {
 
 // ******* DESKTOP RESPONSIVE ******* //
 @media only screen and (min-width: 1370px) {
-  #movie-title {
+  #movie__details--title {
     font-size: 2em;
     background: $dark2;
     color: $secondary;
     width: 100%;
   }
 
-  #movie-img {
+  #movie__details--image {
     width: auto;
     height: 100%;
     margin-bottom: 50px;
     position: relative;
   }
 
-  #movie-date {
+  #movie__details--releaseDate {
     position: relative;
     font-size: 20px;
     color: white;
     bottom: 10px;
   }
 
-  #movie-overview,
-  #movie-note,
-  #movie-count,
-  #movie-language {
+  #movie__details--overview,
+  #movie__details--rate,
+  #movie__details--languages {
     margin: 5px;
   }
 
