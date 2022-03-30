@@ -103,7 +103,7 @@
 import SectionTitle from "../components/SectionTitle";
 import TrailerDialog from "../components/TrailerDialog";
 import AddToDialog from "../components/AddToDialog";
-
+import Services from '../services/services';
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -129,6 +129,7 @@ export default {
     },
   },
   mounted() {
+    Services.hasVisitedTheSection("trending");
     window.scrollTo(0, 0);
     this.getTrending(true);
   },

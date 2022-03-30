@@ -276,7 +276,7 @@ export default {
                 moviesList: firebase.firestore.FieldValue.arrayUnion(movie),
               })
               .then(() => {
-                console.log('Movie rated')
+                this.$store.dispatch('getReward', 28)
                 this.getStoragedMovies();
                 this.showSnackbar({
                   text: this.$t(`comp-snackbar.movie-added`),
@@ -298,7 +298,7 @@ export default {
             moviesList: firebase.firestore.FieldValue.arrayUnion(movie),
           })
           .then(() => {
-            console.log('Movie added')
+            this.$store.dispatch('getReward', 28)
             this.getStoragedMovies();
             this.showSnackbar({
               text: this.$t(`comp-snackbar.movie-added`),

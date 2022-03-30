@@ -41,7 +41,8 @@
         <h5 class="ml-5">{{ $t("view-home.text2") }}</h5>
       </v-col>
       <v-col cols="3" class="justify-center d-flex">
-        <h5>{{ $t("view-home.text3") }}</h5><small>(Beta)</small>
+        <h5>{{ $t("view-home.text3") }}</h5>
+        <small>(Beta)</small>
       </v-col>
     </v-row>
     <div id="home-divider"></div>
@@ -102,13 +103,13 @@
                 <v-row no-gutters>
                   <v-col class="text-center">
                     <!-- MOVIE GENRES -->
-                      <span
-                        v-for="(genre, z) in movieOfTheWeek.genre_ids"
-                        :key="'A' + z"
-                        class="movieOfTheWeek-genres ma-0 mx-1"
-                      >
-                        <small>{{ formatGenre(genre) }}</small>
-                      </span>
+                    <span
+                      v-for="(genre, z) in movieOfTheWeek.genre_ids"
+                      :key="'A' + z"
+                      class="movieOfTheWeek-genres ma-0 mx-1"
+                    >
+                      <small>{{ formatGenre(genre) }}</small>
+                    </span>
                   </v-col>
                 </v-row>
 
@@ -236,14 +237,25 @@
         id="trivia-section"
         class="text-center mx-auto"
       >
-        <v-progress-circular v-if="loadingTrivia" indeterminate color="cyan" size="80" class="centered"  width="2" />
+        <v-progress-circular
+          v-if="loadingTrivia"
+          indeterminate
+          color="cyan"
+          size="80"
+          class="centered"
+          width="2"
+        />
         <div v-else>
           <div class="trivia-message" v-if="!loadingTrivia && !hasPlayedToday">
             <v-icon class="pulse star-icon" color="cyan">mdi-star</v-icon>
             <p class="cyan--text">
-             {{ $t("view-home.hasNotPlayed") }}
+              {{ $t("view-home.hasNotPlayed") }}
             </p>
-            <v-btn small class="gradient-background-1 white--text" tile @click="playGame"
+            <v-btn
+              small
+              class="gradient-background-1 white--text"
+              tile
+              @click="playGame"
               >{{ $t("view-home.play") }}</v-btn
             >
           </div>
@@ -283,12 +295,13 @@ export default {
     this.getMovieOfTheWeek();
   },
   mounted() {
+    Services.hasVisitedTheSection("home");
     this.getMyDocID();
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
-    this.enableScrollX();
-    this.animateScroll();
     setTimeout(() => {
+      this.enableScrollX();
+      this.animateScroll();
       this.getMovieTrailer({
         type: "ofTheWeek",
         id: this.trendingMovies[0].id,
@@ -343,19 +356,18 @@ export default {
     ]),
     getHasPlayedToday() {
       this.loadingTrivia = true;
-      Services
-      .getHasPlayedToday()
-      .then(res => {
-        this.hasPlayedToday = res;
-        this.loadingTrivia = false;
-      })
-      .catch(err => {
-        console.log(err)
-        this.loadingTrivia = false;
-      })
+      Services.getHasPlayedToday()
+        .then((res) => {
+          this.hasPlayedToday = res;
+          this.loadingTrivia = false;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.loadingTrivia = false;
+        });
     },
-    playGame () {
-      this.$router.push({ path: '/trivia/game/playGame' });
+    playGame() {
+      this.$router.push({ path: "/trivia/game/playGame" });
     },
     formatDate(date) {
       const [year, month, day] = date.split("-");
@@ -392,7 +404,6 @@ export default {
     enableScrollX() {
       let homeView = document.querySelector("#home-view");
       let scroll = homeView.querySelector("#scroll-x");
-
       scroll.addEventListener("wheel", function (e) {
         scroll.scrollLeft += e.deltaY / 50;
       });
@@ -402,21 +413,24 @@ export default {
       let scroll = homeView.querySelector("#scroll-x");
       const SCROLL_MAX = 58080;
       let i = 0;
-      const animate = () => {
-        if (i <= SCROLL_MAX) {
+      setInterval(() => {
+        if (i < SCROLL_MAX) {
+          scroll = homeView.querySelector("#scroll-x");
           scroll.style.transition = "0.5s ease-out";
           scroll.style.opacity = "1";
-          scroll.scrollLeft = i;
+          scroll.scrollLeft += 1;
           i++;
         }
-        if (i === SCROLL_MAX) {
+        if (scroll.scrollLeft === SCROLL_MAX) {
+          scroll = homeView.querySelector("#scroll-x");
           scroll.style.transition = "0.5s ease-out";
           scroll.style.opacity = "0";
-          i = 0;
+          setTimeout(() => {
+            scroll.scrollLeft = 0;
+            i = 0;
+          }, 500);
         }
-        setTimeout(animate, 30);
-      };
-      animate();
+      }, 30);
     },
     getTrailer(item) {
       this.trailerDialog = true;
@@ -438,7 +452,6 @@ export default {
 <style lang="scss" scoped>
 @import "src/scss/variables";
 @import "src/scss/app";
-
 
 #home-divider {
   border-radius: 10px;
