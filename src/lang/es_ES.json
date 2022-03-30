@@ -114,8 +114,8 @@
     "comeback": "Regresar"
   },
   "generic-messages": {
-    "no-release": "Release date no available",
-    "no-overview": "Overview no available"
+    "no-release": "Fecha de lanzamiento no disponible",
+    "no-overview": "Sinopsis no disponible"
   },
   "view-access": {
     "welcome": "Bienvenido a iMovies",

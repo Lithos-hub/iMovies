@@ -93,8 +93,8 @@
     "comeback": "Comeback"
   },
   "generic-messages": {
-    "no-release": "Fecha de lanzamiento no disponible",
-    "no-overview": "Sinopsis no disponible"
+    "no-release": "Release date no available",
+    "no-overview": "Overview no available"
   },
   "genres": {
     "action": "Action",

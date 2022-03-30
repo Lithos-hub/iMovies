@@ -46,7 +46,7 @@
       </v-col>
     </v-row>
     <div id="home-divider"></div>
-    <v-row class="mt-3">
+    <v-row class="mt-3" id="contain-row">
       <!-- TRAILER COLUMN -->
       <v-col :cols="isUsingMobile ? '12' : '5'" class="text-left">
         <h2 v-if="isUsingMobile" class="text-h5 info--text text-center">
@@ -94,21 +94,21 @@
             <p class="cyan--text movieOfTheWeek-title text-center">
               {{ movieOfTheWeek.title }}
             </p>
-              <!-- MOVIE OVERVIEW -->
-              <p
-                :class="
-                  movieOfTheWeek.overview === ''
-                    ? 'error--text mt-5 text-justify'
-                    : 'text-justify'
-                "
-              >
-                {{
-                  movieOfTheWeek.overview === ""
-                    ? $t("view-home.noOverview")
-                    : formatOverview(movieOfTheWeek.overview)
-                }}
-              </p>
-          <v-row>
+            <!-- MOVIE OVERVIEW -->
+            <p
+              :class="
+                movieOfTheWeek.overview === ''
+                  ? 'error--text mt-5 text-justify'
+                  : 'text-justify'
+              "
+            >
+              {{
+                movieOfTheWeek.overview === ""
+                  ? $t("view-home.noOverview")
+                  : formatOverview(movieOfTheWeek.overview)
+              }}
+            </p>
+            <v-row>
               <v-col>
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on, attrs }">
@@ -184,32 +184,40 @@
       <v-col
         :cols="isUsingMobile ? '12' : '2'"
         id="trivia-section"
-        class="text-center mx-auto"
+        :class="isUsingMobile ? 'text-center' : 'text-center mx-auto'"
       >
-        <v-progress-circular
-          v-if="loadingTrivia"
-          indeterminate
-          color="cyan"
-          size="80"
-          class="centered"
-          width="2"
-        />
-        <div v-else>
-          <div class="trivia-message" v-if="!loadingTrivia && !hasPlayedToday">
-            <v-icon class="pulse star-icon" color="cyan">mdi-star</v-icon>
-            <p class="cyan--text">
-              {{ $t("view-home.hasNotPlayed") }}
-            </p>
-            <v-btn
-              small
-              class="gradient-background-1 white--text"
-              tile
-              @click="playGame"
-              >{{ $t("view-home.play") }}</v-btn
+        <h2 v-if="isUsingMobile" class="text-h5 mt-12 info--text text-center">
+          {{ $t("view-home.text3") }}
+        </h2>
+        <div :class="isUsingMobile ? 'trivia-wrapper' : ''">
+          <v-progress-circular
+            v-if="loadingTrivia"
+            indeterminate
+            color="cyan"
+            size="80"
+            class="centered"
+            width="2"
+          />
+          <div v-else>
+            <div
+              class="trivia-message"
+              v-if="!loadingTrivia && !hasPlayedToday"
             >
-          </div>
-          <div v-if="!loadingTrivia && hasPlayedToday" class="trivia-message">
-            <p class="error--text">{{ $t("view-home.hasPlayed") }}</p>
+              <v-icon class="pulse star-icon" color="cyan">mdi-star</v-icon>
+              <p class="cyan--text">
+                {{ $t("view-home.hasNotPlayed") }}
+              </p>
+              <v-btn
+                small
+                class="gradient-background-1 white--text"
+                tile
+                @click="playGame"
+                >{{ $t("view-home.play") }}</v-btn
+              >
+            </div>
+            <div v-if="!loadingTrivia && hasPlayedToday" class="trivia-message">
+              <p class="error--text">{{ $t("view-home.hasPlayed") }}</p>
+            </div>
           </div>
         </div>
       </v-col>
@@ -371,28 +379,9 @@ export default {
   display: none !important;
 }
 
-#trivia-section {
-  position: relative;
-
-  .trivia-message {
-    padding: 20px;
-    border-radius: 5px;
-    height: auto;
-    width: 80%;
-    border: 1px solid #151515;
-    box-shadow: 0px 0px 10px black, 0px 0px 20px #151515, 0px 0px 30px #202020;
-    position: absolute;
-    top: 25%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  .trivia-wrapper {
+    margin-top: 4em;
   }
-
-  .star-icon {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-}
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
@@ -453,8 +442,6 @@ export default {
 
   #trailer-of-the-week {
     width: 100%;
-    height: 350px;
-    max-height: auto;
     box-shadow: 0px 5px 10px black;
   }
 
@@ -505,6 +492,29 @@ export default {
     font-size: 10px;
     display: inline-block;
     margin-bottom: 10px;
+  }
+
+  #trivia-section {
+    position: relative;
+
+    .trivia-message {
+      padding: 20px;
+      border-radius: 5px;
+      height: auto;
+      width: 80%;
+      border: 1px solid #151515;
+      box-shadow: 0px 0px 10px black, 0px 0px 20px #151515, 0px 0px 30px #202020;
+      position: relative;
+      top: 0%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .star-icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
   }
 }
 // ******* LAPTOP RESPONSIVE ******* //
@@ -566,7 +576,6 @@ export default {
 
   #trailer-of-the-week {
     width: 100%;
-    max-height: calc(768px / 2.75);
     box-shadow: 0px 5px 10px black;
   }
 
@@ -574,12 +583,13 @@ export default {
     position: relative;
     margin-left: 15px;
     width: 100%;
-    height: 300px;
+    height: 100%;
   }
 
   #movie-of-the-week-section {
     display: block;
     background: transparent;
+    height: 300px;
 
     p {
       font-size: 12px;
@@ -605,7 +615,6 @@ export default {
     box-shadow: 0px 5px 10px black;
     width: 100%;
     height: 100%;
-    max-height: calc(768px / 2.5);
   }
 
   .movieOfTheWeek-genres {
@@ -620,6 +629,30 @@ export default {
     font-size: 10px;
     display: inline-block;
   }
+
+  #trivia-section {
+  position: relative;
+
+  .trivia-message {
+    padding: 20px;
+    border-radius: 5px;
+    height: auto;
+    width: 80%;
+    border: 1px solid #151515;
+    box-shadow: 0px 0px 10px black, 0px 0px 20px #151515, 0px 0px 30px #202020;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .star-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+}
 }
 
 // ******* DESKTOP RESPONSIVE ******* //
@@ -681,22 +714,19 @@ export default {
 
   #trailer-of-the-week {
     width: 100%;
-    height: 100%;
-    max-height: 430px;
     box-shadow: 0px 5px 10px black;
   }
 
   .movie-video {
     position: relative;
-    width: auto;
-    max-height: 430px;
+    width: 100%;
     height: 100%;
   }
 
   #movie-of-the-week-section {
     display: block;
     width: 100%;
-    height: 100%;
+    height: 400px;
     background: transparent;
     margin: 0;
 
