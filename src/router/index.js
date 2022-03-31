@@ -143,7 +143,6 @@ router.beforeEach(async (to, from, next) => {
 
   // Requires Auth and the user is logged in
   if (requiresAuth && (await store.dispatch("getCurrentUser"))) {
-    store.dispatch("getVisitedSections", store.getters.visitedSections);
     next();
     // If requires auth and user is not logged in
   } else if (requiresAuth && !(await store.dispatch("getCurrentUser"))) {

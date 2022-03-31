@@ -325,12 +325,6 @@ export default {
       await db.doc(`userData/${myDocID}/triviaQuestions/points`).set({
         total: 0
       });
-      await db.doc(`userData/${myDocID}/rewards/achievements`).set({
-        codes: []
-      });
-      await db.doc(`userData/${myDocID}/iMovies-Sections/sections`).set({
-        visited: []
-      });
     },
     async getAvatarsImages() {
       let pathReference = storage.ref("avatars");

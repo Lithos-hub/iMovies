@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import axios from "axios";
 import i18n from "@/plugins/i18n";
 import router from "@/router/index";
-import { auth, db, firebase } from "../../firebase.js";
+import { auth, db } from "../../firebase.js";
 
 Vue.use(Vuex);
 
@@ -21,7 +21,6 @@ export default new Vuex.Store({
   state: {
     imageURL: "https://image.tmdb.org/t/p/original",
     user: {},
-    userPoints: null,
     userData: {},
     documentId: "",
     loadingUserAuthStatus: false,
@@ -41,9 +40,6 @@ export default new Vuex.Store({
       warning: false,
       warningColor: "",
       warningText: "",
-    },
-    rewardObject: {
-      notification: false,
     },
     comesFromDetails: false,
     isSearchingMovie: false,
@@ -82,9 +78,7 @@ export default new Vuex.Store({
     moviesCounter: null,
     questionID: 0,
     resolvedQuestions: [],
-    currentDate: null,
-    achievementsCards: [],
-    visitedSections: []
+    currentDate: null
   },
   mutations: {
     setUser(state, payload) {
@@ -154,19 +148,11 @@ export default new Vuex.Store({
         warning: true,
         warningColor: color,
         warningText: text,
-        isCorrect: isCorrect,
+        isCorrect: isCorrect
       };
       setTimeout(() => {
         state.warningObject.warning = false;
       }, 3000);
-    },
-    showNotification(state) {
-      state.rewardObject = {
-        notification: true,
-      };
-      setTimeout(() => {
-        state.rewardObject.notification = false;
-      }, 6000);
     },
     setAddDialog(state, payload) {
       state.addToDialog = payload;
@@ -251,19 +237,7 @@ export default new Vuex.Store({
     },
     setCurrentDate(state, payload) {
       state.currentDate = payload;
-    },
-    setUserPoints(state, payload) {
-      state.userPoints = payload;
-    },
-    setAchievementsCards(state, payload) {
-      state.achievementsCards = payload;
-    },
-    setMoviesMap(state, payload) {
-      state.moviesMap = payload;
-    },
-    setVisitedSections(state, payload) {
-      state.visitedSections = payload;
-    },
+    }
   },
   actions: {
     // ! __________________ MIX ACTIONS __________________ //
@@ -275,9 +249,6 @@ export default new Vuex.Store({
     },
     showWarning({ commit }, payload) {
       commit("showWarning", payload);
-    },
-    showRewardNotification({ commit }) {
-      commit("showNotification", true);
     },
     setAddMovie({ commit }, item) {
       commit("setAddToMovie", item);
@@ -338,21 +309,6 @@ export default new Vuex.Store({
 
       commit("setUser", user);
     },
-    async getUserPoints({ commit }) {
-      const MY_DOC_ID = localStorage.getItem("docID");
-      const My_POINTS = await db
-        .doc(`userData/${MY_DOC_ID}/triviaQuestions/points`)
-        .get("total");
-
-      const userPoints = My_POINTS.data();
-      commit("setUserPoints", userPoints.total);
-    },
-    async addUserPoints(points) {
-      const MY_DOC_ID = localStorage.getItem("docID");
-      await db.doc(`userData/${MY_DOC_ID}/triviaQuestions/points`).set({
-        total: points,
-      });
-    },
     // ? ----- FIRESTORE ACTIONS ----- //
     async getAllStoragedMovies({ commit }) {
       commit("setLoadingAllStoragedMovies", true);
@@ -386,9 +342,10 @@ export default new Vuex.Store({
       commit("setWatchedMovies", watchedData.moviesList);
       commit("setWishListMovies", wishListData.moviesList);
       commit("setRatedMovies", ratedData.moviesList);
+
       commit("setLoadingAllStoragedMovies", false);
     },
-    async getStoragedMovies({ commit, dispatch }, { movieToAdd, MY_DOC_ID }) {
+    async getStoragedMovies({ commit }, { movieToAdd, MY_DOC_ID }) {
       commit("setIsLoadingAddedMovies", true);
       const MY_favourite_MOVIES = await db
         .doc(`userData/${MY_DOC_ID}/myMovies/favouriteMovies`)
@@ -457,233 +414,6 @@ export default new Vuex.Store({
         commit("setRate", RATED_MATCH ? RATED_MATCH.rate : 0);
       }
       commit("setIsLoadingAddedMovies", false);
-      dispatch('addAchievementByGenre')
-      dispatch('addAchievementByMovie')
-    },
-    async addAchievementByGenre ({ dispatch, state }) {
-      // ? **************** Here we will achieve if the user has watched 50 movies **************** ? //
-      state.favouriteMovies.length >= 50 ? dispatch("getReward", 38) : null;
-      state.watchedMovies.length >= 50 ? dispatch("getReward", 32) : null;
-      state.wishListMovies.length >= 50 ? dispatch("getReward", 39) : null;
-      state.ratedMovies.length >= 50 ? dispatch("getReward", 40) : null;
-      // ? **************** Here we will find 50 movies by categories to get the rewards **************** ? //
-
-      const moviesMap = new Map()
-      const setArr = [
-        ...new Set(
-          state.favouriteMovies.concat(
-            state.watchedMovies,
-            state.wishListMovies,
-            state.ratedMovies
-          )
-        ),
-      ];
-      const arrayMoviesIds = setArr.map((item) => item.id ? item.id : item.genre_ids);
-      console.log("All movies saved: ", arrayMoviesIds);
-
-      const genresArr = [
-        28, 12, 16, 35, 80, 99, 18, 10751, 14, 36, 27, 10402, 9648, 10749, 878,
-        10770, 53, 10752, 37,
-      ];
-
-      const getGenre = (genre) => {
-        let genres = {
-          28: 'action',
-          12: 'adventure',
-          16: 'animation',
-          35: 'comedy',
-          80: 'crime',
-          99: 'documentary',
-          18: 'drama',
-          10751: 'family',
-          14: 'fantasy',
-          36: 'history',
-          27: 'horror',
-          10402: 'music',
-          9648: 'mystery',
-          10749: 'romance',
-          878: 'scifi',
-          10770: 'tv',
-          53: 'thriller',
-          10752: 'war',
-          37: 'western',
-        };
-        return genres[genre];
-      };
-
-      const filterByGenre = (genre) => {
-        return arrayMoviesIds.filter((movie) => {
-          if (movie.genre_ids) {
-            return movie.genre_ids.includes(genre)
-          }
-          if (movie.genres) {
-            let auxGenArr = []
-            for (let genID of movie.genres) {
-              auxGenArr.push(genID.id)
-            }
-            return auxGenArr.includes(genre)
-          }
-        }); // ? => Returns an array with filtered movies
-      };
-
-      for (let gen of genresArr) {
-        moviesMap.set(getGenre(gen), filterByGenre(gen));
-      }
-
-      const getMoviesByGenre = (genre) => {
-        if (moviesMap && moviesMap.has(getGenre(genre))) {
-          return moviesMap.get(getGenre(genre));
-        }
-        return []
-      }
-
-      const getRewardByGenre = (genre) => {
-        let genres = {
-          28: 12, // ? => 'action'
-          12: 13, // ? => 'adventure'
-          16: 14, // ? => 'animation'
-          35: 15, // ? => 'comedy'
-          80: 16, // ? => 'crime'
-          99: 17, // ? => 'documentary'
-          18: 18, // ? => 'drama'
-          14: 19, // ? => 'fantasy'
-          36: 20, // ? => 'history'
-          27: 21, // ? => 'horror'
-          10402: 22, // ? => 'music'
-          10749: 23, // ? => 'romance'
-          878: 24, // ? => 'scifi'
-          53: 25, // ? => 'thriller'
-          10752: 26, // ? => 'war'
-          37: 27, // ? => 'western'
-        }
-        return genres[genre]
-      }
-
-      genresArr.forEach(gen => {
-        let arr = getMoviesByGenre(gen)
-        arr.length >= 50 ? dispatch('getReward', getRewardByGenre(gen)) : console.log(`Genre ${getGenre(gen).toUpperCase()} need ${50 - arr.length} more movies to get the reward`)
-      })
-    },
-    async addAchievementByMovie({ dispatch, state }) {
-      const setArr = [
-        ...new Set(
-          state.favouriteMovies.concat(
-            state.watchedMovies,
-            state.wishListMovies,
-            state.ratedMovies
-          )
-        ),
-      ];
-
-      const arrayMoviesIds = setArr.map((item) => item.id ? item.id : item.genre_ids);
-      console.log('Unique array: ', arrayMoviesIds)
-      
-      // TODO: continuar
-      const checker = (arr, myMoviesArr) => {
-        return arr.every(id => myMoviesArr.includes(id))
-      }
-
-      const STARWARS_MOVIES = [
-        1893, // Episode I
-        1894, // Episode II
-        1895, // Episode III
-        11, // Episode IV
-        1891, // Episode V
-        1892, // Episode VI
-        140607, // Episode VII
-        181808, // Episode VIII
-        181812, // Episode IX
-      ]
-
-      
-      const LOTR_HOBBIT_MOVIES = [
-        120, // LOTR: The Fellowship of the Ring
-        121, // LOTR: The Two Towers
-        122, // LOTR: The Return of the King
-        49051, // LOTR: The Hobbit: An Unexpected Journey
-        57158, // LOTR: The Hobbit: The Desolation of Smaug
-        122917, // LOTR: The Hobbit: The Battle of the Five Armies
-      ]
-      
-      const HARRY_POTTER_MOVIES = [
-        671, // Harry Potter and the Philosopher's Stone
-        672, // Harry Potter and the Chamber of Secrets
-        673, // Harry Potter and the Prisoner of Azkaban
-        674, // Harry Potter and the Goblet of Fire
-        675, // Harry Potter and the Order of the Phoenix
-        767, // Harry Potter and the Half-Blood Prince
-        12444, // Harry Potter and the Deathly Hallows PT.1
-        12445, // Harry Potter and the Deathly Hallows PT.2
-      ]
-      
-      const BLADE_RUNNER_MOVIE = [
-        78, // Blade Runner
-      ]
-      
-      const KILL_BILL_MOVIES = [
-        24, // Kill Bill: Volume 1
-        393, // Kill Bill: Volume 2
-      ]
-      
-      const GODFATHER_MOVIE = [
-        238, // The Godfather
-      ]
-
-      console.log('Checking Star Wars: ', checker(STARWARS_MOVIES, arrayMoviesIds))
-      console.log('Checking LOTR: ', checker(LOTR_HOBBIT_MOVIES, arrayMoviesIds))
-      console.log('Checking Harry Potter: ', checker(HARRY_POTTER_MOVIES, arrayMoviesIds))
-      console.log('Checking Blade Runner: ', checker(BLADE_RUNNER_MOVIE, arrayMoviesIds))
-      console.log('Checking Kill Bill: ', checker(KILL_BILL_MOVIES, arrayMoviesIds))
-      console.log('Checking Godfather: ', checker(GODFATHER_MOVIE, arrayMoviesIds))
-      
-      checker(STARWARS_MOVIES, arrayMoviesIds) ? dispatch('getReward', 6) : null
-      checker(LOTR_HOBBIT_MOVIES, arrayMoviesIds) ? dispatch('getReward', 7) : null
-      checker(HARRY_POTTER_MOVIES, arrayMoviesIds) ? dispatch('getReward', 8) : null
-      checker(BLADE_RUNNER_MOVIE, arrayMoviesIds) ? dispatch('getReward', 9) : null
-      checker(KILL_BILL_MOVIES, arrayMoviesIds) ? dispatch('getReward', 10) : null
-      checker(GODFATHER_MOVIE, arrayMoviesIds) ? dispatch('getReward', 11) : null
-    },
-    async getGettedAchievements({ commit }) {
-      const MY_DOC_ID = localStorage.getItem("docID");
-      // ? First, we get all achievements on the database
-      const REWARDS_REF = await db
-        .doc(`Achievements/AllAchievements`)
-        .get("list");
-      const ALL_REWARDS_ARRAY = REWARDS_REF.data();
-      const ALL_ACHIEVEMENTS = ALL_REWARDS_ARRAY.list;
-
-      // ? Then, we filter by the user's achievements
-      const MY_REWARDS_FB = await db
-        .doc(`userData/${MY_DOC_ID}/rewards/achievements`)
-        .get("codes");
-
-      const MY_REWARDS_DATA = MY_REWARDS_FB.data();
-      const MY_REWARDS = MY_REWARDS_DATA.codes;
-      console.log("My Rewards: ", MY_REWARDS);
-
-      const OWNED_REWARDS = ALL_ACHIEVEMENTS.filter((achievement) =>
-        MY_REWARDS.includes(achievement.code)
-      );
-
-      commit("setAchievementsCards", OWNED_REWARDS);
-    },
-    getHasTheReward({}, code) {
-      console.log("Checking the reward: ", code);
-      let match = null;
-      return new Promise((resolve) => {
-        let cards = this.getters.achievementsCards;
-        match = cards.some((card) => card.code === code);
-        console.log("Has the reward? " + match);
-        match ? resolve(true) : resolve(false);
-      });
-    },
-    async getReward({ dispatch }, code) {
-      await dispatch("getHasTheReward", code).then((res) => {
-        if (!res) {
-          dispatch("addAchievement", code);
-          dispatch("getGettedAchievements");
-        }
-      });
     },
     getQuestionID({ commit }) {
       let id = null;
@@ -691,31 +421,16 @@ export default new Vuex.Store({
 
       commit("setQuestionID", id);
     },
-    async addAchievement({ dispatch }, code) {
-      const MY_DOC_ID = localStorage.getItem("docID");
-      let myDocRef = await db.doc(`userData/${MY_DOC_ID}/rewards/achievements`);
+    // ? ----- TRIVIA ACTIONS ----- //
+    async getTriviaQuestion () {
+      // First: We get the questions resolved by the user to ignore them
 
-      myDocRef
-        .update({
-          codes: firebase.firestore.FieldValue.arrayUnion(code),
-        })
-        .then(() => {
-          dispatch("showRewardNotification");
-        });
-    },
-    async getVisitedSections({ commit }, visitedSections) {
-      console.log('Visited sections: ', visitedSections)
-      if (visitedSections.length < 11) {
-        const MY_DOC_ID = localStorage.getItem("docID");
-        const VISITED_SECTIONS_FB = await db
-        .doc(`userData/${MY_DOC_ID}/iMovies-Sections/sections`)
-        .get("visited");
-        const VISITED_ARR = VISITED_SECTIONS_FB.data();
-        commit('setVisitedSections', VISITED_ARR.visited)
-      }
-      if (visitedSections.length === 11) {
-        this.dispatch('getReward', 31)
-      }
+      // Second: We generate a random number between 0 and 364 and
+      // the number must be different from the questions index resolved by the user
+
+      // Third: We get the question from the database
+
+      // Fourth: We call the Deepl API to get the translated question
     },
     // ! __________________ API ACTIONS __________________ //
     async getLatestReleases({ commit }, byPopularity) {
@@ -942,24 +657,24 @@ export default new Vuex.Store({
         });
     },
     async getRandomMovies({ commit }) {
-      let arr = [];
-      let page = 1;
-      const CALL_URL = `${URL}/discover/movie?year=2021&api_key=${APIKEY}&include_adult=false&page=${page}&sort_by=popularity.desc&vote_average.gte=6`;
+      let arr = []
+      let page = 1
+      const CALL_URL = `${URL}/discover/movie?year=2021&api_key=${APIKEY}&include_adult=false&page=${page}&sort_by=popularity.desc&vote_average.gte=6`
       await axios
-        .get(CALL_URL)
-        .then((resp) => {
-          for (let movie of resp.data.results) {
-            arr.push(movie);
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-          commit("showSnackbar", {
-            text: "Database error connection",
-            color: "red",
-          });
+      .get(CALL_URL)
+      .then((resp) => {
+        for (let movie of resp.data.results) {
+          arr.push(movie)
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        commit("showSnackbar", {
+          text: "Database error connection",
+          color: "red",
         });
-      commit("setTriviaMoviesBackground", arr);
+      });
+    commit("setTriviaMoviesBackground", arr)
     },
   },
   getters: {
@@ -967,9 +682,6 @@ export default new Vuex.Store({
     isLogged: (state) => state.isLogged,
     myDocumentID: (state) => state.documentId,
     counterMovies: (state) => state.counterMovies,
-    userPoints: (state) => state.userPoints,
-    questionID: (state) => state.questionID,
-    achievementsCards: (state) => state.achievementsCards,
-    visitedSections: (state) => state.visitedSections,
+    questionID: (state) => state.questionID
   },
 });

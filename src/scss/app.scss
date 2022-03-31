@@ -5,10 +5,6 @@ body {
   margin: 0;
 }
 
-button:focus {
-  outline: none;
-}
-
 .gradient-background-1 {
   background: $gradient_1;
 }
@@ -36,7 +32,7 @@ button:focus {
 }
 
 .fadeIn {
-  animation: fadeIn 1s ease-out;
+  animation: fadeIn 1s ease;
 }
 
 @keyframes fadeIn {
@@ -45,32 +41,6 @@ button:focus {
   }
   to {
     opacity: 1;
-  }
-}
-
-.fadeOut {
-  animation: fadeOut 1s ease-out;
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-.to-bottom {
-  animation: toBottom 1s ease-out;
-}
-
-@keyframes toBottom {
-  0% {
-    top: -10%;
-  }
-  100% {
-    top: 10%;
   }
 }
 
@@ -150,14 +120,4 @@ input[type="number"] {
   background: $gradient_1;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-// ** Notifications ** //
-
-#reward-notification {
-  position: fixed;
-  top: 10%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999999;
 }
