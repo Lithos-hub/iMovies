@@ -297,7 +297,7 @@ export default {
       this.$router.go(0);
     },
     setComingFromDetails() {
-      this.$store.commit("setComesFromDetails", false);
+      this.$store.commit("setcomebackFromDetails", false);
     },
   },
 };

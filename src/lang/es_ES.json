@@ -6,6 +6,7 @@
     "comeback": "Regresar"
   },
   "languages": {
+    "cantonese": "Cantonés",
     "english": "inglés",
     "french": "francés",
     "german": "alemán",
@@ -113,8 +114,8 @@
     "comeback": "Regresar"
   },
   "generic-messages": {
-    "no-release": "Release date no available",
-    "no-overview": "Overview no available"
+    "no-release": "Fecha de lanzamiento no disponible",
+    "no-overview": "Sinopsis no disponible"
   },
   "view-access": {
     "welcome": "Bienvenido a iMovies",
@@ -282,9 +283,17 @@
   "view-movie-id": {
     "releaseDate":"Fecha de lanzamiento: ",
     "overview": "Sinopsis",
+    "casting": "Reparto",
     "average": "Nota media",
-    "votes": "Número de votos",
-    "language": "Idioma/s"
+    "ratings": "puntuaciones",
+    "language": "Idioma/s",
+    "genres": "Géneros",
+    "extraInfo": "Información adicional",
+    "budget": "Presupuesto: ",
+    "revenue": "Ingresos: ",
+    "runtime": "Duración: ",
+    "homepage": "Página web: ",
+    "mainComp": "Compañía productora principal: "
   },
   "view-account": {
     "profile": "Perfil",
