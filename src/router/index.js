@@ -75,6 +75,22 @@ const routes = [
     },
   },
   {
+    path: "/community",
+    name: "Community",
+    component: () => import("../views/Community.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/community/userDetails/:id",
+    name: "User details",
+    component: () => import("../views/userDetails.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/trending",
     name: "Trending",
     component: () => import("../views/Trending.vue"),

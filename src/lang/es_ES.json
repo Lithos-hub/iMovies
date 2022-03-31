@@ -65,6 +65,20 @@
     "basque": "Vasco",
     "malay": "Malayo"
   },
+  "months": {
+    "january": "Enero",
+    "february": "Febrero",
+    "march": "Marzo",
+    "april": "Abril",
+    "may": "Mayo",
+    "june": "Junio",
+    "july": "Julio",
+    "august": "Agosto",
+    "september": "Septiembre",
+    "october": "October",
+    "november": "Noviembre",
+    "december": "Diciembre"
+  },
   "navbar": {
     "user": "Usuario: ",
     "lang": "Idioma: ",
@@ -74,6 +88,7 @@
     "home": "Inicio",
     "trivia": "Trivial",
     "account": "Mi cuenta",
+    "community": "Comunidad",
     "search": "Buscar",
     "mymovies": "Mis películas",
     "trending": "Trending",
@@ -83,7 +98,8 @@
     "changelog": "Changelog",
     "about": "Acerca de...",
     "developed": "Desarrollado por ",
-    "goTo": "Ir a mi web"
+    "goTo": "Ir a mi web",
+    "showChat": "Ver chat"
   },
   "genres": {
     "action": "Acción",
@@ -127,7 +143,7 @@
     "email": "E-mail",
     "password": "Contraseña",
     "accessSuccess": "¡Datos correctos! Accediendo a la aplicacion...",
-    "accessError": "El E-mail o la contraseña no son incorrectos. Por favor, inténtalo de nuevo.",
+    "accessError": "El E-mail o la contraseña no son correctos. Por favor, inténtalo de nuevo.",
     "enter": "Acceder",
     "register": "Quiero registrarme",
     "access3": "Accede con una ",
@@ -144,8 +160,11 @@
     "email": "E-mail",
     "password": "Contraseña",
     "repeat": "Repite la contraseña",
+    "favouriteGenres": "Géneros favoritos",
+    "birthday": "Fecha de nacimiento",
+    "country": "País",
     "register": "Registrar",
-    "maximum": "10 caracteres como máximo",
+    "maximum": "15 caracteres como máximo",
     "emailExists": "Ese E-mail ya se encuentra registrado",
     "userExists": "Ese usuario ya se encuentra registrado",
     "nameRequired": "El nombre es obligatorio",
@@ -293,7 +312,8 @@
     "revenue": "Ingresos: ",
     "runtime": "Duración: ",
     "homepage": "Página web: ",
-    "mainComp": "Compañía productora principal: "
+    "mainComp": "Compañía productora principal: ",
+    "votes": "Número de votos"
   },
   "view-account": {
     "profile": "Perfil",
@@ -354,5 +374,10 @@
     "noAvailable": "Este vídeo no se encuentra disponible en tu idioma.",
     "show": "Ver en inglés",
     "noAvailable2": "Video no disponible"
+  },
+  "comp-chat": {
+    "friends": "Mis amigos",
+    "noFriends": "No has agregado a amigos aún",
+    "write": "Escribe un mensaje"
   }
 }

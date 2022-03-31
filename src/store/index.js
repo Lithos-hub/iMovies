@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import axios from "axios";
 import i18n from "@/plugins/i18n";
 import router from "@/router/index";
-import { auth, db } from "../../firebase.js";
+import { auth, db, firebase } from "../../firebase.js";
 
 Vue.use(Vuex);
 
@@ -19,14 +19,16 @@ import {
 
 export default new Vuex.Store({
   state: {
+    myDocID: localStorage.getItem("docID"),
     imageURL: "https://image.tmdb.org/t/p/original",
     user: {},
-    userData: {},
+    mySocialData: {},
     documentId: "",
     loadingUserAuthStatus: false,
     userID: null,
     isLogged: false,
     isLoadingDynamicUserData: false,
+    isLoading: true,
     apikey: "c9a3e87b703c630c13d5ea61ef62c7b6",
     language: "es-ES",
     no_image: require("@/assets/img/no-image.jpg"),
@@ -79,9 +81,52 @@ export default new Vuex.Store({
     moviesCounter: null,
     questionID: 0,
     resolvedQuestions: [],
-    currentDate: null
+    currentDate: null,
+    chatIsActivated: false,
+    isChatting: false,
+    showingFriends: true,
+    chatRooms: {},
+    iMoviesUsersList: [],
+    myFriendshipRequests: [],
+    mySocialRequests: {
+      accepted: [],
+      rejected: [],
+      sended: [],
+    },
+    myFriendsList: [],
+    friendshipDate: "",
+    hasNotifications: false,
+    notifications: [],
+    userDetailsData: {
+      docID: "",
+      userName: "",
+      avatar: "",
+      userEmail: "",
+      userID: "",
+      favouriteData: {
+        moviesList: [],
+      },
+      watchedData: {
+        moviesList: [],
+      },
+      wishListData: {
+        moviesList: [],
+      },
+      ratedData: {
+        moviesList: [],
+      },
+    },
   },
   mutations: {
+    resetData(state) {
+      state.user = {};
+      state.mySocialData = {};
+      state.userDetailsData = {};
+      state.myFriendshipRequests = [];
+      state.mySocialRequests.accepted = [];
+      state.mySocialRequests.rejected = [];
+      state.mySocialRequests.sended = [];
+    },
     setUser(state, payload) {
       state.user = payload;
     },
@@ -149,7 +194,7 @@ export default new Vuex.Store({
         warning: true,
         warningColor: color,
         warningText: text,
-        isCorrect: isCorrect
+        isCorrect: isCorrect,
       };
       setTimeout(() => {
         state.warningObject.warning = false;
@@ -241,7 +286,49 @@ export default new Vuex.Store({
     },
     setCurrentDate(state, payload) {
       state.currentDate = payload;
-    }
+    },
+    setChatIsActivated(state, payload) {
+      state.chatIsActivated = payload;
+    },
+    setIsChatting(state, payload) {
+      state.isChatting = payload;
+    },
+    setIsShowingFriends(state, payload) {
+      state.showingFriends = payload;
+    },
+    setiMoviesUsersList(state, payload) {
+      state.iMoviesUsersList = payload;
+    },
+    setMyFriendshipRequests(state, payload) {
+      state.myFriendshipRequests = payload;
+    },
+    setAllSocialRequests(state, payload) {
+      state.mySocialRequests = payload;
+    },
+    setIsLoading(state, payload) {
+      state.isLoading = payload;
+    },
+    setHasNotifications(state, payload) {
+      state.hasNotifications = payload;
+    },
+    setNotifications(state, payload) {
+      state.notifications = payload;
+    },
+    setMyFriendslist(state, payload) {
+      state.myFriendsList = payload;
+    },
+    setMySocialData(state, payload) {
+      state.mySocialData = payload;
+    },
+    setUserDetailsData(state, payload) {
+      state.userDetailsData = payload;
+    },
+    setFriendshipDate(state, payload) {
+      state.friendshipDate = payload;
+    },
+    setChatRooms(state, payload) {
+      state.chatRooms = payload;
+    },
   },
   actions: {
     // ! __________________ MIX ACTIONS __________________ //
@@ -271,12 +358,40 @@ export default new Vuex.Store({
     },
     // ! __________________ FIREBASE ACTIONS __________________ //
     // ? ----- USER ACTIONS ----- //
-    checkAuth({ commit }) {
+    async getMyDocID({ commit, rootState }) {
+      const COLLECTION = await db.collection("userData").get();
+      const USERDATA = rootState.user;
+      if (USERDATA) {
+        COLLECTION.forEach((doc) => {
+          if (doc.data().userID === USERDATA.uid) {
+            commit("setDocID", doc.data().docID);
+            localStorage.setItem("docID", doc.data().docID);
+          }
+        });
+      }
+    },
+    checkAuth({ commit, dispatch }) {
       commit("setLoadingUserAuthStatus", true);
       auth.onAuthStateChanged((user) => {
-        user ? commit("setAuthStatus", true) : commit("setAuthStatus", false);
-        // localStorage.setItem("user", JSON.stringify(user));
-        commit("setLoadingUserAuthStatus", false);
+        if (user) {
+          commit("setAuthStatus", true);
+          commit("setLoadingUserAuthStatus", false);
+        } else {
+          commit("setAuthStatus", false);
+          commit("setLoadingUserAuthStatus", false);
+        }
+      });
+    },
+    checkLogin({ commit, dispatch }) {
+      let user = auth.currentUser;
+      if (user) {
+        dispatch("setOnlineStatus", true);
+      }
+      dispatch("setOnlineStatus", false);
+    },
+    async setOnlineStatus({ commit, state }, onlineStatus) {
+      await db.doc(`userData/${state.myDocID}/onlineStatus/status`).set({
+        isOnline: onlineStatus,
       });
     },
     getCurrentUser() {
@@ -313,21 +428,255 @@ export default new Vuex.Store({
 
       commit("setUser", user);
     },
+    // ? ----- SOCIAL ACTIONS ----- //
+    async getMySocialData({ commit, state }) {
+      let myDataRef = await db.doc(`userData/${state.myDocID}`).get();
+      let myData = myDataRef.data();
+      let myUserData = {
+        avatar: myData.avatar,
+        docID: myData.docID,
+        userName: myData.userName,
+      };
+      commit("setMySocialData", myUserData);
+    },
+    async getAllUsers({ commit, rootState }) {
+      let arr = [];
+      await db
+        .collection("userData")
+        .get()
+        .then(async (snapshot) => {
+          for (let user of snapshot.docs) {
+            let userData = user.data();
+            const FAVOURITES_COL = await db
+              .doc(`userData/${userData.docID}/myMovies/favouriteMovies`)
+              .get("moviesList");
+            const WATCHED_COL = await db
+              .doc(`userData/${userData.docID}/myMovies/watchedMovies`)
+              .get("moviesList");
+            const WISH_COL = await db
+              .doc(`userData/${userData.docID}/myMovies/wishListMovies`)
+              .get("moviesList");
+            const RATED_COL = await db
+              .doc(`userData/${userData.docID}/myMovies/ratedMovies`)
+              .get("moviesList");
+
+            const favouriteData = FAVOURITES_COL.data();
+            const watchedData = WATCHED_COL.data();
+            const wishData = WISH_COL.data();
+            const ratedData = RATED_COL.data();
+            arr.push({
+              ...userData,
+              userMovies: {
+                total:
+                  favouriteData.moviesList.length +
+                  watchedData.moviesList.length +
+                  wishData.moviesList.length +
+                  ratedData.moviesList.length,
+                favourites: favouriteData.moviesList.length,
+                watched: watchedData.moviesList.length,
+                wishlist: wishData.moviesList.length,
+                rated: ratedData.moviesList.length,
+              },
+            });
+          }
+          commit(
+            "setiMoviesUsersList",
+            arr.filter((user) => user.userID !== rootState.user.uid)
+          );
+        });
+    },
+    async getAllMyFriends({ commit, state }) {
+      // ! => My friends list (/community)
+      let myAcceptedData = state.mySocialRequests.accepted;
+      let arr = [];
+
+      for (let user of myAcceptedData) {
+        const FRIEND_favourite_MOVIES = await db
+          .doc(`userData/${user.docID}/myMovies/favouriteMovies`)
+          .get("moviesList");
+        const FRIEND_watched_MOVIES = await db
+          .doc(`userData/${user.docID}/myMovies/watchedMovies`)
+          .get("moviesList");
+        const FRIEND_wishList_MOVIES = await db
+          .doc(`userData/${user.docID}/myMovies/wishListMovies`)
+          .get("moviesList");
+        const FRIEND_rated_MOVIES = await db
+          .doc(`userData/${user.docID}/myMovies/ratedMovies`)
+          .get("moviesList");
+
+        let onlineStatus = await db
+          .doc(`userData/${user.docID}/onlineStatus/status`)
+          .get("isOnline");
+
+        const favouriteData = FRIEND_favourite_MOVIES.data();
+        const watchedData = FRIEND_watched_MOVIES.data();
+        const wishListData = FRIEND_wishList_MOVIES.data();
+        const ratedData = FRIEND_rated_MOVIES.data();
+        let ref = await db.doc(`userData/${user.docID}`).get();
+        let data = ref.data();
+        arr.push({
+          userName: data.userName,
+          uid: data.userID,
+          avatar: data.avatar,
+          docID: user.docID,
+          friendshipDate: user.createdAt,
+          onlineStatus: onlineStatus,
+          userMovies: {
+            total:
+              favouriteData.moviesList.length +
+              watchedData.moviesList.length +
+              wishListData.moviesList.length +
+              ratedData.moviesList.length,
+            favourites: favouriteData.moviesList.length,
+            watched: watchedData.moviesList.length,
+            wishlist: wishListData.moviesList.length,
+            rated: ratedData.moviesList.length,
+          },
+        });
+        commit("setMyFriendslist", arr);
+      }
+      setTimeout(() => {
+        commit("setIsLoading", false);
+      }, 1000);
+    },
+    async sendFriendRequest({ commit, state }, userData) {
+      let MY_SENDED_DOC_REF = await db.doc(
+        `userData/${state.myDocID}/mySocialRequests/sended`
+      );
+      MY_SENDED_DOC_REF.update({
+        sendedList: firebase.firestore.FieldValue.arrayUnion(userData),
+      });
+      let USER_RECEIVED_REF = await db.doc(
+        `userData/${userData.docID}/mySocialRequests/received`
+      );
+      USER_RECEIVED_REF.update({
+        receivedList: firebase.firestore.FieldValue.arrayUnion(
+          state.mySocialData
+        ),
+      });
+    },
+    acceptFriendshipRequest({ commit, rootState, dispatch }, userData) {
+      commit("setIsLoading", true);
+      let date = new Date();
+      let today =
+        date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+
+      setTimeout(async () => {
+        // ? IN MY DATA, I WILL REMOVE THE DOCID AND MOVE IT TO ACCEPTED
+        let MY_RECEIVED_REF = await db.doc(
+          `userData/${rootState.myDocID}/mySocialRequests/received`
+        );
+        let MY_ACCEPTED_REF = await db.doc(
+          `userData/${rootState.myDocID}/mySocialRequests/accepted`
+        );
+        MY_RECEIVED_REF.update({
+          receivedList: firebase.firestore.FieldValue.arrayRemove(userData),
+        });
+        MY_ACCEPTED_REF.update({
+          acceptedList: firebase.firestore.FieldValue.arrayUnion({
+            ...userData,
+            createdAt: today,
+          }),
+        });
+      }, 250);
+      setTimeout(async () => {
+        // ? IN THE OTHER USER, I WILL REMOVE THE DOCID AND MOVE IT TO ACCEPTED
+        let USER_SENDED_REF = await db.doc(
+          `userData/${userData.docID}/mySocialRequests/sended`
+        );
+        let USER_ACCEPTED_REF = await db.doc(
+          `userData/${userData.docID}/mySocialRequests/accepted`
+        );
+        USER_SENDED_REF.update({
+          sendedList: firebase.firestore.FieldValue.arrayRemove(
+            rootState.mySocialData
+          ),
+        });
+        USER_ACCEPTED_REF.update({
+          acceptedList: firebase.firestore.FieldValue.arrayUnion({
+            ...rootState.mySocialData,
+            createdAt: today,
+          }),
+        });
+      }, 500);
+
+      setTimeout(async () => {
+        dispatch("getFriendshipNotification");
+        dispatch("getAllMyFriends");
+        let filteredArr = rootState.myFriendshipRequests.filter(
+          (user) => user.docID !== userData.docID
+        );
+        commit("setMyFriendshipRequests", filteredArr);
+      }, 750);
+    },
+    async getMyFriendshipData({ commit, state, dispatch }) {
+      const MY_SENDED_REF = await db
+        .doc(`userData/${state.myDocID}/mySocialRequests/sended`)
+        .get("sendedList");
+      const MY_ACCEPTED_REF = await db
+        .doc(`userData/${state.myDocID}/mySocialRequests/accepted`)
+        .get("acceptedList");
+      const MY_REJECTED_REF = await db
+        .doc(`userData/${state.myDocID}/mySocialRequests/rejected`)
+        .get("rejectedList");
+
+      const SENDED_DATA = MY_SENDED_REF.data();
+      const ACCEPTED_DATA = MY_ACCEPTED_REF.data();
+      const REJECTED_DATA = MY_REJECTED_REF.data();
+
+      commit("setAllSocialRequests", {
+        sended: SENDED_DATA.sendedList || [],
+        accepted: ACCEPTED_DATA.acceptedList || [],
+        rejected: REJECTED_DATA.rejectedList || [],
+      });
+
+      dispatch("getAllMyFriends");
+    },
+    async getUserDetailsData({ commit }, { data: userData, id: docID }) {
+      commit("setIsLoading", true);
+      const USER_favourite_MOVIES = await db
+        .doc(`userData/${docID}/myMovies/favouriteMovies`)
+        .get("moviesList");
+      const USER_watched_MOVIES = await db
+        .doc(`userData/${docID}/myMovies/watchedMovies`)
+        .get("moviesList");
+      const USER_wishList_MOVIES = await db
+        .doc(`userData/${docID}/myMovies/wishListMovies`)
+        .get("moviesList");
+      const USER_rated_MOVIES = await db
+        .doc(`userData/${docID}/myMovies/ratedMovies`)
+        .get("moviesList");
+
+      const favouriteData = USER_favourite_MOVIES.data();
+      const watchedData = USER_watched_MOVIES.data();
+      const wishListData = USER_wishList_MOVIES.data();
+      const ratedData = USER_rated_MOVIES.data();
+
+      let fullData = {
+        ...userData,
+        favouriteData,
+        watchedData,
+        wishListData,
+        ratedData,
+      };
+
+      commit("setUserDetailsData", fullData);
+      commit("setIsLoading", false);
+    },
     // ? ----- FIRESTORE ACTIONS ----- //
-    async getAllStoragedMovies({ commit }) {
+    async getAllStoragedMovies({ commit, state }) {
       commit("setLoadingAllStoragedMovies", true);
-      const MY_DOC_ID = localStorage.getItem("docID");
       const MY_favourite_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/favouriteMovies`)
+        .doc(`userData/${state.myDocID}/myMovies/favouriteMovies`)
         .get("moviesList");
       const MY_watched_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/watchedMovies`)
+        .doc(`userData/${state.myDocID}/myMovies/watchedMovies`)
         .get("moviesList");
       const MY_wishList_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/wishListMovies`)
+        .doc(`userData/${state.myDocID}/myMovies/wishListMovies`)
         .get("moviesList");
       const MY_rated_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/ratedMovies`)
+        .doc(`userData/${state.myDocID}/myMovies/ratedMovies`)
         .get("moviesList");
 
       const favouriteData = MY_favourite_MOVIES.data();
@@ -349,19 +698,19 @@ export default new Vuex.Store({
 
       commit("setLoadingAllStoragedMovies", false);
     },
-    async getStoragedMovies({ commit }, { movieToAdd, MY_DOC_ID }) {
+    async getStoragedMovies({ commit, state }, { movieToAdd }) {
       commit("setIsLoadingAddedMovies", true);
       const MY_favourite_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/favouriteMovies`)
+        .doc(`userData/${state.myDocID}/myMovies/favouriteMovies`)
         .get("moviesList");
       const MY_watched_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/watchedMovies`)
+        .doc(`userData/${state.myDocID}/myMovies/watchedMovies`)
         .get("moviesList");
       const MY_wishList_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/wishListMovies`)
+        .doc(`userData/${state.myDocID}/myMovies/wishListMovies`)
         .get("moviesList");
       const MY_rated_MOVIES = await db
-        .doc(`userData/${MY_DOC_ID}/myMovies/ratedMovies`)
+        .doc(`userData/${state.myDocID}/myMovies/ratedMovies`)
         .get("moviesList");
 
       const favouriteData = MY_favourite_MOVIES.data();
@@ -419,22 +768,198 @@ export default new Vuex.Store({
       }
       commit("setIsLoadingAddedMovies", false);
     },
-    getQuestionID({ commit }) {
-      let id = null;
-      // TODO: get question ID from firestore
+    // ? -----  FRIENDSHIP ACTIONS ----- //
+    async getFriendshipNotification({ commit, state, dispatch }) {
+      let notifications = [];
+      let usersData = [];
 
-      commit("setQuestionID", id);
+      await db
+        .collection("userData")
+        .doc(state.myDocID)
+        .collection("mySocialRequests")
+        .doc("received")
+        .onSnapshot((doc) => {
+          // ! Real time database listener
+          let data = doc.data();
+          let receivedList = data.receivedList;
+
+          for (let req of receivedList) {
+            // ? Here we are looping through the DocIDs users
+            usersData.push(req);
+            notifications.push({
+              icon: "mdi-account",
+              title: "Tienes una nueva solicitud de amistad",
+              isRead: false,
+            });
+          }
+
+          commit("setNotifications", notifications);
+          commit("setMyFriendshipRequests", usersData);
+          dispatch("getMyFriendshipData");
+        });
+
+      await db
+        .collection("userData")
+        .doc(state.myDocID)
+        .collection("mySocialRequests")
+        .doc("accepted")
+        .onSnapshot((doc) => {
+          // ! Real time database listener
+          let data = doc.data();
+          let acceptedList = data.acceptedList;
+
+          for (let req of acceptedList) {
+            // ? Here we are looping through the DocIDs users
+            notifications.push({
+              icon: "mdi-account",
+              avatar: req.avatar,
+              title: `El usuario ${req.userName} es ahora amigo tuyo`,
+              isRead: false,
+            });
+          }
+
+          commit("setNotifications", notifications);
+          dispatch("getMyFriendshipData");
+        });
+
+      await db
+        .collection("userData")
+        .doc(state.myDocID)
+        .collection("mySocialRequests")
+        .doc("rejected")
+        .onSnapshot((doc) => {
+          // ! Real time database listener
+          dispatch("getMyFriendshipData");
+        });
     },
-    // ? ----- TRIVIA ACTIONS ----- //
-    async getTriviaQuestion () {
-      // First: We get the questions resolved by the user to ignore them
+    async rejectFriendshipRequest({ commit, rootState, dispatch }, userData) {
+      commit("setIsLoading", true);
+      // ? IN MY DATA, I WILL REMOVE THE DOCID AND MOVE IT TO ACCEPTED
+      let MY_RECEIVED_REF = await db.doc(
+        `userData/${rootState.myDocID}/mySocialRequests/received`
+      );
+      let MY_REJECTED_REF = await db.doc(
+        `userData/${rootState.myDocID}/mySocialRequests/rejected`
+      );
+      MY_RECEIVED_REF.update({
+        receivedList: firebase.firestore.FieldValue.arrayRemove(userData),
+      });
+      MY_REJECTED_REF.update({
+        rejectedList: firebase.firestore.FieldValue.arrayUnion(userData),
+      });
 
-      // Second: We generate a random number between 0 and 364 and
-      // the number must be different from the questions index resolved by the user
+      // ? IN THE OTHER USER, I WILL REMOVE THE DOCID AND MOVE IT TO ACCEPTED
+      let USER_SENDED_REF = await db.doc(
+        `userData/${userData.docID}/mySocialRequests/sended`
+      );
+      let USER_REJECTED_REF = await db.doc(
+        `userData/${userData.docID}/mySocialRequests/rejected`
+      );
+      USER_SENDED_REF.update({
+        sendedList: firebase.firestore.FieldValue.arrayRemove(
+          rootState.mySocialData
+        ),
+      });
+      USER_REJECTED_REF.update({
+        rejectedList: firebase.firestore.FieldValue.arrayUnion(
+          rootState.mySocialData
+        ),
+      });
 
-      // Third: We get the question from the database
+      dispatch("getFriendshipNotification");
+      dispatch("getAllMyFriends");
 
-      // Fourth: We call the Deepl API to get the translated question
+      setTimeout(() => {
+        let filteredArr = rootState.myFriendshipRequests.filter(
+          (user) => user.docID !== userData.docID
+        );
+        commit("setMyFriendshipRequests", filteredArr);
+      }, 500);
+    },
+    // ? ----- CHAT ACTIONS ----- //
+    async getAllMyMessages({ rootState }) {
+      await db
+        .collection("userData")
+        .doc(rootState.myDocID)
+        .collection("messages")
+        .onSnapshot((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            rootState.chatRooms[doc.id] = doc.data();
+          });
+        });
+    },
+    async createMessage(
+      { rootState },
+      { message: message, docID: docID, avatar: avatar }
+    ) {
+      const MY_MESSAGES_REF = await db.doc(
+        `userData/${rootState.myDocID}/messages/${docID}`
+      );
+
+      let obj = {
+        avatar: avatar,
+        userId: rootState.user.uid,
+        docID: rootState.myDocID,
+        userName: rootState.user.displayName,
+        message,
+        createdAt: Date.now(),
+      };
+      MY_MESSAGES_REF.update({
+        read: false,
+        messagesList: firebase.firestore.FieldValue.arrayUnion(obj),
+      });
+
+      const USER_MESSAGES_REF = await db.doc(
+        `userData/${docID}/messages/${rootState.myDocID}`
+      );
+      USER_MESSAGES_REF.update({
+        read: false,
+        messagesList: firebase.firestore.FieldValue.arrayUnion(obj),
+      });
+    },
+    async hasReadTheMessage({ rootState }, docID) {
+      const MY_MESSAGES_REF = await db.doc(
+        `userData/${rootState.myDocID}/messages/${docID}`
+      );
+      MY_MESSAGES_REF.update({
+        read: true,
+      });
+    },
+    async generateChatRooms({ commit, rootState }) {
+      let chatRoom = {};
+      for (let friend of rootState.myFriendsList) {
+        chatRoom[friend.docID] = {
+          read: false,
+          messagesList: [],
+        };
+      }
+      commit("setChatRooms", chatRoom);
+    },
+    async createChatRoom({ rootState }, docID) {
+      const MY_MESSAGES_REF = await db
+        .doc(`userData/${rootState.myDocID}/messages/${docID}`)
+        .get();
+      const MY_FRIEND_REF = await db
+        .doc(`userData/${docID}/messages/${rootState.myDocID}`)
+        .get();
+
+      const MY_MESSAGES_DATA = MY_MESSAGES_REF.data();
+      const MY_FRIEND_DATA = MY_FRIEND_REF.data();
+
+      if (!MY_MESSAGES_DATA || !MY_FRIEND_DATA) {
+        await db
+        .doc(`userData/${rootState.myDocID}/messages/${docID}`)
+        .set({
+          read: false,
+          messagesList: []
+        });
+        await db
+        .doc(`userData/${docID}/messages/${rootState.myDocID}`)
+        .set({
+          read: false,
+          messagesList: []
+        });
+      }
     },
     // ! __________________ API ACTIONS __________________ //
     async getLatestReleases({ commit }, byPopularity) {
@@ -654,8 +1179,6 @@ export default new Vuex.Store({
         });
     },
     async getMoviesByGenre({ commit }, { genre, page }) {
-      console.log(genre);
-      console.log(page);
       commit("setLoadingData", true);
       commit("setSelectedGenre", genre);
 
@@ -680,31 +1203,31 @@ export default new Vuex.Store({
         });
     },
     async getRandomMovies({ commit }) {
-      let arr = []
-      let page = 1
-      const CALL_URL = `${URL}/discover/movie?year=2021&api_key=${APIKEY}&include_adult=false&page=${page}&sort_by=popularity.desc&vote_average.gte=6`
+      let arr = [];
+      let page = 1;
+      const CALL_URL = `${URL}/discover/movie?year=2021&api_key=${APIKEY}&include_adult=false&page=${page}&sort_by=popularity.desc&vote_average.gte=6`;
       await axios
-      .get(CALL_URL)
-      .then((resp) => {
-        for (let movie of resp.data.results) {
-          arr.push(movie)
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-        commit("showSnackbar", {
-          text: "Database error connection",
-          color: "red",
+        .get(CALL_URL)
+        .then((resp) => {
+          for (let movie of resp.data.results) {
+            arr.push(movie);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          commit("showSnackbar", {
+            text: "Database error connection",
+            color: "red",
+          });
         });
-      });
-    commit("setTriviaMoviesBackground", arr)
+      commit("setTriviaMoviesBackground", arr);
     },
   },
   getters: {
     userData: (state) => state.user,
     isLogged: (state) => state.isLogged,
-    myDocumentID: (state) => state.documentId,
+    myDocID: (state) => state.myDocID,
     counterMovies: (state) => state.counterMovies,
-    questionID: (state) => state.questionID
+    questionID: (state) => state.questionID,
   },
 });

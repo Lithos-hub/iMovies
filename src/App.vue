@@ -9,6 +9,12 @@
         this.$route.path !== '/register'
       "
     />
+    <Chat
+      v-if="chatIsActivated && correctPath"
+      id="chat"
+      :class="minimized ? 'minimized-card' : 'maximized-card'"
+      @minimize-chat="minimizeChat"
+    />
     <v-progress-circular
       v-if="loadingUserAuthStatus"
       class="centered"
@@ -25,6 +31,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import Navbar from "./components/Navbar";
+import Chat from "./components/Chat";
 import LoadingData from "./components/LoadingData";
 import router from "./router/index";
 import { auth, db } from "./../firebase.js";
@@ -33,15 +40,18 @@ export default {
   components: {
     Navbar,
     LoadingData,
+    Chat,
   },
   data() {
     return {
       isLoading: true,
+      minimized: false,
     };
   },
   watch: {
     $route(to) {
-      if (to.path !== "/") {
+      if (to.path !== "/" && to.path !== "/register") {
+        this.getUserData();
         const MY_FS_DOC = localStorage.getItem("docID");
         if (MY_FS_DOC) {
           this.$store.commit("setDocID", MY_FS_DOC);
@@ -56,77 +66,56 @@ export default {
       }
       window.scrollTo(0, 0);
     },
-    moviesCounter (count) {
-      console.log('My movies counter: ', count)
-      // ! Stages to get avatars and badges
-      // ? const FIRST_STAGE = 1
-      // ? const SECOND_STAGE = 25
-      // ? const THIRD_STAGE = 50
-      // ? const FOURTH_STAGE = 100
-      // ? const FIFTH_STAGE = 200
-      // ? const SIXTH_STAGE = 300
-      // ? const SEVENTH_STAGE = 500
-      // ? const EIGHTH_STAGE = 750
-      // ? const NINTH_STAGE = 1000
-      // TODO: Continue
-      const addRewardByStage = (stage) => {
-      }
-
-      const STAGES_AND_ACTIONS = {
-        1: addRewardByStage('first'),
-        25: addRewardByStage('second'),
-        50: addRewardByStage('third'),
-        100: addRewardByStage('fourth'),
-        200: addRewardByStage('fifth'),
-        300: addRewardByStage('sixth'),
-        500: addRewardByStage('seventh'),
-        750: addRewardByStage('eighth'),
-        1000: addRewardByStage('ninth')
-      }
-
-
-      STAGES_AND_ACTIONS[count];
-
-    }
+    showingFriends(val) {
+      if (val) this.$store.dispatch("getMessages");
+    },
   },
   computed: {
-    ...mapState(["loadingUserAuthStatus", "moviesCounter", "moviesCounter"]),
+    ...mapState([
+      "loadingUserAuthStatus",
+      "moviesCounter",
+      "moviesCounter",
+      "chatIsActivated",
+      "notifications",
+    ]),
+    correctPath() {
+      return (
+        this.$route.path !== "/" &&
+        this.$route.path !== "/404" &&
+        this.$route.path !== "/register"
+      );
+    },
   },
   created() {
-    this.getUserData()
-    const MY_FS_DOC = localStorage.getItem("docID");
-    if (MY_FS_DOC) {
-      this.$store.commit("setDocID", MY_FS_DOC);
-    } else {
-      this.getMyDocID();
-    }
-    console.log('My Firestore Doc ID: ', this.$store.getters.myDocumentID);
-  },
-  mounted () {
-    this.getCurrentDate()
+    this.getUserData();
   },
   methods: {
-    ...mapActions(["changeLanguage", "getUserID"]),
+    ...mapActions(["changeLanguage", "getUserID", "showingFriends"]),
+    minimizeChat(bool) {
+      this.minimized = bool;
+    },
     getCurrentDate() {
       let date = new Date();
-      let currentDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+      let currentDate = `${date.getDate()}-${
+        date.getMonth() + 1
+      }-${date.getFullYear()}`;
       this.$store.commit("setCurrentDate", currentDate);
     },
     async getUserData() {
       await auth.onAuthStateChanged((user) => {
         if (user) {
           this.$store.commit("setUser", user);
-          this.isLoading = false
-        }
-      })
-    },
-    async getMyDocID() {
-      const COLLECTION = await db.collection("userData").get();
-      const USERDATA = this.$store.getters.userData;
-      COLLECTION.forEach((doc) => {
-        if (doc.data().userID === USERDATA.uid) {
-          this.$store.commit("setDocID", doc.data().docID);
-          localStorage.setItem("docID", doc.data().docID);
+          this.$store.dispatch("getMyDocID");
+          this.getCurrentDate();
+          this.$nextTick().then(() => {
+            this.$store.dispatch("getFriendshipNotification");
+            this.$store.dispatch("getMySocialData");
+            console.log(
+              "My Firestore Doc ID: ",
+              this.$store.getters.myDocID
+            );
+            this.isLoading = false;
+          });
         }
       });
     },
@@ -147,9 +136,9 @@ body {
 }
 
 .main-content {
-  background: $dark2 !important;
+  background: $dark2;
   color: white;
-  font-family: $style1 !important;
+  font-family: $style1;
   height: 100%;
   padding-bottom: 5em;
   min-height: 100%;
@@ -169,6 +158,12 @@ body {
 // Scroll Bar
 
 /* width */
+#chat {
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 5px;
 }
@@ -188,6 +183,25 @@ body {
   background: rgb(255, 255, 255);
 }
 
+#chat {
+  position: fixed;
+  bottom: 0.5em;
+  right: 0.5em;
+  min-height: 500px;
+  width: auto;
+  z-index: 99999999;
+  justify-content: flex-end;
+  transition: all 0.2s ease-out;
+}
+
+.minimized-card {
+  min-height: 40px !important;
+  max-height: 40px !important;
+}
+
+.maximized-card {
+  height: 400px;
+}
 // // ******* MOBILE RESPONSIVE ******* //
 // @media only screen and (min-width: 360px) {
 //   .main-content {
