@@ -252,6 +252,7 @@ export default {
     this.getMovieOfTheWeek();
   },
   mounted() {
+    this.getUserData();
     this.enableScrollX();
     this.animateScroll();
     this.$store.dispatch('getFriendshipNotification');
@@ -288,6 +289,24 @@ export default {
       "showAddToDialog",
       "showInfo",
     ]),
+    async getUserData() {
+      await auth.onAuthStateChanged((user) => {
+        if (user) {
+          this.$store.commit("setUser", user);
+          this.$store.dispatch("getMyDocID");
+          this.getCurrentDate();
+          this.$nextTick().then(() => {
+            this.$store.dispatch("getFriendshipNotification");
+            this.$store.dispatch("getMySocialData");
+            console.log(
+              "My Firestore Doc ID: ",
+              this.$store.getters.myDocID
+            );
+            this.isLoading = false;
+          });
+        }
+      });
+    },
     getHasPlayedToday() {
       this.loadingTrivia = true;
       Services.getHasPlayedToday()

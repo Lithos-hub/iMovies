@@ -86,6 +86,7 @@ export default new Vuex.Store({
     isChatting: false,
     showingFriends: true,
     chatRooms: {},
+    userToChat: null,
     iMoviesUsersList: [],
     myFriendshipRequests: [],
     mySocialRequests: {
@@ -292,6 +293,10 @@ export default new Vuex.Store({
     },
     setIsChatting(state, payload) {
       state.isChatting = payload;
+    },
+    setUserToChat (state, id) {
+      state.userToChat = id
+      state.isChatting = true
     },
     setIsShowingFriends(state, payload) {
       state.showingFriends = payload;

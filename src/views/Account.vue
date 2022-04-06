@@ -126,7 +126,7 @@
           ></v-text-field>
           <v-row no-gutters class="pa-0">
           <v-col>
-              <v-btn :loading="isLoading" dark block tile color="cyan" @click="updateProfile">{{ $t('view-account.done') }}</v-btn>
+              <v-btn :disabled="disableButton" :loading="isLoading" dark block tile color="cyan" @click="updateProfile">{{ $t('view-account.done') }}</v-btn>
           </v-col>
           <v-col>
               <v-btn dark block tile color="red" @click="closeDialog">{{ $t('view-account.cancel') }}</v-btn>
@@ -205,6 +205,17 @@ export default {
   },
   computed: {
     ...mapState(['snackbarObject', 'user']),
+    disableButton () {
+      if (this.isEditingName && !this.newName.length) {
+        return true
+      } else if (this.isEditingPass && !this.newPassword.length) {
+        return true
+      } else if (this.isEditingEmail && !this.newEmail.length) {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   mounted () {
     this.getAvatarsImages();

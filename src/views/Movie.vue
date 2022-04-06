@@ -208,7 +208,7 @@
                   }}</span
                 >
                 <span v-if="movieDetails.revenue !== 0"> $</span>
-                <span v-if="movieDetails.revenue || movieDetails.budget">
+                <span v-if="movieDetails.revenue">
                 <v-icon size="20" :class="getPositiveRevenues(movieDetails.budget, movieDetails.revenue) ? 'ml-5 success--text triangle-up' : 'ml-5 mr-2 red--text triangle-down'">
                   mdi-triangle
                 </v-icon>

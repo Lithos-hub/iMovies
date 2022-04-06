@@ -185,12 +185,16 @@ export default {
     // },
   },
   computed: {
-    ...mapState(["showingFriends", "myFriendsList", "user", "chatRooms"]),
+    ...mapState(["showingFriends", "myFriendsList", "user", "chatRooms", "userToChat", "isChatting"]),
   },
   mounted() {
     this.$store.dispatch("generateChatRooms");
     this.$store.dispatch("getAllMyMessages");
     this.sendMessageListener();
+    if (this.userToChat) {
+      let match = this.myFriendsList.find(user => user.docID === this.userToChat)
+      this.chatWithFriend(match);
+    }
   },
   methods: {
     closeChatList() {
