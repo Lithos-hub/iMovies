@@ -411,7 +411,12 @@ export default {
       this.$router.go(0);
     },
     setComingFromDetails() {
-      this.$store.commit("setComesFromDetails", false);
+      this.$store.commit("setcomebackFromDetails", false);
+    },
+    showChat() {
+      let activeChat = this.chatIsActivated;
+      this.$store.commit("setChatIsActivated", !activeChat);
+      this.$store.commit('setIsShowingFriends', true)
     },
     showChat() {
       let activeChat = this.chatIsActivated;

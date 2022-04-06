@@ -85,6 +85,7 @@ export default {
     },
     sendMessage() {
       this.$store.commit("setChatIsActivated", true);
+      this.$store.commit("setUserToChat", this.$route.params.id);
     },
     async computeCodeToCountry(code) {
       let apiURL = `https://restcountries.com/v3.1/alpha/${code}`;

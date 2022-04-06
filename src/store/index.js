@@ -43,7 +43,8 @@ export default new Vuex.Store({
       warningColor: "",
       warningText: "",
     },
-    comesFromDetails: false,
+    comesFromAnotherView: false,
+    comebackFromDetails: false,
     isSearchingMovie: false,
     searchItem: {},
     searchInput: "",
@@ -85,6 +86,7 @@ export default new Vuex.Store({
     isChatting: false,
     showingFriends: true,
     chatRooms: {},
+    userToChat: null,
     iMoviesUsersList: [],
     myFriendshipRequests: [],
     mySocialRequests: {
@@ -217,8 +219,11 @@ export default new Vuex.Store({
     setSelectedGenre(state, payload) {
       state.selectedGenre = payload;
     },
-    setComesFromDetails(state, payload) {
-      state.comesFromDetails = payload;
+    setComesFromAnotherView(state, payload) {
+      state.comesFromAnotherView = payload;
+    },
+    setcomebackFromDetails(state, payload) {
+      state.comebackFromDetails = payload;
     },
     setClickedTab(state, key) {
       state.clickedTab = key;
@@ -288,6 +293,10 @@ export default new Vuex.Store({
     },
     setIsChatting(state, payload) {
       state.isChatting = payload;
+    },
+    setUserToChat (state, id) {
+      state.userToChat = id
+      state.isChatting = true
     },
     setIsShowingFriends(state, payload) {
       state.showingFriends = payload;
