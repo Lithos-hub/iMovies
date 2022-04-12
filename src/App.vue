@@ -62,9 +62,6 @@ export default {
       }
       window.scrollTo(0, 0);
     },
-    // userPoints(points) {
-    //   console.log("My user points", points);
-    // },
   },
   computed: {
     ...mapState([

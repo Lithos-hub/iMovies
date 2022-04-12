@@ -294,7 +294,6 @@ export default {
                   addUser();
                 })
                 .catch((error) => {
-                  console.log("Catched!", error);
                   this.showSnackbar({
                     text: this.$t("view-register.userExists"),
                     color: "red",

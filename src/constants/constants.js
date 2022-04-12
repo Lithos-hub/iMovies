@@ -38,7 +38,7 @@ const ONE_MONTH_AGO = formatDate(getDateAgo(30));
 
 const LANGUAGE = i18n.locale
 
-console.log(LANGUAGE)
+console.log('Language: ', LANGUAGE);
 
 // Exports
 export {

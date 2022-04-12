@@ -57,26 +57,26 @@ export default {
   },
   methods: {
     // ! ******** To generate the questions in firebase ******** ! //
-    async genQuestions() {
-      const questions = await Utils.genQuestions();
-      questions.forEach((question, index) => {
-        db.collection("TriviaV2")
-          .doc(`triviadoc-${index}`)
-          .set({
-            id: index,
-            incorrect_answers: question.incorrect_answers,
-            correct_answer: question.correct_answer,
-            image: question.image ? question.image : null,
-            question: question.question,
-          })
-          .then(() => {
-            console.log("Document successfully written!");
-          })
-          .catch((error) => {
-            console.error("Error writing document: ", error);
-          });
-      });
-    },
+    // async genQuestions() {
+    //   const questions = await Utils.genQuestions();
+    //   questions.forEach((question, index) => {
+    //     db.collection("TriviaV2")
+    //       .doc(`triviadoc-${index}`)
+    //       .set({
+    //         id: index,
+    //         incorrect_answers: question.incorrect_answers,
+    //         correct_answer: question.correct_answer,
+    //         image: question.image ? question.image : null,
+    //         question: question.question,
+    //       })
+    //       .then(() => {
+    //         console.log("Document successfully written!");
+    //       })
+    //       .catch((error) => {
+    //         console.error("Error writing document: ", error);
+    //       });
+    //   });
+    // },
     paintImages() {
       let triviaImages = this.triviaMoviesBackground;
 
@@ -134,7 +134,6 @@ export default {
       Services.getResolvedQuestions()
         .then((res) => {
           this.hasPlayedBefore = res.length > 0;
-          if (this.hasPlayedBefore) console.log("Has played before");
         })
         .catch((err) => {
           console.log(err);
