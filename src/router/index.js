@@ -75,6 +75,22 @@ const routes = [
     },
   },
   {
+    path: "/community",
+    name: "Community",
+    component: () => import("../views/Community.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/community/userDetails/:id",
+    name: "User details",
+    component: () => import("../views/userDetails.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/trending",
     name: "Trending",
     component: () => import("../views/Trending.vue"),
@@ -143,7 +159,6 @@ router.beforeEach(async (to, from, next) => {
 
   // Requires Auth and the user is logged in
   if (requiresAuth && (await store.dispatch("getCurrentUser"))) {
-    store.dispatch("getVisitedSections", store.getters.visitedSections);
     next();
     // If requires auth and user is not logged in
   } else if (requiresAuth && !(await store.dispatch("getCurrentUser"))) {

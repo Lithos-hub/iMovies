@@ -6,6 +6,7 @@
     "comeback": "Come back"
   },
   "languages": {
+    "cantonese": "Cantonese",
     "english": "English",
     "french": "Français",
     "german": "Deutsch",
@@ -64,6 +65,20 @@
     "basque": "Basque",
     "malay": "Malay"
   },
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  },
   "navbar": {
     "user": "User: ",
     "lang": "Lang: ",
@@ -73,6 +88,7 @@
     "home": "Home",
     "trivia": "Trivia",
     "account": "My account",
+    "community": "Community",
     "search": "Search",
     "mymovies": "My movies",
     "trending": "Trending",
@@ -82,7 +98,8 @@
     "changelog": "Changelog",
     "about": "About",
     "developed": "Developed by ",
-    "goTo": "Go to my website"
+    "goTo": "Go to my website",
+    "showChat": "Show chat"
   },
   "app-buttons": {
     "view": "View trailer",
@@ -92,8 +109,8 @@
     "comeback": "Comeback"
   },
   "generic-messages": {
-    "no-release": "Fecha de lanzamiento no disponible",
-    "no-overview": "Sinopsis no disponible"
+    "no-release": "Release date no available",
+    "no-overview": "Overview no available"
   },
   "genres": {
     "action": "Action",
@@ -144,8 +161,11 @@
     "email": "E-mail",
     "password": "Password",
     "repeat": "Repeat the password",
+    "favouriteGenres": "Favourite genres",
+    "birthday": "Birthday",
+    "country": "Country",
     "register": "Register",
-    "maximum": "Maximum 10 characters",
+    "maximum": "Maximum 15 characters",
     "accessSuccess": "Correct data! Loading the app...",
     "emailExists": "That E-mail already exists",
     "nameRequired": "The name is mandatory",
@@ -168,6 +188,15 @@
     "hasPlayed": "You have already played today's challengue",
     "hasNotPlayed": "You have a new challengue to complete!",
     "play": "Play"
+  },
+  "view-userDetails": {
+    "userDetails": "User details",
+    "username": "Username: ",
+    "birthday":"Birthday: ",
+    "from": "From: ",
+    "friendSince": "Friends since: ",
+    "favouriteGenres": "Favourite genres: ",
+    "savedMovies": "Saved movies: "
   },
   "view-search": {
     "byTitle": "Search by movie title",
@@ -285,8 +314,17 @@
     "releaseDate":"Release date: ",
     "overview": "Overview",
     "average": "Vote average",
+    "casting": "Casting",
     "votes": "Vote count",
-    "language": "Language/s"
+    "ratings": "rates",
+    "language": "Language/s",
+    "genres": "Genres",
+    "extraInfo": "Extra info",
+    "budget": "Budget: ",
+    "revenue": "Revenue: ",
+    "runtime": "Runtime: ",
+    "homepage": "Homepage: ",
+    "mainComp": "Main production company: "
   },
   "view-account": {
     "profile": "Profile",
@@ -347,5 +385,10 @@
     "noAvailable": "Video no available in your language",
     "show": "Show in english",
     "noAvailable2": "Video no available"
+  },
+  "comp-chat": {
+    "friends": "My friends",
+    "noFriends": "You have not friends yet",
+    "write": "Write a message"
   }
 }

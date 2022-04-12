@@ -27,46 +27,73 @@
         <div v-else>
           {{ $t("navbar.user") }}
           <span class="cyan--text">@{{ user.displayName }}</span>
-
-          <!-- // ** Notifications button ** // -->
-          <v-menu bottom offset-y :close-on-content-click="false">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn class="ml-2" small fab icon v-bind="attrs" v-on="on">
-                <div v-if="!notifications.every(noti => noti.isRead)" id="notification-wrapper">
-                  <div id="notification-dot"></div>
-                  <v-icon color="white">mdi-bell</v-icon>
-                </div>
-                <v-icon v-else color="white">mdi-bell</v-icon>
-              </v-btn>
-            </template>
-            <v-card min-width="350" class="mx-auto text-left" tile dark>
-              <v-toolbar class="gradient-background-1" dark dense>
-                <v-toolbar-title class="white--text">Notificaciones</v-toolbar-title>
-              </v-toolbar>
-              <v-list three-line id="notifications-list" v-if="notifications.length">
-                <div v-for="(item, i) in notifications" :key="i">
-                  <v-list-item :class="item.isRead ? 'just-read' : 'not-read'" @click="item.isRead = true">
-                    <v-icon class="notification-icon mr-5" size="35" color="white">{{ item.icon }}</v-icon>
-                    <v-list-item-content>
-                      <v-icon id="notifications-eye" color="white">{{ item.isRead ? 'mdi-eye-off' : 'mdi-eye' }}</v-icon>
-                      <v-list-item-title class="pa-0 ma-0 cyan--text">{{ item.title}}</v-list-item-title>
-                      <v-list-item-subtitle class="pa-0 ma-0 white--text"> {{ item.subtitle }} </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-divider v-if="i < notifications.length - 1" inset class="notifications-divider ma-0 pa-0"></v-divider>
-                </div>
-              </v-list>
-              <v-list v-else>
-                <v-list-item>
-                  <v-list-item-content>
-                    <v-list-item-title class="text-center red--text">No tienes notificaciones</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-            </v-card>
-          </v-menu>
         </div>
       </div>
+
+      <!-- // ** Notifications button ** // -->
+      <v-menu bottom offset-y :close-on-content-click="false">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn class="ml-2" small fab icon v-bind="attrs" v-on="on">
+            <div
+              v-if="!notifications.every((noti) => noti.isRead)"
+              id="notification-wrapper"
+            >
+              <div id="notification-dot"></div>
+              <v-icon color="white">mdi-bell</v-icon>
+            </div>
+            <v-icon v-else color="white">mdi-bell</v-icon>
+          </v-btn>
+        </template>
+        <v-card min-width="350" class="mx-auto text-left" tile dark>
+          <v-toolbar class="gradient-background-1" dark dense>
+            <v-toolbar-title class="white--text"
+              >Notificaciones</v-toolbar-title
+            >
+          </v-toolbar>
+          <v-list
+            three-line
+            id="notifications-list"
+            v-if="notifications.length"
+          >
+            <div v-for="(item, i) in notifications" :key="i">
+              <v-list-item
+                :class="item.isRead ? 'just-read' : 'not-read'"
+                @click="item.isRead = true"
+              >
+                <v-icon v-if="!item.avatar"
+                  class="notification-icon mr-5"
+                  size="30"
+                  color="white"
+                  >{{ item.icon }}</v-icon
+                >
+                <v-img v-else class="notification-avatar" :src="item.avatar" max-width="70" height="70"></v-img>
+                <v-list-item-content>
+                  <!-- <v-icon id="notifications-eye" color="white">{{
+                    item.isRead ? "mdi-eye-off" : "mdi-eye"
+                  }}</v-icon> -->
+                  <v-list-item-title class="pa-0 ma-0 cyan--text">{{
+                    item.title
+                  }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider
+                v-if="i < notifications.length - 1"
+                inset
+                class="notifications-divider ma-0 pa-0"
+              ></v-divider>
+            </div>
+          </v-list>
+          <v-list v-else>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title class="text-center red--text"
+                  >No tienes notificaciones</v-list-item-title
+                >
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-menu>
 
       <div class="mx-auto">
         <router-link to="/home" class="router-link-default">
@@ -85,7 +112,6 @@
             fab
             icon
             outlined
-            width="100ox"
             small
             class="mr-2"
             v-bind="attrs"
@@ -95,8 +121,8 @@
             <v-icon class="language-icon"> mdi-earth </v-icon>
           </v-btn>
         </template>
-        <v-row no-gutters class="d-flex">
-          <v-col>
+        <div class="d-block">
+          <div>
             <v-list class="lang-list pa-0">
               <v-list-item
                 class="ma-0 pa-0"
@@ -112,8 +138,8 @@
                 >
               </v-list-item>
             </v-list>
-          </v-col>
-          <v-col>
+          </div>
+          <div>
             <v-list class="lang-list pa-0">
               <v-list-item
                 class="ma-0 pa-0"
@@ -129,41 +155,49 @@
                 >
               </v-list-item>
             </v-list>
-          </v-col>
-        </v-row>
-      </v-menu>
-
-      <v-btn
-        outlined
-        :tile="!isUsingMobile"
-        :fab="isUsingMobile"
-        max-width="150px"
-        small
-        color="red darken-1"
-        class="mr-2"
-        @click="logout()"
-      >
-        {{ displayText ? $t("navbar.logout") : "" }}
-        <v-icon>mdi-account-cancel</v-icon>
-      </v-btn>
-      <div>
-        <v-btn
-          icon
-          :small="isUsingMobile"
-          :outlined="isUsingMobile"
-          :tile="!isUsingMobile"
-          :fab="isUsingMobile"
-          :width="isUsingMobile ? '' : '100%'"
-          :class="isUsingMobile ? 'px-0' : 'px-5'"
-          href="https://github.com/Lithos-hub/VUEJS-iMovies"
-          target="_blank"
-        >
-          <v-icon :class="isUsingMobile ? 'ma-0' : 'mr-2'"> mdi-github </v-icon>
-          <div v-if="!isUsingMobile" id="version-info" class="ml-2">
-            <p>v{{ major }}.{{ minor }}.{{ patch }}</p>
           </div>
-        </v-btn>
-      </div>
+        </div>
+      </v-menu>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            class="mr-2"
+            depressed
+            icon
+            fab
+            v-on="on"
+            v-bind="attrs"
+            outlined
+            small
+            :color="chatIsActivated ? 'white' : 'primary'"
+            @click="showChat"
+          >
+            <v-icon :color="chatIsActivated ? 'white' : 'cyan'">
+              mdi-message-text
+            </v-icon>
+          </v-btn>
+        </template>
+        <span class="white--text">{{ $t("navbar.showChat") }}</span>
+      </v-tooltip>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            class="mr-2"
+            depressed
+            icon
+            fab
+            v-on="on"
+            v-bind="attrs"
+            outlined
+            small
+            color="red darken-1"
+            @click="logout"
+          >
+            <v-icon color="red"> mdi-account-cancel </v-icon>
+          </v-btn>
+        </template>
+        <span class="white--text">{{ $t("navbar.logout") }}</span>
+      </v-tooltip>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -222,6 +256,27 @@
             <p id="visit-my-website">{{ $t("navbar.goTo") }}</p>
           </a>
         </p>
+        <div>
+          <v-btn
+            icon
+            large
+            :small="isUsingMobile"
+            :outlined="isUsingMobile"
+            :tile="!isUsingMobile"
+            :fab="isUsingMobile"
+            :width="isUsingMobile ? '' : '100%'"
+            :class="isUsingMobile ? 'px-0' : 'px-2'"
+            href="https://github.com/Lithos-hub/VUEJS-iMovies"
+            target="_blank"
+          >
+            <v-icon :class="isUsingMobile ? 'ma-0' : 'mr-2'">
+              mdi-github
+            </v-icon>
+            <div v-if="!isUsingMobile" id="version-info" class="ml-2">
+              <p>v{{ major }}.{{ minor }}.{{ patch }}</p>
+            </div>
+          </v-btn>
+        </div>
       </div>
     </v-navigation-drawer>
   </div>
@@ -243,46 +298,6 @@ export default {
       group: null,
       drawer: false,
       langMenu: false,
-      hasNotifications: false,
-      notifications: [],
-      notifications: [
-        {
-          icon: 'mdi-trophy-variant',
-          title: '¡Has conseguido un logro!',
-          subtitle: `Has hecho tal acción`,
-          isRead: false,
-        },
-        {
-          icon: 'mdi-trophy-variant',
-          title: '¡Has conseguido un logro!',
-          subtitle: `Has hecho tal acción`,
-          isRead: false,
-        },
-        {
-          icon: 'mdi-trophy-variant',
-          title: '¡Has conseguido un logro!',
-          subtitle: `Has hecho tal acción`,
-          isRead: false,
-        },
-        {
-          icon: 'mdi-trophy-variant',
-          title: '¡Has conseguido un logro!',
-          subtitle: `Has hecho tal acción`,
-          isRead: false,
-        },
-        {
-          icon: 'mdi-trophy-variant',
-          title: '¡Has conseguido un logro!',
-          subtitle: `Has hecho tal acción`,
-          isRead: false,
-        },
-        {
-          icon: 'mdi-trophy-variant',
-          title: '¡Has conseguido un logro!',
-          subtitle: `Has hecho tal acción`,
-          isRead: false,
-        },
-      ],
       navbarItems: [
         {
           to: "/trivia",
@@ -293,6 +308,11 @@ export default {
           to: "/account",
           text: this.$t("navbar.account"),
           icon: "mdi-account",
+        },
+        {
+          to: "/community",
+          text: this.$t("navbar.community"),
+          icon: "mdi-account-group",
         },
         {
           to: "/search",
@@ -338,7 +358,14 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user", "isLoadingDynamicUserData"]),
+    ...mapState([
+      "user",
+      "isLoadingDynamicUserData",
+      "showingFriends",
+      "chatIsActivated",
+      "hasNotifications",
+      "notifications"
+    ]),
     displayText() {
       switch (this.$vuetify.breakpoint.name) {
         case "xs":
@@ -360,11 +387,6 @@ export default {
       return this.$vuetify.breakpoint.xs;
     },
   },
-  mounted () {
-    if (this.notifications.length) {
-      this.hasNotifications = true;
-    }
-  },
   methods: {
     ...mapActions(["changeLanguage"]),
     logout() {
@@ -376,10 +398,10 @@ export default {
         .signOut()
         .then(() => {
           const userData = {};
-
           this.$store.commit("setUser", userData);
-
+          this.$store.commit("setMessagesListener", () => {});
           this.$router.push("/");
+          localStorage.clear();
         })
         .catch((error) => {
           console.log(error);
@@ -389,7 +411,17 @@ export default {
       this.$router.go(0);
     },
     setComingFromDetails() {
-      this.$store.commit("setComesFromDetails", false);
+      this.$store.commit("setcomebackFromDetails", false);
+    },
+    showChat() {
+      let activeChat = this.chatIsActivated;
+      this.$store.commit("setChatIsActivated", !activeChat);
+      this.$store.commit('setIsShowingFriends', true)
+    },
+    showChat() {
+      let activeChat = this.chatIsActivated;
+      this.$store.commit("setChatIsActivated", !activeChat);
+      this.$store.commit('setIsShowingFriends', true)
     },
   },
 };
@@ -412,7 +444,7 @@ export default {
 
 #username-toolbar {
   position: absolute;
-  left: 5%;
+  margin-left: 5em;
   color: $primary;
   font-weight: lighter;
 }
@@ -436,7 +468,6 @@ export default {
 #visit-my-website {
   opacity: 0;
   transition: 0.5s;
-  margin-top: 0px;
   text-transform: uppercase;
 }
 
@@ -468,45 +499,47 @@ export default {
 #notification-wrapper {
   position: relative;
 }
-
 #notification-dot {
   position: absolute;
   top: 25%;
   right: 20%;
   transform: translate(50%, -50%);
-  background: rgb(255, 55, 55);
+  background: #ff3737;
   border: 1px solid #151515;
   width: 12px;
   height: 12px;
   border-radius: 50%;
   z-index: 99999;
 }
-
 .notifications-divider {
   min-width: 350px !important;
 }
-
 #notifications-list {
+  min-width: 400px;
+  width: auto;
   overflow-y: scroll;
   overflow-x: hidden;
   max-height: 350px;
 }
-
 #notifications-eye {
   position: absolute;
   right: 20px;
 }
-
 .not-read {
   background: rgb(43, 71, 122);
   backdrop-filter: blur(5px);
 }
-
 .notification-icon {
   background: $gradient_1;
   padding: 10px;
   border-radius: 50%;
   box-shadow: 0px 5px 10px #303030;
+}
+
+.notification-avatar {
+  padding: 10px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
 // ******* MOBILE RESPONSIVE ******* //
@@ -543,7 +576,6 @@ export default {
   #developedBy {
     position: relative;
     text-align: center;
-    margin-top: 40px;
     letter-spacing: 2px;
     font-size: 12px;
     font-family: $style2;
@@ -611,7 +643,6 @@ export default {
   #developedBy {
     position: relative;
     text-align: center;
-    margin-top: 40px;
     letter-spacing: 2px;
     font-size: 10px;
     font-family: $style2;
@@ -695,7 +726,6 @@ export default {
     position: relative;
     text-align: center;
     color: white;
-    margin-top: 40px;
     letter-spacing: 2px;
     font-size: 12px;
     font-family: $style3;

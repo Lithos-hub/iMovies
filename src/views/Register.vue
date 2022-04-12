@@ -41,6 +41,7 @@
               <v-col cols="6">
                 <v-text-field
                   required
+                  color="cyan"
                   :rules="nameRules"
                   type="text"
                   v-model="username"
@@ -51,6 +52,7 @@
               <v-col>
                 <v-text-field
                   required
+                  color="cyan"
                   :rules="emailRules"
                   type="email"
                   v-model="email"
@@ -62,6 +64,7 @@
               <v-col cols="6">
                 <v-text-field
                   required
+                  color="cyan"
                   :rules="[passwordRules.required, passwordRules.length]"
                   type="password"
                   v-model.trim="password"
@@ -71,11 +74,117 @@
               <v-col cols="6">
                 <v-text-field
                   required
+                  color="cyan"
                   :rules="[passwordRules.match, passwordRules.required]"
                   type="password"
                   v-model.trim="repassword"
                   :label="$t('view-register.repeat')"
                 ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col class="pa-0 ma-0">
+                <v-select
+                  v-model="favouriteGenres"
+                  item-text="text"
+                  item-value="value"
+                  multiple
+                  chips
+                  dark
+                  color="cyan"
+                  deletable-chips
+                  prepend-icon="mdi-movie-open"
+                  :items="genresList"
+                  :label="$t('view-register.favouriteGenres')"
+                ></v-select>
+                <v-menu
+                  ref="menu"
+                  v-model="birthdayMenu"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="dateFormatted"
+                      :label="$t('view-register.birthday')"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      color="cyan"
+                      v-bind="attrs"
+                      v-on="on"
+                      @blur="date = parseDate(dateFormatted)"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="date"
+                    locale="es-es"
+                    :active-picker.sync="activePicker"
+                    color="gradient-background-1"
+                    :max="
+                      new Date(
+                        Date.now() - new Date().getTimezoneOffset() * 60000
+                      )
+                        .toISOString()
+                        .substr(0, 10)
+                    "
+                    min="1950-01-01"
+                    @change="save"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col class="mt-3" cols="6">
+                <small
+                  >{{ $t("view-register.country") }}:
+                  <span class="cyan--text ml-3">{{
+                    selectedCountry
+                  }}</span></small
+                >
+                <v-list
+                  id="country-list"
+                  class="mt-5"
+                  :key="renderComponentKey"
+                >
+                  <v-list-item-group color="white">
+                    <v-list-item v-if="loadingCountries">
+                      <v-progress-circular
+                        indeterminate
+                        color="cyan"
+                        size="30"
+                        width="2"
+                        class="mx-auto"
+                      ></v-progress-circular>
+                    </v-list-item>
+                    <v-list-item
+                      v-else
+                      v-for="(country, i) in countriesList"
+                      :key="i"
+                      @click="selectCountry(country)"
+                      active-class="primary"
+                    >
+                      <v-list-item-title class="d-flex justify-space-around"
+                        ><div
+                          :class="`my-auto ${country.color || 'white'}--text`"
+                        >
+                          {{
+                            $i18n.locale === "es-ES"
+                              ? country.text.spa
+                              : country.text.eng
+                          }}
+                        </div>
+                        <v-img
+                          class="flag-image ml-auto"
+                          :src="country.flag"
+                          max-width="40px"
+                          height="auto"
+                          aspect-ratio="1"
+                        ></v-img
+                      ></v-list-item-title>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
               </v-col>
             </v-row>
 
@@ -133,7 +242,13 @@
             </v-dialog>
 
             <div class="text-center">
-              <v-btn :loading="loadingCreate" :disabled="loadingCreate" block class="btn-gradient1" @click="validate">
+              <v-btn
+                :loading="loadingCreate"
+                :disabled="loadingCreate"
+                block
+                class="btn-gradient1"
+                @click="validate"
+              >
                 {{ $t("view-register.register") }}
               </v-btn>
             </div>
@@ -169,6 +284,7 @@
 
 <script>
 import Snackbar from "../components/Snackbar";
+import axios from "axios";
 import { mapActions, mapState } from "vuex";
 import { auth, db, storage } from "../../firebase.js";
 
@@ -178,6 +294,7 @@ export default {
   },
   data() {
     return {
+      renderComponentKey: 0,
       avatarDialog: false,
       valid: false,
       fb_user: null,
@@ -187,7 +304,13 @@ export default {
       password: "",
       repassword: "",
       avatar: "",
+      cityName: "",
+      selectedCountry: "",
+      dateFormatted: "",
       registered: false,
+      countryCode: null,
+      loadingCountries: false,
+      countriesList: [],
       nameRules: [
         (v) => !!v || this.$t("view-register.nameRequired"),
         (v) => v.length < 15 || this.$t("view-register.maximum"),
@@ -203,27 +326,134 @@ export default {
           v === this.password || this.$t("view-register.passwordMatch"),
       },
       avatar_imgs: [],
+      activePicker: null,
+      date: null,
+      birthdayMenu: false,
+      favouriteGenres: [],
+      genresList: [
+        { value: "28", text: this.$t("genres.action") },
+        { value: "12", text: this.$t("genres.adventure") },
+        { value: "16", text: this.$t("genres.animation") },
+        { value: "35", text: this.$t("genres.comedy") },
+        { value: "80", text: this.$t("genres.crime") },
+        { value: "99", text: this.$t("genres.documentary") },
+        { value: "18", text: this.$t("genres.drama") },
+        { value: "10751", text: this.$t("genres.family") },
+        { value: "14", text: this.$t("genres.fantasy") },
+        { value: "36", text: this.$t("genres.history") },
+        { value: "27", text: this.$t("genres.horror") },
+        { value: "10402", text: this.$t("genres.music") },
+        { value: "9648", text: this.$t("genres.mystery") },
+        { value: "10749", text: this.$t("genres.romance") },
+        { value: "878", text: this.$t("genres.sci-fi") },
+        { value: "10770", text: this.$t("genres.tv") },
+        { value: "53", text: this.$t("genres.thriller") },
+        { value: "10752", text: this.$t("genres.war") },
+        { value: "37", text: this.$t("genres.western") },
+      ],
     };
   },
   computed: {
-    ...mapState(["snackbarObject", "user"]),
+    ...mapState(["snackbarObject"]),
   },
   mounted() {
     this.getAvatarsImages();
+    this.searchAllCountries();
+  },
+  watch: {
+    birthdayMenu(val) {
+      val && setTimeout(() => (this.activePicker = "YEAR"));
+    },
+    date(val) {
+      this.dateFormatted = this.formatDate(this.date);
+    },
   },
   methods: {
     ...mapActions(["showSnackbar"]),
+    formatDate(date) {
+      if (!date) return null;
+
+      const [year, month, day] = date.split("-");
+      return `${day}-${month}-${year}`;
+    },
+    parseDate(date) {
+      if (!date) return null;
+
+      const [day, month, year] = date.split("-");
+      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+    },
+    save(date) {
+      this.$refs.menu.save(date);
+    },
     checkPasswords() {
       this.password === this.repassword
         ? ""
         : this.$t("view-register.passwordMatch");
     },
+    selectCountry(name) {
+      this.selectedCountry = this.$i18n.locale === "es-ES" ? name.text.spa : name.text.eng;
+      this.countryCode = name.code
+      const countryListHTML = document.querySelector("#country-list");
+      countryListHTML.addEventListener("mouseleave", (e) => {
+        countryListHTML.scrollTo(0, 0);
+        this.countriesList[0] = {
+          text: name.text,
+          flag: name.flag,
+          color: "cyan",
+        };
+        setTimeout(() => {
+          this.renderComponentKey += 1;
+        }, 250);
+      });
+    },
+    async searchAllCountries() {
+      this.loadingCountries = true;
+      let apiURL = "https://restcountries.com/v3.1/all";
+      await axios
+        .get(apiURL)
+        .then((res) => {
+          this.countriesList.push({
+            text: "",
+            flag: "",
+          });
+          for (let country of res.data) {
+            let {
+              cca2,
+              flags: { png },
+              translations: {
+                spa: { common },
+              },
+            } = country;
+            this.countriesList.push({
+              code: cca2,
+              text: {
+                spa: common,
+                eng: country.name.common,
+              },
+              flag: png,
+            });
+          }
+          if (this.$i18n.locale === 'en-EN') {
+            this.countriesList.sort((a, b )=> a.text.eng.localeCompare(b.text.eng));
+          } else {
+            this.countriesList.sort((a, b )=> a.text.spa.localeCompare(b.text.spa));
+          }
+          this.loadingCountries = false;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.loadingCountries = false;
+        });
+    },
     validate() {
-      this.loadingCreate = true
+      this.loadingCreate = true;
       const USERNAME = this.username;
       const EMAIL = this.email;
       const PASSWORD = this.password;
       const AVATAR = this.avatar;
+      const BIRTHDAY = this.dateFormatted;
+      const COUNTRY = this.countryCode;
+      const FAVOURITE_GENRES = this.favouriteGenres;
 
       this.valid = this.$refs.form.validate();
 
@@ -232,7 +462,7 @@ export default {
           text: this.$t("view-register.formularioInvalido"),
           color: "red",
         });
-        this.loadingCreate = false
+        this.loadingCreate = false;
       } else {
         let users = [];
 
@@ -251,13 +481,13 @@ export default {
                 text: this.$t("view-register.userExists"),
                 color: "red",
               });
-              this.loadingCreate = false
+              this.loadingCreate = false;
             } else {
               // Firebase auth service
               auth
                 .createUserWithEmailAndPassword(EMAIL, PASSWORD)
                 .then((userCredential) => {
-                  let user = userCredential.user;
+                  this.$store.commit("setUser", userCredential.user);
                   // When signed in, we store the user with its ID, userName, and avatar in Firestore
                   const addUser = async () => {
                     try {
@@ -269,10 +499,13 @@ export default {
                       localStorage.setItem("docID", newID);
                       await USER_DATA_REF.set({
                         docID: newID,
-                        userID: user.uid,
+                        userID: userCredential.user.uid,
                         userName: USERNAME,
                         userEmail: EMAIL,
                         avatar: AVATAR,
+                        birthday: BIRTHDAY,
+                        country: COUNTRY,
+                        favouriteGenres: FAVOURITE_GENRES,
                       });
                       await this.$store.dispatch("updateProfile", {
                         userName: USERNAME,
@@ -282,13 +515,13 @@ export default {
                       });
                       await this.createSubCollection();
                       this.registered = !this.registered;
-                      this.loadingCreate = false
+                      this.loadingCreate = false;
                       setTimeout(() => {
                         this.$router.push("/home");
                       }, 3000);
                     } catch (e) {
                       console.error(e);
-                      this.loadingCreate = false
+                      this.loadingCreate = false;
                     }
                   };
                   addUser();
@@ -299,7 +532,7 @@ export default {
                     text: this.$t("view-register.userExists"),
                     color: "red",
                   });
-                  this.loadingCreate = false
+                  this.loadingCreate = false;
                 });
             }
           });
@@ -308,28 +541,34 @@ export default {
     async createSubCollection() {
       const myDocID = localStorage.getItem("docID");
       await db.doc(`userData/${myDocID}/myMovies/favouriteMovies`).set({
-        moviesList: []
+        moviesList: [],
       });
       await db.doc(`userData/${myDocID}/myMovies/watchedMovies`).set({
-        moviesList: []
+        moviesList: [],
       });
       await db.doc(`userData/${myDocID}/myMovies/wishListMovies`).set({
-        moviesList: []
+        moviesList: [],
       });
       await db.doc(`userData/${myDocID}/myMovies/ratedMovies`).set({
-        moviesList: []
+        moviesList: [],
       });
       await db.doc(`userData/${myDocID}/triviaQuestions/resolved`).set({
-        questions: []
-      });
-      await db.doc(`userData/${myDocID}/triviaQuestions/points`).set({
-        total: 0
-      });
-      await db.doc(`userData/${myDocID}/rewards/achievements`).set({
-        codes: []
+        questions: [],
       });
       await db.doc(`userData/${myDocID}/iMovies-Sections/sections`).set({
-        visited: []
+        visited: [],
+      });
+      await db.doc(`userData/${myDocID}/mySocialRequests/accepted`).set({
+        acceptedList: [],
+      });
+      await db.doc(`userData/${myDocID}/mySocialRequests/rejected`).set({
+        rejectedList: [],
+      });
+      await db.doc(`userData/${myDocID}/mySocialRequests/sended`).set({
+        sendedList: [],
+      });
+      await db.doc(`userData/${myDocID}/mySocialRequests/received`).set({
+        receivedList: [],
       });
     },
     async getAvatarsImages() {
@@ -431,5 +670,23 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+#country-list {
+  height: 60px;
+  overflow-y: scroll;
+  border-bottom: 1px solid white;
+  transition: all 0.3s ease-in-out;
+  background: #303030;
+
+  &:hover {
+    height: 250px !important;
+  }
+}
+
+.flag-image {
+  border-radius: 100%;
+  padding: 0;
+  margin: 0;
 }
 </style>

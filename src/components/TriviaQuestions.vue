@@ -136,7 +136,6 @@ export default {
           .then(() => {
             Services
             .getResolvedQuestions()
-            this.$store.dispatch('getReward', 29)
             this.showWarning({
               text: "¡Correcto!",
               color: "success",
@@ -161,7 +160,6 @@ export default {
         setTimeout(() => {
           this.checkedAnswer = true
         }, 3000)
-        this.$store.dispatch('getUserPoints')
       }, 1000);
     },
   },

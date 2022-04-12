@@ -111,7 +111,6 @@ import SectionTitle from "../components/SectionTitle";
 import LoadingData from "../components/LoadingData";
 import AddToDialog from '../components/AddToDialog.vue'
 import { mapActions, mapState } from 'vuex';
-import Services from '../services/services';
 
 export default {
   name: "Ranking",
@@ -132,10 +131,9 @@ export default {
     };
   },
   created () {
-    this.comesFromDetails ? this.getSavedYear() : this.getRandomYear()
+    this.comebackFromDetails ? this.getSavedYear() : this.getRandomYear()
   },
   mounted() {
-    Services.hasVisitedTheSection("popular");
     this.getMoviesByYear({ year: this.year, page: this.page });
     if (this.$route.path === '/popular') { 
       this.infiniteScroll();
@@ -151,7 +149,7 @@ export default {
       'loadingData', 
       'loadingIMG', 
       'addToDialog',
-      'comesFromDetails',
+      'comebackFromDetails',
       'favouriteMovies',
       'watchedMovies',
       'wishListMovies',

@@ -283,7 +283,7 @@
 <script>
 import SectionTitle from "../components/SectionTitle";
 import MyMoviesCategory from "../components/MyMoviesCategory";
-import Services from '../services/services';
+
 import { mapState } from "vuex";
 
 export default {
@@ -346,7 +346,6 @@ export default {
     },
   },
   mounted() {
-    Services.hasVisitedTheSection("myMovies");
     this.getStoragedMovies();
     this.selectedTab = this.clickedTab;
     this.setCategory(this.clickedTab);

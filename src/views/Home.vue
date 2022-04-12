@@ -33,22 +33,22 @@
         </router-link>
       </div>
     </div>
-    <v-row no-gutters class="mt-2 pa-0 gradient-text" v-if="!isUsingMobile">
-      <v-col cols="4" class="text-center">
+    <v-row no-gutters class="mt-5 pa-0 gradient-text" v-if="!isUsingMobile">
+      <v-col cols="5" class="text-center">
         <h5 class="ml-5">{{ $t("view-home.text1") }}</h5>
       </v-col>
       <v-col cols="5" class="text-center">
         <h5 class="ml-5">{{ $t("view-home.text2") }}</h5>
       </v-col>
-      <v-col cols="3" class="justify-center d-flex">
+      <v-col cols="2" class="justify-center d-flex">
         <h5>{{ $t("view-home.text3") }}</h5>
         <small>(Beta)</small>
       </v-col>
     </v-row>
     <div id="home-divider"></div>
-    <v-row class="ma-0 pa-0">
+    <v-row class="mt-3" id="contain-row">
       <!-- TRAILER COLUMN -->
-      <v-col :cols="isUsingMobile ? '12' : '4'" class="text-left">
+      <v-col :cols="isUsingMobile ? '12' : '5'" class="text-left">
         <h2 v-if="isUsingMobile" class="text-h5 info--text text-center">
           {{ $t("view-home.text1") }}
         </h2>
@@ -63,7 +63,7 @@
       </v-col>
       <!-- MOVIE COLUMN -->
       <v-col :cols="isUsingMobile ? '12' : '5'" id="movie-of-the-week-section">
-        <v-row no-gutters>
+        <v-row>
           <v-col :cols="isUsingMobile ? '12' : '3'">
             <h2 v-if="isUsingMobile" class="text-h5 info--text text-center">
               {{ $t("view-home.text2") }}
@@ -90,177 +90,134 @@
             :cols="isUsingMobile ? '12' : '9'"
             :class="isUsingMobile ? 'pt-5' : ''"
           >
-            <v-row no-gutters class="mx-5">
-              <v-col :cols="isUsingMobile ? '12' : '12'">
-                <!-- MOVIE TITLE -->
-                <v-row no-gutters>
-                  <v-col>
-                    <p class="red--text movieOfTheWeek-title">
-                      {{ movieOfTheWeek.title }}
-                    </p>
-                  </v-col>
-                </v-row>
-                <v-row no-gutters>
-                  <v-col class="text-center">
-                    <!-- MOVIE GENRES -->
-                    <span
-                      v-for="(genre, z) in movieOfTheWeek.genre_ids"
-                      :key="'A' + z"
-                      class="movieOfTheWeek-genres ma-0 mx-1"
+            <!-- MOVIE TITLE -->
+            <p class="cyan--text movieOfTheWeek-title text-center">
+              {{ movieOfTheWeek.title }}
+            </p>
+            <!-- MOVIE OVERVIEW -->
+            <p
+              :class="
+                movieOfTheWeek.overview === ''
+                  ? 'error--text mt-5 text-justify'
+                  : 'text-justify'
+              "
+            >
+              {{
+                movieOfTheWeek.overview === ""
+                  ? $t("view-home.noOverview")
+                  : formatOverview(movieOfTheWeek.overview)
+              }}
+            </p>
+            <v-row>
+              <v-col>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      outlined
+                      v-bind="attrs"
+                      v-on="on"
+                      color="red"
+                      icon
+                      tile
+                      block
+                      @click="getTrailer(movieOfTheWeek)"
+                      dark
                     >
-                      <small>{{ formatGenre(genre) }}</small>
-                    </span>
-                  </v-col>
-                </v-row>
-
-                <!-- VOTE AVERAGE -->
-                <v-row no-gutters>
-                  <v-col cols="10" class="d-flex justify-start align-center">
-                    <v-sheet
-                      elevation="5"
-                      height="auto"
-                      max-height="30px"
-                      width="auto"
-                      :class="`${computedRateColor} pa-1`"
+                      <v-icon color="white">mdi-youtube</v-icon>
+                    </v-btn>
+                  </template>
+                  <small class="white--text">{{
+                    $t("app-buttons.view")
+                  }}</small>
+                </v-tooltip>
+              </v-col>
+              <v-col>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      outlined
+                      v-bind="attrs"
+                      v-on="on"
+                      color="purple"
+                      icon
+                      tile
+                      block
+                      @click="
+                        showAddToDialog(true);
+                        setAddMovie(movieOfTheWeek);
+                      "
+                      dark
                     >
-                      <h6 class="white--text align-center text-center">
-                        {{ movieOfTheWeek.vote_average }}
-                      </h6>
-                    </v-sheet>
-                    <p class="white--text mx-2 mt-2">
-                      {{ movieOfTheWeek.vote_count }}
-                      <span
-                        :class="`font-weight-light ${computedRateColor}--text`"
-                        >{{ $t("view-home.ratings") }}</span
-                      >
-                    </p>
-                  </v-col>
-                  <v-col
-                    cols="2"
-                    class="d-flex justify-end ma-0 pa-0 text-right"
-                  >
-                    <v-col>
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn
-                            outlined
-                            v-bind="attrs"
-                            v-on="on"
-                            color="red"
-                            small
-                            icon
-                            fab
-                            @click="getTrailer(movieOfTheWeek)"
-                            dark
-                          >
-                            <v-icon color="white">mdi-youtube</v-icon>
-                          </v-btn>
-                        </template>
-                        <small class="white--text">{{
-                          $t("app-buttons.view")
-                        }}</small>
-                      </v-tooltip>
-                    </v-col>
-                    <v-col>
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn
-                            outlined
-                            v-bind="attrs"
-                            v-on="on"
-                            color="purple"
-                            small
-                            icon
-                            fab
-                            @click="
-                              showAddToDialog(true);
-                              setAddMovie(movieOfTheWeek);
-                            "
-                            dark
-                          >
-                            <v-icon color="white">mdi-plus</v-icon>
-                          </v-btn>
-                        </template>
-                        <small class="white--text">{{
-                          $t("app-buttons.add")
-                        }}</small>
-                      </v-tooltip>
-                    </v-col>
-                    <v-col>
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn
-                            outlined
-                            v-bind="attrs"
-                            v-on="on"
-                            color="primary"
-                            small
-                            icon
-                            fab
-                            @click="showInfo(movieOfTheWeek)"
-                            dark
-                          >
-                            <v-icon color="white">mdi-information</v-icon>
-                          </v-btn>
-                        </template>
-                        <small class="white--text">{{
-                          $t("app-buttons.info")
-                        }}</small>
-                      </v-tooltip>
-                    </v-col>
-                  </v-col>
-                </v-row>
+                      <v-icon color="white">mdi-plus</v-icon>
+                    </v-btn>
+                  </template>
+                  <small class="white--text">{{ $t("app-buttons.add") }}</small>
+                </v-tooltip>
+              </v-col>
+              <v-col>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      outlined
+                      v-bind="attrs"
+                      v-on="on"
+                      color="primary"
+                      icon
+                      tile
+                      block
+                      @click="showInfo(movieOfTheWeek)"
+                      dark
+                    >
+                      <v-icon color="white">mdi-information</v-icon>
+                    </v-btn>
+                  </template>
+                  <small class="white--text">{{
+                    $t("app-buttons.info")
+                  }}</small>
+                </v-tooltip>
               </v-col>
             </v-row>
-            <v-container>
-              <!-- MOVIE OVERVIEW -->
-              <p
-                :class="
-                  movieOfTheWeek.overview === ''
-                    ? 'error--text mt-5 text-justify'
-                    : 'text-justify'
-                "
-              >
-                {{
-                  movieOfTheWeek.overview === ""
-                    ? $t("view-home.noOverview")
-                    : formatOverview(movieOfTheWeek.overview)
-                }}
-              </p>
-            </v-container>
           </v-col>
         </v-row>
       </v-col>
       <!-- TRIVIA COLUMN -->
       <v-col
-        :cols="isUsingMobile ? '12' : '3'"
+        :cols="isUsingMobile ? '12' : '2'"
         id="trivia-section"
-        class="text-center mx-auto"
+        :class="isUsingMobile ? 'text-center' : 'text-center mx-auto'"
       >
-        <v-progress-circular
-          v-if="loadingTrivia"
-          indeterminate
-          color="cyan"
-          size="80"
-          class="centered"
-          width="2"
-        />
-        <div v-else>
-          <div class="trivia-message" v-if="!loadingTrivia && !hasPlayedToday">
-            <v-icon class="pulse star-icon" color="cyan">mdi-star</v-icon>
-            <p class="cyan--text">
-              {{ $t("view-home.hasNotPlayed") }}
-            </p>
-            <v-btn
-              small
-              class="gradient-background-1 white--text"
-              tile
-              @click="playGame"
-              >{{ $t("view-home.play") }}</v-btn
+        <h2 v-if="isUsingMobile" class="text-h5 mt-12 info--text text-center">
+          {{ $t("view-home.text3") }}
+        </h2>
+        <div :class="isUsingMobile ? 'trivia-wrapper' : ''">
+          <v-progress-circular
+            v-if="loadingTrivia"
+            indeterminate
+            color="cyan"
+            size="80"
+            class="centered"
+            width="2"
+          />
+          <div v-else>
+            <div
+              class="trivia-message"
+              v-if="!loadingTrivia && !hasPlayedToday"
             >
-          </div>
-          <div v-if="!loadingTrivia && hasPlayedToday" class="trivia-message">
-            <p class="error--text">{{ $t("view-home.hasPlayed") }}</p>
+              <v-icon class="pulse star-icon" color="cyan">mdi-star</v-icon>
+              <p class="cyan--text">
+                {{ $t("view-home.hasNotPlayed") }}
+              </p>
+              <v-btn
+                small
+                class="gradient-background-1 white--text"
+                tile
+                @click="playGame"
+                >{{ $t("view-home.play") }}</v-btn
+              >
+            </div>
+            <div v-if="!loadingTrivia && hasPlayedToday" class="trivia-message">
+              <p class="error--text">{{ $t("view-home.hasPlayed") }}</p>
+            </div>
           </div>
         </div>
       </v-col>
@@ -272,7 +229,7 @@
 import { mapActions, mapState } from "vuex";
 import TrailerDialog from "@/components/TrailerDialog.vue";
 import AddToDialog from "../components/AddToDialog";
-import { db } from "../../firebase";
+import { db, auth } from "../../firebase";
 import Services from "../services/services";
 
 export default {
@@ -295,13 +252,11 @@ export default {
     this.getMovieOfTheWeek();
   },
   mounted() {
-    Services.hasVisitedTheSection("home");
-    this.getMyDocID();
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+    this.getUserData();
+    this.enableScrollX();
+    this.animateScroll();
+    this.$store.dispatch('getFriendshipNotification');
     setTimeout(() => {
-      this.enableScrollX();
-      this.animateScroll();
       this.getMovieTrailer({
         type: "ofTheWeek",
         id: this.trendingMovies[0].id,
@@ -319,26 +274,6 @@ export default {
       "imageURL",
       "addToDialog",
     ]),
-    computedRateColor() {
-      let movieRate = this.movieOfTheWeek.vote_average;
-      let color = "";
-      if (movieRate <= 10) {
-        color = "purple";
-      }
-      if (movieRate < 9) {
-        color = "info";
-      }
-      if (movieRate < 7) {
-        color = "green";
-      }
-      if (movieRate < 5) {
-        color = "orange";
-      }
-      if (movieRate < 3) {
-        color = "red";
-      }
-      return color;
-    },
     isUsingMobile() {
       return this.$vuetify.breakpoint.xs;
     },
@@ -354,6 +289,23 @@ export default {
       "showAddToDialog",
       "showInfo",
     ]),
+    async getUserData() {
+      await auth.onAuthStateChanged((user) => {
+        if (user) {
+          this.$store.commit("setUser", user);
+          this.$store.dispatch("getMyDocID");
+          this.$nextTick().then(() => {
+            this.$store.dispatch("getFriendshipNotification");
+            this.$store.dispatch("getMySocialData");
+            console.log(
+              "My Firestore Doc ID: ",
+              this.$store.getters.myDocID
+            );
+            this.isLoading = false;
+          });
+        }
+      });
+    },
     getHasPlayedToday() {
       this.loadingTrivia = true;
       Services.getHasPlayedToday()
@@ -373,77 +325,45 @@ export default {
       const [year, month, day] = date.split("-");
       return `${day}/${month}/${year}`;
     },
-    formatGenre(genre) {
-      let genres = {
-        ["28"]: this.$t("genres.action"),
-        ["12"]: this.$t("genres.adventure"),
-        ["16"]: this.$t("genres.animation"),
-        ["35"]: this.$t("genres.comedy"),
-        ["80"]: this.$t("genres.crime"),
-        ["99"]: this.$t("genres.documentary"),
-        ["18"]: this.$t("genres.drama"),
-        ["10751"]: this.$t("genres.family"),
-        ["14"]: this.$t("genres.fantasy"),
-        ["36"]: this.$t("genres.history"),
-        ["27"]: this.$t("genres.horror"),
-        ["10402"]: this.$t("genres.music"),
-        ["9648"]: this.$t("genres.mystery"),
-        ["10749"]: this.$t("genres.romance"),
-        ["878"]: this.$t("genres.sci-fi"),
-        ["10770"]: this.$t("genres.tv"),
-        ["53"]: this.$t("genres.thriller"),
-        ["10752"]: this.$t("genres.war"),
-        ["37"]: this.$t("genres.western"),
-      };
-      return genres[genre];
-    },
     formatOverview(text) {
       if (!text) return null;
       return text.slice(0, 700) + "...";
     },
-    enableScrollX() {
-      let homeView = document.querySelector("#home-view");
-      let scroll = homeView.querySelector("#scroll-x");
-      scroll.addEventListener("wheel", function (e) {
+    enableScrollX () {
+      let homeView = document.querySelector('#home-view')
+      let scroll = homeView.querySelector('#scroll-x');
+      
+      scroll.addEventListener('wheel', function(e) {
         scroll.scrollLeft += e.deltaY / 50;
       });
     },
     animateScroll() {
-      let homeView = document.querySelector("#home-view");
-      let scroll = homeView.querySelector("#scroll-x");
-      const SCROLL_MAX = 58080;
-      let i = 0;
-      setInterval(() => {
+      let homeView = document.querySelector('#home-view')
+      let scroll = homeView.querySelector('#scroll-x');
+      const SCROLL_MAX = 58080
+      let i = 0
+      setInterval(() => { 
         if (i < SCROLL_MAX) {
-          scroll = homeView.querySelector("#scroll-x");
+          scroll = homeView.querySelector('#scroll-x');
           scroll.style.transition = "0.5s ease-out";
           scroll.style.opacity = "1";
-          scroll.scrollLeft += 1;
-          i++;
+          scroll.scrollLeft += 1
+          i++
         }
         if (scroll.scrollLeft === SCROLL_MAX) {
-          scroll = homeView.querySelector("#scroll-x");
+          scroll = homeView.querySelector('#scroll-x');
           scroll.style.transition = "0.5s ease-out";
           scroll.style.opacity = "0";
           setTimeout(() => {
-            scroll.scrollLeft = 0;
+            scroll.scrollLeft = 0
             i = 0;
-          }, 500);
+          }, 500)
         }
-      }, 30);
+      }, 30)
     },
     getTrailer(item) {
       this.trailerDialog = true;
       this.getMovieTrailer({ type: "other", id: item.id });
-    },
-    async getMyDocID() {
-      const COLLECTION = await db.collection("userData").get();
-      const USERDATA = this.$store.getters.userData;
-      COLLECTION.forEach((doc) => {
-        if (doc.data().userID === USERDATA.uid) {
-          this.$store.commit("setDocID", doc.data().docID);
-        }
-      });
     },
   },
 };
@@ -469,28 +389,9 @@ export default {
   display: none !important;
 }
 
-#trivia-section {
-  position: relative;
-
-  .trivia-message {
-    padding: 20px;
-    border-radius: 5px;
-    height: auto;
-    width: 80%;
-    border: 1px solid #151515;
-    box-shadow: 0px 0px 10px black, 0px 0px 20px #151515, 0px 0px 30px #202020;
-    position: absolute;
-    top: 25%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  .trivia-wrapper {
+    margin-top: 4em;
   }
-
-  .star-icon {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-}
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
@@ -551,8 +452,6 @@ export default {
 
   #trailer-of-the-week {
     width: 100%;
-    height: 350px;
-    max-height: auto;
     box-shadow: 0px 5px 10px black;
   }
 
@@ -603,6 +502,29 @@ export default {
     font-size: 10px;
     display: inline-block;
     margin-bottom: 10px;
+  }
+
+  #trivia-section {
+    position: relative;
+
+    .trivia-message {
+      padding: 20px;
+      border-radius: 5px;
+      height: auto;
+      width: 80%;
+      border: 1px solid #151515;
+      box-shadow: 0px 0px 10px black, 0px 0px 20px #151515, 0px 0px 30px #202020;
+      position: relative;
+      top: 0%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .star-icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
   }
 }
 // ******* LAPTOP RESPONSIVE ******* //
@@ -664,7 +586,6 @@ export default {
 
   #trailer-of-the-week {
     width: 100%;
-    max-height: calc(768px / 2.75);
     box-shadow: 0px 5px 10px black;
   }
 
@@ -672,12 +593,13 @@ export default {
     position: relative;
     margin-left: 15px;
     width: 100%;
-    height: 300px;
+    height: 100%;
   }
 
   #movie-of-the-week-section {
     display: block;
     background: transparent;
+    height: 300px;
 
     p {
       font-size: 12px;
@@ -703,7 +625,6 @@ export default {
     box-shadow: 0px 5px 10px black;
     width: 100%;
     height: 100%;
-    max-height: calc(768px / 2.5);
   }
 
   .movieOfTheWeek-genres {
@@ -718,6 +639,30 @@ export default {
     font-size: 10px;
     display: inline-block;
   }
+
+  #trivia-section {
+  position: relative;
+
+  .trivia-message {
+    padding: 20px;
+    border-radius: 5px;
+    height: auto;
+    width: 80%;
+    border: 1px solid #151515;
+    box-shadow: 0px 0px 10px black, 0px 0px 20px #151515, 0px 0px 30px #202020;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .star-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+}
 }
 
 // ******* DESKTOP RESPONSIVE ******* //
@@ -779,22 +724,19 @@ export default {
 
   #trailer-of-the-week {
     width: 100%;
-    height: 100%;
-    max-height: 430px;
     box-shadow: 0px 5px 10px black;
   }
 
   .movie-video {
     position: relative;
-    width: auto;
-    max-height: 430px;
+    width: 100%;
     height: 100%;
   }
 
   #movie-of-the-week-section {
     display: block;
     width: 100%;
-    height: 100%;
+    height: 400px;
     background: transparent;
     margin: 0;
 

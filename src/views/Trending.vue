@@ -31,9 +31,8 @@
             <v-col :cols="isUsingMobile ? '12' : '2'">
               <v-img :src="imageURL + item.poster_path" width="100%" height="auto" class="movie-img" />
             </v-col>
-            <v-col :cols="isUsingMobile ? '12' : '3'">
-              <h4>{{ $t('view-trending.overview') }}</h4>
-              <v-divider class="ma-0 mb-2"></v-divider>
+            <v-col :cols="isUsingMobile ? '12' : '7'">
+              <h5 class="text-h5 cyan--text">{{ $t('view-trending.overview') }}</h5>
                 <p
                   :class="
                     item.overview.length > 0
@@ -43,16 +42,6 @@
                 >
                   {{ item.overview.length ? item.overview : $t('generic-messages.no-overview') }}
                 </p>
-            </v-col>
-            <v-col :cols="isUsingMobile ? '12' : '4'">
-              <h4 class="info--text">{{ $t('view-trending.casting') }}</h4>
-              <v-divider class="ma-0 mb-2"></v-divider>
-              <p v-for="(cast, j) in item.cast.slice(0, 11)" :key="'A' + j" class="ma-0">
-                  <v-icon color="primary" size="10" class="mr-2">mdi-circle</v-icon>
-                  <span class="font-weight-bold mr-3">{{ cast.name }}</span>
-                  <span class="info--text mr-2" v-if="cast.character">{{ $t('view-trending.as') }}</span>
-                  <span class="white--text">{{ cast.character }}</span>
-              </p>
             </v-col>
             <v-col :cols="isUsingMobile ? '12' : '3'" class="text-right my-auto">
               <v-btn
@@ -103,7 +92,7 @@
 import SectionTitle from "../components/SectionTitle";
 import TrailerDialog from "../components/TrailerDialog";
 import AddToDialog from "../components/AddToDialog";
-import Services from '../services/services';
+
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -129,7 +118,6 @@ export default {
     },
   },
   mounted() {
-    Services.hasVisitedTheSection("trending");
     window.scrollTo(0, 0);
     this.getTrending(true);
   },

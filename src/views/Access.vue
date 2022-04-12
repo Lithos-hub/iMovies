@@ -158,10 +158,16 @@ export default {
       this.loader = null;
     },
   },
+  mounted () {
+    this.resetData()
+  },
   methods: {
     ...mapActions(["showSnackbar", "changeLanguage"]),
     refresh() {
       this.$router.go(0);
+    },
+    resetData () {
+      this.$store.commit("resetData");
     },
     async login(email, password) {
       await auth

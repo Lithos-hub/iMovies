@@ -50,7 +50,6 @@ export default {
     }, 1000);
   },
   mounted() {
-    Services.hasVisitedTheSection("trivia");
     setTimeout(() => {
       this.randomizeImages();
     }, 2000);

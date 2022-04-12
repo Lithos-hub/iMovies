@@ -6,6 +6,7 @@
     "comeback": "Regresar"
   },
   "languages": {
+    "cantonese": "Cantonés",
     "english": "inglés",
     "french": "francés",
     "german": "alemán",
@@ -64,6 +65,20 @@
     "basque": "Vasco",
     "malay": "Malayo"
   },
+  "months": {
+    "january": "Enero",
+    "february": "Febrero",
+    "march": "Marzo",
+    "april": "Abril",
+    "may": "Mayo",
+    "june": "Junio",
+    "july": "Julio",
+    "august": "Agosto",
+    "september": "Septiembre",
+    "october": "October",
+    "november": "Noviembre",
+    "december": "Diciembre"
+  },
   "navbar": {
     "user": "Usuario: ",
     "lang": "Idioma: ",
@@ -73,6 +88,7 @@
     "home": "Inicio",
     "trivia": "Trivial",
     "account": "Mi cuenta",
+    "community": "Comunidad",
     "search": "Buscar",
     "mymovies": "Mis películas",
     "trending": "Trending",
@@ -82,7 +98,8 @@
     "changelog": "Changelog",
     "about": "Acerca de...",
     "developed": "Desarrollado por ",
-    "goTo": "Ir a mi web"
+    "goTo": "Ir a mi web",
+    "showChat": "Ver chat"
   },
   "genres": {
     "action": "Acción",
@@ -113,8 +130,8 @@
     "comeback": "Regresar"
   },
   "generic-messages": {
-    "no-release": "Release date no available",
-    "no-overview": "Overview no available"
+    "no-release": "Fecha de lanzamiento no disponible",
+    "no-overview": "Sinopsis no disponible"
   },
   "view-access": {
     "welcome": "Bienvenido a iMovies",
@@ -126,7 +143,7 @@
     "email": "E-mail",
     "password": "Contraseña",
     "accessSuccess": "¡Datos correctos! Accediendo a la aplicacion...",
-    "accessError": "El E-mail o la contraseña no son incorrectos. Por favor, inténtalo de nuevo.",
+    "accessError": "El E-mail o la contraseña no son correctos. Por favor, inténtalo de nuevo.",
     "enter": "Acceder",
     "register": "Quiero registrarme",
     "access3": "Accede con una ",
@@ -143,8 +160,11 @@
     "email": "E-mail",
     "password": "Contraseña",
     "repeat": "Repite la contraseña",
+    "favouriteGenres": "Géneros favoritos",
+    "birthday": "Fecha de nacimiento",
+    "country": "País",
     "register": "Registrar",
-    "maximum": "10 caracteres como máximo",
+    "maximum": "15 caracteres como máximo",
     "emailExists": "Ese E-mail ya se encuentra registrado",
     "userExists": "Ese usuario ya se encuentra registrado",
     "nameRequired": "El nombre es obligatorio",
@@ -187,6 +207,19 @@
     "noResults": "No se encontraron resultados",
     "noOverview":"No hay sinopsis disponible en tu idioma para esta película.",
     "errorDatabase": "Error de conexión con la base de datos"
+  },
+  "view-userDetails": {
+    "userDetails": "Detalles del usuario",
+    "username": "Nombre de usuario: ",
+    "birthday":"Fecha de nacimiento: ",
+    "from": "De: ",
+    "friendsSince": "Amigos desde: ",
+    "favouriteGenres": "Géneros favoritos: ",
+    "savedMovies": "Películas guardadas: ",
+    "favouriteData": "Películas favoritas",
+    "watchedData": "Películas vistas",
+    "wishListData": "Películas en lista de deseos",
+    "ratedData": "Películas puntuadas"
   },
   "view-myMovies": {
     "row1": "Películas en lista de deseos: ",
@@ -282,9 +315,18 @@
   "view-movie-id": {
     "releaseDate":"Fecha de lanzamiento: ",
     "overview": "Sinopsis",
+    "casting": "Reparto",
     "average": "Nota media",
-    "votes": "Número de votos",
-    "language": "Idioma/s"
+    "ratings": "puntuaciones",
+    "language": "Idioma/s",
+    "genres": "Géneros",
+    "extraInfo": "Información adicional",
+    "budget": "Presupuesto: ",
+    "revenue": "Ingresos: ",
+    "runtime": "Duración: ",
+    "homepage": "Página web: ",
+    "mainComp": "Compañía productora principal: ",
+    "votes": "Número de votos"
   },
   "view-account": {
     "profile": "Perfil",
@@ -345,5 +387,10 @@
     "noAvailable": "Este vídeo no se encuentra disponible en tu idioma.",
     "show": "Ver en inglés",
     "noAvailable2": "Video no disponible"
+  },
+  "comp-chat": {
+    "friends": "Mis amigos",
+    "noFriends": "No has agregado a amigos aún",
+    "write": "Escribe un mensaje"
   }
 }
