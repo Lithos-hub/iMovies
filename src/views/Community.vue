@@ -9,7 +9,7 @@
           <v-text-field
             v-model="user"
             filled
-            label="Buscar usuario"
+            :label="$t('view-community.searchUser')"
             dark
             @change="searchUser"
           ></v-text-field>
@@ -17,10 +17,10 @@
       </v-container>
       <v-container v-if="!isSearchingUser && !isLoading">
         <!-- // ? ** MY FRIENDSHIP REQUESTS LIST ** ? // -->
-        <div class="primary--text text-h4">Solicitudes de amistad</div>
+        <div class="primary--text text-h4">{{ $t('view-community.friendshipRequests') }}</div>
         <v-divider class="primary mb-5"></v-divider>
         <v-row class="ml-5" v-if="!myFriendshipRequests.length">
-          <p class="red--text">No tienes solicitudes de amistad</p>
+          <p class="red--text">{{ $t('view-community.NofriendshipRequests') }}</p>
         </v-row>
         <v-row v-else>
           <v-col
@@ -75,7 +75,7 @@
           </v-col>
         </v-row>
         <!-- // ? ** MY FRIENDSHIP LIST ** ? // -->
-        <div class="primary--text text-h4 mt-5">Mis amigos</div>
+        <div class="primary--text text-h4 mt-5">{{ $t('view-community.myFriends') }}</div>
         <v-divider class="primary mb-5"></v-divider>
         <v-row v-if="myFriendsList.length">
           <v-col lg="2" md="4" sm="6" xs="12" v-for="(friend, i) in myFriendsList" :key="i">
@@ -125,7 +125,7 @@
           </v-col>
         </v-row>
         <!-- // ? ** USERS LIST ** ? // -->
-        <div class="primary--text text-h4 mt-5">Usuarios de iMovies</div>
+        <div class="primary--text text-h4 mt-5">{{ $t('view-community.users') }}</div>
         <v-divider class="primary mb-5"></v-divider>
         <v-list class="pa-0" v-if="iMoviesUsersList.length">
           <v-list-item
@@ -177,7 +177,7 @@
                     </v-icon>
                   </v-btn>
                 </template>
-                <span class="my-auto">{{ "Este usuario ha rechazado tu solicitud de amistad" }}</span>
+                <span class="my-auto">{{ $t('view-community.friendshipRejected') }}</span>
               </v-tooltip>
             </div>
             <div v-else>
@@ -187,7 +187,7 @@
             </div>
             <!-- // ! ** USER MOVIES ** // -->
             <div class="ml-auto pr-5 text-center">
-              Películas guardadas:
+              {{ $t('view-community.savedMovies') }}
               <span class="d-block">{{ user.userMovies.total }}</span>
             </div>
             <div class="d-block">
@@ -212,7 +212,7 @@
         </v-list>
       </v-container>
       <v-container v-else>
-        <v-btn outlined color="cyan" @click="isSearchingUser = false" class="mb-5 ml-9" tile>Volver</v-btn>
+        <v-btn outlined color="cyan" @click="isSearchingUser = false" class="mb-5 ml-9" tile>{{ $t("view-community.comeback") }}</v-btn>
         <v-list class="pa-0" v-if="iMoviesUsersList.length">
           <v-list-item
             class="d-flex justify-space-between user-list-item"
@@ -263,7 +263,7 @@
                     </v-icon>
                   </v-btn>
                 </template>
-                <span class="my-auto">{{ "Este usuario ha rechazado tu solicitud de amistad" }}</span>
+                <span class="my-auto">{{ $t('view-community.friendshipRejected') }}</span>
               </v-tooltip>
             </div>
             <div v-else>
@@ -273,7 +273,7 @@
             </div>
             <!-- // ! ** USER MOVIES ** // -->
             <div class="ml-auto pr-5 text-center">
-              Películas guardadas:
+              {{ $t('view-community.savedMovies') }}
               <span class="d-block">{{ user.userMovies.total }}</span>
             </div>
             <div class="d-block">

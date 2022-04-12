@@ -41,7 +41,7 @@
             </div>
           </div>
           <div>
-            <v-btn tile color="cyan" outlined @click="comeback">Volver</v-btn>
+            <v-btn tile color="cyan" outlined @click="comeback">{{ $t("view-userDetails.comeback") }}</v-btn>
           </div>
         </div>
         <div class="d-flex text-h5 ma-5 cyan--text">

@@ -196,7 +196,8 @@
     "from": "From: ",
     "friendSince": "Friends since: ",
     "favouriteGenres": "Favourite genres: ",
-    "savedMovies": "Saved movies: "
+    "savedMovies": "Saved movies: ",
+    "comeback": "Comeback"
   },
   "view-search": {
     "byTitle": "Search by movie title",
@@ -231,6 +232,16 @@
     "byRate": "By rate",
     "myRate": "My rate:",
     "noMovies": "There are no movies in this category yet."
+  },
+  "view-community": {
+    "searchUser": "Search user",
+    "friendshipRequests": "Friendship requests",
+    "NofriendshipRequests": "No friendship requests",
+    "myFriends": "My friends list",
+    "users": "iMovies users",
+    "friendshipRejected": "This user has rejected your friendship request",
+    "savedMovies": "Saved movies",
+    "comeback": "Comeback"
   },
   "view-trending": {
     "overview": "Overview",

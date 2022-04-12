@@ -219,7 +219,8 @@
     "favouriteData": "Películas favoritas",
     "watchedData": "Películas vistas",
     "wishListData": "Películas en lista de deseos",
-    "ratedData": "Películas puntuadas"
+    "ratedData": "Películas puntuadas",
+    "comeback": "Regresar"
   },
   "view-myMovies": {
     "row1": "Películas en lista de deseos: ",
@@ -233,6 +234,16 @@
     "byRate": "Por puntuación",
     "myRate": "Mi nota:",
     "noMovies": "Todavía no hay películas en esta categoría."
+  },
+  "view-community": {
+    "searchUser": "Buscar usuario",
+    "friendshipRequests": "Solicitudes de amistad",
+    "NofriendshipRequests": "No hay solicitudes de amistad",
+    "myFriends": "Mi lista de amigos",
+    "users": "Usuarios de iMovies",
+    "friendshipRejected": "Este usuario ha rechazado tu solicitud de amistad",
+    "savedMovies": "Películas guardadas",
+    "comeback": "Regresar"
   },
   "view-trending": {
     "overview": "Sinopsis",
