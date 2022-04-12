@@ -19,6 +19,7 @@ import {
 
 export default new Vuex.Store({
   state: {
+    reUpdateComponentKey: 0,
     myDocID: localStorage.getItem("docID"),
     imageURL: "https://image.tmdb.org/t/p/original",
     user: {},
@@ -119,6 +120,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    updateComponent(state) {
+      state.reUpdateComponentKey++;
+    },
     resetData(state) {
       state.user = {};
       state.mySocialData = {};
@@ -294,9 +298,9 @@ export default new Vuex.Store({
     setIsChatting(state, payload) {
       state.isChatting = payload;
     },
-    setUserToChat (state, id) {
-      state.userToChat = id
-      state.isChatting = true
+    setUserToChat(state, id) {
+      state.userToChat = id;
+      state.isChatting = true;
     },
     setIsShowingFriends(state, payload) {
       state.showingFriends = payload;
@@ -435,6 +439,7 @@ export default new Vuex.Store({
     },
     // ? ----- SOCIAL ACTIONS ----- //
     async getMySocialData({ commit, state }) {
+      commit("setIsLoading", true);
       let myDataRef = await db.doc(`userData/${state.myDocID}`).get();
       let myData = myDataRef.data();
       let myUserData = {
@@ -444,51 +449,69 @@ export default new Vuex.Store({
       };
       commit("setMySocialData", myUserData);
     },
-    async getAllUsers({ commit, rootState }) {
-      let arr = [];
-      await db
-        .collection("userData")
-        .get()
-        .then(async (snapshot) => {
-          for (let user of snapshot.docs) {
-            let userData = user.data();
-            const FAVOURITES_COL = await db
-              .doc(`userData/${userData.docID}/myMovies/favouriteMovies`)
-              .get("moviesList");
-            const WATCHED_COL = await db
-              .doc(`userData/${userData.docID}/myMovies/watchedMovies`)
-              .get("moviesList");
-            const WISH_COL = await db
-              .doc(`userData/${userData.docID}/myMovies/wishListMovies`)
-              .get("moviesList");
-            const RATED_COL = await db
-              .doc(`userData/${userData.docID}/myMovies/ratedMovies`)
-              .get("moviesList");
+    getUsers({ commit }) {
+      return new Promise(async (resolve) => {
+        let arr = [];
+        await db.collection("userData")
+          .get()
+          .then(async (snapshot) => {
+            for (let user of snapshot.docs) {
+              let userData = user.data();
+              const FAVOURITES_COL = await db
+                .doc(`userData/${userData.docID}/myMovies/favouriteMovies`)
+                .get("moviesList");
+              const WATCHED_COL = await db
+                .doc(`userData/${userData.docID}/myMovies/watchedMovies`)
+                .get("moviesList");
+              const WISH_COL = await db
+                .doc(`userData/${userData.docID}/myMovies/wishListMovies`)
+                .get("moviesList");
+              const RATED_COL = await db
+                .doc(`userData/${userData.docID}/myMovies/ratedMovies`)
+                .get("moviesList");
 
-            const favouriteData = FAVOURITES_COL.data();
-            const watchedData = WATCHED_COL.data();
-            const wishData = WISH_COL.data();
-            const ratedData = RATED_COL.data();
-            arr.push({
-              ...userData,
-              userMovies: {
-                total:
-                  favouriteData.moviesList.length +
-                  watchedData.moviesList.length +
-                  wishData.moviesList.length +
-                  ratedData.moviesList.length,
-                favourites: favouriteData.moviesList.length,
-                watched: watchedData.moviesList.length,
-                wishlist: wishData.moviesList.length,
-                rated: ratedData.moviesList.length,
-              },
-            });
-          }
-          commit(
-            "setiMoviesUsersList",
-            arr.filter((user) => user.userID !== rootState.user.uid)
-          );
-        });
+              const favouriteData = FAVOURITES_COL.data();
+              const watchedData = WATCHED_COL.data();
+              const wishData = WISH_COL.data();
+              const ratedData = RATED_COL.data();
+              arr.push({
+                ...userData,
+                userMovies: {
+                  total:
+                    favouriteData.moviesList.length +
+                    watchedData.moviesList.length +
+                    wishData.moviesList.length +
+                    ratedData.moviesList.length,
+                  favourites: favouriteData.moviesList.length,
+                  watched: watchedData.moviesList.length,
+                  wishlist: wishData.moviesList.length,
+                  rated: ratedData.moviesList.length,
+                },
+              });
+            }
+            resolve(arr);
+          });
+      });
+    },
+    async getUserByName({ commit, dispatch }, searchName = "") {
+      commit("setIsLoading", true);
+      const arr = await dispatch("getUsers");
+      commit(
+        "setiMoviesUsersList",
+        arr.filter((user) =>
+          user.userName.toLowerCase().includes(searchName.toLowerCase())
+        )
+      );
+      commit("setIsLoading", false);
+    },
+    async getAllUsers({ commit, rootState, dispatch }) {
+      commit("setIsLoading", true);
+      const arr = await dispatch("getUsers");
+      commit(
+        "setiMoviesUsersList",
+        arr.filter((user) => user.userID !== rootState.user.uid)
+      );
+      commit("setIsLoading", false);
     },
     async getAllMyFriends({ commit, state }) {
       // ! => My friends list (/community)
@@ -539,10 +562,8 @@ export default new Vuex.Store({
           },
         });
         commit("setMyFriendslist", arr);
-      }
-      setTimeout(() => {
         commit("setIsLoading", false);
-      }, 1000);
+      }
     },
     async sendFriendRequest({ commit, state }, userData) {
       let MY_SENDED_DOC_REF = await db.doc(
@@ -665,8 +686,11 @@ export default new Vuex.Store({
         ratedData,
       };
 
+      console.log('User full data ==> ', fullData);
+
       commit("setUserDetailsData", fullData);
       commit("setIsLoading", false);
+      commit("updateComponent");
     },
     // ? ----- FIRESTORE ACTIONS ----- //
     async getAllStoragedMovies({ commit, state }) {
@@ -952,17 +976,13 @@ export default new Vuex.Store({
       const MY_FRIEND_DATA = MY_FRIEND_REF.data();
 
       if (!MY_MESSAGES_DATA || !MY_FRIEND_DATA) {
-        await db
-        .doc(`userData/${rootState.myDocID}/messages/${docID}`)
-        .set({
+        await db.doc(`userData/${rootState.myDocID}/messages/${docID}`).set({
           read: false,
-          messagesList: []
+          messagesList: [],
         });
-        await db
-        .doc(`userData/${docID}/messages/${rootState.myDocID}`)
-        .set({
+        await db.doc(`userData/${docID}/messages/${rootState.myDocID}`).set({
           read: false,
-          messagesList: []
+          messagesList: [],
         });
       }
     },
@@ -1071,6 +1091,9 @@ export default new Vuex.Store({
                   const KEY = resp.data.results[0].key;
                   const VIDEO_YOUTUBE = "https://www.youtube.com/embed/" + KEY;
                   commit("setSecondaryTrailerVideo", VIDEO_YOUTUBE);
+                  if (type === "ofTheWeek") {
+                    commit("setTrailerOfTheWeekVideo", VIDEO_YOUTUBE);
+                  }
                 } else {
                   commit("setVideoNoAvailable", false);
                   commit("setSecondaryVideoNoAvailable", true);
@@ -1155,25 +1178,25 @@ export default new Vuex.Store({
       await axios
         .get(CALL_URL)
         .then((resp) => {
-            const CALL_URL_CAST = `${URL}/movie/${id}/credits?api_key=${APIKEY}&language=${LANGUAGE}&include_adult=false`;
-            axios
-              .get(CALL_URL_CAST)
-              .then((resp) => {
-                for (let data of resp.data.cast) {
-                  castingArr.push({
-                    name: data.name,
-                    character: data.character,
-                  });
-                }
-              })
-              .catch((e) => {
-                console.log(e);
-              });
-              let movieDetails = {
-                ...resp.data,
-                cast: castingArr,
+          const CALL_URL_CAST = `${URL}/movie/${id}/credits?api_key=${APIKEY}&language=${LANGUAGE}&include_adult=false`;
+          axios
+            .get(CALL_URL_CAST)
+            .then((resp) => {
+              for (let data of resp.data.cast) {
+                castingArr.push({
+                  name: data.name,
+                  character: data.character,
+                });
               }
-              commit("setMovieDetails", movieDetails);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+          let movieDetails = {
+            ...resp.data,
+            cast: castingArr,
+          };
+          commit("setMovieDetails", movieDetails);
         })
         .catch((e) => {
           console.log(e);

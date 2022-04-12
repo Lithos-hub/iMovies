@@ -15,11 +15,11 @@
           ></v-text-field>
         </v-row>
       </v-container>
-      <v-container>
+      <v-container v-if="!isSearchingUser && !isLoading">
         <!-- // ? ** MY FRIENDSHIP REQUESTS LIST ** ? // -->
-        <div class="primary--text text-h4 mt-5">Solicitudes de amistad</div>
-        <v-divider class="primary mt-0"></v-divider>
-        <v-row v-if="!myFriendshipRequests.length">
+        <div class="primary--text text-h4">Solicitudes de amistad</div>
+        <v-divider class="primary mb-5"></v-divider>
+        <v-row class="ml-5" v-if="!myFriendshipRequests.length">
           <p class="red--text">No tienes solicitudes de amistad</p>
         </v-row>
         <v-row v-else>
@@ -76,7 +76,7 @@
         </v-row>
         <!-- // ? ** MY FRIENDSHIP LIST ** ? // -->
         <div class="primary--text text-h4 mt-5">Mis amigos</div>
-        <v-divider class="primary mt-0"></v-divider>
+        <v-divider class="primary mb-5"></v-divider>
         <v-row v-if="myFriendsList.length">
           <v-col lg="2" md="4" sm="6" xs="12" v-for="(friend, i) in myFriendsList" :key="i">
             <v-card class="friend-card gradient-background-1 white--text pa-0" width="220" @click="goToUserDetails(friend)">
@@ -126,7 +126,93 @@
         </v-row>
         <!-- // ? ** USERS LIST ** ? // -->
         <div class="primary--text text-h4 mt-5">Usuarios de iMovies</div>
-        <v-divider class="primary mt-0"></v-divider>
+        <v-divider class="primary mb-5"></v-divider>
+        <v-list class="pa-0" v-if="iMoviesUsersList.length">
+          <v-list-item
+            class="d-flex justify-space-between user-list-item"
+            v-for="(user, i) in iMoviesUsersList"
+            :key="i"
+          >
+            <!-- // ! ** USER INDEX ** // -->
+            <div class="user-index mr-2 text-h5">{{ i + 1 }}</div>
+            <!-- // ! ** USER AVATAR ** // -->
+            <v-list-item-avatar size="70">
+              <v-img :src="user.avatar"></v-img>
+            </v-list-item-avatar>
+            <!-- // ! ** USER ALIAS ** // -->
+            <v-list-item-title
+              class="text-h6 ml-5 d-flex justify-space-between"
+            >
+              <div class="my-auto">
+                {{ user.userName }}
+              </div>
+            </v-list-item-title>
+            <!-- // ! ** USER BUTTON ** // -->
+            <!-- <div class="red--text text-center mr-auto">
+                <small class="my-auto">{{ justRejected(user.docID) ? 'Este usuario ha rechazado tu solicitud de amistad' : '' }}</small>
+              </div> -->
+            <div
+              v-if="
+                !myFriendsList.some(
+                  (friend) => friend.docID === user.docID
+                )
+              "
+            >
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    :color="computedRequestColor(user.docID)"
+                    fab
+                    v-bind="justRejected(user.docID) ? attrs : null"
+                    v-on="justRejected(user.docID) ? on : null"
+                    depressed
+                    @click="
+                      justRejected(user.docID)
+                        ? null
+                        : sendFriendRequest(user)
+                    "
+                  >
+                    <v-icon color="white">
+                      {{ computedRequestIcon(user.docID) }}
+                    </v-icon>
+                  </v-btn>
+                </template>
+                <span class="my-auto">{{ "Este usuario ha rechazado tu solicitud de amistad" }}</span>
+              </v-tooltip>
+            </div>
+            <div v-else>
+              <v-btn color="info" fab depressed>
+                <v-icon>mdi-account-check</v-icon>
+              </v-btn>
+            </div>
+            <!-- // ! ** USER MOVIES ** // -->
+            <div class="ml-auto pr-5 text-center">
+              Películas guardadas:
+              <span class="d-block">{{ user.userMovies.total }}</span>
+            </div>
+            <div class="d-block">
+              <div class="d-flex justify-end my-2">
+                <v-icon size="30" color="red">mdi-heart</v-icon>
+                <span class="mx-2 text-h6">{{
+                  user.userMovies.favourites
+                }}</span>
+                <v-icon size="30" color="primary">mdi-eye</v-icon>
+                <span class="mx-2 text-h6">{{ user.userMovies.watched }}</span>
+              </div>
+              <div class="d-flex justify-end my-2">
+                <v-icon size="30" color="amber">mdi-star-shooting</v-icon>
+                <span class="mx-2 text-h6">{{ user.userMovies.wishlist }}</span>
+                <v-icon size="30" color="green"
+                  >mdi-sort-numeric-variant</v-icon
+                >
+                <span class="mx-2 text-h6">{{ user.userMovies.rated }}</span>
+              </div>
+            </div>
+          </v-list-item>
+        </v-list>
+      </v-container>
+      <v-container v-else>
+        <v-btn outlined color="cyan" @click="isSearchingUser = false" class="mb-5 ml-9" tile>Volver</v-btn>
         <v-list class="pa-0" v-if="iMoviesUsersList.length">
           <v-list-item
             class="d-flex justify-space-between user-list-item"
@@ -229,6 +315,7 @@ export default {
       sectionTitle: "Community",
       user: "",
       showRejectWarning: false,
+      isSearchingUser: false,
     };
   },
   computed: {
@@ -241,6 +328,11 @@ export default {
       "isLoading"
     ]),
   },
+  watch: {
+    isSearchingUser (val) {
+      if (!val) this.$store.dispatch("getAllUsers")
+    }
+  },
   mounted() {
     this.$store.dispatch('getFriendshipNotification')
     this.$store.dispatch("getAllUsers")
@@ -249,6 +341,8 @@ export default {
   },
   methods: {
     searchUser() {
+      this.isSearchingUser = true;
+      this.$store.dispatch("getUserByName", this.user)
       this.user = "";
     },
     goToUserDetails(userData) {

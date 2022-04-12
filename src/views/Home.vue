@@ -229,7 +229,7 @@
 import { mapActions, mapState } from "vuex";
 import TrailerDialog from "@/components/TrailerDialog.vue";
 import AddToDialog from "../components/AddToDialog";
-import { db } from "../../firebase";
+import { db, auth } from "../../firebase";
 import Services from "../services/services";
 
 export default {
@@ -294,7 +294,6 @@ export default {
         if (user) {
           this.$store.commit("setUser", user);
           this.$store.dispatch("getMyDocID");
-          this.getCurrentDate();
           this.$nextTick().then(() => {
             this.$store.dispatch("getFriendshipNotification");
             this.$store.dispatch("getMySocialData");

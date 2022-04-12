@@ -191,7 +191,7 @@ export default {
     this.$store.dispatch("generateChatRooms");
     this.$store.dispatch("getAllMyMessages");
     this.sendMessageListener();
-    if (this.userToChat) {
+    if (this.userToChat && this.isChatting) {
       let match = this.myFriendsList.find(user => user.docID === this.userToChat)
       this.chatWithFriend(match);
     }

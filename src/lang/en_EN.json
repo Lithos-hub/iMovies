@@ -189,6 +189,15 @@
     "hasNotPlayed": "You have a new challengue to complete!",
     "play": "Play"
   },
+  "view-userDetails": {
+    "userDetails": "User details",
+    "username": "Username: ",
+    "birthday":"Birthday: ",
+    "from": "From: ",
+    "friendSince": "Friends since: ",
+    "favouriteGenres": "Favourite genres: ",
+    "savedMovies": "Saved movies: "
+  },
   "view-search": {
     "byTitle": "Search by movie title",
     "byPerson": "Search by artist name",

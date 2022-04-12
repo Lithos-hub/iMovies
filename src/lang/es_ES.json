@@ -208,6 +208,19 @@
     "noOverview":"No hay sinopsis disponible en tu idioma para esta película.",
     "errorDatabase": "Error de conexión con la base de datos"
   },
+  "view-userDetails": {
+    "userDetails": "Detalles del usuario",
+    "username": "Nombre de usuario: ",
+    "birthday":"Fecha de nacimiento: ",
+    "from": "De: ",
+    "friendsSince": "Amigos desde: ",
+    "favouriteGenres": "Géneros favoritos: ",
+    "savedMovies": "Películas guardadas: ",
+    "favouriteData": "Películas favoritas",
+    "watchedData": "Películas vistas",
+    "wishListData": "Películas en lista de deseos",
+    "ratedData": "Películas puntuadas"
+  },
   "view-myMovies": {
     "row1": "Películas en lista de deseos: ",
     "row2": "Películas favoritas: ",

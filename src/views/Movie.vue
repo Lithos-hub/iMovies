@@ -194,7 +194,7 @@
                     "No info available"
                   }}
                 </span>
-                <span v-if="movieDetails.budget !== 0">$</span>
+                <span v-if="movieDetails.budget !== 0" class="primary--text">$</span>
               </p>
               <p>
                 {{ $t("view-movie-id.revenue") }}
@@ -207,8 +207,8 @@
                     "No info available"
                   }}</span
                 >
-                <span v-if="movieDetails.revenue !== 0"> $</span>
-                <span v-if="movieDetails.revenue">
+                <span v-if="movieDetails.revenue !== 0" class="primary--text"> $</span>
+                <span v-if="movieDetails.revenue && movieDetails.budget">
                 <v-icon size="20" :class="getPositiveRevenues(movieDetails.budget, movieDetails.revenue) ? 'ml-5 success--text triangle-up' : 'ml-5 mr-2 red--text triangle-down'">
                   mdi-triangle
                 </v-icon>
