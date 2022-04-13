@@ -83,7 +83,7 @@
               </v-col>
             </v-row>
 
-            <v-row>
+                        <v-row>
               <v-col class="pa-0 ma-0">
                 <v-select
                   v-model="favouriteGenres"
@@ -326,7 +326,7 @@ export default {
           v === this.password || this.$t("view-register.passwordMatch"),
       },
       avatar_imgs: [],
-      activePicker: null,
+            activePicker: null,
       date: null,
       birthdayMenu: false,
       favouriteGenres: [],
@@ -354,13 +354,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(["snackbarObject"]),
+    ...mapState(["snackbarObject", "user"]),
   },
   mounted() {
     this.getAvatarsImages();
     this.searchAllCountries();
   },
-  watch: {
+    watch: {
     birthdayMenu(val) {
       val && setTimeout(() => (this.activePicker = "YEAR"));
     },
@@ -370,7 +370,7 @@ export default {
   },
   methods: {
     ...mapActions(["showSnackbar"]),
-    formatDate(date) {
+        formatDate(date) {
       if (!date) return null;
 
       const [year, month, day] = date.split("-");
@@ -554,6 +554,9 @@ export default {
       });
       await db.doc(`userData/${myDocID}/triviaQuestions/resolved`).set({
         questions: [],
+      });
+      await db.doc(`userData/${myDocID}/rewards/achievements`).set({
+        codes: []
       });
       await db.doc(`userData/${myDocID}/iMovies-Sections/sections`).set({
         visited: [],

@@ -491,6 +491,7 @@ export default {
     },
   },
   mounted() {
+    Services.hasVisitedTheSection("search");
     window.scrollTo(0, 0);
     if (this.input.length > 1) {
       this.fillItemsList();

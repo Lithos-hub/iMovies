@@ -346,6 +346,7 @@ export default {
     },
   },
   mounted() {
+    Services.hasVisitedTheSection("myMovies");
     this.getStoragedMovies();
     this.selectedTab = this.clickedTab;
     this.setCategory(this.clickedTab);

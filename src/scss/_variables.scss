@@ -23,10 +23,10 @@ $gradient_1: linear-gradient(
 );
 $gradient_2: linear-gradient(
   30deg,
-  rgb(185, 51, 185),
-  rgb(189, 49, 170),
-  rgb(144, 47, 189),
-  rgb(117, 60, 192)
+  rgb(83, 199, 183),
+  rgb(51, 122, 255),
+  rgb(68, 58, 250),
+  rgb(29, 4, 68)
 );
 $gradient_3: linear-gradient(
   30deg,
@@ -40,6 +40,21 @@ $gradient_4: linear-gradient(
   rgb(87, 79, 92),
   rgb(76, 141, 145),
   rgb(47, 147, 165)
+);
+
+$gradient_epic: linear-gradient(
+  30deg,
+  #914451, #ff53ff
+);
+
+$gradient_rare:  linear-gradient(
+  30deg,
+  #2a5680, #4ecdff
+);
+
+$gradient_common: linear-gradient(
+  30deg,
+  #348a31, #9bff6d
 );
 
 $gradient_blur1: linear-gradient(30deg,

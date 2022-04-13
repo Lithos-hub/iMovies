@@ -252,6 +252,7 @@ export default {
     this.getMovieOfTheWeek();
   },
   mounted() {
+    Services.hasVisitedTheSection("home");
     this.getUserData();
     this.enableScrollX();
     this.animateScroll();

@@ -10,8 +10,10 @@
 
 <script>
 export default {
-  data() {
-    return {};
+  mounted() {
+    setTimeout(() => {
+      this.$store.dispatch('getReward', 37);
+    }, 1000)
   },
   methods: {
     comeback() {

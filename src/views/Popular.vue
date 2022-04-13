@@ -134,6 +134,7 @@ export default {
     this.comebackFromDetails ? this.getSavedYear() : this.getRandomYear()
   },
   mounted() {
+    Services.hasVisitedTheSection("popular");
     this.getMoviesByYear({ year: this.year, page: this.page });
     if (this.$route.path === '/popular') { 
       this.infiniteScroll();

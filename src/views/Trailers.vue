@@ -89,6 +89,7 @@ export default {
     this.getLatestReleases();
   },
   mounted() {
+    Services.hasVisitedTheSection("trailers");
     window.scrollTo(0, 0);
     this.hideButtons();
   },

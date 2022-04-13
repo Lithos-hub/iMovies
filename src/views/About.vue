@@ -40,6 +40,7 @@ export default {
     },
   },
   mounted () {
+    Services.hasVisitedTheSection("about");
     document.body.scrollTop = 0
     document.documentElement.scrollTop = 0
   }

@@ -118,6 +118,7 @@ export default {
     },
   },
   mounted() {
+    Services.hasVisitedTheSection("trending");
     window.scrollTo(0, 0);
     this.getTrending(true);
   },

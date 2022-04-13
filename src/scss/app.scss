@@ -36,7 +36,7 @@ button:focus {
 }
 
 .fadeIn {
-  animation: fadeIn 1s ease;
+  animation: fadeIn 1s ease-out;
 }
 
 @keyframes fadeIn {
@@ -48,8 +48,34 @@ button:focus {
   }
 }
 
+.fadeOut {
+  animation: fadeOut 1s ease-out;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.to-bottom {
+  animation: toBottom 1s ease-out;
+}
+
+@keyframes toBottom {
+  0% {
+    top: -10%;
+  }
+  100% {
+    top: 10%;
+  }
+}
+
 .shadow-text {
-  text-shadow: 2px 1px 2px #303030;
+  text-shadow: 2px 1px 2px black;
 }
 
 .mini-text {
@@ -126,7 +152,12 @@ input[type="number"] {
   -webkit-text-fill-color: transparent;
 }
 
-.theme--dark.v-chip:not(.v-chip--active) {
-  background: $gradient_1 !important;
-  color: white !important;
+// ** Notifications ** //
+
+#reward-notification {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999999;
 }

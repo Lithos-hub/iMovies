@@ -5,6 +5,15 @@ class Services {
     this.myDocID = localStorage.getItem("docID");
   }
 
+  async hasVisitedTheSection (section) {
+    const myDocRef = await db.doc(
+      `userData/${this.myDocID}/iMovies-Sections/sections`
+    );
+    myDocRef.update({
+      visited: firebase.firestore.FieldValue.arrayUnion(section),
+    });
+  }
+
   async getHasPlayedToday() {
     const resolvedQuestions = await this.getResolvedQuestions();
     const date = new Date();
@@ -24,6 +33,7 @@ class Services {
     const RESOLVED_DATA = RESOLVED_QUESTIONS.data();
     const RESOLVED_ARR = RESOLVED_DATA.questions;
     let points = 0
+    let myDocID = localStorage.getItem("docID")
 
     
     for (let resolved of RESOLVED_ARR) {
@@ -95,6 +105,10 @@ class Services {
     myDocRef.update({
       questions: firebase.firestore.FieldValue.arrayUnion(question),
     });
+  }
+
+  async getAchievements() {
+    
   }
 }
 

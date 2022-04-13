@@ -312,6 +312,7 @@ import SectionTitle from "../components/SectionTitle";
 import Snackbar from "../components/Snackbar";
 import LoadingData from "../components/LoadingData";
 import TrailerDialog from "../components/TrailerDialog";
+import Services from '../services/services';
 import AddToDialog from "../components/AddToDialog";
 
 import { mapActions, mapState } from 'vuex';
@@ -341,6 +342,9 @@ export default {
   },
   created () {
     window.scrollTo(0, 0)
+  },
+  mounted () {
+    Services.hasVisitedTheSection("genres");
   },
   methods: {
     ...mapActions(['getMoviesByGenre','getMovieTrailer', 'showAddToDialog', 'setAddMovie', 'showInfo']),
