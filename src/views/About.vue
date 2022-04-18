@@ -23,7 +23,7 @@
 
 <script>
 import SectionTitle from "../components/SectionTitle";
-
+import Services from "../services/services";
 export default {
   name: "About",
   components: {

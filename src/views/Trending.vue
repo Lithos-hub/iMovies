@@ -92,6 +92,7 @@
 import SectionTitle from "../components/SectionTitle";
 import TrailerDialog from "../components/TrailerDialog";
 import AddToDialog from "../components/AddToDialog";
+import Services from "../services/services";
 
 import { mapActions, mapState } from "vuex";
 

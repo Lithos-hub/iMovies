@@ -246,17 +246,17 @@ export default {
     };
   },
   created() {
-    this.getHasPlayedToday();
     this.getTrending(true);
     this.getLatestReleases(false);
     this.getMovieOfTheWeek();
   },
   mounted() {
     Services.hasVisitedTheSection("home");
+    this.getHasPlayedToday();
     this.getUserData();
     this.enableScrollX();
     this.animateScroll();
-    this.$store.dispatch('getFriendshipNotification');
+    this.$store.dispatch("getFriendshipNotification");
     setTimeout(() => {
       this.getMovieTrailer({
         type: "ofTheWeek",
@@ -298,19 +298,17 @@ export default {
           this.$nextTick().then(() => {
             this.$store.dispatch("getFriendshipNotification");
             this.$store.dispatch("getMySocialData");
-            console.log(
-              "My Firestore Doc ID: ",
-              this.$store.getters.myDocID
-            );
+            console.log("My Firestore Doc ID: ", this.$store.getters.myDocID);
             this.isLoading = false;
           });
         }
       });
     },
-    getHasPlayedToday() {
+    async getHasPlayedToday() {
       this.loadingTrivia = true;
-      Services.getHasPlayedToday()
+      await Services.getHasPlayedToday()
         .then((res) => {
+          console.log("RES => ", res);
           this.hasPlayedToday = res;
           this.loadingTrivia = false;
         })
@@ -330,37 +328,37 @@ export default {
       if (!text) return null;
       return text.slice(0, 700) + "...";
     },
-    enableScrollX () {
-      let homeView = document.querySelector('#home-view')
-      let scroll = homeView.querySelector('#scroll-x');
-      
-      scroll.addEventListener('wheel', function(e) {
+    enableScrollX() {
+      let homeView = document.querySelector("#home-view");
+      let scroll = homeView.querySelector("#scroll-x");
+
+      scroll.addEventListener("wheel", function (e) {
         scroll.scrollLeft += e.deltaY / 50;
       });
     },
     animateScroll() {
-      let homeView = document.querySelector('#home-view')
-      let scroll = homeView.querySelector('#scroll-x');
-      const SCROLL_MAX = 58080
-      let i = 0
-      setInterval(() => { 
+      let homeView = document.querySelector("#home-view");
+      let scroll = homeView.querySelector("#scroll-x");
+      const SCROLL_MAX = 58080;
+      let i = 0;
+      setInterval(() => {
         if (i < SCROLL_MAX) {
-          scroll = homeView.querySelector('#scroll-x');
+          scroll = homeView.querySelector("#scroll-x");
           scroll.style.transition = "0.5s ease-out";
           scroll.style.opacity = "1";
-          scroll.scrollLeft += 1
-          i++
+          scroll.scrollLeft += 1;
+          i++;
         }
         if (scroll.scrollLeft === SCROLL_MAX) {
-          scroll = homeView.querySelector('#scroll-x');
+          scroll = homeView.querySelector("#scroll-x");
           scroll.style.transition = "0.5s ease-out";
           scroll.style.opacity = "0";
           setTimeout(() => {
-            scroll.scrollLeft = 0
+            scroll.scrollLeft = 0;
             i = 0;
-          }, 500)
+          }, 500);
         }
-      }, 30)
+      }, 30);
     },
     getTrailer(item) {
       this.trailerDialog = true;
@@ -390,9 +388,9 @@ export default {
   display: none !important;
 }
 
-  .trivia-wrapper {
-    margin-top: 4em;
-  }
+.trivia-wrapper {
+  margin-top: 4em;
+}
 
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
@@ -642,28 +640,27 @@ export default {
   }
 
   #trivia-section {
-  position: relative;
+    position: relative;
 
-  .trivia-message {
-    padding: 20px;
-    border-radius: 5px;
-    height: auto;
-    width: 80%;
-    border: 1px solid #151515;
-    box-shadow: 0px 0px 10px black, 0px 0px 20px #151515, 0px 0px 30px #202020;
-    position: absolute;
-    top: 25%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    .trivia-message {
+      padding: 20px;
+      border-radius: 5px;
+      height: auto;
+      width: 80%;
+      border: 1px solid #151515;
+      box-shadow: 0px 0px 10px black, 0px 0px 20px #151515, 0px 0px 30px #202020;
+      position: absolute;
+      top: 25%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .star-icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
   }
-
-  .star-icon {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-
-}
 }
 
 // ******* DESKTOP RESPONSIVE ******* //

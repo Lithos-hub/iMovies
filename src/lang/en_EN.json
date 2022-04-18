@@ -309,7 +309,9 @@
    "2_1_0-2": "Added a navigation guard based on the authentication status",
    "2_2_0-1": "(Backend) Added the CRUD system for the user's movies",
    "2_2_1-1": "Added some fixes and style improvements",
-   "2_3_0-1": "Added a Trivia game in Beta phase (pending internationalization and future changes)"
+   "2_3_0-1": "Added a Trivia game in Beta phase (pending internationalization and future changes)",
+   "3_3_0-1": "Added Social Network features: messages chat, friendship requests, users details view, etc.",
+   "3_3_0-2": "Added rewards and achievements when you do some actions (in the style of trophies on PlayStation or achievements on Xbox.)"
   },
   "view-about": {
     "title": "About iMovies",
@@ -338,6 +340,7 @@
     "mainComp": "Main production company: "
   },
   "view-account": {
+    "soon": "Soon",
     "profile": "Profile",
     "achievements": "Achievements",
     "security": "Security",
@@ -355,7 +358,10 @@
     "emailExist": "That E-mail already exists",
     "errorOnUpdating": "Error when updating the profile",
     "errorOldLogin": "You must logout and login again to make the changes",
-    "successOnUpdating": "Profile updated successfully"
+    "successOnUpdating": "Profile updated successfully",
+    "common": "Common",
+    "rare": "Rare",
+    "epic": "Epic"
   },
   "comp-addTo": {
     "add": "Add movie to...",

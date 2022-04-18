@@ -105,15 +105,15 @@
           </v-tab>
           <v-tab active-class="secondary" class="cyan--text justify-start">
             <v-icon color="cyan" left> mdi-lock </v-icon>
-            {{ $t("view-account.security") }} (soon)
+            {{ $t("view-account.security") }} ({{ $t("view-account.soon") }})
           </v-tab>
           <v-tab active-class="secondary" class="cyan--text justify-start">
             <v-icon color="cyan" left> mdi-palette </v-icon>
-            {{ $t("view-account.appearance") }} (soon)
+            {{ $t("view-account.appearance") }} ({{ $t("view-account.soon") }})
           </v-tab>
           <v-tab active-class="secondary" class="cyan--text justify-start">
             <v-icon color="cyan" left> mdi-bell-badge </v-icon>
-            {{ $t("view-account.notifications") }} (soon)
+            {{ $t("view-account.notifications") }} ({{ $t("view-account.soon") }})
           </v-tab>
         </div>
         <!-- TABS ITEMS CONTENT -->
@@ -210,16 +210,16 @@
           <div class="option-section achievements-section">
             <div class="d-flex justify-space-around">
               <div class="d-flex achievement-desc">
-                <div class="square-epic"></div>
-                <p class="epic-title">Épico</p>
+                <div class="square-common"></div>
+                <p class="common-title">{{ $t("view-account.common") }}</p>
               </div>
               <div class="d-flex achievement-desc">
                 <div class="square-rare"></div>
-                <p class="rare-title">Raro</p>
+                <p class="rare-title">{{ $t("view-account.rare") }}</p>
               </div>
               <div class="d-flex achievement-desc">
-                <div class="square-common"></div>
-                <p class="common-title">Común</p>
+                <div class="square-epic"></div>
+                <p class="epic-title">{{ $t("view-account.epic") }}</p>
               </div>
             </div>
             <v-row no-gutters>

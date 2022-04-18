@@ -27,7 +27,6 @@ export default new Vuex.Store({
     userPoints: null,
     userData: {},
     loadingUserAuthStatus: false,
-    userID: null,
     isLogged: false,
     isLoadingDynamicUserData: false,
     isLoading: true,
@@ -56,7 +55,7 @@ export default new Vuex.Store({
     addToDialog: false,
     genreDialog: false,
     loadingData: false,
-    movieToAdd: {},
+    movieToAdd: null,
     latestReleases: [],
     trendingMovies: [],
     moviesByYear: [],
@@ -407,18 +406,6 @@ export default new Vuex.Store({
           }
         });
       }
-    },
-    checkAuth({ commit, dispatch }) {
-      commit("setLoadingUserAuthStatus", true);
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          commit("setAuthStatus", true);
-          commit("setLoadingUserAuthStatus", false);
-        } else {
-          commit("setAuthStatus", false);
-          commit("setLoadingUserAuthStatus", false);
-        }
-      });
     },
     checkLogin({ commit, dispatch }) {
       let user = auth.currentUser;
@@ -772,7 +759,7 @@ export default new Vuex.Store({
 
       commit("setLoadingAllStoragedMovies", false);
     },
-    async getStoragedMovies({ commit, state }, { movieToAdd }) {
+    async getStoragedMovies({ commit, state, dispatch }, { movieToAdd = {} }) {
       commit("setIsLoadingAddedMovies", true);
       const MY_favourite_MOVIES = await db
         .doc(`userData/${state.myDocID}/myMovies/favouriteMovies`)
@@ -804,7 +791,7 @@ export default new Vuex.Store({
       commit("setWishListMovies", wishListData.moviesList);
       commit("setRatedMovies", ratedData.moviesList);
 
-      if (favouriteData.moviesList !== undefined) {
+      if (favouriteData.moviesList !== undefined && movieToAdd !== undefined) {
         commit(
           "setAddedFavourite",
           favouriteData.moviesList.find((movie) => movie.id === movieToAdd.id)
@@ -812,7 +799,7 @@ export default new Vuex.Store({
             : false
         );
       }
-      if (watchedData.moviesList !== undefined) {
+      if (watchedData.moviesList !== undefined && movieToAdd !== undefined) {
         commit(
           "setAddedWatched",
           watchedData.moviesList.find((movie) => movie.id === movieToAdd.id)
@@ -820,7 +807,7 @@ export default new Vuex.Store({
             : false
         );
       }
-      if (wishListData.moviesList !== undefined) {
+      if (wishListData.moviesList !== undefined && movieToAdd !== undefined) {
         commit(
           "setAddedWishlist",
           wishListData.moviesList.find((movie) => movie.id === movieToAdd.id)
@@ -828,7 +815,7 @@ export default new Vuex.Store({
             : false
         );
       }
-      if (ratedData.moviesList !== undefined) {
+      if (ratedData.moviesList !== undefined && movieToAdd !== undefined) {
         commit(
           "setAddedRated",
           ratedData.moviesList.find((movie) => movie.id === movieToAdd.id)
@@ -841,6 +828,8 @@ export default new Vuex.Store({
         commit("setRate", RATED_MATCH ? RATED_MATCH.rate : 0);
       }
       commit("setIsLoadingAddedMovies", false);
+      dispatch('addAchievementByGenre')
+      dispatch('addAchievementByMovie')
     },
     async addAchievementByGenre({ dispatch, state }) {
       // ? **************** Here we will achieve if the user has watched 50 movies **************** ? //
@@ -1064,14 +1053,17 @@ export default new Vuex.Store({
         ? dispatch("getReward", 11)
         : null;
     },
-    async getGettedAchievements({ commit }) {
+    async getGettedAchievements({ commit }, lang) {
       const MY_DOC_ID = localStorage.getItem("docID");
       // ? First, we get all achievements on the database
       const REWARDS_REF = await db
-        .doc(`Achievements/AllAchievements`)
+        .doc(`Achievements/${lang}`)
         .get("list");
       const ALL_REWARDS_ARRAY = REWARDS_REF.data();
-      const ALL_ACHIEVEMENTS = ALL_REWARDS_ARRAY.list;
+      let ALL_ACHIEVEMENTS = [];
+      if (ALL_REWARDS_ARRAY.length) {
+        ALL_ACHIEVEMENTS = ALL_REWARDS_ARRAY.list
+      }
 
       // ? Then, we filter by the user's achievements
       const MY_REWARDS_FB = await db
@@ -1134,7 +1126,7 @@ export default new Vuex.Store({
         const VISITED_ARR = VISITED_SECTIONS_FB.data();
         commit("setVisitedSections", VISITED_ARR.visited);
       }
-      if (visitedSections.length === 11) {
+      if (visitedSections.length === 12) {
         this.dispatch("getReward", 31);
       }
     },

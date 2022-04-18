@@ -311,7 +311,9 @@
     "2_1_0-2": "Añadido un sistema de protección de rutas basado en el estado de autenticación del usuario",
     "2_2_0-1": "(Backend) Añadido el CRUD de películas con Firebase (Firestore)",
     "2_2_1-1": "Añadidos algunos arreglos y mejoras visuales",
-    "2_3_0-1": "Añadido un juego de tipo Trivial en fase Beta (pendiente de internacionalización y futuros cambios)"
+    "2_3_0-1": "Añadido un juego de tipo Trivial en fase Beta (pendiente de internacionalización y futuros cambios)",
+    "3_3_0-1": "Añadidas características de red social: chat de mensajería, solicitudes de amistad, vista de detalles de usuarios, etc.",
+    "3_3_0-2": "Añadidas recompensas y logros al realizar algunas acciones (al estilo de los trofeos en PlayStation o los logros en Xbox.)"
   },
   "view-about": {
     "title": "Acerca de iMovies",
@@ -340,6 +342,7 @@
     "votes": "Número de votos"
   },
   "view-account": {
+    "soon": "Próx.",
     "profile": "Perfil",
     "achievements": "Logros",
     "security": "Seguridad",
@@ -357,7 +360,10 @@
     "emailExist": "Ese E-mail ya se encuentra registrado",
     "errorOnUpdating": "Error al actualizar el perfil",
     "errorOldLogin": "Debes cerrar sesión y volver a hacer login para poder llevar a cabo esta acción",
-    "successOnUpdating": "Perfil actualizado correctamente"
+    "successOnUpdating": "Perfil actualizado correctamente",
+    "common": "Común",
+    "rare": "Raro",
+    "epic": "Épico"
   },
   "comp-addTo": {
     "add": "Añadir película a...",

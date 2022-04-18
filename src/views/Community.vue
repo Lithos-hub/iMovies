@@ -305,6 +305,7 @@
 import SectionTitle from "../components/SectionTitle.vue";
 import Spinner from "../components/Spinner.vue";
 import { mapState } from "vuex";
+import Services from "../services/services";
 export default {
   components: {
     SectionTitle,
@@ -334,6 +335,7 @@ export default {
     }
   },
   mounted() {
+    Services.hasVisitedTheSection("community");
     this.$store.dispatch('getFriendshipNotification')
     this.$store.dispatch("getAllUsers")
     this.$store.dispatch("getMySocialData")

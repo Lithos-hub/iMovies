@@ -67,7 +67,7 @@
 <script>
 import SectionTitle from "../components/SectionTitle";
 import TrailerDialog from "../components/TrailerDialog";
-
+import Services from "../services/services";
 import { mapActions, mapState } from "vuex";
 
 export default {

@@ -6,11 +6,16 @@ iMovies is a web application developed by me using Vue + Vuetify.
 
 This application uses The Movie Database (TMDB) API to show info about movies (release dates, titles, vote average, overviews, etc).
 
-Since I started developing it at October 2019, a tons of changes have been added, such as global visual and design improvements; internationalization (English / Spanish); a login/register backend using Google Firebase Authentication; a movies CRUD backend system using Google Firebase Firestore; navigation guard or a Trivia game (available in Beta phase since version 2.3.0).
+Since I started developing it at October 2019, a tons of changes have been added, such as global visual and design improvements; internationalization (English / Spanish); a login/register backend using Google Firebase Authentication; a movies CRUD backend system using Google Firebase Firestore; navigation guard or a Trivia game (available in Beta phase since version 2.3.0). Since version 3.0.0, you are able to send friendship requests to other users and chat with your friends. Also, you will earn rewards and unlock achievements depending on the actions you do.
 
 This application is under continuous development.
 
 //////////////  C H A N G E L O G  //////////////
+
+Version 3.0.0
+
+- Added Social Network tools: message chat, friendship requests, users details, etc.
+- Added rewards and achievements when you do some actions (in the style of trophies on PlayStation or achievements on Xbox.)
 
 Version 2.3.0
 

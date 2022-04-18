@@ -17,6 +17,7 @@
 
 <script>
 import SectionTitle from "../components/SectionTitle";
+import Services from '../services/services';
 
 export default {
   components: {
@@ -191,11 +192,19 @@ export default {
           changes: [
             this.$t('view-changelog.2_3_0-1'),
           ]
+        },
+        {
+          version: "v3.0.0",
+          changes: [
+            this.$t('view-changelog.3_3_0-1'),
+            this.$t('view-changelog.3_3_0-2'),
+          ]
         }
       ],
     };
   },
   mounted() {
+    Services.hasVisitedTheSection("changelog");
     this.showReverse();
   },
   methods: {

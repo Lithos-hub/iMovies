@@ -5,7 +5,7 @@ class Services {
     this.myDocID = localStorage.getItem("docID");
   }
 
-  async hasVisitedTheSection (section) {
+  async hasVisitedTheSection(section) {
     const myDocRef = await db.doc(
       `userData/${this.myDocID}/iMovies-Sections/sections`
     );
@@ -15,11 +15,14 @@ class Services {
   }
 
   async getHasPlayedToday() {
-    const resolvedQuestions = await this.getResolvedQuestions();
-    const date = new Date();
-    const currentDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-    const lastItem = resolvedQuestions[resolvedQuestions.length - 1];
-    if (lastItem.date === currentDate) {
+    let resolvedQuestions = await this.getResolvedQuestions();
+
+    let date = new Date();
+    const currentDate = `${date.getDate()}-${
+      date.getMonth() + 1
+    }-${date.getFullYear()}`;
+    const lastItem = resolvedQuestions.at(-1);
+    if (lastItem.date && lastItem.date === currentDate) {
       return true;
     } else {
       return false;
@@ -32,21 +35,19 @@ class Services {
       .get("questions");
     const RESOLVED_DATA = RESOLVED_QUESTIONS.data();
     const RESOLVED_ARR = RESOLVED_DATA.questions;
-    let points = 0
-    let myDocID = localStorage.getItem("docID")
+    let points = 0;
 
-    
     for (let resolved of RESOLVED_ARR) {
       if (resolved.passed) {
-        points += 10
+        points += 10;
       }
     }
 
     await db.doc(`userData/${this.myDocID}/triviaQuestions/points`).set({
-      total: points
+      total: points,
     });
 
-    console.log('Total points: ', points)
+    console.log("Total points: ", points);
 
     return RESOLVED_ARR;
   }
@@ -97,7 +98,9 @@ class Services {
 
   async saveQuestion(question) {
     const date = new Date();
-    const currentDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    const currentDate = `${date.getDate()}-${
+      date.getMonth() + 1
+    }-${date.getFullYear()}`;
     question.date = currentDate;
     const myDocRef = await db.doc(
       `userData/${this.myDocID}/triviaQuestions/resolved`
@@ -107,9 +110,7 @@ class Services {
     });
   }
 
-  async getAchievements() {
-    
-  }
+  async getAchievements() {}
 }
 
 export default new Services();

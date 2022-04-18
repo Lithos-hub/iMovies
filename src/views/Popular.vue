@@ -111,7 +111,7 @@ import SectionTitle from "../components/SectionTitle";
 import LoadingData from "../components/LoadingData";
 import AddToDialog from '../components/AddToDialog.vue'
 import { mapActions, mapState } from 'vuex';
-
+import Services from "../services/services";
 export default {
   name: "Ranking",
   components: {
@@ -143,7 +143,6 @@ export default {
   computed: {
     ...mapState([
       'moviesByYear', 
-      'userID', 
       'moviesID', 
       'no_image', 
       'imageURL', 

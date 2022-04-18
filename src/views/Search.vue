@@ -437,6 +437,7 @@ import SectionTitle from "../components/SectionTitle";
 import axios from "axios";
 import Snackbar from "../components/Snackbar";
 import { mapActions, mapState } from "vuex";
+import Services from "../services/services";
 import TrailerDialog from "../components/TrailerDialog";
 import AddToDialog from "../components/AddToDialog";
 import i18n from "@/plugins/i18n";

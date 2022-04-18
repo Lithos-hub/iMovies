@@ -291,9 +291,8 @@ export default {
   data() {
     return {
       date: new Date().getFullYear(),
-      id: null,
-      major: 2,
-      minor: 3,
+      major: 3,
+      minor: 0,
       patch: 0,
       group: null,
       drawer: false,
