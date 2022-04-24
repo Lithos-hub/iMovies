@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <v-img src="../assets/img/favicon.jpg" id="background"></v-img> -->
     <v-row :class="displayCols ? 'access' : ''">
       <v-col v-if="displayCols"></v-col>
       <v-col lg="6">
@@ -119,6 +118,7 @@ import { auth } from "../../firebase.js";
 export default {
   data() {
     return {
+      pruebaDeepl: 'Patata',
       loader: null,
       loading: false,
       validUser: false,
@@ -204,6 +204,7 @@ export default {
   width: 100%;
   top: 0;
   left: 0;
+  bottom: 0;
 }
 
 .access {
@@ -314,7 +315,7 @@ h5 {
 // ******* MOBILE RESPONSIVE ******* //
 @media only screen and (min-width: 360px) {
   .language-selector {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 50%;
     transform: translate(-50%, 0);

@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="account">
     <!-- DIALOGS -->
     <v-dialog v-model="changesDialog" persistent max-width="500px">
       <v-sheet color="secondary" height="auto" width="auto" class="pa-5">
         <v-form ref="form" lazy-validation v-model="valid">
           <v-text-field
-            class="account-input"
+            class="account__input"
             v-if="isEditingName"
             v-model="newName"
             dark
@@ -18,7 +18,7 @@
           ></v-text-field>
           <div class="d-flex" v-if="isEditingPass">
             <v-text-field
-              class="account-input"
+              class="account__input"
               v-model="newPassword"
               dark
               filled
@@ -39,7 +39,7 @@
             >
           </div>
           <v-text-field
-            class="account-input"
+            class="account__input"
             v-if="isEditingEmail"
             v-model="newEmail"
             dark
@@ -88,168 +88,163 @@
         </v-container>
       </v-card>
     </v-dialog>
-    <!-- TABS -->
-    <v-card id="tabs-card">
-      <v-tabs vertical dark id="tabs-menu">
-        <div id="tabs">
-          <v-tab active-class="secondary" class="cyan--text justify-start">
-            <v-icon color="cyan" left> mdi-account </v-icon>
-            {{ $t("view-account.profile") }}
-          </v-tab>
-          <v-tab
-            active-class="secondary"
-            class="cyan--text justify-start"
+    <!-- TABS MENU -->
+    <v-tabs :vertical="!isUsingMobile" dark :height="!isUsingMobile ? 500 : ''">
+      <v-tab active-class="secondary" class="cyan--text justify-start">
+        <v-icon color="cyan" left> mdi-account </v-icon>
+        {{ $t("view-account.profile") }}
+      </v-tab>
+      <v-tab active-class="secondary" class="cyan--text justify-start">
+        <v-icon color="cyan" left> mdi-star </v-icon>
+        {{ $t("view-account.achievements") }}
+      </v-tab>
+      <v-tab active-class="secondary" class="cyan--text justify-start">
+        <v-icon color="cyan" left> mdi-lock </v-icon>
+        {{ $t("view-account.security") }} ({{ $t("view-account.soon") }})
+      </v-tab>
+      <v-tab active-class="secondary" class="cyan--text justify-start">
+        <v-icon color="cyan" left> mdi-palette </v-icon>
+        {{ $t("view-account.appearance") }} ({{ $t("view-account.soon") }})
+      </v-tab>
+      <v-tab active-class="secondary" class="cyan--text justify-start">
+        <v-icon color="cyan" left> mdi-bell-badge </v-icon>
+        {{ $t("view-account.notifications") }} ({{ $t("view-account.soon") }})
+      </v-tab>
+      <!-- END TABS MENU -->
+      <!-- TABS ITEMS CONTENT -->
+      <!-- // ? **************** PROFILE  **************** // -->
+      <v-tab-item class="profile__section" transition="fade-transition">
+        <v-row no-gutters>
+          <v-col cols="12" lg="6" md="6" sm="12">
+            <ul style="list-style: none">
+              <li :class="isUsingMobile ? 'd-block text-center my-5' : 'profile__section--list d-flex'">
+                <v-icon color="primary" class="mr-5" size="30px"
+                  >mdi-account</v-icon
+                ><span class="font-weight-bold mr-2">{{
+                  $t("view-account.username")
+                }}</span>
+                <span class="my-auto">@{{ user.displayName }}</span>
+                <v-btn
+                  color="primary"
+                  tile
+                  small
+                  :class="isUsingMobile ? 'd-block mx-auto' : 'ml-auto'"
+                  @click="
+                    openDialog();
+                    isEditingName = true;
+                  "
+                  >{{ $t("view-account.change") }}</v-btn
+                >
+              </li>
+              <li :class="isUsingMobile ? 'd-block text-center my-5' : 'profile__section--list d-flex'">
+                <v-icon color="primary" class="mr-5" size="30px">mdi-key</v-icon
+                ><span class="font-weight-bold mr-2">{{
+                  $t("view-account.password")
+                }}</span>
+                <v-btn
+                  color="primary"
+                  tile
+                  small
+                  :class="isUsingMobile ? 'd-block mx-auto' : 'ml-auto'"
+                  @click="
+                    openDialog();
+                    isEditingPass = true;
+                  "
+                  >{{ $t("view-account.change") }}</v-btn
+                >
+              </li>
+              <li :class="isUsingMobile ? 'd-block text-center my-5' : 'profile__section--list d-flex'">
+                <v-icon color="primary" class="mr-5" size="30px"
+                  >mdi-email</v-icon
+                ><span class="font-weight-bold mr-2">{{
+                  $t("view-account.email")
+                }}</span>
+                <span class="my-auto">{{ user.email }}</span>
+                <v-btn
+                  color="primary"
+                  tile
+                  small
+                  :class="isUsingMobile ? 'd-block mx-auto' : 'ml-auto'"
+                  @click="
+                    openDialog();
+                    isEditingEmail = true;
+                  "
+                  >{{ $t("view-account.change") }}</v-btn
+                >
+              </li>
+            </ul>
+          </v-col>
+          <v-col cols="12" lg="4" md="4" sm="12" class="text-center">
+            <v-img
+              id="account-avatar"
+              aspect-ratio="1"
+              :src="user.photoURL"
+              width="auto"
+              height="auto"
+              max-width="200px"
+              class="avatar ma-5 ma-auto"
+            />
+            <v-btn
+              width="auto"
+              max-width="250px"
+              class="mt-5"
+              tile
+              color="primary"
+              @click="avatarDialog = true"
+            >
+              {{ $t("view-account.changeAvatar") }}
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-tab-item>
+      <!-- // ? **************** ACHIEVEMENTS  **************** // -->
+      <v-tab-item class="achievement__section" transition="fade-transition">
+        <v-row>
+          <v-col>
+            <div class="d-flex achievement-desc justify-center">
+              <div class="square-common"></div>
+                <div class="common-title">{{ $t("view-account.common") }}</div>
+            </div>
+          </v-col>
+          <v-col>
+            <div class="d-flex achievement-desc justify-center">
+              <div class="square-rare"></div>
+              <div class="rare-title">{{ $t("view-account.rare") }}</div>
+            </div>
+          </v-col>
+          <v-col>
+            <div class="d-flex achievement-desc justify-center">
+              <div class="square-epic"></div>
+              <div class="epic-title">{{ $t("view-account.epic") }}</div>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            cols="3"
+            lg="3"
+            md="3"
+            sm="6"
+            xs="12"
+            v-for="(item, j) of achievementsCards"
+            :key="'B' + j"
           >
-            <v-icon color="cyan" left> mdi-star </v-icon>
-            {{ $t("view-account.achievements") }}
-          </v-tab>
-          <v-tab active-class="secondary" class="cyan--text justify-start">
-            <v-icon color="cyan" left> mdi-lock </v-icon>
-            {{ $t("view-account.security") }} ({{ $t("view-account.soon") }})
-          </v-tab>
-          <v-tab active-class="secondary" class="cyan--text justify-start">
-            <v-icon color="cyan" left> mdi-palette </v-icon>
-            {{ $t("view-account.appearance") }} ({{ $t("view-account.soon") }})
-          </v-tab>
-          <v-tab active-class="secondary" class="cyan--text justify-start">
-            <v-icon color="cyan" left> mdi-bell-badge </v-icon>
-            {{ $t("view-account.notifications") }} ({{ $t("view-account.soon") }})
-          </v-tab>
-        </div>
-        <!-- TABS ITEMS CONTENT -->
-        <!-- // ? **************** PROFILE  **************** // -->
-        <v-tab-item transition="fade-transition">
-            <div class="option-section">
-              <v-row no-gutters>
-                <v-col>
-                  <ul style="list-style: none">
-                    <li class="account-item-list d-flex">
-                      <v-icon color="primary" class="mr-5" size="30px"
-                        >mdi-account</v-icon
-                      ><span class="text-h6 mr-2">{{
-                        $t("view-account.username")
-                      }}</span>
-                      <span class="my-auto">@{{ user.displayName }}</span>
-                      <v-btn
-                        color="primary"
-                        tile
-                        small
-                        class="ml-auto"
-                        @click="
-                          openDialog();
-                          isEditingName = true;
-                        "
-                        >{{ $t("view-account.change") }}</v-btn
-                      >
-                    </li>
-                    <li class="account-item-list d-flex">
-                      <v-icon color="primary" class="mr-5" size="30px"
-                        >mdi-key</v-icon
-                      ><span class="text-h6 mr-2">{{
-                        $t("view-account.password")
-                      }}</span>
-                      <v-btn
-                        color="primary"
-                        tile
-                        small
-                        class="ml-auto"
-                        @click="
-                          openDialog();
-                          isEditingPass = true;
-                        "
-                        >{{ $t("view-account.change") }}</v-btn
-                      >
-                    </li>
-                    <li class="account-item-list d-flex">
-                      <v-icon color="primary" class="mr-5" size="30px"
-                        >mdi-email</v-icon
-                      ><span class="text-h6 mr-2">{{
-                        $t("view-account.email")
-                      }}</span>
-                      <span class="my-auto">{{ user.email }}</span>
-                      <v-btn
-                        color="primary"
-                        tile
-                        small
-                        class="ml-auto"
-                        @click="
-                          openDialog();
-                          isEditingEmail = true;
-                        "
-                        >{{ $t("view-account.change") }}</v-btn
-                      >
-                    </li>
-                  </ul>
-                </v-col>
-                <v-col cols="4" class="text-center">
-                  <v-img
-                    id="account-avatar"
-                    aspect-ratio="1"
-                    :src="user.photoURL"
-                    width="auto"
-                    height="auto"
-                    max-width="200px"
-                    class="avatar ma-5 ma-auto"
-                  />
-                  <v-btn
-                    width="auto"
-                    max-width="250px"
-                    class="mt-5"
-                    tile
-                    color="primary"
-                    @click="avatarDialog = true"
-                  >
-                    {{ $t("view-account.changeAvatar") }}
-                  </v-btn>
-                </v-col>
-              </v-row>
+            <div :class="'achievement__section ' + item.className">
+              <p :class="'achievement-' + item.className">
+                {{ item.title }}
+              </p>
+              <v-img
+                class="mx-auto my-5 achieve-img"
+                :src="require('../assets/img/' + item.image)"
+                width="100"
+                height="100"
+              />
+              <small>{{ item.description }}</small>
             </div>
-        </v-tab-item>
-        <!-- // ? **************** ACHIEVEMENTS  **************** // -->
-        <v-tab-item transition="fade-transition">
-          <div class="option-section achievements-section">
-            <div class="d-flex justify-space-around">
-              <div class="d-flex achievement-desc">
-                <div class="square-common"></div>
-                <p class="common-title">{{ $t("view-account.common") }}</p>
-              </div>
-              <div class="d-flex achievement-desc">
-                <div class="square-rare"></div>
-                <p class="rare-title">{{ $t("view-account.rare") }}</p>
-              </div>
-              <div class="d-flex achievement-desc">
-                <div class="square-epic"></div>
-                <p class="epic-title">{{ $t("view-account.epic") }}</p>
-              </div>
-            </div>
-            <v-row no-gutters>
-              <v-col
-                cols="3"
-                lg="3"
-                md="3"
-                sm="6"
-                xs="12"
-                v-for="(item, j) of achievementsCards"
-                :key="'B' + j"
-              >
-                <div :class="'achievement-item ' + item.className">
-                  <p :class="'achievement-' + item.className">
-                    {{ item.title }}
-                  </p>
-                  <v-img
-                    class="mx-auto my-5 achieve-img"
-                    :src="require('../assets/img/' + item.image)"
-                    width="100"
-                    height="100"
-                  />
-                  <small>{{ item.description }}</small>
-                </div>
-              </v-col>
-            </v-row>
-          </div>
-        </v-tab-item>
-      </v-tabs>
-    </v-card>
+          </v-col>
+        </v-row>
+      </v-tab-item>
+    </v-tabs>
     <div v-if="snackbarObject.snackbar">
       <Snackbar
         :snackbar-color="snackbarObject.snackbarColor"
@@ -263,7 +258,7 @@
 import { mapActions, mapState } from "vuex";
 import Snackbar from "@/components/Snackbar.vue";
 import { storage } from "../../firebase.js";
-import Services from '../services/services';
+import Services from "../services/services";
 
 export default {
   components: {
@@ -300,6 +295,9 @@ export default {
   },
   computed: {
     ...mapState(["snackbarObject", "user", "achievementsCards"]),
+    isUsingMobile() {
+      return window.innerWidth < 600;
+    },
   },
   mounted() {
     Services.hasVisitedTheSection("account");
@@ -366,7 +364,7 @@ export default {
       this.newAvatar = url;
       this.updateProfile();
       this.$emit("refresh");
-      this.$store.dispatch('getReward', 30);
+      this.$store.dispatch("getReward", 30);
     },
     closeDialog() {
       this.isLoading = false;
@@ -389,7 +387,8 @@ export default {
 @import "src/scss/variables";
 @import "src/scss/app";
 
-.account-input {
+
+.account__input {
   caret-color: aqua !important;
   color: aqua !important;
 }
@@ -428,33 +427,25 @@ input::placeholder {
   margin-bottom: auto;
 }
 
-.option-section {
+.profile__section {
   animation: fadeIn 0.5s ease-out;
-  position: relative;
-  left: 0;
-  top: 5em;
-  font-size: 20px;
-  padding-inline: 5em;
-  padding-block: 2em;
-  height: 1000px;
-  max-height: 100%;
-  width: 100%;
+  font-size: 16px;
+  padding-block: 3em;
   color: $dark2;
 }
 
-.achievements-section {
-  position: absolute;
-  overflow-y: scroll;
-  top: 100%;
+.achievement__section {
+  text-align: center;
+  position: relative;
   left: 0;
-  bottom: 0;
+  top: 0;
   width: 100%;
-  min-height: 1000px;
-  padding-bottom: 300px;
+  padding-inline: 5em;
+  padding-block: 2em;
   background: $dark2;
 }
 
-.account-item-list {
+.profile__section--list {
   border-top: 1px solid lightgray;
   padding-block: 1em;
 }
@@ -472,18 +463,7 @@ input::placeholder {
   }
 }
 
-.achievement-item {
-  position: relative;
-  padding-top: 40px;
-  padding-inline: 10px;
-  border-radius: 5px;
-  min-width: 200px;
-  min-height: 300px;
-  max-width: 200px;
-  width: auto;
-  text-align: center;
-  margin: 20px;
-
+.achievement__section {
   p {
     color: white;
     padding: 5px;

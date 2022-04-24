@@ -1,23 +1,21 @@
 <template>
   <div>
-    <v-row class="register">
-      <v-col></v-col>
-      <v-col lg="8" md="10" cols="10">
+    <v-row class="register justify-center">
+      <v-col lg="11">
         <v-card class="pa-5" dark>
-          <div class="d-flex justify-space-between">
-            <div>
-              <h5 class="text-left text-h4 cyan--text">
-                {{ $t("view-register.create") }}
-              </h5>
-            </div>
-            <div>
-              <v-btn tile to="/" class="btn-gradient2 mb-5" width="250px">
-                {{ $t("view-register.comeback") }}</v-btn
-              >
-            </div>
-          </div>
+          <v-row>
+            <v-col cols="12" lg="6" md="6" sm="12">
+                <h5 class="text-h5 text-center cyan--text">
+                  {{ $t("view-register.create") }}
+                </h5>
+            </v-col>
+            <v-col cols="12" lg="6" md="6" sm="12">
+                <v-btn tile to="/" class="btn-gradient2 mb-5" block>
+                  {{ $t("view-register.comeback") }}</v-btn
+                >
+            </v-col>
+          </v-row>
           <v-divider class="cyan my-1"></v-divider>
-
           <v-form ref="form" v-model="valid">
             <div v-if="avatar !== ''" class="mt-5">
               <v-btn
@@ -38,7 +36,7 @@
               ></v-img>
             </div>
             <v-row>
-              <v-col cols="6">
+              <v-col cols="12" lg="6" md="6" sm="12">
                 <v-text-field
                   required
                   color="cyan"
@@ -49,7 +47,7 @@
                   counter="15"
                 ></v-text-field>
               </v-col>
-              <v-col>
+              <v-col cols="12" lg="6" md="6" sm="12">
                 <v-text-field
                   required
                   color="cyan"
@@ -61,7 +59,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="6">
+              <v-col cols="12" lg="6" md="6" sm="12">
                 <v-text-field
                   required
                   color="cyan"
@@ -71,7 +69,7 @@
                   :label="$t('view-register.password')"
                 ></v-text-field>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="12" lg="6" md="6" sm="12">
                 <v-text-field
                   required
                   color="cyan"
@@ -83,7 +81,7 @@
               </v-col>
             </v-row>
 
-                        <v-row>
+            <v-row>
               <v-col class="pa-0 ma-0">
                 <v-select
                   v-model="favouriteGenres"
@@ -135,7 +133,7 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col class="mt-3" cols="6">
+              <v-col class="mt-3" cols="12" lg="6" md="6" sm="12">
                 <small
                   >{{ $t("view-register.country") }}:
                   <span class="cyan--text ml-3">{{
@@ -271,7 +269,6 @@
           </div>
         </div>
       </v-col>
-      <v-col></v-col>
     </v-row>
     <div v-if="snackbarObject.snackbar">
       <Snackbar
@@ -326,7 +323,7 @@ export default {
           v === this.password || this.$t("view-register.passwordMatch"),
       },
       avatar_imgs: [],
-            activePicker: null,
+      activePicker: null,
       date: null,
       birthdayMenu: false,
       favouriteGenres: [],
@@ -360,7 +357,7 @@ export default {
     this.getAvatarsImages();
     this.searchAllCountries();
   },
-    watch: {
+  watch: {
     birthdayMenu(val) {
       val && setTimeout(() => (this.activePicker = "YEAR"));
     },
@@ -370,7 +367,7 @@ export default {
   },
   methods: {
     ...mapActions(["showSnackbar"]),
-        formatDate(date) {
+    formatDate(date) {
       if (!date) return null;
 
       const [year, month, day] = date.split("-");
@@ -391,8 +388,9 @@ export default {
         : this.$t("view-register.passwordMatch");
     },
     selectCountry(name) {
-      this.selectedCountry = this.$i18n.locale === "es-ES" ? name.text.spa : name.text.eng;
-      this.countryCode = name.code
+      this.selectedCountry =
+        this.$i18n.locale === "es-ES" ? name.text.spa : name.text.eng;
+      this.countryCode = name.code;
       const countryListHTML = document.querySelector("#country-list");
       countryListHTML.addEventListener("mouseleave", (e) => {
         countryListHTML.scrollTo(0, 0);
@@ -433,10 +431,14 @@ export default {
               flag: png,
             });
           }
-          if (this.$i18n.locale === 'en-EN') {
-            this.countriesList.sort((a, b )=> a.text.eng.localeCompare(b.text.eng));
+          if (this.$i18n.locale === "en-EN") {
+            this.countriesList.sort((a, b) =>
+              a.text.eng.localeCompare(b.text.eng)
+            );
           } else {
-            this.countriesList.sort((a, b )=> a.text.spa.localeCompare(b.text.spa));
+            this.countriesList.sort((a, b) =>
+              a.text.spa.localeCompare(b.text.spa)
+            );
           }
           this.loadingCountries = false;
         })
@@ -556,7 +558,7 @@ export default {
         questions: [],
       });
       await db.doc(`userData/${myDocID}/rewards/achievements`).set({
-        codes: []
+        codes: [],
       });
       await db.doc(`userData/${myDocID}/iMovies-Sections/sections`).set({
         visited: [],

@@ -113,7 +113,6 @@ export default {
     await this.$store.dispatch("getVisitedSections");
     await this.$store.dispatch("getGettedAchievements", lang);
     const lang = localStorage.getItem("storageLanguage").substring(4, 6);
-    console.log(lang);
   },
   watch: {
     rewardObject(val) {
@@ -769,23 +768,18 @@ export default {
 @import "src/scss/app";
 
 body {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
   height: 100%;
   margin: 0 auto;
+  background: $dark2 !important;
 }
 
 .main-content {
+  position: relative;
   background: $dark2 !important;
   color: white;
   font-family: $style1 !important;
-  height: 100%;
-  padding-bottom: 5em;
-  min-height: 100%;
-  width: auto;
-  margin-bottom: 2em;
 }
 
 .v-snack__wrapper {
@@ -843,75 +837,4 @@ body {
 .maximized-card {
   height: 400px;
 }
-// // ******* MOBILE RESPONSIVE ******* //
-// @media only screen and (min-width: 360px) {
-//   .main-content {
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background: $dark2 !important;
-//   color: white;
-//   font-family: $style1 !important;
-// }
-
-//   .routerview {
-//     position: relative;
-//     top: 0;
-//     left: 0;
-//     width: 100%;
-//     height: 100%;
-//     margin: 0 auto;
-//   }
-// }
-
-// // ******* LAPTOP RESPONSIVE ******* //
-// @media only screen and (min-width: 1366px) {
-//   .main-content {
-//   overflow-y: scroll;
-//   overflow-x: hidden;
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background: $dark2 !important;
-//   color: white;
-//   font-family: $style1 !important;
-// }
-
-//   .routerview {
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     width: 100%;
-//     height: 100%;
-//     margin: 0 auto;
-//   }
-// }
-
-// // ******* DESKTOP RESPONSIVE ******* //
-// @media only screen and (min-width: 1920px) {
-//   .main-content {
-//   overflow-y: scroll;
-//   overflow-x: hidden;
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background: $dark2 !important;
-//   color: white;
-//   font-family: $style1 !important;
-// }
-
-//   .routerview {
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     width: 100%;
-//     height: 100%;
-//     margin: 0 auto;
-//   }
-// }
 </style>

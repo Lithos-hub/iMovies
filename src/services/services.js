@@ -1,5 +1,6 @@
 import { db, firebase } from "../../firebase";
-
+import i18n from "@/plugins/i18n";
+import axios from "axios";
 class Services {
   constructor() {
     this.myDocID = localStorage.getItem("docID");
@@ -52,6 +53,25 @@ class Services {
     return RESOLVED_ARR;
   }
 
+  async translate(text, lang) {
+    const URL = `https://api-free.deepl.com/v2/translate?auth_key=21b7fb11-3bac-da40-6e50-02e7f2eb7bf6:fx&text=${text}&target_lang=${lang.substring(3, 6)}`;
+    let result = ''
+    await axios
+      .get(URL)
+      .then((response) => {
+        const {
+          data: { translations },
+        } = response;
+        if (translations.length) {
+        result = translations[0].text;
+        }
+      })
+      .catch((error) => {
+        if (error) reject(error);
+      });
+      return result;
+  }
+
   async getQuestion() {
     let question = {};
     // First, we get the resolved questions
@@ -74,15 +94,23 @@ class Services {
     let questionRef = await db.collection("TriviaV2").doc(position).get();
     questionData = questionRef.data();
 
+    let incorrect_answers = []
+
+    questionData.incorrect_answers.forEach(async (item) => {
+      let translation = await this.translate(item, i18n.locale)
+      incorrect_answers.push(translation)
+    })
+
     for (let resolved of RESOLVED_ARR) {
       question = ALL_ARR.find((question) => question.id !== resolved.id);
     }
-    question.answers = questionData.incorrect_answers;
+    question.answers = incorrect_answers
+    console.log('Question answers ==> ', question.answers)
     question.id = questionData.id;
-    question.correct_answer = questionData.correct_answer;
-    question.ask = questionData.question;
+    question.correct_answer = await this.translate(questionData.correct_answer, i18n.locale);
+    question.ask = await this.translate(questionData.question, i18n.locale);
     question.image = questionData.image;
-    question.answers.splice(randomOrder, 0, questionData.correct_answer);
+    question.answers.splice(randomOrder, 0, await this.translate(questionData.correct_answer, i18n.locale));
 
     if (RESOLVED_ARR.length === 364) {
       question = {

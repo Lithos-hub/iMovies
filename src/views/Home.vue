@@ -99,7 +99,7 @@
               :class="
                 movieOfTheWeek.overview === ''
                   ? 'error--text mt-5 text-justify'
-                  : 'text-justify'
+                  : 'text-justify mx-2'
               "
             >
               {{
@@ -108,7 +108,7 @@
                   : formatOverview(movieOfTheWeek.overview)
               }}
             </p>
-            <v-row>
+            <v-row class="mx-2">
               <v-col>
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on, attrs }">
@@ -405,6 +405,7 @@ export default {
     left: 0;
     width: 100%;
     max-height: 250px;
+    height: 250px;
     display: flex;
     flex-wrap: nowrap;
     overflow-x: scroll;

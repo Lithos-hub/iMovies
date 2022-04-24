@@ -16,6 +16,7 @@ Version 3.0.0
 
 - Added Social Network tools: message chat, friendship requests, users details, etc.
 - Added rewards and achievements when you do some actions (in the style of trophies on PlayStation or achievements on Xbox.)
+- Added Deepl API translation on Trivia game.
 
 Version 2.3.0
 
