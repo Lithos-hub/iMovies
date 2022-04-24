@@ -10,7 +10,7 @@ Since I started developing it at October 2019, a tons of changes have been added
 
 This application is under continuous development.
 
-[Show Changelog: ](https://github.com/Lithos-hub/iMovies/issues/3)
+:page_with_curl: Changelog :page_with_curl: [Read changelog](https://github.com/Lithos-hub/iMovies/issues/3)
 
 ## Project setup
 
