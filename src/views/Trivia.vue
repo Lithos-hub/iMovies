@@ -4,7 +4,7 @@
     <div class="trivia-background">
       <v-row no-gutters>
         <v-col
-          v-for="(item, i) in triviaMoviesBackground"
+          v-for="(_noUsable, i) in triviaMoviesBackground"
           :key="i"
           class="fadeIn"
         >

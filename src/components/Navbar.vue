@@ -202,12 +202,12 @@
 
     <v-navigation-drawer
       v-model="drawer"
-      fixed
       temporary
       color="secondary darken-2"
       dark
       app
       width="220px"
+      height="100%"
     >
       <v-list dense nav>
         <v-list-item-group v-model="group" active-class="black">
@@ -245,34 +245,30 @@
       </v-list>
 
       <div id="drawer-below-section">
-        <p id="developedBy">
-          {{ date }} <v-icon size="17">mdi-copyright</v-icon>
-          {{ $t("navbar.developed") }}<br />
+        <p id="developedBy" v-if="!isUsingMobile">
+          {{ currentYear }} <v-icon size="17">mdi-copyright</v-icon>
           <a
             href="https://carlosseguragarciaweb.com"
             style="text-decoration: none"
           >
-            <small id="developerName">Carlos Segura García</small>
+          <br>
+            <small>by Carlos Segura García</small>
             <p id="visit-my-website">{{ $t("navbar.goTo") }}</p>
           </a>
         </p>
-        <div>
+        <div class="text-center">
           <v-btn
             icon
-            large
-            :small="isUsingMobile"
-            :outlined="isUsingMobile"
-            :tile="!isUsingMobile"
+            tile
             :fab="isUsingMobile"
-            :width="isUsingMobile ? '' : '100%'"
-            :class="isUsingMobile ? 'px-0' : 'px-2'"
+            block
             href="https://github.com/Lithos-hub/VUEJS-iMovies"
             target="_blank"
           >
-            <v-icon :class="isUsingMobile ? 'ma-0' : 'mr-2'">
+            <v-icon :class="isUsingMobile ? '' : 'mr-2'">
               mdi-github
             </v-icon>
-            <div v-if="!isUsingMobile" id="version-info" class="ml-2">
+            <div id="version-info" class="ml-2">
               <p>v{{ major }}.{{ minor }}.{{ patch }}</p>
             </div>
           </v-btn>
@@ -290,7 +286,7 @@ import { auth } from "../../firebase.js";
 export default {
   data() {
     return {
-      date: new Date().getFullYear(),
+      currentYear: new Date().getFullYear(),
       major: 3,
       minor: 0,
       patch: 0,
@@ -383,7 +379,7 @@ export default {
       return i18n.locale.split("-")[0].toUpperCase();
     },
     isUsingMobile() {
-      return this.$vuetify.breakpoint.xs;
+      return this.$vuetify.breakpoint.xs || this.$vuetify.breakpoint.sm;
     },
   },
   methods: {
@@ -457,11 +453,7 @@ export default {
 }
 
 #drawer-below-section {
-  position: absolute;
-  left: 50%;
-  bottom: 0%;
-  transform: translate(-50%, 0%);
-  width: 100%;
+  margin-top: 2em;
 }
 
 #visit-my-website {
@@ -724,10 +716,14 @@ export default {
   #developedBy {
     position: relative;
     text-align: center;
-    color: white;
+    color: cyan;
     letter-spacing: 2px;
-    font-size: 12px;
+    font-size: 15px;
     font-family: $style3;
+
+    small {
+      color: cyan;
+    }
   }
 
   #version-info {

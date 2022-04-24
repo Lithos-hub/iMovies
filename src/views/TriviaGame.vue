@@ -1,15 +1,20 @@
 <template>
   <div>
     <v-container fluid v-if="!hasPlayedToday">
-      <div class="d-flex justify-space-between">
-        <h4 id="triviaGame-title" class="text-h4">iMovies Trivia Game</h4>
-        <v-btn tile class="white--text gradient-background-1" @click="goToStart"
-          >Regresar al inicio</v-btn
+      <div class="d-flex justify-space-between mt-5">
+        <h5 id="triviaGame-title" class="text-h5">
+          {{ $t("view-trivia.triviaGame") }}
+        </h5>
+        <v-btn
+          tile
+          class="white--text gradient-background-1"
+          @click="goToStart"
+          >{{ $t("view-trivia.comeback") }}</v-btn
         >
       </div>
       <div id="trivia-divider"></div>
       <!-- COUNTER -->
-      <div id="counter" class="text-center" v-if="!hideCounter">
+      <div id="counter" class="text-center mt-5" v-if="!hideCounter">
         <h1 :class="computeCounter(counter)">{{ counter }}</h1>
       </div>
       <TriviaQuestions
@@ -29,12 +34,12 @@
       ></v-progress-circular>
       <!-- GAME OVER MESSAGE -->
       <div v-if="isGameOver" class="centered text-justify">
-        <h4 class="text-center text-h4 red--text">
-          ¡Demasiado lento! El tiempo se ha agotado.
+        <h4 class="text-center text-h6 red--text">
+          {{ $t("view-trivia.gameOver1") }}
         </h4>
         <br />
-        <h4 class="text-center text-h4 red--text">
-          ¡Inténtalo de nuevo en el reto de mañana!
+        <h4 class="text-center text-h6 red--text">
+          {{ $t("view-trivia.gameOver2") }}
         </h4>
         <br />
         <v-btn class="error" tile block large @click="comeback">Regresar</v-btn>
@@ -42,13 +47,15 @@
     </v-container>
     <v-container v-else>
       <div class="centered">
-        <h3 class="text-h3 text-center my-5 primary--text">
-          Ya has jugado por hoy.
+        <h3 class="text-h6 text-center my-5 primary--text">
+          {{ $t("view-trivia.justPlayed1") }}
         </h3>
-        <h3 class="text-h3 text-center my-5 primary--text">
-          ¡Vuelve mañana para resolver el siguiente reto!
+        <h3 class="text-h6 text-center my-5 primary--text">
+          {{ $t("view-trivia.justPlayed2") }}
         </h3>
-        <v-btn class="error" tile block large @click="comeback">Regresar</v-btn>
+        <v-btn class="error" tile block large @click="comeback">{{
+          $t("view-trivia.comeback")
+        }}</v-btn>
       </div>
     </v-container>
   </div>
@@ -88,7 +95,7 @@ export default {
     isHiddingCounter() {
       this.counter = 20;
       this.hideCounter = true;
-      this.startCounter(false)
+      this.startCounter(false);
     },
     computeCounter(val) {
       if (val > 15) return "green--text";
@@ -175,7 +182,7 @@ export default {
   border-radius: 10px;
   height: 2px;
   width: 100%;
-  margin: 0 auto;
+  margin-block: 2em;
   background: $gradient_1;
 }
 </style>

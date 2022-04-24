@@ -2,20 +2,31 @@
   <div v-if="!loadingTrivia">
     <v-card
       v-if="!checkingAnswer && !checkedAnswer && !answered"
-      class="mx-auto pa-0"
-      width="auto"
+      class="mx-auto"
+      width="100%"
       color="transparent"
-      height="auto"
+      height="100%"
       tile
     >
-    <v-img id="trivia-image"  v-if="question.image" :src="require(`../../public/trivia/triviaImages/${question.image}`)" :max-width="imageWidth" :max-height="imageHeight" />
+      <v-img
+        id="trivia-image"
+        v-if="question.image"
+        :src="require(`../../public/trivia/triviaImages/${question.image}`)"
+        :max-width="imageWidth"
+        :max-height="imageHeight"
+      />
       <v-list dense class="transparent">
-        <v-subheader class="justify-center"
-          ><p class="text-h6 primary--text">
-            {{ cleanQuestion(question.ask) }}
-          </p></v-subheader
+        <p
+          :class="
+            isUsingMobile
+              ? 'text-h6 text-center primary--text mb-5'
+              : 'text-h6 primary--text'
+          "
         >
-        <v-divider class="cyan pa-0 ma-0"></v-divider>
+          {{ cleanQuestion(question.ask) }}
+        </p>
+        >
+        <v-divider class="cyan my-5"></v-divider>
         <v-list-item-group v-model="responseIndex" color="cyan">
           <v-list-item v-for="(item, i) in question.answers" :key="i">
             <v-list-item-content class="white--text pa-2 rounded">
@@ -38,23 +49,42 @@
       >
     </v-card>
     <div v-if="checkingAnswer" class="centered text-center">
-      <v-progress-circular
-        indeterminate
-        size="100"
-        width="5"
-        color="cyan"
-        />
-        <h5 class="text-h5 text-center cyan--text mt-5">Comprobando respuesta...</h5>
+      <v-progress-circular indeterminate size="100" width="5" color="cyan" />
+      <h5 class="text-h5 text-center cyan--text mt-5">
+        {{ $t("view-trivia.checkingAnswer") }}
+      </h5>
     </div>
-    <div class="text-center green--text" v-if="checkedAnswer && warningObject.isCorrect">
-      <h4>¡Enhorabuena! Has acertado la pregunta de hoy. Has ganado {{ puntos }} puntos.</h4>
-      <h4>¡Vuelve mañana para el próximo reto!</h4>
-      <v-btn class="gradient-success white--text mt-5" tile block @click="comeback">Regresar</v-btn>
+    <div
+      class="text-center green--text"
+      v-if="checkedAnswer && warningObject.isCorrect"
+    >
+      <h4>
+        {{ $t("view-trivia.congratulations1") }} {{ puntos }}
+        {{ $t("view-trivia.congratulations2") }}
+      </h4>
+      <h4>{{ $t("view-trivia.congratulations3") }}</h4>
+      <v-btn
+        class="gradient-success white--text mt-5"
+        tile
+        block
+        @click="comeback"
+        >{{ $t("view-trivia.comeback") }}</v-btn
+      >
     </div>
-    <div class="text-center error--text" v-if="checkedAnswer && !warningObject.isCorrect">
-      <h4>Vaya, ¡has fallado! No te desanimes y vuelve mañana.</h4>
-      <h4>¡Seguro que lo consigues!</h4>
-      <v-btn class="gradient-error white--text mt-5" tile block @click="comeback">Regresar</v-btn>
+    <div
+      class="text-center error--text"
+      v-if="checkedAnswer && !warningObject.isCorrect"
+    >
+      <h4>{{ $t("view-trivia.failure1") }}</h4>
+      <h4>{{ $t("view-trivia.failure2") }}</h4>
+      <v-btn
+        class="gradient-error white--text mt-5"
+        tile
+        block
+        @click="comeback"
+      >
+        {{ $t("view-trivia.comeback") }}
+      </v-btn>
     </div>
     <div v-if="warningObject.warning">
       <TriviaWarning
@@ -83,30 +113,37 @@ export default {
       answered: false,
       checkingAnswer: false,
       checkedAnswer: false,
-      puntos: ''
+      puntos: "",
     };
   },
   computed: {
     ...mapState(["warningObject"]),
-    imageWidth () {
-      let clientWidth = window.screen.width
+    imageWidth() {
+      let clientWidth = window.screen.width;
       switch (true) {
-        case clientWidth > 1824 : return '500px'
-        case clientWidth < 1824 : return '360px'
+        case clientWidth > 1824:
+          return "500px";
+        case clientWidth < 1824:
+          return "360px";
       }
     },
-    imageHeight () {
-      let clientWidth = window.screen.width
+    imageHeight() {
+      let clientWidth = window.screen.width;
       switch (true) {
-        case clientWidth > 1824 : return '450px'
-        case clientWidth < 1824 : return '140px'
+        case clientWidth > 1824:
+          return "450px";
+        case clientWidth < 1824:
+          return "140px";
       }
+    },
+    isUsingMobile() {
+      return window.innerWidth < 600;
     },
   },
   methods: {
     ...mapActions(["showWarning"]),
-    comeback () {
-      this.$router.push({ path: '/home' })
+    comeback() {
+      this.$router.push({ path: "/home" });
     },
     cleanQuestion(question) {
       let processed = "";
@@ -124,42 +161,36 @@ export default {
       this.selectedResponse = this.question.answers[this.responseIndex];
     },
     confirm() {
-      this.$emit('hide-counter')
+      this.$emit("hide-counter");
       this.answered = true;
-      this.checkingAnswer = true
+      this.checkingAnswer = true;
       this.getItem();
       setTimeout(() => {
         if (this.selectedResponse === this.question.correct_answer) {
-          this.question.passed = true
-          Services
-          .saveQuestion(this.question)
-          .then(() => {
-            Services
-            .getResolvedQuestions()
+          this.question.passed = true;
+          Services.saveQuestion(this.question).then(() => {
+            Services.getResolvedQuestions();
             this.showWarning({
               text: "¡Correcto!",
               color: "success",
               isCorrect: true,
             });
-          })
+          });
         } else {
-          this.question.passed = false
-          Services
-          .saveQuestion(this.question)
-          .then(() => {
-            Services
-            .getResolvedQuestions()
+          this.question.passed = false;
+          Services.saveQuestion(this.question).then(() => {
+            Services.getResolvedQuestions();
             this.showWarning({
               text: "¡Has fallado!",
               color: "error",
               isCorrect: false,
             });
-          })
+          });
         }
-        this.checkingAnswer = false
+        this.checkingAnswer = false;
         setTimeout(() => {
-          this.checkedAnswer = true
-        }, 3000)
+          this.checkedAnswer = true;
+        }, 3000);
       }, 1000);
     },
   },

@@ -2,60 +2,62 @@
   <div id="triviaGame-view">
     <!-- Instructions -->
     <div v-if="showInstruction" class="d-flex justify-center mt-10">
-      <v-card color="primary" min-width="500" max-width="500" max-height="400" min-height="400" class="pa-5">
-        <v-card-title class="ustify-center white--text d-flex"
-          ><h2 class="text-h2">iMovies Trivial</h2>
-        <span class="mb-auto"><small>(Beta)</small></span>
-          </v-card-title>
-        <v-divider class="white"></v-divider>
-        <v-card-subtitle class="text-h5 text-center white--text"
-          >Instrucciones</v-card-subtitle
-        >
-        <v-card-text class="text-justify white--text">
-          <div class="instructions" v-if="cardCounter === 1">
-            iMovies Trivial es un juego de preguntas sobre películas. Cada día
-            se planteará una pregunta relacionada con alguna película, actor,
-            personaje, lugar... y se te pedirá que contestes la pregunta. En
-            caso de acertar, obtendrás una puntuación. En caso de fallar, la
-            pregunta quedará bloqueada y no podrás jugar hasta que haya pasado
-            un día, así que ¡piensa bien antes la respuesta!
-          </div>
-          <div class="instructions" v-if="cardCounter === 2">
-            Habrá diferentes tipos de preguntas y de respuestas. En algunos
-            casos serán de tipo test, en otras tendrás que escribir o rellenar,
-            en algunas se mostrará una imagen y en otras deberás arrastrar
-            elementos al lugar correcto. Recuerda que <span class="font-weight-bold">habrá un contador de 
-            20 segundos</span>, por lo que piensa bien antes de contestar e intenta
-            ser rápido.
-          </div>
-          <div class="instructions" v-if="cardCounter === 3">
-            Cada cierto número de puntos, obtendrás una recompensa, ya sea en
-            forma de avatares o en forma de insignias coleccionables.
-          </div>
-          <div class="instructions text-center" v-if="cardCounter === 4">
-            ¡Eso es todo! <br><br>
-            ¡Pulsa el botón de "Jugar" para empezar!
-          </div>
-        </v-card-text>
-        <v-card-actions id="card-actions" class="d-flex justify-space-between">
-          <v-btn @click="comeback" v-if="card1" color="secondary" tile
-            >Volver atrás</v-btn
-          >
-          <v-btn @click="backwardCard" v-else icon
-            ><v-icon color="white" size="30">mdi-arrow-left-box</v-icon></v-btn
-          >
-          <v-btn @click="forwardCard" v-if="cardCounter !== 4" icon
-            ><v-icon color="white" size="30">mdi-arrow-right-box</v-icon></v-btn
-          >
-          <v-btn
-            class="gradient-background-1 white--text"
-            width="150"
-            v-if="playGameBtn"
-            @click="playGame"
-            >Jugar</v-btn
-          >
-        </v-card-actions>
-      </v-card>
+      <v-row class="d-flex justify-center">
+        <v-col cols="12" lg="4" sm="12">
+          <v-card color="primary" width="100%" height="100%" class="pa-5 mx-auto">
+            <v-card-title class="justify-center white--text d-flex"
+              ><h2 class="text-h5">iMovies Trivial</h2>
+              <span class="ml-2"><small>(Beta)</small></span>
+            </v-card-title>
+            <v-divider class="white"></v-divider>
+            <v-card-subtitle class="text-h5 text-center white--text"
+              >{{ $t('view-trivia.instructions0') }}</v-card-subtitle
+            >
+            <v-card-text class="text-justify white--text">
+              <div class="instructions" v-if="cardCounter === 1">
+              {{ $t('view-trivia.instructions1') }}
+              </div>
+              <div class="instructions" v-if="cardCounter === 2">
+              {{ $t('view-trivia.instructions2') }}
+                <span class="font-weight-bold"
+                  >{{ $t('view-trivia.instructions3') }}</span
+                >{{ $t('view-trivia.instructions4') }}
+              </div>
+              <div class="instructions" v-if="cardCounter === 3">
+              {{ $t('view-trivia.instructions5') }}
+              </div>
+              <div class="instructions text-center" v-if="cardCounter === 4">
+                {{ $t('view-trivia.instructions6') }} <br /><br />
+                {{ $t('view-trivia.instructions7') }}
+              </div>
+            </v-card-text>
+            <v-card-actions
+              class="d-flex justify-space-between"
+            >
+              <v-btn @click="comeback" v-if="card1" color="secondary" tile
+                >{{ $t('view-trivia.goback') }}</v-btn
+              >
+              <v-btn @click="backwardCard" v-else icon
+                ><v-icon color="white" size="30"
+                  >mdi-arrow-left-box</v-icon
+                ></v-btn
+              >
+              <v-btn @click="forwardCard" v-if="cardCounter !== 4" icon
+                ><v-icon color="white" size="30"
+                  >mdi-arrow-right-box</v-icon
+                ></v-btn
+              >
+              <v-btn
+                class="gradient-background-1 white--text"
+                width="150"
+                v-if="playGameBtn"
+                @click="playGame"
+                >{{ $t('view-trivia.play') }}</v-btn
+              >
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
     </div>
   </div>
 </template>

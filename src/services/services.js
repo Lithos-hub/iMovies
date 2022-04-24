@@ -31,11 +31,12 @@ class Services {
   }
 
   async getResolvedQuestions() {
+    let RESOLVED_ARR = []
     const RESOLVED_QUESTIONS = await db
       .doc(`userData/${this.myDocID}/triviaQuestions/resolved`)
       .get("questions");
     const RESOLVED_DATA = RESOLVED_QUESTIONS.data();
-    const RESOLVED_ARR = RESOLVED_DATA.questions;
+    RESOLVED_ARR = RESOLVED_DATA.questions;
     let points = 0;
 
     for (let resolved of RESOLVED_ARR) {
@@ -125,6 +126,7 @@ class Services {
   }
 
   async saveQuestion(question) {
+    console.log('Saving question ==> ', question)
     const date = new Date();
     const currentDate = `${date.getDate()}-${
       date.getMonth() + 1
