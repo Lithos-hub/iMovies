@@ -55,7 +55,7 @@ export default new Vuex.Store({
     addToDialog: false,
     genreDialog: false,
     loadingData: false,
-    movieToAdd: null,
+    movieToAdd: {},
     latestReleases: [],
     trendingMovies: [],
     moviesByYear: [],
@@ -666,6 +666,8 @@ export default new Vuex.Store({
       const SENDED_DATA = MY_SENDED_REF.data();
       const ACCEPTED_DATA = MY_ACCEPTED_REF.data();
       const REJECTED_DATA = MY_REJECTED_REF.data();
+
+      console.log(SENDED_DATA)
 
       commit("setAllSocialRequests", {
         sended: SENDED_DATA.sendedList || [],

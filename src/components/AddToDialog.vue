@@ -339,9 +339,8 @@ export default {
     },
     getStoragedMovies() {
       const MY_DOC_ID = localStorage.getItem("docID");
-      const movieToAdd = this.movieToAdd || null;
-      this.slider = movieToAdd.rate * 10;
-      this.$store.dispatch("getStoragedMovies", { movieToAdd, MY_DOC_ID });
+      this.slider = this.movieToAdd.rate * 10;
+      this.$store.dispatch("getStoragedMovies", { movieToAdd: this.movieToAdd, MY_DOC_ID });
     },
     toDecimal(rate) {
       let dec = rate / 10;

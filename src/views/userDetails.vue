@@ -76,7 +76,6 @@
                   </v-card-title>
                   <v-card-text>
                     <v-img
-                      :key="reUpdateComponentKey"
                       :src="
                         movie.backdrop_path !== undefined
                           ? imageURL + movie.backdrop_path
@@ -137,7 +136,6 @@ export default {
       "friendshipDate",
       "imageURL",
       "no_image",
-      "reUpdateComponentKey",
     ]),
   },
   created() {

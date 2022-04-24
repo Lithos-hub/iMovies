@@ -35,8 +35,9 @@
                   <v-img
                     :src="user.avatar"
                     width="140"
+                    height="auto"
                     class="mx-auto rounded"
-                  ></v-img>
+                  />
                   <v-card-text class="pa-0 mt-2 text-h5 text-center">
                     {{ user.userName }}
                   </v-card-text>
@@ -130,7 +131,7 @@
         <v-list class="pa-0" v-if="iMoviesUsersList.length">
           <v-list-item
             class="d-flex justify-space-between user-list-item"
-            v-for="(user, i) in iMoviesUsersList"
+            v-for="(user, i) in iMoviesUsersList.sort()"
             :key="i"
           >
             <!-- // ! ** USER INDEX ** // -->
@@ -331,7 +332,7 @@ export default {
   },
   watch: {
     isSearchingUser (val) {
-      if (!val) this.$store.dispatch("getAllUsers")
+      if (val === false) this.$store.dispatch("getAllUsers")
     }
   },
   mounted() {
@@ -359,10 +360,8 @@ export default {
         userName: user.userName,
         avatar: user.avatar,
       };
-      this.$nextTick()
-        .then(this.$store.dispatch("sendFriendRequest", userData))
-        .then(this.$store.dispatch("getMyFriendshipData"));
-      this.$forceUpdate();
+      await this.$store.dispatch("sendFriendRequest", userData)
+      await this.$store.dispatch("getMyFriendshipData");
     },
     computedRequestColor(docID) {
       const MATCH_SENDED = this.mySocialRequests.sended.find(

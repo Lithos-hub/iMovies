@@ -207,7 +207,7 @@ export default {
     },
     async chatWithFriend(friend) {
       this.friendName = friend.userName;
-      this.isChatting = true;
+      this.$store.commit('setIsChatting', true)
       this.friendDocID = friend.docID;
       this.friendAvatar = friend.avatar;
       await this.$store.dispatch("createChatRoom", friend.docID);
@@ -244,7 +244,7 @@ export default {
       console.log('Friend ==> ', friend)
     },
     closeChat() {
-      this.isChatting = false;
+      this.$store.commit('setIsChatting', false)
     },
   },
 };
