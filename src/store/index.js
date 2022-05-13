@@ -667,7 +667,7 @@ export default new Vuex.Store({
       const ACCEPTED_DATA = MY_ACCEPTED_REF.data();
       const REJECTED_DATA = MY_REJECTED_REF.data();
 
-      console.log(SENDED_DATA)
+      console.log(SENDED_DATA);
 
       commit("setAllSocialRequests", {
         sended: SENDED_DATA.sendedList || [],
@@ -830,8 +830,8 @@ export default new Vuex.Store({
         commit("setRate", RATED_MATCH ? RATED_MATCH.rate : 0);
       }
       commit("setIsLoadingAddedMovies", false);
-      dispatch('addAchievementByGenre')
-      dispatch('addAchievementByMovie')
+      dispatch("addAchievementByGenre");
+      dispatch("addAchievementByMovie");
     },
     async addAchievementByGenre({ dispatch, state }) {
       // ? **************** Here we will achieve if the user has watched 50 movies **************** ? //
@@ -1058,13 +1058,11 @@ export default new Vuex.Store({
     async getGettedAchievements({ commit }, lang) {
       const MY_DOC_ID = localStorage.getItem("docID");
       // ? First, we get all achievements on the database
-      const REWARDS_REF = await db
-        .doc(`Achievements/${lang}`)
-        .get("list");
+      const REWARDS_REF = await db.doc(`Achievements/${lang}`).get("list");
       const ALL_REWARDS_ARRAY = REWARDS_REF.data();
       let ALL_ACHIEVEMENTS = [];
       if (ALL_REWARDS_ARRAY.length) {
-        ALL_ACHIEVEMENTS = ALL_REWARDS_ARRAY.list
+        ALL_ACHIEVEMENTS = ALL_REWARDS_ARRAY.list;
       }
 
       // ? Then, we filter by the user's achievements
@@ -1146,15 +1144,16 @@ export default new Vuex.Store({
           // ! Real time database listener
           let data = doc.data();
           let receivedList = data.receivedList;
-
-          for (let req of receivedList) {
-            // ? Here we are looping through the DocIDs users
-            usersData.push(req);
-            notifications.push({
-              icon: "mdi-account",
-              title: "Tienes una nueva solicitud de amistad",
-              isRead: false,
-            });
+          if (receivedList.length) {
+            for (let req of receivedList) {
+              // ? Here we are looping through the DocIDs users
+              usersData.push(req);
+              notifications.push({
+                icon: "mdi-account",
+                title: "Tienes una nueva solicitud de amistad",
+                isRead: false,
+              });
+            }
           }
 
           commit("setNotifications", notifications);
@@ -1171,15 +1170,16 @@ export default new Vuex.Store({
           // ! Real time database listener
           let data = doc.data();
           let acceptedList = data.acceptedList;
-
-          for (let req of acceptedList) {
-            // ? Here we are looping through the DocIDs users
-            notifications.push({
-              icon: "mdi-account",
-              avatar: req.avatar,
-              title: `El usuario ${req.userName} es ahora amigo tuyo`,
-              isRead: false,
-            });
+          if (acceptedList.length) {
+            for (let req of acceptedList) {
+              // ? Here we are looping through the DocIDs users
+              notifications.push({
+                icon: "mdi-account",
+                avatar: req.avatar,
+                title: `El usuario ${req.userName} es ahora amigo tuyo`,
+                isRead: false,
+              });
+            }
           }
 
           commit("setNotifications", notifications);
