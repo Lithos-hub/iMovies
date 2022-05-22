@@ -526,7 +526,7 @@ export default new Vuex.Store({
       const arr = await dispatch("getUsers");
       commit(
         "setiMoviesUsersList",
-        arr.filter((user) => user.userID !== rootState.user.uid)
+        arr.filter((user) => user.userID !== rootState.user.uid).sort((a, b) => a.userName.localeCompare(b.userName))
       );
       commit("setIsLoading", false);
     },

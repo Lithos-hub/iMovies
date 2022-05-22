@@ -3,7 +3,7 @@
     <SectionTitle :title="sectionTitle" />
     <Spinner v-if="isLoading" />
     <div v-else>
-      <!-- // ? ** SEARCH USER ** ? // -->
+      <!-- SEARCH USER -->
       <v-container>
         <v-row>
           <v-text-field
@@ -16,11 +16,15 @@
         </v-row>
       </v-container>
       <v-container v-if="!isSearchingUser && !isLoading">
-        <!-- // ? ** MY FRIENDSHIP REQUESTS LIST ** ? // -->
-        <div class="primary--text text-h4">{{ $t('view-community.friendshipRequests') }}</div>
+        <!-- MY FRIENDSHIP REQUESTS -->
+        <div class="primary--text text-h4">
+          {{ $t("view-community.friendshipRequests") }}
+        </div>
         <v-divider class="primary mb-5"></v-divider>
         <v-row class="ml-5" v-if="!myFriendshipRequests.length">
-          <p class="red--text">{{ $t('view-community.NofriendshipRequests') }}</p>
+          <p class="red--text">
+            {{ $t("view-community.NofriendshipRequests") }}
+          </p>
         </v-row>
         <v-row v-else>
           <v-col
@@ -75,12 +79,25 @@
             </div>
           </v-col>
         </v-row>
-        <!-- // ? ** MY FRIENDSHIP LIST ** ? // -->
-        <div class="primary--text text-h4 mt-5">{{ $t('view-community.myFriends') }}</div>
+        <!-- MY FRIENDSHIP LIST -->
+        <div class="primary--text text-h4 mt-5">
+          {{ $t("view-community.myFriends") }}
+        </div>
         <v-divider class="primary mb-5"></v-divider>
         <v-row v-if="myFriendsList.length">
-          <v-col lg="2" md="4" sm="6" xs="12" v-for="(friend, i) in myFriendsList" :key="i">
-            <v-card class="friend-card gradient-background-1 white--text pa-0" width="220" @click="goToUserDetails(friend)">
+          <v-col
+            lg="2"
+            md="4"
+            sm="6"
+            xs="12"
+            v-for="(friend, i) in myFriendsList"
+            :key="i"
+          >
+            <v-card
+              class="friend-card gradient-background-1 white--text pa-0"
+              width="220"
+              @click="goToUserDetails(friend)"
+            >
               <v-img
                 :src="friend.avatar"
                 width="220"
@@ -125,22 +142,24 @@
             </v-card>
           </v-col>
         </v-row>
-        <!-- // ? ** USERS LIST ** ? // -->
-        <div class="primary--text text-h4 mt-5">{{ $t('view-community.users') }}</div>
+        <!-- GLOBAL USERS LIST -->
+        <div class="primary--text text-h4 mt-5">
+          {{ $t("view-community.users") }}
+        </div>
         <v-divider class="primary mb-5"></v-divider>
         <v-list class="pa-0" v-if="iMoviesUsersList.length">
           <v-list-item
             class="d-flex justify-space-between user-list-item"
-            v-for="(user, i) in iMoviesUsersList.sort()"
+            v-for="(user, i) in iMoviesUsersList"
             :key="i"
           >
-            <!-- // ! ** USER INDEX ** // -->
+            <!-- USER INDEX -->
             <div class="user-index mr-2 text-h5">{{ i + 1 }}</div>
-            <!-- // ! ** USER AVATAR ** // -->
+            <!-- USER AVATAR -->
             <v-list-item-avatar size="70">
               <v-img :src="user.avatar"></v-img>
             </v-list-item-avatar>
-            <!-- // ! ** USER ALIAS ** // -->
+            <!-- USER ALIAS -->
             <v-list-item-title
               class="text-h6 ml-5 d-flex justify-space-between"
             >
@@ -148,15 +167,13 @@
                 {{ user.userName }}
               </div>
             </v-list-item-title>
-            <!-- // ! ** USER BUTTON ** // -->
+            <!-- USER BUTTON -->
             <!-- <div class="red--text text-center mr-auto">
                 <small class="my-auto">{{ justRejected(user.docID) ? 'Este usuario ha rechazado tu solicitud de amistad' : '' }}</small>
               </div> -->
             <div
               v-if="
-                !myFriendsList.some(
-                  (friend) => friend.docID === user.docID
-                )
+                !myFriendsList.some((friend) => friend.docID === user.docID)
               "
             >
               <v-tooltip bottom>
@@ -168,9 +185,7 @@
                     v-on="justRejected(user.docID) ? on : null"
                     depressed
                     @click="
-                      justRejected(user.docID)
-                        ? null
-                        : sendFriendRequest(user)
+                      justRejected(user.docID) ? null : sendFriendRequest(user)
                     "
                   >
                     <v-icon color="white">
@@ -178,7 +193,9 @@
                     </v-icon>
                   </v-btn>
                 </template>
-                <span class="my-auto">{{ $t('view-community.friendshipRejected') }}</span>
+                <span class="my-auto">{{
+                  $t("view-community.friendshipRejected")
+                }}</span>
               </v-tooltip>
             </div>
             <div v-else>
@@ -186,9 +203,9 @@
                 <v-icon>mdi-account-check</v-icon>
               </v-btn>
             </div>
-            <!-- // ! ** USER MOVIES ** // -->
+            <!-- USER MOVIES -->
             <div class="ml-auto pr-5 text-center">
-              {{ $t('view-community.savedMovies') }}
+              {{ $t("view-community.savedMovies") }}
               <span class="d-block">{{ user.userMovies.total }}</span>
             </div>
             <div class="d-block">
@@ -212,21 +229,28 @@
           </v-list-item>
         </v-list>
       </v-container>
-      <v-container v-else>
-        <v-btn outlined color="cyan" @click="isSearchingUser = false" class="mb-5 ml-9" tile>{{ $t("view-community.comeback") }}</v-btn>
+      <v-container v-else-if="isSearchingUser && !isLoading">
+        <v-btn
+          outlined
+          color="cyan"
+          @click="isSearchingUser = false"
+          class="mb-5 ml-9"
+          tile
+          >{{ $t("view-community.comeback") }}</v-btn
+        >
         <v-list class="pa-0" v-if="iMoviesUsersList.length">
           <v-list-item
             class="d-flex justify-space-between user-list-item"
             v-for="(user, i) in iMoviesUsersList"
             :key="i"
           >
-            <!-- // ! ** USER INDEX ** // -->
+            <!-- USER INDEX -->
             <div class="user-index mr-2 text-h5">{{ i + 1 }}</div>
-            <!-- // ! ** USER AVATAR ** // -->
+            <!-- USER AVATAR -->
             <v-list-item-avatar size="70">
               <v-img :src="user.avatar"></v-img>
             </v-list-item-avatar>
-            <!-- // ! ** USER ALIAS ** // -->
+            <!-- USER ALIAS -->
             <v-list-item-title
               class="text-h6 ml-5 d-flex justify-space-between"
             >
@@ -234,15 +258,10 @@
                 {{ user.userName }}
               </div>
             </v-list-item-title>
-            <!-- // ! ** USER BUTTON ** // -->
-            <!-- <div class="red--text text-center mr-auto">
-                <small class="my-auto">{{ justRejected(user.docID) ? 'Este usuario ha rechazado tu solicitud de amistad' : '' }}</small>
-              </div> -->
+            <!-- USER BUTTON -->
             <div
               v-if="
-                !myFriendsList.some(
-                  (friend) => friend.docID === user.docID
-                )
+                !myFriendsList.some((friend) => friend.docID === user.docID)
               "
             >
               <v-tooltip bottom>
@@ -254,9 +273,7 @@
                     v-on="justRejected(user.docID) ? on : null"
                     depressed
                     @click="
-                      justRejected(user.docID)
-                        ? null
-                        : sendFriendRequest(user)
+                      justRejected(user.docID) ? null : sendFriendRequest(user)
                     "
                   >
                     <v-icon color="white">
@@ -264,7 +281,9 @@
                     </v-icon>
                   </v-btn>
                 </template>
-                <span class="my-auto">{{ $t('view-community.friendshipRejected') }}</span>
+                <span class="my-auto">{{
+                  $t("view-community.friendshipRejected")
+                }}</span>
               </v-tooltip>
             </div>
             <div v-else>
@@ -272,9 +291,9 @@
                 <v-icon>mdi-account-check</v-icon>
               </v-btn>
             </div>
-            <!-- // ! ** USER MOVIES ** // -->
+            <!-- USER MOVIES -->
             <div class="ml-auto pr-5 text-center">
-              {{ $t('view-community.savedMovies') }}
+              {{ $t("view-community.savedMovies") }}
               <span class="d-block">{{ user.userMovies.total }}</span>
             </div>
             <div class="d-block">
@@ -312,6 +331,7 @@ export default {
     SectionTitle,
     Spinner,
   },
+  name: 'Community',
   data() {
     return {
       sectionTitle: "Community",
@@ -327,32 +347,32 @@ export default {
       "myFriendsList",
       "iMoviesUsersList",
       "myFriendshipRequests",
-      "isLoading"
+      "isLoading",
     ]),
   },
   watch: {
-    isSearchingUser (val) {
-      if (val === false) this.$store.dispatch("getAllUsers")
-    }
+    isSearchingUser(val) {
+      if (val === false) this.$store.dispatch("getAllUsers");
+    },
   },
   mounted() {
     Services.hasVisitedTheSection("community");
-    this.$store.dispatch('getFriendshipNotification')
-    this.$store.dispatch("getAllUsers")
-    this.$store.dispatch("getMySocialData")
-    this.$store.dispatch("getMyFriendshipData")
+    this.$store.dispatch("getFriendshipNotification");
+    this.$store.dispatch("getAllUsers");
+    this.$store.dispatch("getMySocialData");
+    this.$store.dispatch("getMyFriendshipData");
   },
   methods: {
     searchUser() {
       this.isSearchingUser = true;
-      this.$store.dispatch("getUserByName", this.user)
+      this.$store.dispatch("getUserByName", this.user);
       this.user = "";
     },
     goToUserDetails(userData) {
       let docID = userData.docID;
-      let friendshipDate = userData.friendshipDate
+      let friendshipDate = userData.friendshipDate;
       this.$router.push({ path: `/community/userDetails/${docID}` });
-      this.$store.commit('setFriendshipDate', friendshipDate)
+      this.$store.commit("setFriendshipDate", friendshipDate);
     },
     async sendFriendRequest(user) {
       let userData = {
@@ -360,7 +380,7 @@ export default {
         userName: user.userName,
         avatar: user.avatar,
       };
-      await this.$store.dispatch("sendFriendRequest", userData)
+      await this.$store.dispatch("sendFriendRequest", userData);
       await this.$store.dispatch("getMyFriendshipData");
     },
     computedRequestColor(docID) {
