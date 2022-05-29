@@ -25,7 +25,6 @@
         >
           {{ cleanQuestion(question.ask) }}
         </p>
-        >
         <v-divider class="cyan my-5"></v-divider>
         <v-list-item-group v-model="responseIndex" color="cyan">
           <v-list-item v-for="(item, i) in question.answers" :key="i">

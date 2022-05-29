@@ -414,8 +414,8 @@
     "changelog": "Changelog"
   },
   "comp-snackbar": {
-    "movie-added": "Film added",
-    "movie-removed": "Film removed",
+    "movie-added": "Movie added",
+    "movie-removed": "Movie removed",
     "movie-added-error": "Error when adding the movie",
     "movie-removed-error": "Error when removing the movie",
     "ratedMovies-added": "Rate added",
