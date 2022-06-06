@@ -397,6 +397,7 @@ export default {
           this.$store.commit("setMessagesListener", () => {});
           this.$router.push("/");
           localStorage.clear();
+          this.refresh()
         })
         .catch((error) => {
           console.log(error);

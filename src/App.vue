@@ -40,6 +40,7 @@ import RewardNotification from "./components/RewardNotification";
 import LoadingData from "./components/LoadingData";
 import router from "./router/index";
 import { auth, db } from "./../firebase.js";
+import { LANGUAGE } from './constants/constants';
 
 export default {
   components: {
@@ -80,6 +81,7 @@ export default {
       "loadingUserAuthStatus",
       "moviesCounter",
       "userPoints",
+      "language",
       "rewardObject",
       "moviesCounter",
       "chatIsActivated",
@@ -94,6 +96,7 @@ export default {
     },
   },
   created() {
+    this.copyState()
     this.getUserData();
     this.$nextTick().then(() => {
       const MY_FS_DOC = localStorage.getItem("docID");
@@ -108,11 +111,10 @@ export default {
   async mounted() {
     // this.pushRewardsToFirebase()
     this.getCurrentDate();
+    await this.getAchievements();
     await this.$store.dispatch("getUserPoints");
     await this.$store.dispatch("getStoragedMovies");
     await this.$store.dispatch("getVisitedSections");
-    await this.$store.dispatch("getGettedAchievements", lang);
-    const lang = localStorage.getItem("storageLanguage").substring(4, 6);
   },
   watch: {
     rewardObject(val) {
@@ -134,7 +136,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["changeLanguage", "getUserID", "showingFriends"]),
+    ...mapActions(["changeLanguage", "getUserID", "showingFriends", "copyState"]),
+    async getAchievements() {
+      await this.$store.dispatch("getGettedAchievements", LANGUAGE.substring(3, 5));
+    },
     minimizeChat(bool) {
       this.minimized = bool;
     },

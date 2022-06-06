@@ -159,15 +159,12 @@ export default {
     },
   },
   mounted () {
-    this.resetData()
+    this.copyState()
   },
   methods: {
-    ...mapActions(["showSnackbar", "changeLanguage"]),
+    ...mapActions(["showSnackbar", "changeLanguage", "copyState"]),
     refresh() {
       this.$router.go(0);
-    },
-    resetData () {
-      this.$store.commit("resetData");
     },
     async login(email, password) {
       await auth

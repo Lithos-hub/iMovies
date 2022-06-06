@@ -279,10 +279,10 @@ export default {
       isEditingEmail: false,
       avatarDialog: false,
       show: false,
-      newName: "",
-      newEmail: "",
-      newPassword: "",
-      newAvatar: "",
+      newName: null,
+      newEmail: null,
+      newPassword: null,
+      newAvatar: null,
       nameRules: [(v) => v.length < 15 || this.$t("view-register.maximum")],
       emailRules: [
         (v) => /.+@.+\..+/.test(v) || this.$t("view-register.emailInvalid"),
@@ -328,6 +328,7 @@ export default {
         this.closeDialog();
         this.$store.commit("setIsLoadingDynamicUserData", false);
       } catch (error) {
+        console.log('Error when updating profile => ', error)
         if (error.code === "auth/requires-recent-login") {
           this.showSnackbar({
             text: this.$t("view-account.errorOldLogin"),
@@ -437,11 +438,8 @@ input::placeholder {
 .achievement__section {
   text-align: center;
   position: relative;
-  left: 0;
-  top: 0;
   width: 100%;
-  padding-inline: 5em;
-  padding-block: 2em;
+  padding: 4.5em 7em;
   background: $dark2;
 }
 

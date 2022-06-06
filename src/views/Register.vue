@@ -511,8 +511,8 @@ export default {
                       });
                       await this.$store.dispatch("updateProfile", {
                         userName: USERNAME,
-                        userEmail: null,
-                        userPassword: null,
+                        userEmail: "",
+                        userPassword: "",
                         userAvatar: AVATAR,
                       });
                       await this.createSubCollection();

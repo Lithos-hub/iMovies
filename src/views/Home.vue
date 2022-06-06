@@ -231,6 +231,7 @@ import TrailerDialog from "@/components/TrailerDialog.vue";
 import AddToDialog from "../components/AddToDialog";
 import { db, auth } from "../../firebase";
 import Services from "../services/services";
+import { LANGUAGE } from '../constants/constants';
 
 export default {
   name: "Ranking",
@@ -253,15 +254,16 @@ export default {
   mounted() {
     Services.hasVisitedTheSection("home");
     this.getHasPlayedToday();
-    this.getUserData();
     this.enableScrollX();
     this.animateScroll();
     this.$store.dispatch("getFriendshipNotification");
+    this.$store.dispatch("getGettedAchievements", LANGUAGE.substring(3, 5));
     setTimeout(() => {
       this.getMovieTrailer({
         type: "ofTheWeek",
         id: this.trendingMovies[0].id,
       });
+      this.getUserData();
     }, 1000);
   },
   computed: {
@@ -295,12 +297,12 @@ export default {
         if (user) {
           this.$store.commit("setUser", user);
           this.$store.dispatch("getMyDocID");
-          this.$nextTick().then(() => {
+          setTimeout(() => {
             this.$store.dispatch("getFriendshipNotification");
             this.$store.dispatch("getMySocialData");
-            console.log("My Firestore Doc ID: ", this.$store.getters.myDocID);
+            console.log("My Firestore Doc ID: ", localStorage.getItem("docID"));
             this.isLoading = false;
-          });
+          }, 250)
         }
       });
     },
